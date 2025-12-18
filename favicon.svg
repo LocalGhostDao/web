@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Ghost body - darker, more mysterious -->
+  <path d="M32 4C18 4 10 16 10 28v28c0 0 4-4 7-4s5 4 8 4 5-4 7-4 4 4 7 4 5-4 8-4 7 4 7 4V28c0-12-8-24-22-24z" fill="#1a1a1a" stroke="#33FF00" stroke-width="1.5"/>
+
+  <!-- Left eye - terminal green glow -->
+  <ellipse cx="24" cy="28" rx="5" ry="6" fill="#33FF00"/>
+  <ellipse cx="24" cy="28" rx="3" ry="4" fill="#050505"/>
+
+  <!-- Right eye - terminal green glow -->
+  <ellipse cx="40" cy="28" rx="5" ry="6" fill="#33FF00"/>
+  <ellipse cx="40" cy="28" rx="3" ry="4" fill="#050505"/>
+
+  <!-- Subtle smile -->
+  <path d="M26 40 Q32 45 38 40" stroke="#33FF00" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
