@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalGhost.ai | The Only Cloud Is You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <meta name="theme-color" content="#050505">
+    <style>
+        :root {
+            --void: #050505;
+            --void-lighter: #0a0a0a;
+            --text: #E0E0E0;
+            --text-dim: #808080;
+            --terminal: #33FF00;
+            --terminal-dim: #1a8000;
+            --border: #333;
+            --warning: #FF3333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* SCANLINES OVERLAY */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-logo span {
+            color: var(--terminal);
+        }
+
+        .nav-status {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .terminal-box {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+        }
+
+        .terminal-box::before {
+            content: '■ ■ ■';
+            position: absolute;
+            top: 0.5rem;
+            left: 1rem;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            letter-spacing: 0.3em;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(2) { animation-delay: 1s; }
+        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(4) { animation-delay: 2s; }
+        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 3s; }
+        .terminal-line:nth-child(7) { animation-delay: 3.5s; }
+        .terminal-line:nth-child(8) { animation-delay: 4s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .terminal-prompt {
+            color: var(--terminal);
+        }
+
+        .terminal-text {
+            color: var(--text);
+        }
+
+        .terminal-warning {
+            color: var(--warning);
+            font-weight: 500;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--terminal);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 0.2em;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--text);
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .cta-button:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        .cta-tooltip {
+            position: absolute;
+            left: calc(100% + 1rem);
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            color: var(--terminal);
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .cta-button:hover .cta-tooltip {
+            opacity: 1;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--terminal);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 4rem 0;
+        }
+
+        /* MANIFESTO */
+        .manifesto {
+            border-left: 2px solid var(--terminal);
+            padding-left: 2rem;
+        }
+
+        .manifesto-quote {
+            font-style: italic;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 1px solid var(--border);
+        }
+
+        /* COMMITMENT LIST */
+        .commitment-list {
+            margin: 1.5rem 0;
+        }
+
+        .commitment-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .commit-icon {
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .commit-icon.yes {
+            color: var(--terminal);
+        }
+
+        .commit-icon.no {
+            color: var(--warning);
+        }
+
+        .commitment-item strong {
+            color: var(--text);
+        }
+
+        .commit-desc {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        /* FLEET GRID */
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .daemon-card {
+            background: var(--void);
+            padding: 1.5rem;
+            min-height: 200px;
+        }
+
+        .daemon-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--terminal);
+            margin-bottom: 0.5rem;
+        }
+
+        .daemon-type {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .daemon-desc {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--text);
+            opacity: 0.8;
+        }
+
+        /* MIST SECTION */
+        .mist-visual {
+            font-family: inherit;
+            font-size: 0.7rem;
+            color: var(--terminal);
+            line-height: 1.4;
+            margin: 2rem 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .mist-points {
+            margin: 2rem 0;
+        }
+
+        .mist-point {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .mist-point-icon {
+            color: var(--terminal);
+            font-weight: bold;
+        }
+
+        .mist-point-text {
+            font-size: 0.85rem;
+        }
+
+        .mist-point-title {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .mist-point-desc {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ECONOMICS TABLE */
+        .economics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.85rem;
+        }
+
+        .economics-table th,
+        .economics-table td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .economics-table th {
+            background: var(--void-lighter);
+            color: var(--text-dim);
+            font-weight: 400;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .economics-table td:first-child {
+            color: var(--text-dim);
+        }
+
+        .economics-table .old-way {
+            color: var(--warning);
+            opacity: 0.7;
+        }
+
+        .economics-table .our-way {
+            color: var(--terminal);
+        }
+
+        .economics-point {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .economics-point h4 {
+            color: var(--terminal);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .economics-point p {
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .economics-point .choice {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            padding-left: 1rem;
+            border-left: 1px solid var(--terminal);
+            margin-top: 1rem;
+        }
+
+        /* GUARANTEE BOX */
+        .guarantee-box {
+            background: var(--void-lighter);
+            border: 2px solid var(--terminal);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .guarantee-box h4 {
+            color: var(--terminal);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .guarantee-box p {
+            font-size: 0.9rem;
+        }
+
+        .guarantee-box .emphasis {
+            color: var(--terminal);
+            font-weight: 500;
+        }
+
+        /* HARDWARE SECTION */
+        .hardware-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+        .hardware-option {
+            background: var(--void);
+            padding: 2rem;
+        }
+
+        .hardware-option h4 {
+            font-size: 0.8rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .hardware-option p {
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hardware-price {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .hardware-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--text);
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .hardware-btn:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        .hardware-btn.ghost {
+            border-color: var(--terminal);
+            color: var(--terminal);
+        }
+
+        .hardware-btn.ghost:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        .specs-list {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        .specs-list div {
+            margin-bottom: 0.3rem;
+        }
+
+        /* DONATE SECTION */
+        .donate-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .donate-section p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+
+        .donate-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 1px solid var(--terminal);
+            background: transparent;
+            color: var(--terminal);
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .donate-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .footer-links {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--terminal);
+        }
+
+        .footer-quote {
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.7rem;
+            }
+
+            .nav-links .hide-mobile {
+                display: none;
+            }
+
+            .fleet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hardware-options {
+                grid-template-columns: 1fr;
+            }
+
+            .terminal-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .cta-tooltip {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-logo">
+            <span>&gt;</span> LOCALGHOST.AI
+            <span class="nav-status">| THE ONLY CLOUD IS YOU</span>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto.html">1993</a>
+            <a href="#fleet" class="hide-mobile">SPECS</a>
+            <a href="#economics">ECONOMICS</a>
+            <a href="#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/vcealicu" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="terminal-box">
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">CONNECTING...</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">1993 WAS A WARNING.</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><span id="current-year"></span> IS THE REALITY.</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-warning">WE CANNOT FIX THE INTERNET.</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><a href="/manifesto.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">READ THE CYPHERPUNK MANIFESTO →</a></span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">&gt;</span> <span class="cursor"></span>
+            </div>
+        </div>
+        <a href="#manifesto" class="cta-button">
+            [ ENTER THE ESCAPE PATH ]
+            <span class="cta-tooltip">&gt; THE ONLY CLOUD IS YOU.</span>
+        </a>
+    </section>
+
+<!-- MANIFESTO -->
+    <section id="manifesto">
+        <div class="section-header">&gt; SECTION_01</div>
+        <h2>THE MANIFESTO</h2>
+
+        <div class="manifesto">
+            <p class="manifesto-quote">
+                <a href="/manifesto.html" style="color: inherit; text-decoration: none;">
+                    "Privacy is the power to selectively reveal oneself to the world."<br>
+                    — <span style="border-bottom: 1px solid var(--terminal);">A Cypherpunk's Manifesto, 1993</span>
+                </a>
+            </p>
+
+            <p>
+                The Cypherpunks told us to write code. We didn't write enough. Today, your phone is a tracker,
+                your cloud is an informant, and your AI is a spy. Every click is logged. Every query is sold.
+                Every interaction trains a model you will never own.
+            </p>
+
+            <p>
+                LocalGhost inverts this. We move everything you need—your AI, your data, your digital self—from
+                their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
+            </p>
+
+            <p style="color: var(--terminal); font-weight: 500; font-size: 1.1rem; margin: 2rem 0;">
+                We do not ask you to trust us. We ask you to verify that you don't have to.
+            </p>
+        </div>
+
+        <h3 style="margin-top: 3rem;">WHAT WE'VE MADE POSSIBLE</h3>
+
+        <div class="commitment-list">
+            <div class="commitment-item">
+                <span class="commit-icon yes">[✓]</span>
+                <div>
+                    <strong>Everything is open source and auditable.</strong><br>
+                    <span class="commit-desc">Every line of code is public. Every circuit is documented. No black boxes except the one on your desk.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon yes">[✓]</span>
+                <div>
+                    <strong>Anyone can fork, expand, or replace us.</strong><br>
+                    <span class="commit-desc">We are not gatekeepers. We are blueprint makers. The mission is bigger than the company.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon yes">[✓]</span>
+                <div>
+                    <strong>Anyone can build it themselves.</strong><br>
+                    <span class="commit-desc">Buy the parts. Flash the OS. Never give us a cent. We'll still high-five you.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon yes">[✓]</span>
+                <div>
+                    <strong>We only exist while we're valuable.</strong><br>
+                    <span class="commit-desc">If we go bankrupt, you lose nothing. Your box keeps running. Someone else can pick up where we left off.</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 3rem;">WHAT WE'VE MADE IMPOSSIBLE</h3>
+
+        <div class="commitment-list">
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot sell your data.</strong><br>
+                    <span class="commit-desc">We do not have it. Your data lives on your hardware. We are architecturally blind.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot charge a subscription.</strong><br>
+                    <span class="commit-desc">There is no server to cut you off from. You own atoms. Atoms don't have terms of service.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot force an update.</strong><br>
+                    <span class="commit-desc">Unplug the ethernet and we cannot reach you. No backdoor. No kill switch.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot train AI on your life.</strong><br>
+                    <span class="commit-desc">Your journals, photos, biometrics, secrets—they exist only on your desk.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot track you.</strong><br>
+                    <span class="commit-desc">No analytics. No telemetry. The box does not phone home. We don't know who you are.</span>
+                </div>
+            </div>
+            <div class="commitment-item">
+                <span class="commit-icon no">[✗]</span>
+                <div>
+                    <strong>We cannot comply with surveillance requests.</strong><br>
+                    <span class="commit-desc">When the subpoena comes, we have nothing. The architecture is our legal defense.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee-box" style="margin-top: 3rem;">
+            <p style="margin-bottom: 1rem;">
+                This is not a promise backed by goodwill. This is not a privacy policy written by lawyers.
+                This is physics. This is math. This is <a href="https://github.com/vcealicu" style="color: var(--terminal);">code you can read</a>.
+            </p>
+            <p style="color: var(--terminal); font-weight: 500; margin-bottom: 0;">
+                You do not choose us because you trust us.<br>
+                You choose us because you can verify that trust is unnecessary.
+            </p>
+        </div>
+
+        <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
+            The internet is a panopticon.<br>
+            <span style="color: var(--terminal);">LocalGhost is the blind spot.</span><br>
+            <a href="/manifesto.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">Read the full 1993 Cypherpunk Manifesto →</a>
+        </p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- THE FLEET -->
+    <section id="fleet">
+        <div class="section-header">&gt; SECTION_02</div>
+        <h2>THE FLEET: LOCAL_DAEMONS</h2>
+
+        <p>
+            We built a fleet of agents—Daemons—that run locally on the hardware.
+            They are not "smart assistants." They are specialized scripts designed to ingest
+            the chaos of your life and organize it into a coherent truth, without a single byte leaving the box.
+        </p>
+
+        <div class="fleet-grid">
+            <div class="daemon-card">
+                <div class="daemon-name">THE SCRIBE</div>
+                <div class="daemon-type">INPUT: TEXT & CONTEXT</div>
+                <div class="daemon-desc">
+                    Reads your journals. Maps your syntax. Preserves the raw thoughts you self-censor.
+                    The memory of who you were when no one was watching.
+                </div>
+            </div>
+            <div class="daemon-card">
+                <div class="daemon-name">THE OBSERVER</div>
+                <div class="daemon-type">INPUT: VISION</div>
+                <div class="daemon-desc">
+                    Sees the bags under your eyes. Tracks the clutter. Rejects the Instagram filter.
+                    The only camera that works for you.
+                </div>
+            </div>
+            <div class="daemon-card">
+                <div class="daemon-name">THE AUDITOR</div>
+                <div class="daemon-type">INPUT: HARD METRICS</div>
+                <div class="daemon-desc">
+                    Trust the math. Bank logs. Screen time. Commit history.
+                    The undeniable baseline of where your time and energy actually went.
+                </div>
+            </div>
+            <div class="daemon-card">
+                <div class="daemon-name">THE WEAVER</div>
+                <div class="daemon-type">SYNTHESIS: THE BRAIN</div>
+                <div class="daemon-desc">
+                    Connects spending to sadness. Connects code to sleep. Finds the pattern.
+                    Builds a model of your psyche—not to sell you things, but to help you understand you.
+                </div>
+            </div>
+            <div class="daemon-card">
+                <div class="daemon-name">THE SENTINEL</div>
+                <div class="daemon-type">SECURITY: THE MIST</div>
+                <div class="daemon-desc">
+                    Encrypts & shards your data. Distributes to the P2P mesh.
+                    The deadman switch. If we disappear, your data survives.
+                </div>
+            </div>
+            <div class="daemon-card">
+                <div class="daemon-name">THE SHADOW</div>
+                <div class="daemon-type">INTERFACE: THE OUTPUT</div>
+                <div class="daemon-desc">
+                    Brutally honest. Not a polite chatbot. If you lie to the Shadow,
+                    it will cite the Auditor's data to correct you. Zero incentive to manipulate.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- THE MIST -->
+    <section id="mist">
+        <div class="section-header">&gt; SECTION_03</div>
+        <h2>SURVIVAL PROTOCOL: "THE MIST"</h2>
+
+        <p>
+            We do not have a server. If we go bankrupt tomorrow, your data survives.
+            LocalGhost relies on a Distributed Hash Table (DHT).
+        </p>
+
+<pre class="mist-visual" style="font-family: Consolas, Monaco, 'DejaVu Sans Mono', monospace;">┌──────┐     ┌──────┐     ┌──────┐
+│ NODE │────▶│ NODE │────▶│ NODE │
+└──┬───┘     └──┬───┘     └──┬───┘
+   │            │            │
+   ▼            ▼            ▼
+┌──────┐     ┌──────┐     ┌──────┐
+│ NODE │◀────│ NODE │◀────│ NODE │
+└──────┘     └──────┘     └──────┘
+
+NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
+
+        <div class="mist-points">
+            <div class="mist-point">
+                <span class="mist-point-icon">[1]</span>
+                <div class="mist-point-text">
+                    <div class="mist-point-title">SHARDING</div>
+                    <div class="mist-point-desc">Your encrypted soul is broken into thousands of shards.</div>
+                </div>
+            </div>
+            <div class="mist-point">
+                <span class="mist-point-icon">[2]</span>
+                <div class="mist-point-text">
+                    <div class="mist-point-title">DISTRIBUTION</div>
+                    <div class="mist-point-desc">You store shards for others; they store shards for you.</div>
+                </div>
+            </div>
+            <div class="mist-point">
+                <span class="mist-point-icon">[3]</span>
+                <div class="mist-point-text">
+                    <div class="mist-point-title">ZERO-KNOWLEDGE</div>
+                    <div class="mist-point-desc">They cannot read yours. You cannot read theirs.</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="color: var(--terminal); font-weight: 500;">
+            THE PACT: Dedicate 20% of your drive to the network. Gain immortality for your data.
+        </p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ECONOMICS -->
+    <section id="economics">
+        <div class="section-header">&gt; SECTION_04</div>
+        <h2>THE ECONOMICS OF INDEPENDENCE</h2>
+        <h3>Why we will never ask for a subscription.</h3>
+
+        <p>
+            The modern technology industry is built on a single, toxic premise: <strong>Rent-seeking.</strong>
+        </p>
+
+        <p>
+            They don't want to sell you a product; they want to trap you in a monthly payment.
+            They want you to be a tenant in your own digital life. If you stop paying, the lights go out.
+            If you stop paying, they lock the doors to your memories.
+        </p>
+
+        <p style="color: var(--terminal); font-size: 1.1rem; margin: 2rem 0;">
+            We reject this. Not everything needs to be a subscription.
+        </p>
+
+        <p>
+            At LocalGhost, our business model is boring, archaic, and honest:
+        </p>
+
+        <div class="economics-point">
+            <h4>1. WE MAKE MONEY WHEN WE SELL YOU ATOMS (HARDWARE)</h4>
+            <p>
+                If you choose to buy a pre-built LocalGhost box from us, we charge you a 30% margin
+                on the parts and assembly. That is our profit. It pays for our engineers, our electricity, and our coffee.
+            </p>
+            <div class="choice">
+                <strong>The Choice:</strong> If you don't want to pay us, you don't have to.
+                The hardware specs are open. The code is open. You can buy the parts on Newegg,
+                download our repo, and build it yourself. We will not earn a cent, and we will still high-five you for doing it.
+            </div>
+        </div>
+
+        <div class="economics-point">
+            <h4>2. WE MAKE MONEY WHEN WE SELL YOU UPGRADES (SOFTWARE)</h4>
+            <p>
+                We treat software like a tool, not a service. If we develop a breakthrough new Agent—say,
+                a "Shadow v2.0" with better reasoning, or a "Medical Auditor" module—we will put it in a package
+                and put a price tag on it.
+            </p>
+            <div class="choice">
+                <strong>The Choice:</strong> You can buy it, or you can ignore it.
+            </div>
+        </div>
+
+        <div class="economics-point">
+            <h4>3. WE NEVER MONETIZE YOU</h4>
+            <p>We cannot sell your data because we do not have it.</p>
+            <p>We cannot train AI on your life because we cannot see it.</p>
+            <p>We cannot show you ads because the box has no ad server.</p>
+        </div>
+
+        <div class="guarantee-box">
+            <h4>⚡ PHYSICS, NOT PROMISES</h4>
+            <p>
+                <span class="emphasis">The Guarantee:</span> If you don't buy an upgrade, your current version
+                will keep working forever. We will never throttle, brick, or degrade your existing system to force an upgrade.
+            </p>
+            <p style="margin-top: 1rem;">
+                <span class="emphasis">Why?</span> Because we can't.
+            </p>
+            <p>
+                Once you unplug the ethernet cable or block the port, this box is a sovereign island.
+                We have no "backdoor." We have no "remote kill switch." We have no "admin access."
+                Even if we wanted to force an update, the architecture prevents us from reaching you.
+            </p>
+            <p style="color: var(--terminal); margin-bottom: 0;">
+                We have designed ourselves out of the loop. You are not relying on our goodwill;
+                you are relying on the fact that we are technically powerless to stop you.
+            </p>
+        </div>
+
+        <h3 style="margin-top: 3rem;">THE COMPARISON</h3>
+
+        <table class="economics-table">
+            <thead>
+                <tr>
+                    <th>FEATURE</th>
+                    <th class="old-way">THE "BIG TECH" WAY</th>
+                    <th class="our-way">THE LOCALGHOST WAY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Payment Structure</td>
+                    <td class="old-way">Infinite Monthly Rent</td>
+                    <td class="our-way">One-Time Purchase</td>
+                </tr>
+                <tr>
+                    <td>If You Stop Paying</td>
+                    <td class="old-way">You lose access to your data</td>
+                    <td class="our-way">Nothing happens. It keeps working.</td>
+                </tr>
+                <tr>
+                    <td>Data Privacy</td>
+                    <td class="old-way">They scan it for ads/training</td>
+                    <td class="our-way">We physically cannot see it</td>
+                </tr>
+                <tr>
+                    <td>Upgrades</td>
+                    <td class="old-way">Forced UI changes you hate</td>
+                    <td class="our-way">Optional packages you choose</td>
+                </tr>
+                <tr>
+                    <td>Hardware</td>
+                    <td class="old-way">A locked black box you can't open</td>
+                    <td class="our-way">Standard parts. Repairable. Upgradeable.</td>
+                </tr>
+                <tr>
+                    <td>Relationship</td>
+                    <td class="old-way">User / Product</td>
+                    <td class="our-way">Owner / Tool</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="text-align: center; margin-top: 2rem; font-size: 1rem; color: var(--terminal);">
+            When you pay for something once, you own it.<br>
+            When you pay for it monthly, it owns you.
+        </p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- HARDWARE -->
+    <section id="hardware">
+        <div class="section-header">&gt; SECTION_05</div>
+        <h2>THE BLACK BOX</h2>
+
+        <p>
+            A matte black aluminum cube. No lights. No logos. Just sovereignty.
+        </p>
+
+        <div class="specs-list">
+            <div>&gt; Processor: NPU-Native Custom Board (or Bring Your Own)</div>
+            <div>&gt; Storage: 4TB NVMe (Silent)</div>
+            <div>&gt; Connectivity: Ethernet / Wi-Fi 6E (Air-Gap Capable)</div>
+            <div>&gt; OS: LocalGhost OS (Linux Kernel)</div>
+        </div>
+
+        <div class="hardware-options">
+            <div class="hardware-option">
+                <h4>OPTION A: THE SOVEREIGN BOX</h4>
+                <p>Pre-built. Plug & Play. 30% margin supports development.</p>
+                <div class="hardware-price">JOIN WAITLIST</div>
+                <a href="#order" class="hardware-btn">[ ORDER ]</a>
+            </div>
+            <div class="hardware-option">
+                <h4>OPTION B: THE GHOST BUILD</h4>
+                <p>Source the parts yourself. Flash the OS. We make £0.</p>
+                <div class="hardware-price">£0 GBP</div>
+                <a href="https://github.com/vcealicu" class="hardware-btn ghost">[ VIEW GITHUB SPEC ]</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DONATE -->
+    <div class="donate-section">
+        <p>
+            Believe in the mission? You can always support development directly.
+        </p>
+        <a href="#donate" class="donate-btn">[ SUPPORT THE ESCAPE ]</a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">PGP KEY</a>
+            <a href="https://github.com/localghost">SOURCE CODE</a>
+            <a href="#">TORRENT MAGNET</a>
+            <a href="#">CONTACT</a>
+        </div>
+        <p class="footer-quote">
+            <a href="/manifesto.html" style="color: inherit; text-decoration: none;">
+                "Privacy is necessary for an open society in the electronic age."<br>
+                — <span style="border-bottom: 1px solid var(--border);">A Cypherpunk's Manifesto, 1993</span>
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add subtle terminal flicker effect on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Easter egg: Konami code unlocks something
+        let konamiCode = [];
+        const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.keyCode);
+            konamiCode = konamiCode.slice(-10);
+
+            if (konamiCode.join(',') === secretCode.join(',')) {
+                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
