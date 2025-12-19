@@ -6,7 +6,7 @@
     <title>A Cypherpunk's Manifesto | LocalGhost.ai</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
-    <meta name="theme-color" content="#050505">
+    <meta name="theme-color" content="#111111">
     <style>
         @font-face {
             font-family: 'JetBrains Mono';
@@ -38,14 +38,16 @@
         }
 
         :root {
-            --void: #050505;
-            --void-lighter: #0a0a0a;
+            --void: #111111;
+            --void-lighter: #1a1a1a;
             --text: #E0E0E0;
             --text-dim: #808080;
             --terminal: #33FF00;
             --terminal-dim: #1a8000;
             --border: #333;
             --warning: #FF3333;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
 
         * {
@@ -61,7 +63,7 @@
         body {
             background: var(--void);
             color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
+            font-family: var(--font-system);
             font-size: 16px;
             line-height: 1.8;
             overflow-x: hidden;
@@ -101,10 +103,11 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
-            background: rgba(5, 5, 5, 0.95);
+            background: rgba(17, 17, 17, 0.95);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
             backdrop-filter: blur(10px);
+            font-family: var(--font-mono);
         }
 
         .nav-logo {
@@ -157,6 +160,7 @@
         }
 
         .page-header .section-label {
+            font-family: var(--font-mono);
             font-size: 0.75rem;
             color: var(--terminal);
             letter-spacing: 0.2em;
@@ -164,6 +168,7 @@
         }
 
         h1 {
+            font-family: var(--font-mono);
             font-size: 1.8rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
@@ -175,6 +180,7 @@
         }
 
         .date {
+            font-family: var(--font-mono);
             color: var(--terminal);
             font-size: 0.8rem;
             margin-top: 0.5rem;
@@ -203,6 +209,7 @@
         }
 
         .signature {
+            font-family: var(--font-mono);
             margin-top: 3rem;
             padding-top: 2rem;
             border-top: 1px solid var(--border);
@@ -220,6 +227,7 @@
         }
 
         .final-words {
+            font-family: var(--font-mono);
             font-size: 1.1rem;
             color: var(--terminal);
             text-align: center;
@@ -235,6 +243,7 @@
             border: 1px solid var(--text);
             color: var(--text);
             text-decoration: none;
+            font-family: var(--font-mono);
             font-size: 0.85rem;
             transition: all 0.2s;
         }
@@ -248,7 +257,7 @@
         footer {
             padding: 3rem 2rem;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-dim);
             border-top: 1px solid var(--border);
             margin-top: 4rem;
