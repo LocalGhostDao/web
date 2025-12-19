@@ -46,7 +46,7 @@ python3 -m http.server 8080
 
 ## 🎨 DESIGN SYSTEM: "TERMINAL BRUTALISM"
 * The design language is Hostile/Functional.
-* Background: #050505 (Void Black)
+* Background: #111111 (Light Black)
 * Text: #E0E0E0 (Phosphor White)
 * Accents: #33FF00 (Terminal Green) / #FF3333 (Error Red)
 * Font: Monospace (System Default). We do not import fonts.
