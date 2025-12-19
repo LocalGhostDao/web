@@ -45,7 +45,7 @@
             --terminal: #33FF00;
             --terminal-dim: #1a8000;
             --border: #333;
-            --warning: #FF3333;
+            --warning: #FF6B6B;
             --font-mono: 'JetBrains Mono', monospace;
             --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
@@ -235,6 +235,28 @@
             border-left-color: var(--warning);
         }
 
+        .dystopia-box {
+            border: 2px solid var(--warning);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .dystopia-box p {
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .dystopia-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .dystopia-box strong {
+            color: #fff;
+            font-size: 1.2rem;
+            letter-spacing: 0.02em;
+        }
+
         .section-header {
             font-family: var(--font-mono);
             font-size: 1.1rem;
@@ -321,9 +343,10 @@
         }
 
         .copy-btn {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: center;
             background: transparent;
             border: 1px solid var(--terminal-dim);
             color: var(--terminal);
@@ -331,8 +354,19 @@
             font-size: 0.7rem;
             padding: 0.35rem 0.75rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
             letter-spacing: 0.05em;
+            width: 130px;
+            height: 28px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .copy-btn .btn-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .copy-btn:hover {
@@ -346,18 +380,24 @@
             color: #fff;
             border-color: #FF6B00;
             box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3);
-            animation: beacon-pulse 0.5s ease;
+            animation: beacon-glow 0.5s ease;
         }
 
-        @keyframes beacon-pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes beacon-glow {
+            0% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(255, 107, 0, 0.8), 0 0 70px rgba(255, 51, 0, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
         }
 
         .copy-btn svg {
             width: 14px;
             height: 14px;
+            flex-shrink: 0;
+        }
+
+        .copy-btn .btn-text {
+            min-width: 90px;
+            text-align: center;
         }
 
         .code-block {
@@ -611,10 +651,25 @@
             .copy-btn {
                 font-size: 0.6rem;
                 padding: 0.25rem 0.5rem;
+                width: 115px;
+                height: 24px;
+            }
+
+            .copy-btn svg {
+                width: 12px;
+                height: 12px;
             }
 
             .pledge-box {
                 padding: 1.5rem;
+            }
+
+            .dystopia-box {
+                padding: 1.25rem;
+            }
+
+            .dystopia-box strong {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -631,7 +686,7 @@
             <a href="/#fleet" class="hide-mobile">SPECS</a>
             <a href="/#economics">ECONOMICS</a>
             <a href="/#hardware" class="hide-mobile">HARDWARE</a>
-            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+            <a href="https://github.com/vcealicu" target="_blank">GITHUB</a>
         </div>
     </nav>
 
@@ -641,7 +696,6 @@
             <div class="signal-banner">[SIGNAL INCOMING: THE EXIT IS OPEN]</div>
             <div class="section-label">&gt; THE_WHY</div>
             <h1>Why We Build</h1>
-            <div class="subtitle">The Dystopia is Boring.</div>
             <div class="date">LocalGhost.ai // 2025</div>
         </div>
 
@@ -652,9 +706,11 @@
                 We expected fire. We expected a bang. We expected something we could fight. Instead, the apocalypse arrived as a spinning loading wheel—a support ticket vanishing into the void, a Terms of Service update claiming ownership of your thoughts, and a subscription model for the heated seats in the car you already paid for.
             </p>
 
-            <p class="emphasis warning">
-                It is cleaner than we feared, but far more insidious. A digital slum built on rented land, where every interaction is a toll booth and every platform is a cage.
-            </p>
+            <div class="dystopia-box">
+                <p><strong>The Dystopia is Boring.</strong></p>
+                <p>It is cleaner than we feared, but far more insidious.</p>
+                <p><strong>A digital slum built on rented land, where every interaction is a toll booth and every platform is a cage.</strong></p>
+            </div>
 
             <div class="section-header">&gt; THE PROPHETS SAW IT COMING</div>
 
@@ -749,11 +805,13 @@
                         <span class="code-filepath">/.well-known/localghost.json</span>
                     </div>
                     <button class="copy-btn" onclick="copyCode(this)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span>COPY</span>
+                        <span class="btn-content">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <span class="btn-text">COPY</span>
+                        </span>
                     </button>
                 </div>
                 <div class="code-block">
@@ -838,13 +896,11 @@
         function copyCode(btn) {
             navigator.clipboard.writeText(codeContent).then(() => {
                 btn.classList.add('copied');
-                btn.querySelector('span').textContent = 'BEACON LIT 🔥';
-                btn.querySelector('svg').style.display = 'none';
+                btn.querySelector('.btn-text').textContent = 'BEACON LIT 🔥';
                 
                 setTimeout(() => {
                     btn.classList.remove('copied');
-                    btn.querySelector('span').textContent = 'COPY';
-                    btn.querySelector('svg').style.display = 'block';
+                    btn.querySelector('.btn-text').textContent = 'COPY';
                 }, 2500);
             });
         }
