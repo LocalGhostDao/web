@@ -23,9 +23,10 @@ We use **Raw HTML/CSS**.
 * **Privacy:** No Google Fonts. No Analytics. No Cookies.
 
 ### FILE STRUCTURE
-* **`index.html`**: The main terminal interface.
-* **`manifesto.html`**: The 1993 Cypherpunk source material.
-* **`favicon.svg`**: The vector signal.
+* **`public/index.html`**: The main terminal interface.
+* **`public/manifesto.html`**: The 1993 Cypherpunk source material.
+* **`public/favicon.svg`**: The favicon.
+* **`public/fonts`**: All the required fonts.
 
 ---
 
