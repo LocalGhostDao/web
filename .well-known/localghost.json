@@ -6,7 +6,7 @@
     "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
     "repository": "https://github.com/orgs/LocalGhostDao/repositories"
   },
-  "physics": {
+  "code": {
     "local_first": true,
     "offline_capable": true,
     "data_export": "json"
