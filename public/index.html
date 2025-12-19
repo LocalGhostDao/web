@@ -531,6 +531,10 @@
         .hardware-option {
             background: var(--void);
             padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .hardware-option h4 {
@@ -544,6 +548,7 @@
         .hardware-option p {
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
+            flex-grow: 1;
         }
 
         .hardware-price {
@@ -622,6 +627,211 @@
         .donate-btn:hover {
             background: var(--terminal);
             color: var(--void);
+        }
+
+        /* MODALS */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--void);
+            border: 1px solid var(--terminal);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            font-family: var(--font-mono);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--terminal);
+        }
+
+        .modal h3 {
+            color: var(--terminal);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .modal p {
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .eth-address {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            font-size: 0.7rem;
+            word-break: break-all;
+            color: var(--terminal);
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .eth-address-label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .copy-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--terminal);
+            background: transparent;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 140px;
+            text-align: center;
+        }
+
+        .copy-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        .copy-btn.copied {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        .etherscan-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .etherscan-link:hover {
+            color: var(--terminal);
+            border-color: var(--terminal);
+        }
+
+        .crypto-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .crypto-badge {
+            font-size: 0.65rem;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        /* Reminder options */
+        .reminder-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .reminder-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .reminder-option:hover {
+            border-color: var(--terminal);
+        }
+
+        .reminder-btn {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .reminder-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            filter: grayscale(1);
+            opacity: 0.8;
+        }
+
+        .reminder-option:hover .reminder-icon {
+            filter: none;
+            opacity: 1;
+        }
+
+        .reminder-content {
+            flex: 1;
+        }
+
+        .reminder-title {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--terminal);
+            margin-bottom: 0.3rem;
+        }
+
+        .reminder-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .kbd {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--text);
         }
 
         /* FOOTER */
@@ -1047,7 +1257,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         </div>
 
         <div class="guarantee-box">
-            <h4>⚡ PHYSICS, NOT PROMISES</h4>
+            <h4>⚡ CODE, NOT PROMISES</h4>
             <p>
                 <span class="emphasis">The Guarantee:</span> If you don't buy an upgrade, your current version
                 will keep working forever. We will never throttle, brick, or degrade your existing system to force an upgrade.
@@ -1138,8 +1348,8 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <div class="hardware-option">
                 <h4>OPTION A: THE SOVEREIGN BOX</h4>
                 <p>Pre-built. Plug & Play. 30% margin supports development.</p>
-                <div class="hardware-price">JOIN WAITLIST</div>
-                <a href="#order" class="hardware-btn">[ ORDER ]</a>
+                <div class="hardware-price">COMING SOON</div>
+                <button class="hardware-btn ghost" onclick="openWaitlistModal()">[ REMIND ME ]</button>
             </div>
             <div class="hardware-option">
                 <h4>OPTION B: THE GHOST BUILD</h4>
@@ -1155,15 +1365,112 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <p>
             Believe in the mission? You can always support development directly.
         </p>
-        <a href="#donate" class="donate-btn">[ SUPPORT THE ESCAPE ]</a>
+        <button class="donate-btn" onclick="openDonateModal()">[ SUPPORT THE ESCAPE ]</button>
+    </div>
+
+    <!-- DONATE MODAL -->
+    <div id="donateModal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeDonateModal()">&times;</button>
+            <h3>&gt; SUPPORT THE ESCAPE</h3>
+            <p style="color: var(--text-dim);">
+                Your donation directly funds development. No middlemen. No VC strings. Just atoms and code.
+            </p>
+            <div class="eth-address-label">ETHEREUM / EVM COMPATIBLE</div>
+            <div class="eth-address" id="ethAddress">
+                0xc72C85BDd6584324619176618E86E5e3196C6b47
+            </div>
+            <button class="copy-btn" id="copyBtn" onclick="copyAddress()">[ COPY ADDRESS ]</button>
+            <a href="https://etherscan.io/address/0xc72C85BDd6584324619176618E86E5e3196C6b47" target="_blank" class="etherscan-link">View on Etherscan →</a>
+            <div class="crypto-options">
+                <span class="crypto-badge">ETH</span>
+                <span class="crypto-badge">USDC</span>
+                <span class="crypto-badge">USDT</span>
+                <span class="crypto-badge">DAI</span>
+                <span class="crypto-badge">ANY ERC-20</span>
+            </div>
+            <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-dim);">
+                Works with any EVM chain: Ethereum, Polygon, Arbitrum, Base, Optimism, etc.
+            </p>
+        </div>
+    </div>
+
+    <!-- WAITLIST MODAL -->
+    <div id="waitlistModal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeWaitlistModal()">&times;</button>
+            <h3>&gt; STAY IN THE LOOP</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1.5rem;">
+                We don't want your email. We don't want your Twitter handle. We don't want to "keep in touch."
+            </p>
+            <p style="color: var(--text); font-size: 0.95rem; margin-bottom: 2rem;">
+                We just don't want you to miss the launch.
+            </p>
+            
+            <div class="reminder-options">
+                <div class="reminder-option">
+                    <div class="reminder-icon">📑</div>
+                    <div class="reminder-content">
+                        <div class="reminder-title">BOOKMARK THIS PAGE</div>
+                        <p class="reminder-desc">Press <span class="kbd">Ctrl+D</span> (or <span class="kbd">⌘+D</span> on Mac). Check back when you remember us.</p>
+                    </div>
+                </div>
+                
+                <div class="reminder-option">
+                    <button class="reminder-btn" onclick="addCalendarReminder()">
+                        <div class="reminder-icon">📅</div>
+                        <div class="reminder-content">
+                            <div class="reminder-title">SET A REMINDER</div>
+                            <p class="reminder-desc">Add "Check LocalGhost.ai" to your calendar for May 2025.</p>
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="reminder-option">
+                    <a href="https://github.com/LocalGhostDao/web" target="_blank" class="reminder-btn">
+                        <div class="reminder-icon">👁</div>
+                        <div class="reminder-content">
+                            <div class="reminder-title">WATCH THE REPO</div>
+                            <p class="reminder-desc">Star or watch on GitHub. You'll see when we push.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; padding: 1rem; border: 1px solid var(--terminal); text-align: center;">
+                <p style="font-size: 0.85rem; color: var(--terminal); margin-bottom: 0; font-family: var(--font-mono);">
+                    ZERO DATA COLLECTED. ZERO EMAILS STORED.<br>
+                    <span style="color: var(--text-dim);">Your attention is yours to give.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT MODAL -->
+    <div id="contactModal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            <h3>&gt; CONTACT</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1.5rem;">
+                Questions, ideas, or just want to say hello? We read everything.
+            </p>
+            <div class="eth-address-label">EMAIL</div>
+            <div class="eth-address" id="emailAddress">
+                info@localghost.ai
+            </div>
+            <button class="copy-btn" id="copyEmailBtn" onclick="copyEmail()">[ COPY EMAIL ]</button>
+            <a href="mailto:info@localghost.ai" class="etherscan-link">Open in mail client →</a>
+            <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-dim);">
+                We'll respond when we can. No auto-replies. No ticketing systems. Just humans.
+            </p>
+        </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
-            <a href="#">PGP KEY</a>
             <a href="https://github.com/orgs/LocalGhostDao/repositories">SOURCE CODE</a>
-            <a href="#">CONTACT</a>
+            <a href="#" onclick="openContactModal(); return false;">CONTACT</a>
         </div>
         <p class="footer-quote">
             <a href="/cypherpunk.html" style="color: inherit; text-decoration: none;">
@@ -1214,6 +1521,116 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 }, 2000);
             }
         });
+
+        // Modal functions
+        function openDonateModal() {
+            document.getElementById('donateModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDonateModal() {
+            document.getElementById('donateModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openWaitlistModal() {
+            document.getElementById('waitlistModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWaitlistModal() {
+            document.getElementById('waitlistModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Close modals on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDonateModal();
+                closeWaitlistModal();
+                closeContactModal();
+            }
+        });
+
+        // Copy ETH address
+        function copyAddress() {
+            const address = '0xc72C85BDd6584324619176618E86E5e3196C6b47';
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = '[ COPIED ]';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '[ COPY ADDRESS ]';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Copy email
+        function copyEmail() {
+            const email = 'info@localghost.ai';
+            navigator.clipboard.writeText(email).then(() => {
+                const btn = document.getElementById('copyEmailBtn');
+                btn.textContent = '[ COPIED ]';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '[ COPY EMAIL ]';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Calendar reminder - generates .ics file
+        function addCalendarReminder() {
+            const event = {
+                title: 'Check LocalGhost.ai',
+                description: 'See if the Sovereign Box has launched. https://localghost.ai',
+                start: '20250501T090000',
+                end: '20250501T093000'
+            };
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//LocalGhost//NONSGML v1.0//EN',
+                'BEGIN:VEVENT',
+                'DTSTART:' + event.start,
+                'DTEND:' + event.end,
+                'SUMMARY:' + event.title,
+                'DESCRIPTION:' + event.description,
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'localghost-reminder.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
     </script>
 </body>
 </html>
