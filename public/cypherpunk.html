@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Cypherpunk's Manifesto | LocalGhost.ai</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <meta name="theme-color" content="#111111">
+    <style>
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --void: #111111;
+            --void-lighter: #1a1a1a;
+            --text: #E0E0E0;
+            --text-dim: #808080;
+            --terminal: #33FF00;
+            --terminal-dim: #1a8000;
+            --border: #333;
+            --warning: #FF3333;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: var(--font-system);
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* SCANLINES */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(17, 17, 17, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            font-family: var(--font-mono);
+        }
+
+        .nav-logo {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-logo a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-status {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+
+        .nav-logo span {
+            color: var(--terminal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .author {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .date {
+            font-family: var(--font-mono);
+            color: var(--terminal);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* MANIFESTO TEXT */
+        .manifesto-text {
+            margin-bottom: 4rem;
+        }
+
+        .manifesto-text p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .manifesto-text .highlight {
+            color: var(--terminal);
+            font-weight: 500;
+        }
+
+        .manifesto-text .emphasis {
+            border-left: 2px solid var(--terminal);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .signature {
+            font-family: var(--font-mono);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .signature .name {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .signature .email {
+            color: var(--terminal);
+            font-size: 0.85rem;
+        }
+
+        .final-words {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--terminal);
+            text-align: center;
+            margin-top: 2rem;
+            font-weight: 500;
+        }
+
+        /* BACK LINK */
+        .back-link {
+            display: inline-block;
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.7rem;
+            }
+
+            .nav-links .hide-mobile {
+                display: none;
+            }
+
+            main {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .commitment {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-logo">
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI</a>
+            <span class="nav-status">| THE ONLY CLOUD IS YOU</span>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto.html">MANIFESTO</a>
+            <a href="/#fleet" class="hide-mobile">SPECS</a>
+            <a href="/#economics">ECONOMICS</a>
+            <a href="/#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div class="section-label">&gt; THE_ORIGIN</div>
+            <h1>A Cypherpunk's Manifesto</h1>
+            <div class="author">by Eric Hughes</div>
+            <div class="date">9 March 1993</div>
+        </div>
+
+        <!-- MANIFESTO TEXT -->
+        <div class="manifesto-text">
+            <p class="emphasis">
+                Privacy is necessary for an open society in the electronic age. Privacy is not secrecy. A private matter is something one doesn't want the whole world to know, but a secret matter is something one doesn't want anybody to know. <span class="highlight">Privacy is the power to selectively reveal oneself to the world.</span>
+            </p>
+
+            <p>
+                If two parties have some sort of dealings, then each has a memory of their interaction. Each party can speak about their own memory of this; how could anyone prevent it? One could pass laws against it, but the freedom of speech, even more than privacy, is fundamental to an open society; we seek not to restrict any speech at all. If many parties speak together in the same forum, each can speak to all the others and aggregate together knowledge about individuals and other parties. The power of electronic communications has enabled such group speech, and it will not go away merely because we might want it to.
+            </p>
+
+            <p>
+                Since we desire privacy, we must ensure that each party to a transaction have knowledge only of that which is directly necessary for that transaction. Since any information can be spoken of, we must ensure that we reveal as little as possible. In most cases personal identity is not salient. When I purchase a magazine at a store and hand cash to the clerk, there is no need to know who I am. When I ask my electronic mail provider to send and receive messages, my provider need not know to whom I am speaking or what I am saying or what others are saying to me; my provider only need know how to get the message there and how much I owe them in fees. When my identity is revealed by the underlying mechanism of the transaction, I have no privacy. I cannot here selectively reveal myself; I must always reveal myself.
+            </p>
+
+            <p>
+                Therefore, privacy in an open society requires anonymous transaction systems. Until now, cash has been the primary such system. An anonymous transaction system is not a secret transaction system. <span class="highlight">An anonymous system empowers individuals to reveal their identity when desired and only when desired; this is the essence of privacy.</span>
+            </p>
+
+            <p>
+                Privacy in an open society also requires cryptography. If I say something, I want it heard only by those for whom I intend it. If the content of my speech is available to the world, I have no privacy. To encrypt is to indicate the desire for privacy, and to encrypt with weak cryptography is to indicate not too much desire for privacy. Furthermore, to reveal one's identity with assurance when the default is anonymity requires the cryptographic signature.
+            </p>
+
+            <p class="emphasis">
+                We cannot expect governments, corporations, or other large, faceless organizations to grant us privacy out of their beneficence. It is to their advantage to speak of us, and we should expect that they will speak. To try to prevent their speech is to fight against the realities of information. Information does not just want to be free, it longs to be free. Information expands to fill the available storage space. Information is Rumor's younger, stronger cousin; Information is fleeter of foot, has more eyes, knows more, and understands less than Rumor.
+            </p>
+
+            <p>
+                We must defend our own privacy if we expect to have any. We must come together and create systems which allow anonymous transactions to take place. People have been defending their own privacy for centuries with whispers, darkness, envelopes, closed doors, secret handshakes, and couriers. The technologies of the past did not allow for strong privacy, but electronic technologies do.
+            </p>
+
+            <p>
+                We the Cypherpunks are dedicated to building anonymous systems. We are defending our privacy with cryptography, with anonymous mail forwarding systems, with digital signatures, and with electronic money.
+            </p>
+
+            <p>
+                <span class="highlight">Cypherpunks write code.</span> We know that someone has to write software to defend privacy, and since we can't get privacy unless we all do, we're going to write it. We publish our code so that our fellow Cypherpunks may practice and play with it. Our code is free for all to use, worldwide. We don't much care if you don't approve of the software we write. We know that software can't be destroyed and that a widely dispersed system can't be shut down.
+            </p>
+
+            <p>
+                Cypherpunks deplore regulations on cryptography, for encryption is fundamentally a private act. The act of encryption, in fact, removes information from the public realm. Even laws against cryptography reach only so far as a nation's border and the arm of its violence. Cryptography will ineluctably spread over the whole globe, and with it the anonymous transactions systems that it makes possible.
+            </p>
+
+            <p>
+                For privacy to be widespread it must be part of a social contract. People must come and together deploy these systems for the common good. Privacy only extends so far as the cooperation of one's fellows in society. We the Cypherpunks seek your questions and your concerns and hope we may engage you so that we do not deceive ourselves. We will not, however, be moved out of our course because some may disagree with our goals.
+            </p>
+
+            <p>
+                The Cypherpunks are actively engaged in making the networks safer for privacy. Let us proceed together apace.
+            </p>
+
+            <p class="highlight" style="font-size: 1.2rem; margin-top: 2rem;">
+                Onward.
+            </p>
+
+            <div class="signature">
+                <div class="name">Eric Hughes</div>
+                <div class="email">&lt;hughes@soda.berkeley.edu&gt;</div>
+                <div style="margin-top: 0.5rem;">9 March 1993</div>
+            </div>
+        </div>
+
+        <a href="/" class="back-link">[ ← RETURN TO THE ESCAPE PATH ]</a>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-quote">
+            "We must defend our own privacy if we expect to have any."<br>
+            — Eric Hughes, 1993
+        </p>
+    </footer>
+
+</body>
+</html>

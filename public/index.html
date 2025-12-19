@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LocalGhost.ai | The Only Cloud is You</title>
+    <title>Why We Build | LocalGhost.ai</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
     <meta name="theme-color" content="#111111">
@@ -45,7 +45,7 @@
             --terminal: #33FF00;
             --terminal-dim: #1a8000;
             --border: #333;
-            --warning: #FF3333;
+            --warning: #FF6B6B;
             --font-mono: 'JetBrains Mono', monospace;
             --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
@@ -65,7 +65,7 @@
             color: var(--text);
             font-family: var(--font-system);
             font-size: 16px;
-            line-height: 1.7;
+            line-height: 1.8;
             overflow-x: hidden;
         }
 
@@ -74,7 +74,7 @@
             color: var(--void);
         }
 
-        /* SCANLINES OVERLAY */
+        /* SCANLINES */
         body::before {
             content: '';
             position: fixed;
@@ -115,13 +115,18 @@
             font-weight: 500;
         }
 
-        .nav-logo span {
-            color: var(--terminal);
+        .nav-logo a {
+            color: var(--text);
+            text-decoration: none;
         }
 
         .nav-status {
             color: var(--text-dim);
             font-size: 0.75rem;
+        }
+
+        .nav-logo span {
+            color: var(--terminal);
         }
 
         .nav-links {
@@ -141,126 +146,20 @@
             color: var(--terminal);
         }
 
-        /* HERO SECTION */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 6rem 2rem 4rem;
-        }
-
-        .terminal-box {
-            background: var(--void-lighter);
-            border: 1px solid var(--border);
-            padding: 3rem;
-            max-width: 700px;
-            width: 100%;
-            position: relative;
-            font-family: var(--font-mono);
-        }
-
-        .terminal-box::before {
-            content: '■ ■ ■';
-            position: absolute;
-            top: 0.5rem;
-            left: 1rem;
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            letter-spacing: 0.3em;
-        }
-
-        .terminal-line {
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: fadeIn 0.3s ease forwards;
-        }
-
-        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(2) { animation-delay: 1s; }
-        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(4) { animation-delay: 2s; }
-        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
-        .terminal-line:nth-child(6) { animation-delay: 3s; }
-        .terminal-line:nth-child(7) { animation-delay: 3.5s; }
-        .terminal-line:nth-child(8) { animation-delay: 4s; }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .terminal-prompt {
-            color: var(--terminal);
-        }
-
-        .terminal-text {
-            color: var(--text);
-        }
-
-        .terminal-warning {
-            color: var(--warning);
-            font-weight: 500;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 0.6em;
-            height: 1.2em;
-            background: var(--terminal);
-            animation: blink 1s step-end infinite;
-            vertical-align: middle;
-            margin-left: 0.2em;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        .cta-button {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 1rem 2rem;
-            border: 1px solid var(--text);
-            background: transparent;
-            color: var(--text);
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            position: relative;
-        }
-
-        .cta-button:hover {
-            background: var(--text);
-            color: var(--void);
-        }
-
-        .cta-tooltip {
-            position: absolute;
-            left: calc(100% + 1rem);
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
-            color: var(--terminal);
-            font-size: 0.75rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .cta-button:hover .cta-tooltip {
-            opacity: 1;
-        }
-
-        /* SECTIONS */
-        section {
-            padding: 6rem 2rem;
-            max-width: 900px;
+        /* MAIN CONTENT */
+        main {
+            max-width: 750px;
             margin: 0 auto;
+            padding: 8rem 2rem 4rem;
         }
 
-        .section-header {
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header .section-label {
             font-family: var(--font-mono);
             font-size: 0.75rem;
             color: var(--terminal);
@@ -268,359 +167,411 @@
             margin-bottom: 0.5rem;
         }
 
-        h2 {
+        .signal-banner {
             font-family: var(--font-mono);
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-            color: var(--text);
-        }
-
-        h3 {
-            font-family: var(--font-mono);
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            color: var(--warning);
+            letter-spacing: 0.1em;
             margin-bottom: 1rem;
-            color: var(--terminal);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--warning);
+            display: inline-block;
+            animation: pulse 2s infinite;
         }
 
-        p {
-            margin-bottom: 1.5rem;
-            color: var(--text);
-            opacity: 0.9;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 4rem 0;
+        h1 {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
         }
 
-        /* MANIFESTO */
-        .manifesto {
-            border-left: 2px solid var(--terminal);
-            padding-left: 2rem;
-        }
-
-        .manifesto-quote {
-            font-style: italic;
+        .subtitle {
             color: var(--text-dim);
-            margin-bottom: 2rem;
-            padding-left: 1rem;
-            border-left: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-style: italic;
         }
 
-        /* COMMITMENT LIST */
-        .commitment-list {
+        .date {
+            font-family: var(--font-mono);
+            color: var(--terminal);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* MANIFESTO TEXT */
+        .manifesto-text {
+            margin-bottom: 4rem;
+        }
+
+        .manifesto-text p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .manifesto-text .highlight {
+            color: var(--terminal);
+            font-weight: 500;
+        }
+
+        .manifesto-text .warning-text {
+            color: var(--warning);
+            font-weight: 500;
+        }
+
+        .manifesto-text .emphasis {
+            border-left: 2px solid var(--terminal);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        .manifesto-text .emphasis.warning {
+            border-left-color: var(--warning);
+        }
+
+        .dystopia-box {
+            border: 2px solid var(--warning);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .dystopia-box p {
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .dystopia-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .dystopia-box strong {
+            color: #fff;
+            font-size: 1.2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--terminal);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.05em;
+        }
+
+        .mandate-list {
+            margin: 1.5rem 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mandate-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .mandate-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-weight: bold;
+        }
+
+        .mandate-list .label {
+            font-family: var(--font-mono);
+            color: var(--terminal);
+            font-weight: 500;
+        }
+
+        /* CODE BLOCK */
+        .code-container {
+            position: relative;
             margin: 1.5rem 0;
         }
 
-        .commitment-item {
+        .code-header {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border: 1px solid var(--border);
+            justify-content: space-between;
+            align-items: center;
+            background: #0a0a0a;
+            border: 1px solid var(--terminal-dim);
+            border-bottom: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
         }
 
-        .commit-icon {
+        .code-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-controls span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .window-controls span:nth-child(1) { background: #ff5f56; }
+        .window-controls span:nth-child(2) { background: #ffbd2e; }
+        .window-controls span:nth-child(3) { background: #27ca40; }
+
+        .code-filepath {
             font-family: var(--font-mono);
-            font-weight: bold;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--terminal-dim);
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.35rem 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.05em;
+            width: 130px;
+            height: 28px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .copy-btn .btn-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+            box-shadow: 0 0 10px var(--terminal-dim);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #FF6B00, #FF3300);
+            color: #fff;
+            border-color: #FF6B00;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3);
+            animation: beacon-glow 0.5s ease;
+        }
+
+        @keyframes beacon-glow {
+            0% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(255, 107, 0, 0.8), 0 0 70px rgba(255, 51, 0, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
+        }
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
         }
 
-        .commit-icon.yes {
-            color: var(--terminal);
+        .copy-btn .btn-text {
+            min-width: 90px;
+            text-align: center;
         }
 
-        .commit-icon.no {
-            color: var(--warning);
-        }
-
-        .commitment-item strong {
-            color: var(--text);
-        }
-
-        .commit-desc {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-        }
-
-        /* FLEET GRID */
-        .fleet-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            margin: 2rem 0;
-        }
-
-        .daemon-card {
-            background: var(--void);
-            padding: 1.5rem;
-            min-height: 200px;
-        }
-
-        .daemon-name {
+        .code-block {
+            background: linear-gradient(180deg, #0d0d0d 0%, #080808 100%);
+            border: 1px solid var(--terminal-dim);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 0;
+            margin: 0;
+            overflow-x: auto;
             font-family: var(--font-mono);
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--terminal);
-            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        .daemon-type {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--terminal-dim), transparent);
         }
 
-        .daemon-desc {
-            font-size: 0.85rem;
-            line-height: 1.6;
-            color: var(--text);
-            opacity: 0.8;
-        }
-
-        /* MIST SECTION */
-        .mist-visual {
-            font-family: Consolas, Monaco, 'DejaVu Sans Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--terminal);
-            line-height: 1.4;
-            margin: 2rem 0;
+        .code-block pre {
+            margin: 0;
+            padding: 1.25rem;
+            padding-left: 3.5rem;
+            position: relative;
             white-space: pre;
+            word-wrap: normal;
             overflow-x: auto;
         }
 
-        .mist-points {
-            margin: 2rem 0;
-        }
-
-        .mist-point {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border: 1px solid var(--border);
-        }
-
-        .mist-point-icon {
+        .line-numbers {
+            position: absolute;
+            left: 0;
+            top: 1.25rem;
+            width: 2.5rem;
+            text-align: right;
+            padding-right: 0.75rem;
+            color: var(--terminal-dim);
+            font-size: 0.8rem;
             font-family: var(--font-mono);
+            user-select: none;
+            border-right: 1px solid var(--border);
+            line-height: 1.7;
+        }
+
+        .code-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .code-block .key {
             color: var(--terminal);
-            font-weight: bold;
+            text-shadow: 0 0 8px var(--terminal-dim);
+            animation: key-glow 3s ease-in-out infinite;
         }
 
-        .mist-point-text {
-            font-size: 0.85rem;
+        @keyframes key-glow {
+            0%, 100% { text-shadow: 0 0 8px var(--terminal-dim); }
+            50% { text-shadow: 0 0 12px var(--terminal), 0 0 20px var(--terminal-dim); }
         }
 
-        .mist-point-title {
-            font-family: var(--font-mono);
-            color: var(--text);
-            font-weight: 500;
+        .code-block .string {
+            color: #e5c07b;
         }
 
-        .mist-point-desc {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
+        .code-block .boolean {
+            color: #c678dd;
         }
 
-        /* ECONOMICS TABLE */
-        .economics-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            font-size: 0.85rem;
-        }
-
-        .economics-table th,
-        .economics-table td {
-            padding: 1rem;
-            text-align: left;
-            border: 1px solid var(--border);
-        }
-
-        .economics-table th {
-            font-family: var(--font-mono);
-            background: var(--void-lighter);
-            color: var(--text-dim);
-            font-weight: 400;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-        }
-
-        .economics-table td:first-child {
+        .code-block .bracket {
             color: var(--text-dim);
         }
 
-        .economics-table .old-way {
-            color: var(--warning);
-            opacity: 0.7;
+        .code-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(51, 255, 0, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            transition: all 0.3s ease;
         }
 
-        .economics-table .our-way {
-            color: var(--terminal);
+        .code-container:hover .code-block {
+            border-color: var(--terminal);
+            box-shadow: 0 0 20px rgba(51, 255, 0, 0.1), inset 0 0 30px rgba(51, 255, 0, 0.02);
         }
 
-        .economics-point {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
+        .code-container:hover .code-header {
+            border-color: var(--terminal);
         }
 
-        .economics-point h4 {
-            font-family: var(--font-mono);
-            color: var(--terminal);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+        .code-container:hover .code-glow {
+            background: radial-gradient(ellipse, rgba(51, 255, 0, 0.06) 0%, transparent 70%);
         }
 
-        .economics-point p {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .economics-point .choice {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            padding-left: 1rem;
-            border-left: 1px solid var(--terminal);
-            margin-top: 1rem;
-        }
-
-        /* GUARANTEE BOX */
-        .guarantee-box {
+        /* PLEDGE BOX */
+        .pledge-box {
             background: var(--void-lighter);
             border: 2px solid var(--terminal);
             padding: 2rem;
             margin: 2rem 0;
         }
 
-        .guarantee-box h4 {
+        .pledge-box h3 {
             font-family: var(--font-mono);
-            color: var(--terminal);
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            margin-bottom: 1rem;
-        }
-
-        .guarantee-box p {
             font-size: 0.9rem;
+            color: var(--terminal);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
         }
 
-        .guarantee-box .emphasis {
+        .pledge-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pledge-box li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-style: italic;
+        }
+
+        .pledge-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
             color: var(--terminal);
+        }
+
+        .final-words {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--terminal);
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            border: 1px solid var(--terminal);
             font-weight: 500;
         }
 
-        /* HARDWARE SECTION */
-        .hardware-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            margin: 2rem 0;
-        }
-
-        .hardware-option {
-            background: var(--void);
-            padding: 2rem;
-        }
-
-        .hardware-option h4 {
-            font-family: var(--font-mono);
+        .final-words .small {
+            display: block;
             font-size: 0.8rem;
-            color: var(--terminal);
-            letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-        }
-
-        .hardware-option p {
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .hardware-price {
-            font-family: var(--font-mono);
-            font-size: 1.5rem;
-            color: var(--text);
-            margin-bottom: 1rem;
-        }
-
-        .hardware-btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border: 1px solid var(--text);
-            background: transparent;
-            color: var(--text);
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .hardware-btn:hover {
-            background: var(--text);
-            color: var(--void);
-        }
-
-        .hardware-btn.ghost {
-            border-color: var(--terminal);
-            color: var(--terminal);
-        }
-
-        .hardware-btn.ghost:hover {
-            background: var(--terminal);
-            color: var(--void);
-        }
-
-        .specs-list {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
             color: var(--text-dim);
-            margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
+            font-weight: 400;
         }
 
-        .specs-list div {
-            margin-bottom: 0.3rem;
-        }
-
-        /* DONATE SECTION */
-        .donate-section {
-            text-align: center;
-            padding: 4rem 2rem;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .donate-section p {
-            font-size: 0.9rem;
-            color: var(--text-dim);
-            margin-bottom: 1.5rem;
-        }
-
-        .donate-btn {
+        /* BACK LINK */
+        .back-link {
             display: inline-block;
+            margin-top: 3rem;
             padding: 1rem 2rem;
-            border: 1px solid var(--terminal);
-            background: transparent;
-            color: var(--terminal);
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
             font-family: var(--font-mono);
             font-size: 0.85rem;
-            cursor: pointer;
             transition: all 0.2s;
-            text-decoration: none;
         }
 
-        .donate-btn:hover {
-            background: var(--terminal);
+        .back-link:hover {
+            background: var(--text);
             color: var(--void);
         }
 
@@ -630,22 +581,8 @@
             text-align: center;
             font-size: 0.75rem;
             color: var(--text-dim);
-        }
-
-        .footer-links {
-            font-family: var(--font-mono);
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--terminal);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
         }
 
         .footer-quote {
@@ -672,24 +609,67 @@
                 display: none;
             }
 
-            .fleet-grid {
-                grid-template-columns: 1fr;
+            main {
+                padding: 6rem 1.5rem 3rem;
             }
 
-            .hardware-options {
-                grid-template-columns: 1fr;
+            h1 {
+                font-size: 1.4rem;
             }
 
-            .terminal-box {
-                padding: 2rem 1.5rem;
+            .code-container {
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
             }
 
-            .cta-tooltip {
-                display: none;
+            .code-block {
+                font-size: 0.65rem;
+                border-radius: 0;
             }
 
-            section {
-                padding: 4rem 1.5rem;
+            .code-header {
+                border-radius: 0;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .code-block pre {
+                padding: 1rem;
+                padding-left: 2.5rem;
+            }
+
+            .line-numbers {
+                width: 2rem;
+                font-size: 0.65rem;
+                top: 1rem;
+                padding-right: 0.5rem;
+            }
+
+            .code-filepath {
+                font-size: 0.6rem;
+            }
+
+            .copy-btn {
+                font-size: 0.6rem;
+                padding: 0.25rem 0.5rem;
+                width: 115px;
+                height: 24px;
+            }
+
+            .copy-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            .pledge-box {
+                padding: 1.5rem;
+            }
+
+            .dystopia-box {
+                padding: 1.25rem;
+            }
+
+            .dystopia-box strong {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -698,522 +678,233 @@
     <!-- NAVIGATION -->
     <nav>
         <div class="nav-logo">
-            <span>&gt;</span> LOCALGHOST.AI
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI</a>
             <span class="nav-status">| THE ONLY CLOUD IS YOU</span>
         </div>
         <div class="nav-links">
-            <a href="/manifesto.html">1993</a>
-            <a href="#fleet" class="hide-mobile">SPECS</a>
-            <a href="#economics">ECONOMICS</a>
-            <a href="#hardware" class="hide-mobile">HARDWARE</a>
-            <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            <a href="/manifesto.html">MANIFESTO</a>
+            <a href="/#fleet" class="hide-mobile">SPECS</a>
+            <a href="/#economics">ECONOMICS</a>
+            <a href="/#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/vcealicu" target="_blank">GITHUB</a>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="terminal-box">
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">CONNECTING...</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">1993 WAS A WARNING.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><span id="current-year"></span> IS THE REALITY.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-warning">WE CANNOT FIX THE INTERNET.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><a href="/manifesto.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">READ THE CYPHERPUNK MANIFESTO →</a></span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="cursor"></span>
-            </div>
+    <main>
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div class="signal-banner">[SIGNAL INCOMING: THE EXIT IS OPEN]</div>
+            <div class="section-label">&gt; THE_WHY</div>
+            <h1>Why We Build</h1>
+            <div class="date">LocalGhost.ai // 2025</div>
         </div>
-        <a href="#manifesto" class="cta-button">
-            [ ENTER THE ESCAPE PATH ]
-            <span class="cta-tooltip">&gt; THE ONLY CLOUD IS YOU.</span>
-        </a>
-    </section>
 
-<!-- MANIFESTO -->
-    <section id="manifesto">
-        <div class="section-header">&gt; SECTION_01</div>
-        <h2>THE MANIFESTO</h2>
+        <!-- MANIFESTO TEXT -->
+        <div class="manifesto-text">
+            
+            <p>
+                We expected fire. We expected a bang. We expected something we could fight. Instead, the apocalypse arrived as a spinning loading wheel—a support ticket vanishing into the void, a Terms of Service update claiming ownership of your thoughts, and a subscription model for the heated seats in the car you already paid for.
+            </p>
 
-        <div class="manifesto">
-            <p class="manifesto-quote">
-                <a href="/manifesto.html" style="color: inherit; text-decoration: none;">
-                    "Privacy is the power to selectively reveal oneself to the world."<br>
-                    — <span style="border-bottom: 1px solid var(--terminal);">A Cypherpunk's Manifesto, 1993</span>
-                </a>
+            <div class="dystopia-box">
+                <p><strong>The Dystopia is Boring.</strong></p>
+                <p>It is cleaner than we feared, but far more insidious.</p>
+                <p><strong>A digital slum built on rented land, where every interaction is a toll booth and every platform is a cage.</strong></p>
+            </div>
+
+            <div class="section-header">&gt; THE PROPHETS SAW IT COMING</div>
+
+            <p>
+                Thirty years ago, the <a href="https://www.localghost.ai/cypherpunk.html" style="color: var(--terminal);">Cypherpunks</a> saw the walls closing in. <span class="highlight">Hughes. May. Gilmore.</span> They didn't just write code; they wrote the roadmap to survival. They knew that centralized power would eventually use the network to cage the individual. They warned us that if we didn't build our own castles, we'd end up in their dungeons.
             </p>
 
             <p>
-                The Cypherpunks told us to write code. We didn't write enough. Today, your phone is a tracker,
-                your cloud is an informant, and your AI is a spy. Every click is logged. Every query is sold.
-                Every interaction trains a model you will never own.
+                Their mandate was absolute: <span class="highlight">Privacy is necessary. Write the code.</span>
+            </p>
+
+            <div class="section-header">&gt; DOCTOROW NAMED THE ROT</div>
+
+            <p>
+                Cory Doctorow gave the disease a name: <a href="https://craphound.com/category/enshittification/" target="_blank" style="color: var(--warning); text-decoration: none; border-bottom: 1px solid var(--warning);">Enshittification</a>. It is the terminal stage of platform capitalism. First, they lure you in with magic; then, they lock the doors; finally, they stop building entirely.
             </p>
 
             <p>
-                LocalGhost inverts this. We move everything you need—your AI, your data, your digital self—from
-                their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
+                The giants are structurally unable to risk the kind of innovation they once lived on. They are stripping the copper from the walls to please the shareholders, terrified of the very instincts that built them.
             </p>
 
-            <p style="color: var(--terminal); font-weight: 500; font-size: 1.1rem; margin: 2rem 0;">
-                We do not ask you to trust us. We ask you to verify that you don't have to.
-            </p>
-        </div>
+            <div class="section-header">&gt; THE BETRAYAL OF THE ARCHITECT</div>
 
-        <h3 style="margin-top: 3rem;">WHAT WE'VE MADE POSSIBLE</h3>
-
-        <div class="commitment-list">
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Everything is open source and auditable.</strong><br>
-                    <span class="commit-desc">Every line of code is public. Every circuit is documented. No black boxes except the one on your desk.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Anyone can fork, expand, or replace us.</strong><br>
-                    <span class="commit-desc">We are not gatekeepers. We are blueprint makers. The mission is bigger than the company.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Anyone can build it themselves.</strong><br>
-                    <span class="commit-desc">Buy the parts. Flash the OS. Never give us a cent. We'll still high-five you.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>We only exist while we're valuable.</strong><br>
-                    <span class="commit-desc">If we go bankrupt, you lose nothing. Your box keeps running. Someone else can pick up where we left off.</span>
-                </div>
-            </div>
-        </div>
-
-        <h3 style="margin-top: 3rem;">WHAT WE'VE MADE IMPOSSIBLE</h3>
-
-        <div class="commitment-list">
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot sell your data.</strong><br>
-                    <span class="commit-desc">We do not have it. Your data lives on your hardware. We are architecturally blind.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot charge a subscription.</strong><br>
-                    <span class="commit-desc">There is no server to cut you off from. You own atoms. Atoms don't have terms of service.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot force an update.</strong><br>
-                    <span class="commit-desc">Unplug the ethernet and we cannot reach you. No backdoor. No kill switch.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot train AI on your life.</strong><br>
-                    <span class="commit-desc">Your journals, photos, biometrics, secrets—they exist only on your desk.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot track you.</strong><br>
-                    <span class="commit-desc">No analytics. No telemetry. The box does not phone home. We don't know who you are.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>We cannot comply with surveillance requests.</strong><br>
-                    <span class="commit-desc">When the subpoena comes, we have nothing. The architecture is our legal defense.</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="guarantee-box" style="margin-top: 3rem;">
-            <p style="margin-bottom: 1rem;">
-                This is not a promise backed by goodwill. This is not a privacy policy written by lawyers.
-                This is physics. This is math. This is <a href="https://github.com/LocalGhostDao" style="color: var(--terminal);">code you can read</a>.
-            </p>
-            <p style="color: var(--terminal); font-weight: 500; margin-bottom: 0;">
-                You do not choose us because you trust us.<br>
-                You choose us because you can verify that trust is unnecessary.
-            </p>
-        </div>
-
-        <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
-            The internet is a panopticon.<br>
-            <span style="color: var(--terminal);">LocalGhost is the blind spot.</span><br>
-            <a href="/manifesto.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">Read the full 1993 Cypherpunk Manifesto →</a>
-        </p>
-    </section>
-
-    <hr class="divider">
-
-    <!-- THE FLEET -->
-    <section id="fleet">
-        <div class="section-header">&gt; SECTION_02</div>
-        <h2>THE FLEET: LOCAL_DAEMONS</h2>
-
-        <p>
-            We built a fleet of agents—Daemons—that run locally on the hardware.
-            They are not "smart assistants." They are specialized scripts designed to ingest
-            the chaos of your life and organize it into a coherent truth, without a single byte leaving the box.
-        </p>
-
-        <div class="fleet-grid">
-            <div class="daemon-card">
-                <div class="daemon-name">THE SCRIBE</div>
-                <div class="daemon-type">INPUT: TEXT & CONTEXT</div>
-                <div class="daemon-desc">
-                    Reads your journals. Maps your syntax. Preserves the raw thoughts you self-censor.
-                    The memory of who you were when no one was watching.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE OBSERVER</div>
-                <div class="daemon-type">INPUT: VISION</div>
-                <div class="daemon-desc">
-                    Sees the bags under your eyes. Tracks the clutter. Rejects the Instagram filter.
-                    The only camera that works for you.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE AUDITOR</div>
-                <div class="daemon-type">INPUT: HARD METRICS</div>
-                <div class="daemon-desc">
-                    Trust the math. Bank logs. Screen time. Commit history.
-                    The undeniable baseline of where your time and energy actually went.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE WEAVER</div>
-                <div class="daemon-type">SYNTHESIS: THE BRAIN</div>
-                <div class="daemon-desc">
-                    Connects spending to sadness. Connects code to sleep. Finds the pattern.
-                    Builds a model of your psyche—not to sell you things, but to help you understand you.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE SENTINEL</div>
-                <div class="daemon-type">SECURITY: THE MIST</div>
-                <div class="daemon-desc">
-                    Encrypts & shards your data. Distributes to the P2P mesh.
-                    The deadman switch. If we disappear, your data survives.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE SHADOW</div>
-                <div class="daemon-type">INTERFACE: THE OUTPUT</div>
-                <div class="daemon-desc">
-                    Brutally honest. Not a polite chatbot. If you lie to the Shadow,
-                    it will cite the Auditor's data to correct you. Zero incentive to manipulate.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- THE MIST -->
-    <section id="mist">
-        <div class="section-header">&gt; SECTION_03</div>
-        <h2>SURVIVAL PROTOCOL: "THE MIST"</h2>
-
-        <p>
-            We do not have a server. If we go bankrupt tomorrow, your data survives.
-            LocalGhost relies on a Distributed Hash Table (DHT).
-        </p>
-
-<pre class="mist-visual">┌──────┐     ┌──────┐     ┌──────┐
-│ NODE │────▶│ NODE │────▶│ NODE │
-└──┬───┘     └──┬───┘     └──┬───┘
-   │            │            │
-   ▼            ▼            ▼
-┌──────┐     ┌──────┐     ┌──────┐
-│ NODE │◀────│ NODE │◀────│ NODE │
-└──────┘     └──────┘     └──────┘
-
-NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
-
-        <div class="mist-points">
-            <div class="mist-point">
-                <span class="mist-point-icon">[1]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">SHARDING</div>
-                    <div class="mist-point-desc">Your encrypted soul is broken into thousands of shards.</div>
-                </div>
-            </div>
-            <div class="mist-point">
-                <span class="mist-point-icon">[2]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">DISTRIBUTION</div>
-                    <div class="mist-point-desc">You store shards for others; they store shards for you.</div>
-                </div>
-            </div>
-            <div class="mist-point">
-                <span class="mist-point-icon">[3]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">ZERO-KNOWLEDGE</div>
-                    <div class="mist-point-desc">They cannot read yours. You cannot read theirs.</div>
-                </div>
-            </div>
-        </div>
-
-        <p style="color: var(--terminal); font-weight: 500;">
-            THE PACT: Dedicate 20% of your drive to the network. Gain immortality for your data.
-        </p>
-    </section>
-
-    <hr class="divider">
-
-    <!-- ECONOMICS -->
-    <section id="economics">
-        <div class="section-header">&gt; SECTION_04</div>
-        <h2>THE ECONOMICS OF INDEPENDENCE</h2>
-        <h3>Why we will never ask for a subscription.</h3>
-
-        <p>
-            The modern technology industry is built on a single, toxic premise: <strong>Rent-seeking.</strong>
-        </p>
-
-        <p>
-            They don't want to sell you a product; they want to trap you in a monthly payment.
-            They want you to be a tenant in your own digital life. If you stop paying, the lights go out.
-            If you stop paying, they lock the doors to your memories.
-        </p>
-
-        <p style="color: var(--terminal); font-size: 1.1rem; margin: 2rem 0;">
-            We reject this. Not everything needs to be a subscription.
-        </p>
-
-        <p>
-            At LocalGhost, our business model is boring, archaic, and honest:
-        </p>
-
-        <div class="economics-point">
-            <h4>1. WE MAKE MONEY WHEN WE SELL YOU ATOMS (HARDWARE)</h4>
             <p>
-                If you choose to buy a pre-built LocalGhost box from us, we charge you a 30% margin
-                on the parts and assembly. That is our profit. It pays for our engineers, our electricity, and our coffee.
+                The tragedy isn't just that the platforms are dying. It's what they are doing to <em>you</em> while they rot.
             </p>
-            <div class="choice">
-                <strong>The Choice:</strong> If you don't want to pay us, you don't have to.
-                The hardware specs are open. The code is open. You can buy the parts on Newegg,
-                download our repo, and build it yourself. We will not earn a cent, and we will still high-five you for doing it.
-            </div>
-        </div>
 
-        <div class="economics-point">
-            <h4>2. WE MAKE MONEY WHEN WE SELL YOU UPGRADES (SOFTWARE)</h4>
+            <p class="emphasis warning">
+                They hire you for your brilliance, your fire, and your vision—then spend every waking hour dousing that flame. Innovation becomes a Jira ticket, then a committee, then a quarterly roadmap item, then a grave.
+            </p>
+
             <p>
-                We treat software like a tool, not a service. If we develop a breakthrough new Agent—say,
-                a "Shadow v2.0" with better reasoning, or a "Medical Auditor" module—we will put it in a package
-                and put a price tag on it.
+                In the monolith, risk is punished. They don't want an Architect; they want a cog. They are sanding down your dangerous potential until you are as dull, compliant, and average as the dying machine you serve.
             </p>
-            <div class="choice">
-                <strong>The Choice:</strong> You can buy it, or you can ignore it.
-            </div>
-        </div>
 
-        <div class="economics-point">
-            <h4>3. WE NEVER MONETIZE YOU</h4>
-            <p>We cannot sell your data because we do not have it.</p>
-            <p>We cannot train AI on your life because we cannot see it.</p>
-            <p>We cannot show you ads because the box has no ad server.</p>
-        </div>
+            <div class="section-header">&gt; THE FRICTION IS GONE</div>
 
-        <div class="guarantee-box">
-            <h4>⚡ PHYSICS, NOT PROMISES</h4>
             <p>
-                <span class="emphasis">The Guarantee:</span> If you don't buy an upgrade, your current version
-                will keep working forever. We will never throttle, brick, or degrade your existing system to force an upgrade.
+                Here is what the giants missed: while they were building bureaucracies, <span class="highlight">the tools escaped the lab.</span>
             </p>
-            <p style="margin-top: 1rem;">
-                <span class="emphasis">Why?</span> Because we can't.
-            </p>
+
             <p>
-                Once you unplug the ethernet cable or block the port, this box is a sovereign island.
-                We have no "backdoor." We have no "remote kill switch." We have no "admin access."
-                Even if we wanted to force an update, the architecture prevents us from reaching you.
+                It has never been easier to execute. Superhuman intelligence, global distribution, and military-grade encryption are no longer corporate secrets—they are open source. The barrier to entry has collapsed. What took a team of fifty now takes a team of one. <span class="highlight">The code writes itself.</span>
             </p>
-            <p style="color: var(--terminal); margin-bottom: 0;">
-                We have designed ourselves out of the loop. You are not relying on our goodwill;
-                you are relying on the fact that we are technically powerless to stop you.
+
+            <p>
+                You don't need their cloud. The data center is sitting on your desk. Consumer hardware has finally caught up to the dream. With nothing but a PC and an internet connection, you hold the means of production. You can host the tools, build the product, and serve the world from your own machine.
             </p>
-        </div>
 
-        <h3 style="margin-top: 3rem;">THE COMPARISON</h3>
+            <p class="emphasis">
+                You can conceive an idea at breakfast and ship a global service by dinner. The friction is zero. The heavy artillery costs pennies. The only scarcity left is your courage to use it.
+            </p>
 
-        <table class="economics-table">
-            <thead>
-                <tr>
-                    <th>FEATURE</th>
-                    <th class="old-way">THE "BIG TECH" WAY</th>
-                    <th class="our-way">THE LOCALGHOST WAY</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Payment Structure</td>
-                    <td class="old-way">Infinite Monthly Rent</td>
-                    <td class="our-way">One-Time Purchase</td>
-                </tr>
-                <tr>
-                    <td>If You Stop Paying</td>
-                    <td class="old-way">You lose access to your data</td>
-                    <td class="our-way">Nothing happens. It keeps working.</td>
-                </tr>
-                <tr>
-                    <td>Data Privacy</td>
-                    <td class="old-way">They scan it for ads/training</td>
-                    <td class="our-way">We physically cannot see it</td>
-                </tr>
-                <tr>
-                    <td>Upgrades</td>
-                    <td class="old-way">Forced UI changes you hate</td>
-                    <td class="our-way">Optional packages you choose</td>
-                </tr>
-                <tr>
-                    <td>Hardware</td>
-                    <td class="old-way">A locked black box you can't open</td>
-                    <td class="our-way">Standard parts. Repairable. Upgradeable.</td>
-                </tr>
-                <tr>
-                    <td>Relationship</td>
-                    <td class="old-way">User / Product</td>
-                    <td class="our-way">Owner / Tool</td>
-                </tr>
-            </tbody>
-        </table>
+            <p>
+                The monoliths are crumbling under their own weight, while we are agile, armed with their own tools, and infinitely faster.
+            </p>
 
-        <p style="text-align: center; margin-top: 2rem; font-size: 1rem; color: var(--terminal);">
-            When you pay for something once, you own it.<br>
-            When you pay for it monthly, it owns you.
-        </p>
-    </section>
+            <div class="section-header">&gt; THE MANDATE: PHYSICS, NOT PROMISES</div>
 
-    <hr class="divider">
+            <p>
+                We are done with promises. Promises are broken in board meetings. <span class="highlight">We build on Physics.</span>
+            </p>
 
-    <!-- HARDWARE -->
-    <section id="hardware">
-        <div class="section-header">&gt; SECTION_05</div>
-        <h2>THE BLACK BOX</h2>
+            <ul class="mandate-list">
+                <li><span class="label">Local-First:</span> If it can't run offline, it's a service—not a product.</li>
+                <li><span class="label">Open Sovereignty:</span> If export isn't lossless and legible, it isn't ownership.</li>
+                <li><span class="label">Architectural Immunity:</span> If the vendor can brick you, the design is hostile.</li>
+            </ul>
 
-        <p>
-            A matte black aluminum cube. No lights. No logos. Just sovereignty.
-        </p>
+            <div class="section-header">&gt; BROADCAST THE SIGNAL</div>
 
-        <div class="specs-list">
-            <div>&gt; Processor: NPU-Native Custom Board (or Bring Your Own)</div>
-            <div>&gt; Storage: 4TB NVMe (Silent)</div>
-            <div>&gt; Connectivity: Ethernet / Wi-Fi 6E (Air-Gap Capable)</div>
-            <div>&gt; OS: LocalGhost OS (Linux Kernel)</div>
-        </div>
+            <p>
+                We do not build mailing lists. We build protocols. We need to find each other in the noise.
+            </p>
 
-        <div class="hardware-options">
-            <div class="hardware-option">
-                <h4>OPTION A: THE SOVEREIGN BOX</h4>
-                <p>Pre-built. Plug & Play. 30% margin supports development.</p>
-                <div class="hardware-price">JOIN WAITLIST</div>
-                <a href="#order" class="hardware-btn">[ ORDER ]</a>
+            <p>
+                <span class="highlight">If you are building the exit, light the beacon.</span>
+            </p>
+
+            <p>
+                <strong>The Method:</strong> Create a file at the root of your project:
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <div class="window-controls">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="code-filepath">/.well-known/localghost.json</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span class="btn-content">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <span class="btn-text">COPY</span>
+                        </span>
+                    </button>
+                </div>
+                <div class="code-block">
+                    <div class="code-glow"></div>
+                    <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14</div>
+                    <pre><span class="bracket">{</span>
+  <span class="key">"version"</span>: <span class="string">"1.0"</span>,
+  <span class="key">"pledge"</span>: <span class="bracket">{</span>
+    <span class="key">"signed"</span>: <span class="boolean">true</span>,
+    <span class="key">"signer"</span>: <span class="string">"YOUR_HANDLE"</span>,
+    <span class="key">"hash"</span>: <span class="string">"I DO NOT LEND MY MIND TO THE DYING MACHINE."</span>,
+    <span class="key">"repository"</span>: <span class="string">"https://github.com/your-username/your-project"</span>
+  <span class="bracket">}</span>,
+  <span class="key">"physics"</span>: <span class="bracket">{</span>
+    <span class="key">"local_first"</span>: <span class="boolean">true</span>,
+    <span class="key">"offline_capable"</span>: <span class="boolean">true</span>,
+    <span class="key">"data_export"</span>: <span class="string">"json"</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span></pre>
+                </div>
             </div>
-            <div class="hardware-option">
-                <h4>OPTION B: THE GHOST BUILD</h4>
-                <p>Source the parts yourself. Flash the OS. We make £0.</p>
-                <div class="hardware-price">£0 GBP</div>
-                <a href="https://github.com/LocalGhostDao" class="hardware-btn ghost">[ VIEW GITHUB SPEC ]</a>
+
+            <div class="pledge-box">
+                <h3>&gt; THE PLEDGE</h3>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">By hosting the file you are swearing to the code:</p>
+                <ul>
+                    <li>I reject the renting of my own thoughts.</li>
+                    <li>I will run my intelligence locally, or not at all.</li>
+                    <li>I will design systems that cannot betray the user—even if I become the threat.</li>
+                    <li>I am not a cog. I am an Architect.</li>
+                </ul>
+            </div>
+
+            <p>
+                When the crawlers come, let them read these words. Let them verify the repository. Let them see that the network is alive, that the resistance is self-replicating, and that it is no longer theirs.
+            </p>
+
+            <div class="section-header">&gt; BUILD THE EXIT RAMP</div>
+
+            <p>
+                The Cypherpunks told you to write the code. Doctorow told you to name the rot. We're telling you the cage is unlocked.
+            </p>
+
+            <p>
+                We are building the exit ramps. We call it <span class="highlight">LocalGhost</span>.
+            </p>
+
+            <div class="final-words">
+                Do not lend your mind to the dying machine.<br>
+                Take the tools. Build a better one. Ship it.
+                <span class="small">[ The exit is open. ]</span>
             </div>
         </div>
-    </section>
 
-    <!-- DONATE -->
-    <div class="donate-section">
-        <p>
-            Believe in the mission? You can always support development directly.
-        </p>
-        <a href="#donate" class="donate-btn">[ SUPPORT THE ESCAPE ]</a>
-    </div>
+        <a href="/" class="back-link">[ ← RETURN TO THE ESCAPE PATH ]</a>
+    </main>
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-links">
-            <a href="#">PGP KEY</a>
-            <a href="https://github.com/LocalGhostDao/web">SOURCE CODE</a>
-            <a href="#">CONTACT</a>
-        </div>
         <p class="footer-quote">
-            <a href="/manifesto.html" style="color: inherit; text-decoration: none;">
-                "Privacy is necessary for an open society in the electronic age."<br>
-                — <span style="border-bottom: 1px solid var(--border);">A Cypherpunk's Manifesto, 1993</span>
-            </a>
+            "The only scarcity left is your courage to use it."<br>
+            — Why We Build
         </p>
     </footer>
 
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const codeContent = `{
+  "version": "1.0",
+  "pledge": {
+    "signed": true,
+    "signer": "YOUR_HANDLE",
+    "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
+    "repository": "https://github.com/your-username/your-project"
+  },
+  "physics": {
+    "local_first": true,
+    "offline_capable": true,
+    "data_export": "json"
+  }
+}`;
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add subtle terminal flicker effect on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s ease';
-                document.body.style.opacity = '1';
-            }, 100);
-        });
-
-        // Easter egg: Konami code unlocks something
-        let konamiCode = [];
-        const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.keyCode);
-            konamiCode = konamiCode.slice(-10);
-
-            if (konamiCode.join(',') === secretCode.join(',')) {
-                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+        function copyCode(btn) {
+            navigator.clipboard.writeText(codeContent).then(() => {
+                btn.classList.add('copied');
+                btn.querySelector('.btn-text').textContent = 'BEACON LIT 🔥';
+                
                 setTimeout(() => {
-                    document.body.style.filter = 'none';
-                }, 2000);
-            }
-        });
+                    btn.classList.remove('copied');
+                    btn.querySelector('.btn-text').textContent = 'COPY';
+                }, 2500);
+            });
+        }
     </script>
+
 </body>
 </html>

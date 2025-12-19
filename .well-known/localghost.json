@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "pledge": {
+    "signed": true,
+    "signer": "vcealicu",
+    "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
+    "repository": "https://github.com/orgs/LocalGhostDao/repositories"
+  },
+  "physics": {
+    "local_first": true,
+    "offline_capable": true,
+    "data_export": "json"
+  }
+}

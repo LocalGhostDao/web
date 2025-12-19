@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Cypherpunk's Manifesto | LocalGhost.ai</title>
+    <title>Why We Build | LocalGhost.ai</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
     <meta name="theme-color" content="#111111">
@@ -167,6 +167,23 @@
             margin-bottom: 0.5rem;
         }
 
+        .signal-banner {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--warning);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--warning);
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
         h1 {
             font-family: var(--font-mono);
             font-size: 1.8rem;
@@ -174,9 +191,10 @@
             margin-bottom: 0.5rem;
         }
 
-        .author {
+        .subtitle {
             color: var(--text-dim);
             font-size: 0.9rem;
+            font-style: italic;
         }
 
         .date {
@@ -201,6 +219,11 @@
             font-weight: 500;
         }
 
+        .manifesto-text .warning-text {
+            color: var(--warning);
+            font-weight: 500;
+        }
+
         .manifesto-text .emphasis {
             border-left: 2px solid var(--terminal);
             padding-left: 1.5rem;
@@ -208,31 +231,290 @@
             font-style: italic;
         }
 
-        .signature {
-            font-family: var(--font-mono);
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-dim);
+        .manifesto-text .emphasis.warning {
+            border-left-color: var(--warning);
         }
 
-        .signature .name {
-            color: var(--text);
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--terminal);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 0.05em;
+        }
+
+        .mandate-list {
+            margin: 1.5rem 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .mandate-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .mandate-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-weight: bold;
+        }
+
+        .mandate-list .label {
+            font-family: var(--font-mono);
+            color: var(--terminal);
             font-weight: 500;
         }
 
-        .signature .email {
+        /* CODE BLOCK */
+        .code-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0a0a0a;
+            border: 1px solid var(--terminal-dim);
+            border-bottom: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .code-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .window-controls span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .window-controls span:nth-child(1) { background: #ff5f56; }
+        .window-controls span:nth-child(2) { background: #ffbd2e; }
+        .window-controls span:nth-child(3) { background: #27ca40; }
+
+        .code-filepath {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--terminal-dim);
             color: var(--terminal);
-            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.35rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+            box-shadow: 0 0 10px var(--terminal-dim);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #FF6B00, #FF3300);
+            color: #fff;
+            border-color: #FF6B00;
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3);
+            animation: beacon-pulse 0.5s ease;
+        }
+
+        @keyframes beacon-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .code-block {
+            background: linear-gradient(180deg, #0d0d0d 0%, #080808 100%);
+            border: 1px solid var(--terminal-dim);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            padding: 0;
+            margin: 0;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.7;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--terminal-dim), transparent);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 1.25rem;
+            padding-left: 3.5rem;
+            position: relative;
+            white-space: pre;
+            word-wrap: normal;
+            overflow-x: auto;
+        }
+
+        .line-numbers {
+            position: absolute;
+            left: 0;
+            top: 1.25rem;
+            width: 2.5rem;
+            text-align: right;
+            padding-right: 0.75rem;
+            color: var(--terminal-dim);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            user-select: none;
+            border-right: 1px solid var(--border);
+            line-height: 1.7;
+        }
+
+        .code-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .code-block .key {
+            color: var(--terminal);
+            text-shadow: 0 0 8px var(--terminal-dim);
+            animation: key-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes key-glow {
+            0%, 100% { text-shadow: 0 0 8px var(--terminal-dim); }
+            50% { text-shadow: 0 0 12px var(--terminal), 0 0 20px var(--terminal-dim); }
+        }
+
+        .code-block .string {
+            color: #e5c07b;
+        }
+
+        .code-block .boolean {
+            color: #c678dd;
+        }
+
+        .code-block .bracket {
+            color: var(--text-dim);
+        }
+
+        .code-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 60%;
+            background: radial-gradient(ellipse, rgba(51, 255, 0, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .code-container:hover .code-block {
+            border-color: var(--terminal);
+            box-shadow: 0 0 20px rgba(51, 255, 0, 0.1), inset 0 0 30px rgba(51, 255, 0, 0.02);
+        }
+
+        .code-container:hover .code-header {
+            border-color: var(--terminal);
+        }
+
+        .code-container:hover .code-glow {
+            background: radial-gradient(ellipse, rgba(51, 255, 0, 0.06) 0%, transparent 70%);
+        }
+
+        /* PLEDGE BOX */
+        .pledge-box {
+            background: var(--void-lighter);
+            border: 2px solid var(--terminal);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .pledge-box h3 {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--terminal);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .pledge-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pledge-box li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-style: italic;
+        }
+
+        .pledge-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--terminal);
         }
 
         .final-words {
             font-family: var(--font-mono);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--terminal);
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            border: 1px solid var(--terminal);
             font-weight: 500;
+        }
+
+        .final-words .small {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+            font-weight: 400;
         }
 
         /* BACK LINK */
@@ -295,7 +577,43 @@
                 font-size: 1.4rem;
             }
 
-            .commitment {
+            .code-container {
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+            }
+
+            .code-block {
+                font-size: 0.65rem;
+                border-radius: 0;
+            }
+
+            .code-header {
+                border-radius: 0;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .code-block pre {
+                padding: 1rem;
+                padding-left: 2.5rem;
+            }
+
+            .line-numbers {
+                width: 2rem;
+                font-size: 0.65rem;
+                top: 1rem;
+                padding-right: 0.5rem;
+            }
+
+            .code-filepath {
+                font-size: 0.6rem;
+            }
+
+            .copy-btn {
+                font-size: 0.6rem;
+                padding: 0.25rem 0.5rem;
+            }
+
+            .pledge-box {
                 padding: 1.5rem;
             }
         }
@@ -309,81 +627,184 @@
             <span class="nav-status">| THE ONLY CLOUD IS YOU</span>
         </div>
         <div class="nav-links">
-            <a href="/manifesto.html">1993</a>
+            <a href="/manifesto.html">MANIFESTO</a>
             <a href="/#fleet" class="hide-mobile">SPECS</a>
             <a href="/#economics">ECONOMICS</a>
             <a href="/#hardware" class="hide-mobile">HARDWARE</a>
-            <a href="https://github.com/vcealicu" target="_blank">GITHUB</a>
+            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
         </div>
     </nav>
 
     <main>
         <!-- PAGE HEADER -->
         <div class="page-header">
-            <div class="section-label">&gt; THE_ORIGIN</div>
-            <h1>A Cypherpunk's Manifesto</h1>
-            <div class="author">by Eric Hughes</div>
-            <div class="date">9 March 1993</div>
+            <div class="signal-banner">[SIGNAL INCOMING: THE EXIT IS OPEN]</div>
+            <div class="section-label">&gt; THE_WHY</div>
+            <h1>Why We Build</h1>
+            <div class="subtitle">The Dystopia is Boring.</div>
+            <div class="date">LocalGhost.ai // 2025</div>
         </div>
 
         <!-- MANIFESTO TEXT -->
         <div class="manifesto-text">
+            
+            <p>
+                We expected fire. We expected a bang. We expected something we could fight. Instead, the apocalypse arrived as a spinning loading wheel—a support ticket vanishing into the void, a Terms of Service update claiming ownership of your thoughts, and a subscription model for the heated seats in the car you already paid for.
+            </p>
+
+            <p class="emphasis warning">
+                It is cleaner than we feared, but far more insidious. A digital slum built on rented land, where every interaction is a toll booth and every platform is a cage.
+            </p>
+
+            <div class="section-header">&gt; THE PROPHETS SAW IT COMING</div>
+
+            <p>
+                Thirty years ago, the <a href="https://www.localghost.ai/cypherpunk.html" style="color: var(--terminal);">Cypherpunks</a> saw the walls closing in. <span class="highlight">Hughes. May. Gilmore.</span> They didn't just write code; they wrote the roadmap to survival. They knew that centralized power would eventually use the network to cage the individual. They warned us that if we didn't build our own castles, we'd end up in their dungeons.
+            </p>
+
+            <p>
+                Their mandate was absolute: <span class="highlight">Privacy is necessary. Write the code.</span>
+            </p>
+
+            <div class="section-header">&gt; DOCTOROW NAMED THE ROT</div>
+
+            <p>
+                Cory Doctorow gave the disease a name: <a href="https://craphound.com/category/enshittification/" target="_blank" style="color: var(--warning); text-decoration: none; border-bottom: 1px solid var(--warning);">Enshittification</a>. It is the terminal stage of platform capitalism. First, they lure you in with magic; then, they lock the doors; finally, they stop building entirely.
+            </p>
+
+            <p>
+                The giants are structurally unable to risk the kind of innovation they once lived on. They are stripping the copper from the walls to please the shareholders, terrified of the very instincts that built them.
+            </p>
+
+            <div class="section-header">&gt; THE BETRAYAL OF THE ARCHITECT</div>
+
+            <p>
+                The tragedy isn't just that the platforms are dying. It's what they are doing to <em>you</em> while they rot.
+            </p>
+
+            <p class="emphasis warning">
+                They hire you for your brilliance, your fire, and your vision—then spend every waking hour dousing that flame. Innovation becomes a Jira ticket, then a committee, then a quarterly roadmap item, then a grave.
+            </p>
+
+            <p>
+                In the monolith, risk is punished. They don't want an Architect; they want a cog. They are sanding down your dangerous potential until you are as dull, compliant, and average as the dying machine you serve.
+            </p>
+
+            <div class="section-header">&gt; THE FRICTION IS GONE</div>
+
+            <p>
+                Here is what the giants missed: while they were building bureaucracies, <span class="highlight">the tools escaped the lab.</span>
+            </p>
+
+            <p>
+                It has never been easier to execute. Superhuman intelligence, global distribution, and military-grade encryption are no longer corporate secrets—they are open source. The barrier to entry has collapsed. What took a team of fifty now takes a team of one. <span class="highlight">The code writes itself.</span>
+            </p>
+
+            <p>
+                You don't need their cloud. The data center is sitting on your desk. Consumer hardware has finally caught up to the dream. With nothing but a PC and an internet connection, you hold the means of production. You can host the tools, build the product, and serve the world from your own machine.
+            </p>
+
             <p class="emphasis">
-                Privacy is necessary for an open society in the electronic age. Privacy is not secrecy. A private matter is something one doesn't want the whole world to know, but a secret matter is something one doesn't want anybody to know. <span class="highlight">Privacy is the power to selectively reveal oneself to the world.</span>
+                You can conceive an idea at breakfast and ship a global service by dinner. The friction is zero. The heavy artillery costs pennies. The only scarcity left is your courage to use it.
             </p>
 
             <p>
-                If two parties have some sort of dealings, then each has a memory of their interaction. Each party can speak about their own memory of this; how could anyone prevent it? One could pass laws against it, but the freedom of speech, even more than privacy, is fundamental to an open society; we seek not to restrict any speech at all. If many parties speak together in the same forum, each can speak to all the others and aggregate together knowledge about individuals and other parties. The power of electronic communications has enabled such group speech, and it will not go away merely because we might want it to.
+                The monoliths are crumbling under their own weight, while we are agile, armed with their own tools, and infinitely faster.
+            </p>
+
+            <div class="section-header">&gt; THE MANDATE: PHYSICS, NOT PROMISES</div>
+
+            <p>
+                We are done with promises. Promises are broken in board meetings. <span class="highlight">We build on Physics.</span>
+            </p>
+
+            <ul class="mandate-list">
+                <li><span class="label">Local-First:</span> If it can't run offline, it's a service—not a product.</li>
+                <li><span class="label">Open Sovereignty:</span> If export isn't lossless and legible, it isn't ownership.</li>
+                <li><span class="label">Architectural Immunity:</span> If the vendor can brick you, the design is hostile.</li>
+            </ul>
+
+            <div class="section-header">&gt; BROADCAST THE SIGNAL</div>
+
+            <p>
+                We do not build mailing lists. We build protocols. We need to find each other in the noise.
             </p>
 
             <p>
-                Since we desire privacy, we must ensure that each party to a transaction have knowledge only of that which is directly necessary for that transaction. Since any information can be spoken of, we must ensure that we reveal as little as possible. In most cases personal identity is not salient. When I purchase a magazine at a store and hand cash to the clerk, there is no need to know who I am. When I ask my electronic mail provider to send and receive messages, my provider need not know to whom I am speaking or what I am saying or what others are saying to me; my provider only need know how to get the message there and how much I owe them in fees. When my identity is revealed by the underlying mechanism of the transaction, I have no privacy. I cannot here selectively reveal myself; I must always reveal myself.
+                <span class="highlight">If you are building the exit, light the beacon.</span>
             </p>
 
             <p>
-                Therefore, privacy in an open society requires anonymous transaction systems. Until now, cash has been the primary such system. An anonymous transaction system is not a secret transaction system. <span class="highlight">An anonymous system empowers individuals to reveal their identity when desired and only when desired; this is the essence of privacy.</span>
+                <strong>The Method:</strong> Create a file at the root of your project:
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-header-left">
+                        <div class="window-controls">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="code-filepath">/.well-known/localghost.json</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>COPY</span>
+                    </button>
+                </div>
+                <div class="code-block">
+                    <div class="code-glow"></div>
+                    <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14</div>
+                    <pre><span class="bracket">{</span>
+  <span class="key">"version"</span>: <span class="string">"1.0"</span>,
+  <span class="key">"pledge"</span>: <span class="bracket">{</span>
+    <span class="key">"signed"</span>: <span class="boolean">true</span>,
+    <span class="key">"signer"</span>: <span class="string">"YOUR_HANDLE"</span>,
+    <span class="key">"hash"</span>: <span class="string">"I DO NOT LEND MY MIND TO THE DYING MACHINE."</span>,
+    <span class="key">"repository"</span>: <span class="string">"https://github.com/your-username/your-project"</span>
+  <span class="bracket">}</span>,
+  <span class="key">"physics"</span>: <span class="bracket">{</span>
+    <span class="key">"local_first"</span>: <span class="boolean">true</span>,
+    <span class="key">"offline_capable"</span>: <span class="boolean">true</span>,
+    <span class="key">"data_export"</span>: <span class="string">"json"</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span></pre>
+                </div>
+            </div>
+
+            <div class="pledge-box">
+                <h3>&gt; THE PLEDGE</h3>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">By hosting the file you are swearing to the code:</p>
+                <ul>
+                    <li>I reject the renting of my own thoughts.</li>
+                    <li>I will run my intelligence locally, or not at all.</li>
+                    <li>I will design systems that cannot betray the user—even if I become the threat.</li>
+                    <li>I am not a cog. I am an Architect.</li>
+                </ul>
+            </div>
+
+            <p>
+                When the crawlers come, let them read these words. Let them verify the repository. Let them see that the network is alive, that the resistance is self-replicating, and that it is no longer theirs.
+            </p>
+
+            <div class="section-header">&gt; BUILD THE EXIT RAMP</div>
+
+            <p>
+                The Cypherpunks told you to write the code. Doctorow told you to name the rot. We're telling you the cage is unlocked.
             </p>
 
             <p>
-                Privacy in an open society also requires cryptography. If I say something, I want it heard only by those for whom I intend it. If the content of my speech is available to the world, I have no privacy. To encrypt is to indicate the desire for privacy, and to encrypt with weak cryptography is to indicate not too much desire for privacy. Furthermore, to reveal one's identity with assurance when the default is anonymity requires the cryptographic signature.
+                We are building the exit ramps. We call it <span class="highlight">LocalGhost</span>.
             </p>
 
-            <p class="emphasis">
-                We cannot expect governments, corporations, or other large, faceless organizations to grant us privacy out of their beneficence. It is to their advantage to speak of us, and we should expect that they will speak. To try to prevent their speech is to fight against the realities of information. Information does not just want to be free, it longs to be free. Information expands to fill the available storage space. Information is Rumor's younger, stronger cousin; Information is fleeter of foot, has more eyes, knows more, and understands less than Rumor.
-            </p>
-
-            <p>
-                We must defend our own privacy if we expect to have any. We must come together and create systems which allow anonymous transactions to take place. People have been defending their own privacy for centuries with whispers, darkness, envelopes, closed doors, secret handshakes, and couriers. The technologies of the past did not allow for strong privacy, but electronic technologies do.
-            </p>
-
-            <p>
-                We the Cypherpunks are dedicated to building anonymous systems. We are defending our privacy with cryptography, with anonymous mail forwarding systems, with digital signatures, and with electronic money.
-            </p>
-
-            <p>
-                <span class="highlight">Cypherpunks write code.</span> We know that someone has to write software to defend privacy, and since we can't get privacy unless we all do, we're going to write it. We publish our code so that our fellow Cypherpunks may practice and play with it. Our code is free for all to use, worldwide. We don't much care if you don't approve of the software we write. We know that software can't be destroyed and that a widely dispersed system can't be shut down.
-            </p>
-
-            <p>
-                Cypherpunks deplore regulations on cryptography, for encryption is fundamentally a private act. The act of encryption, in fact, removes information from the public realm. Even laws against cryptography reach only so far as a nation's border and the arm of its violence. Cryptography will ineluctably spread over the whole globe, and with it the anonymous transactions systems that it makes possible.
-            </p>
-
-            <p>
-                For privacy to be widespread it must be part of a social contract. People must come and together deploy these systems for the common good. Privacy only extends so far as the cooperation of one's fellows in society. We the Cypherpunks seek your questions and your concerns and hope we may engage you so that we do not deceive ourselves. We will not, however, be moved out of our course because some may disagree with our goals.
-            </p>
-
-            <p>
-                The Cypherpunks are actively engaged in making the networks safer for privacy. Let us proceed together apace.
-            </p>
-
-            <p class="highlight" style="font-size: 1.2rem; margin-top: 2rem;">
-                Onward.
-            </p>
-
-            <div class="signature">
-                <div class="name">Eric Hughes</div>
-                <div class="email">&lt;hughes@soda.berkeley.edu&gt;</div>
-                <div style="margin-top: 0.5rem;">9 March 1993</div>
+            <div class="final-words">
+                Do not lend your mind to the dying machine.<br>
+                Take the tools. Build a better one. Ship it.
+                <span class="small">[ The exit is open. ]</span>
             </div>
         </div>
 
@@ -393,10 +814,41 @@
     <!-- FOOTER -->
     <footer>
         <p class="footer-quote">
-            "We must defend our own privacy if we expect to have any."<br>
-            — Eric Hughes, 1993
+            "The only scarcity left is your courage to use it."<br>
+            — Why We Build
         </p>
     </footer>
+
+    <script>
+        const codeContent = `{
+  "version": "1.0",
+  "pledge": {
+    "signed": true,
+    "signer": "YOUR_HANDLE",
+    "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
+    "repository": "https://github.com/your-username/your-project"
+  },
+  "physics": {
+    "local_first": true,
+    "offline_capable": true,
+    "data_export": "json"
+  }
+}`;
+
+        function copyCode(btn) {
+            navigator.clipboard.writeText(codeContent).then(() => {
+                btn.classList.add('copied');
+                btn.querySelector('span').textContent = 'BEACON LIT 🔥';
+                btn.querySelector('svg').style.display = 'none';
+                
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.querySelector('span').textContent = 'COPY';
+                    btn.querySelector('svg').style.display = 'block';
+                }, 2500);
+            });
+        }
+    </script>
 
 </body>
 </html>
