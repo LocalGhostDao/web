@@ -1336,7 +1336,7 @@
             <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
         </div>
         <div class="nav-links">
-            <a href="/manifesto.html">MANIFESTO</a>
+            <a href="/manifesto">MANIFESTO</a>
             <a href="#fleet" class="hide-mobile">SPECS</a>
             <a href="#economics" class="hide-mobile">ECONOMICS</a>
             <a href="#hardware" class="hide-mobile">HARDWARE</a>
@@ -1349,9 +1349,9 @@
         <div class="terminal-box" id="heroTerminal">
             <div class="terminal-header">
                 <div class="terminal-buttons">
-                    <span class="terminal-btn close" onclick="triggerMatrixRain()" title="exit"></span>
-                    <span class="terminal-btn minimize" onclick="document.getElementById('heroTerminal').style.transform='scale(0.95)';setTimeout(()=>document.getElementById('heroTerminal').style.transform='',200)" title="minimize"></span>
-                    <span class="terminal-btn maximize" onclick="document.getElementById('heroTerminal').classList.toggle('fullscreen')" title="maximize"></span>
+                    <span class="terminal-btn close" onclick="LocalGhost.triggerMatrixRain()" title="exit"></span>
+                    <span class="terminal-btn minimize" onclick="LocalGhost.terminalMinimize()" title="minimize"></span>
+                    <span class="terminal-btn maximize" onclick="LocalGhost.terminalMaximize()" title="maximize"></span>
                 </div>
                 <div class="terminal-title">ghost@localghost: ~</div>
                 <div class="terminal-title-spacer"></div>
@@ -1377,7 +1377,7 @@
 
         <div class="manifesto">
             <p class="manifesto-quote">
-                <a href="/manifesto.html" style="color: inherit; text-decoration: none;">
+                <a href="/cypherpunk" style="color: inherit; text-decoration: none;">
                     "Privacy is the power to selectively reveal oneself to the world."<br>
                     — <span style="border-bottom: 1px solid var(--terminal);">A Cypherpunk's Manifesto, 1993</span>
                 </a>
@@ -1493,7 +1493,7 @@
         <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
             The internet is a panopticon.<br>
             <span style="color: var(--terminal);">LocalGhost is the blind spot.</span><br>
-            <a href="/cypherpunk.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">Read the full 1993 Cypherpunk Manifesto →</a>
+            <a href="/cypherpunk" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">Read the full 1993 Cypherpunk Manifesto →</a>
         </p>
     </section>
 
@@ -2049,7 +2049,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 <h4>OPTION A: THE SOVEREIGN BOX</h4>
                 <p>Pre-built. Plug & Play. Includes two hardware security keys. 30% margin supports development.</p>
                 <div class="hardware-price">COMING SOON</div>
-                <button class="hardware-btn ghost" onclick="openWaitlistModal()">[ REMIND ME ]</button>
+                <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
             </div>
             <div class="hardware-option">
                 <h4>OPTION B: THE GHOST BUILD</h4>
@@ -2065,13 +2065,13 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <p>
             Believe in the mission? You can always support development directly.
         </p>
-        <button class="donate-btn" onclick="openDonateModal()">[ SUPPORT THE ESCAPE ]</button>
+        <button class="donate-btn" onclick="LocalGhost.openDonateModal()">[ SUPPORT THE ESCAPE ]</button>
     </div>
 
     <!-- DONATE MODAL -->
     <div id="donateModal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" onclick="closeDonateModal()">&times;</button>
+            <button class="modal-close" onclick="LocalGhost.closeDonateModal()">&times;</button>
             <h3>&gt; SUPPORT THE ESCAPE</h3>
             <p style="color: var(--text-dim);">
                 Your donation directly funds development. No middlemen. No VC strings. Just atoms and code.
@@ -2081,7 +2081,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 <div style="color: var(--text); margin-bottom: 0.5rem;">zerocool.eth</div>
                 <div>0xc72C85BDd6584324619176618E86E5e3196C6b47</div>
             </div>
-            <button class="copy-btn" id="copyBtn" onclick="copyAddress()">[ COPY ADDRESS ]</button>
+            <button class="copy-btn" id="copyBtn" onclick="LocalGhost.copyAddress()">[ COPY ADDRESS ]</button>
             <a href="https://etherscan.io/address/0xc72C85BDd6584324619176618E86E5e3196C6b47" target="_blank" class="etherscan-link">View on Etherscan →</a>
             <div class="crypto-options">
                 <span class="crypto-badge">ETH</span>
@@ -2099,7 +2099,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     <!-- WAITLIST MODAL -->
     <div id="waitlistModal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" onclick="closeWaitlistModal()">&times;</button>
+            <button class="modal-close" onclick="LocalGhost.closeWaitlistModal()">&times;</button>
             <h3>&gt; STAY IN THE LOOP</h3>
             <p style="color: var(--text-dim); margin-bottom: 1.5rem;">
                 We don't want your email. We don't want your Twitter handle. We don't want to "keep in touch."
@@ -2118,7 +2118,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 </div>
                 
                 <div class="reminder-option">
-                    <button class="reminder-btn" onclick="addCalendarReminder()">
+                    <button class="reminder-btn" onclick="LocalGhost.addCalendarReminder()">
                         <div class="reminder-icon">📅</div>
                         <div class="reminder-content">
                             <div class="reminder-title">SET A REMINDER</div>
@@ -2150,7 +2150,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     <!-- CONTACT MODAL -->
     <div id="contactModal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" onclick="closeContactModal()">&times;</button>
+            <button class="modal-close" onclick="LocalGhost.closeContactModal()">&times;</button>
             <h3>&gt; CONTACT</h3>
             <p style="color: var(--text-dim); margin-bottom: 1.5rem;">
                 Questions, ideas, or just want to say hello? We read everything.
@@ -2159,7 +2159,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <div class="eth-address" id="emailAddress">
                 info@localghost.ai
             </div>
-            <button class="copy-btn" id="copyEmailBtn" onclick="copyEmail()">[ COPY EMAIL ]</button>
+            <button class="copy-btn" id="copyEmailBtn" onclick="LocalGhost.copyEmail()">[ COPY EMAIL ]</button>
             <a href="mailto:info@localghost.ai" class="etherscan-link">Open in mail client →</a>
             <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-dim);">
                 We'll respond when we can. No auto-replies. No ticketing systems. Just humans.
@@ -2170,7 +2170,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     <!-- SNAKE GAME MODAL -->
     <div id="gameModal" class="modal-overlay">
         <div class="modal">
-            <button class="modal-close" onclick="closeGameModal()">&times;</button>
+            <button class="modal-close" onclick="LocalGhost.closeGameModal()">&times;</button>
             <h3>&gt; THE_SHADOW.EXE</h3>
             <div class="game-info">
                 <div class="game-score">FILES CONSUMED: <span id="snakeScore">0</span></div>
@@ -2188,933 +2188,17 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     <footer>
         <div class="footer-links">
             <a href="https://github.com/orgs/LocalGhostDao/repositories">SOURCE CODE</a>
-            <a href="#" onclick="openContactModal(); return false;">CONTACT</a>
+            <a href="#" onclick="LocalGhost.openContactModal(); return false;">CONTACT</a>
         </div>
         <p class="footer-quote">
-            <a href="/cypherpunk.html" style="color: inherit; text-decoration: none;">
+            <a href="/cypherpunk" style="color: inherit; text-decoration: none;">
                 "Privacy is necessary for an open society in the electronic age."<br>
                 — <span style="border-bottom: 1px solid var(--border);">A Cypherpunk's Manifesto, 1993</span>
             </a>
         </p>
     </footer>
 
-    <script>
-        // ===========================================
-        // INTERACTIVE TERMINAL
-        // ===========================================
-        
-        const terminalOutput = document.getElementById('terminalOutput');
-        const inputLine = document.getElementById('inputLine');
-        const terminalInput = document.getElementById('terminalInput');
-        const inputCursor = document.getElementById('inputCursor');
-        
-        const introLines = [
-            { text: 'CONNECTING...', delay: 0, type: 'normal' },
-            { text: '1993 WAS A WARNING.', delay: 800, type: 'link', href: '/cypherpunk.html' },
-            { text: `${new Date().getFullYear()} IS THE REALITY.`, delay: 600, type: 'link', href: '/manifesto.html' },
-            { text: '', delay: 400, type: 'empty' },
-            { text: 'WE CANNOT FIX THE INTERNET.', delay: 600, type: 'warning' },
-            { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', delay: 800, type: 'normal' },
-            { text: '', delay: 400, type: 'empty' },
-            { text: 'TYPE "?" FOR COMMANDS', delay: 600, type: 'dim' },
-        ];
-        
-        let currentLineIndex = 0;
-        let currentCharIndex = 0;
-        let isTyping = false;
-        let introComplete = false;
-        let currentLineElement = null;
-        let typingCursor = null;
-        
-        const typeSpeed = 35; // ms per character
-        const lineDelay = 200; // delay between lines
-        
-        function createLine() {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.innerHTML = '<span class="terminal-prompt">&gt;</span> ';
-            terminalOutput.appendChild(line);
-            return line;
-        }
-        
-        function addCursor(element) {
-            if (typingCursor) typingCursor.remove();
-            typingCursor = document.createElement('span');
-            typingCursor.className = 'cursor typing';
-            element.appendChild(typingCursor);
-        }
-        
-        function removeCursor() {
-            if (typingCursor) {
-                typingCursor.remove();
-                typingCursor = null;
-            }
-        }
-        
-        function typeCharacter() {
-            if (currentLineIndex >= introLines.length) {
-                finishIntro();
-                return;
-            }
-            
-            const lineData = introLines[currentLineIndex];
-            
-            if (currentCharIndex === 0) {
-                if (lineData.type === 'empty') {
-                    const emptyLine = document.createElement('div');
-                    emptyLine.className = 'terminal-line';
-                    emptyLine.innerHTML = '<span class="terminal-prompt">&gt;</span>';
-                    terminalOutput.appendChild(emptyLine);
-                    currentLineIndex++;
-                    setTimeout(typeCharacter, lineDelay);
-                    return;
-                }
-                
-                currentLineElement = createLine();
-                addCursor(currentLineElement);
-            }
-            
-            if (currentCharIndex < lineData.text.length) {
-                const char = lineData.text[currentCharIndex];
-                let textSpan = currentLineElement.querySelector('.terminal-text, .terminal-link');
-                
-                if (!textSpan) {
-                    if (lineData.type === 'link') {
-                        textSpan = document.createElement('a');
-                        textSpan.className = 'terminal-link';
-                        textSpan.href = lineData.href;
-                    } else {
-                        textSpan = document.createElement('span');
-                        textSpan.className = lineData.type === 'warning' ? 'terminal-warning' : 
-                                         lineData.type === 'dim' ? 'terminal-dim' : 'terminal-text';
-                    }
-                    currentLineElement.insertBefore(textSpan, typingCursor);
-                }
-                
-                textSpan.textContent += char;
-                currentCharIndex++;
-                
-                // Random typing speed variation for realism
-                const variation = Math.random() * 30 - 15;
-                setTimeout(typeCharacter, typeSpeed + variation);
-            } else {
-                removeCursor();
-                currentCharIndex = 0;
-                currentLineIndex++;
-                
-                const nextDelay = currentLineIndex < introLines.length ? 
-                    introLines[currentLineIndex].delay : lineDelay;
-                setTimeout(typeCharacter, nextDelay);
-            }
-        }
-        
-        function finishIntro() {
-            introComplete = true;
-            inputLine.style.display = 'flex';
-            terminalInput.focus();
-        }
-        
-        // Start typing after page load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s ease';
-                document.body.style.opacity = '1';
-                setTimeout(typeCharacter, 500);
-            }, 100);
-        });
-        
-        const inputMirror = document.getElementById('inputMirror');
-        
-        // Handle terminal input
-        terminalInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const command = terminalInput.value.trim().toLowerCase();
-                processCommand(command);
-                terminalInput.value = '';
-                inputMirror.textContent = '';
-            }
-        });
-        
-        // Sync mirror with input for cursor positioning
-        terminalInput.addEventListener('input', () => {
-            inputMirror.textContent = terminalInput.value;
-        });
-        
-        // Show/hide cursor blink based on focus
-        terminalInput.addEventListener('focus', () => {
-            inputCursor.style.opacity = '1';
-            inputCursor.style.animation = 'blink 1.2s step-end infinite';
-        });
-        
-        terminalInput.addEventListener('blur', () => {
-            inputCursor.style.animation = 'none';
-            inputCursor.style.opacity = '0.5';
-        });
-        
-        // Keep focus on input when clicking terminal
-        document.getElementById('heroTerminal').addEventListener('click', () => {
-            if (introComplete) terminalInput.focus();
-        });
-        
-        // Also focus when clicking the input line directly
-        document.getElementById('inputLine').addEventListener('click', () => {
-            terminalInput.focus();
-        });
-        
-        function addOutputLine(text, type = 'normal') {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            
-            const typeClass = type === 'warning' ? 'terminal-warning' : 
-                             type === 'success' ? 'terminal-success' :
-                             type === 'dim' ? 'terminal-dim' : 'terminal-text';
-            
-            line.innerHTML = `<span class="terminal-prompt">&gt;</span> <span class="${typeClass}">${text}</span>`;
-            terminalOutput.appendChild(line);
-            
-            // Auto-scroll
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
-        }
-        
-        function restoreIntroLines() {
-            // Add intro lines instantly (no animation)
-            const staticIntro = [
-                { text: 'CONNECTING...', type: 'normal' },
-                { text: '1993 WAS A WARNING.', type: 'link', href: '/cypherpunk.html' },
-                { text: `${new Date().getFullYear()} IS THE REALITY.`, type: 'link', href: '/manifesto.html' },
-                { text: '', type: 'empty' },
-                { text: 'WE CANNOT FIX THE INTERNET.', type: 'warning' },
-                { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', type: 'normal' },
-                { text: '', type: 'empty' },
-                { text: 'TYPE "?" FOR COMMANDS', type: 'dim' },
-            ];
-            
-            staticIntro.forEach(lineData => {
-                const line = document.createElement('div');
-                line.className = 'terminal-line';
-                
-                if (lineData.type === 'empty') {
-                    line.innerHTML = '<span class="terminal-prompt">&gt;</span>';
-                } else if (lineData.type === 'link') {
-                    line.innerHTML = `<span class="terminal-prompt">&gt;</span> <a href="${lineData.href}" class="terminal-link">${lineData.text}</a>`;
-                } else {
-                    const typeClass = lineData.type === 'warning' ? 'terminal-warning' : 
-                                     lineData.type === 'dim' ? 'terminal-dim' : 'terminal-text';
-                    line.innerHTML = `<span class="terminal-prompt">&gt;</span> <span class="${typeClass}">${lineData.text}</span>`;
-                }
-                terminalOutput.appendChild(line);
-            });
-        }
-        
-        function processCommand(cmd) {
-            // Echo the command
-            addOutputLine(cmd, 'dim');
-            
-            switch(cmd) {
-                case 'help':
-                case '?':
-                    addOutputLine('AVAILABLE COMMANDS:', 'success');
-                    addOutputLine('  help      - Show this message');
-                    addOutputLine('  about     - Learn about LocalGhost');
-                    addOutputLine('  manifesto - Read the full manifesto');
-                    addOutputLine('  faq       - Jump to FAQ section');
-                    addOutputLine('  escape    - ???');
-                    addOutputLine('  game      - Play a game');
-                    addOutputLine('  clear     - Clear terminal');
-                    addOutputLine('  github    - Open GitHub');
-                    addOutputLine('  donate    - Support the project');
-                    break;
-                    
-                case 'about':
-                    addOutputLine('LOCALGHOST.AI', 'success');
-                    addOutputLine('The only cloud is you.');
-                    addOutputLine('Privacy through code, not promises.');
-                    break;
-                
-                case 'manifesto':
-                    addOutputLine('LOADING MANIFESTO...', 'success');
-                    setTimeout(() => {
-                        window.location.href = '/manifesto.html';
-                    }, 500);
-                    break;
-                
-                case 'faq':
-                case 'wtf':
-                case 'what':
-                    addOutputLine('SCROLLING TO FAQ...', 'success');
-                    setTimeout(() => {
-                        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
-                    }, 300);
-                    break;
-                    
-                case 'escape':
-                    addOutputLine('INITIATING ESCAPE SEQUENCE...', 'warning');
-                    setTimeout(() => {
-                        addOutputLine('REALITY.EXE HAS STOPPED RESPONDING', 'warning');
-                        triggerMatrixRain();
-                    }, 500);
-                    break;
-                    
-                case 'game':
-                case 'snake':
-                    addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
-                    setTimeout(openGameModal, 300);
-                    break;
-                    
-                case 'clear':
-                    terminalOutput.innerHTML = '';
-                    restoreIntroLines();
-                    break;
-                    
-                case 'github':
-                    addOutputLine('OPENING GITHUB...', 'success');
-                    window.open('https://github.com/orgs/LocalGhostDao/repositories', '_blank');
-                    break;
-                    
-                case 'donate':
-                    addOutputLine('OPENING DONATION PORTAL...', 'success');
-                    setTimeout(openDonateModal, 300);
-                    break;
-                    
-                case 'sudo':
-                case 'sudo rm -rf':
-                case 'sudo rm -rf /':
-                    addOutputLine('Nice try.', 'warning');
-                    break;
-                    
-                case 'ls':
-                    addOutputLine('your_data/  your_ai/  your_privacy/  freedom.txt');
-                    break;
-                    
-                case 'cat freedom.txt':
-                    addOutputLine('"The only cloud is you."');
-                    break;
-                    
-                case 'whoami':
-                    addOutputLine('A sovereign individual.', 'success');
-                    break;
-                    
-                case 'matrix':
-                    triggerMatrixRain();
-                    break;
-                    
-                case '':
-                    break;
-                    
-                default:
-                    addOutputLine(`Command not found: ${cmd}`, 'warning');
-                    addOutputLine('Type "help" for available commands.', 'dim');
-            }
-        }
-        
-        // ===========================================
-        // BLACK HOLE ESCAPE EFFECT
-        // ===========================================
-        
-        const matrixCanvas = document.getElementById('matrixCanvas');
-        const matrixCtx = matrixCanvas.getContext('2d');
-        let escapeAnimationId = null;
-        let particles = [];
-        let blackHoleTime = 0;
-        
-        class Particle {
-            constructor(canvasWidth, canvasHeight, centerX, centerY) {
-                // Start from edges
-                const edge = Math.floor(Math.random() * 4);
-                switch(edge) {
-                    case 0: this.x = Math.random() * canvasWidth; this.y = 0; break;
-                    case 1: this.x = canvasWidth; this.y = Math.random() * canvasHeight; break;
-                    case 2: this.x = Math.random() * canvasWidth; this.y = canvasHeight; break;
-                    case 3: this.x = 0; this.y = Math.random() * canvasHeight; break;
-                }
-                this.centerX = centerX;
-                this.centerY = centerY;
-                this.size = Math.random() * 3 + 1;
-                this.speed = Math.random() * 2 + 1;
-                this.angle = Math.atan2(centerY - this.y, centerX - this.x);
-                this.char = 'GHOST01░▒▓█'[Math.floor(Math.random() * 11)];
-                this.orbit = Math.random() * 0.02 + 0.01;
-                this.distance = Math.hypot(this.x - centerX, this.y - centerY);
-            }
-            
-            update() {
-                // Spiral inward
-                this.distance -= this.speed;
-                this.angle += this.orbit;
-                this.x = this.centerX + Math.cos(this.angle) * this.distance;
-                this.y = this.centerY + Math.sin(this.angle) * this.distance;
-                return this.distance > 10;
-            }
-        }
-        
-        function initBlackHole() {
-            matrixCanvas.width = window.innerWidth;
-            matrixCanvas.height = window.innerHeight;
-            particles = [];
-            blackHoleTime = 0;
-        }
-        
-        function drawBlackHole() {
-            const centerX = matrixCanvas.width / 2;
-            const centerY = matrixCanvas.height / 2;
-            
-            // Fade effect
-            matrixCtx.fillStyle = 'rgba(17, 17, 17, 0.1)';
-            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-            
-            // Add new particles
-            if (blackHoleTime < 150) {
-                for (let i = 0; i < 3; i++) {
-                    particles.push(new Particle(matrixCanvas.width, matrixCanvas.height, centerX, centerY));
-                }
-            }
-            
-            // Draw event horizon (growing)
-            const holeSize = Math.min(blackHoleTime * 0.8, 80);
-            const gradient = matrixCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, holeSize + 50);
-            gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
-            gradient.addColorStop(0.5, 'rgba(17, 17, 17, 0.9)');
-            gradient.addColorStop(0.8, 'rgba(51, 255, 0, 0.1)');
-            gradient.addColorStop(1, 'transparent');
-            
-            matrixCtx.beginPath();
-            matrixCtx.arc(centerX, centerY, holeSize + 50, 0, Math.PI * 2);
-            matrixCtx.fillStyle = gradient;
-            matrixCtx.fill();
-            
-            // Draw accretion disk glow
-            matrixCtx.beginPath();
-            matrixCtx.arc(centerX, centerY, holeSize + 30, 0, Math.PI * 2);
-            matrixCtx.strokeStyle = `rgba(51, 255, 0, ${0.3 + Math.sin(blackHoleTime * 0.1) * 0.2})`;
-            matrixCtx.lineWidth = 2;
-            matrixCtx.stroke();
-            
-            // Update and draw particles
-            matrixCtx.font = '14px JetBrains Mono, monospace';
-            particles = particles.filter(p => {
-                const alive = p.update();
-                if (alive) {
-                    const alpha = Math.min(1, p.distance / 200);
-                    matrixCtx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
-                    matrixCtx.fillText(p.char, p.x, p.y);
-                }
-                return alive;
-            });
-            
-            blackHoleTime++;
-            escapeAnimationId = requestAnimationFrame(drawBlackHole);
-        }
-        
-        function triggerEscapeEffect() {
-            initBlackHole();
-            matrixCanvas.classList.add('active');
-            drawBlackHole();
-            
-            setTimeout(() => {
-                cancelAnimationFrame(escapeAnimationId);
-                matrixCanvas.classList.remove('active');
-                matrixCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                addOutputLine('ESCAPE SUCCESSFUL. WELCOME BACK.', 'success');
-            }, 3000);
-        }
-        
-        // Keep old function name for compatibility
-        function triggerMatrixRain() {
-            triggerEscapeEffect();
-        }
-        
-        window.addEventListener('resize', () => {
-            if (matrixCanvas.classList.contains('active')) {
-                matrixCanvas.width = window.innerWidth;
-                matrixCanvas.height = window.innerHeight;
-            }
-        });
-        
-        // ===========================================
-        // THE SHADOW GAME (Data Collection Snake)
-        // ===========================================
-        
-        const gameCanvas = document.getElementById('gameCanvas');
-        const gameCtx = gameCanvas.getContext('2d');
-        const scoreElement = document.getElementById('snakeScore');
-        const knowledgeElement = document.getElementById('knowledgeLevel');
-        const fileConsumedElement = document.getElementById('gameFileConsumed');
-        const feedbackElement = document.getElementById('gameFeedback');
-        const gameOverText = document.getElementById('gameOverText');
-        
-        const gridSize = 20;
-        const tileCount = gameCanvas.width / gridSize;
-        
-        let snake = [];
-        let food = { x: 0, y: 0, type: null };
-        let dx = 0;
-        let dy = 0;
-        let score = 0;
-        let filesEaten = [];
-        let gameLoop = null;
-        let gameRunning = false;
-        let gamePaused = false;
-        
-        // File types the shadow can consume (with distinct colors)
-        const fileTypes = [
-            { color: '#FF6B6B', name: 'journal.txt', category: 'thoughts' },      // coral red
-            { color: '#4ECDC4', name: 'photo.jpg', category: 'memories' },        // teal
-            { color: '#FFE66D', name: 'bank.csv', category: 'finances' },         // gold
-            { color: '#FF8B94', name: 'health.json', category: 'health' },        // pink
-            { color: '#A8E6CF', name: 'location.log', category: 'movement' },     // mint
-            { color: '#DDA0DD', name: 'searches.txt', category: 'interests' },    // plum
-            { color: '#87CEEB', name: 'messages.db', category: 'relationships' }, // sky blue
-            { color: '#F4A460', name: 'calendar.ics', category: 'schedule' },     // sandy orange
-            { color: '#DA70D6', name: 'playlist.m3u', category: 'taste' },        // orchid
-            { color: '#98D8C8', name: 'notes.md', category: 'ideas' },            // seafoam
-        ];
-        
-        // Knowledge levels and their thresholds
-        const knowledgeLevels = [
-            { threshold: 0, level: 'STRANGER', color: '#808080' },
-            { threshold: 3, level: 'ACQUAINTANCE', color: '#A0A0A0' },
-            { threshold: 6, level: 'FAMILIAR', color: '#33FF00' },
-            { threshold: 10, level: 'CONFIDANT', color: '#33FF00' },
-            { threshold: 15, level: 'TRUSTED', color: '#4ECDC4' },
-            { threshold: 20, level: 'FULLY SYNCED', color: '#FFE66D' },
-        ];
-        
-        // Feedback messages based on what categories have been eaten
-        const feedbackMessages = {
-            thoughts: [
-                "Now I can help you process what's on your mind.",
-                "Your reflections help me understand how you think.",
-                "I'll remember these thoughts when you need them.",
-            ],
-            memories: [
-                "That sunset in 2019. You were happy.",
-                "These moments tell me what matters to you.",
-                "I can help you find these memories when you want them.",
-            ],
-            finances: [
-                "Now I can spot patterns in your spending.",
-                "I can help you track your goals over time.",
-                "This helps me understand your priorities.",
-            ],
-            health: [
-                "I can notice trends you might miss.",
-                "This helps me give you better suggestions.",
-                "I'll keep track so you don't have to.",
-            ],
-            movement: [
-                "Now I know your favorite places.",
-                "I can remind you of places you loved.",
-                "This helps me understand your routines.",
-            ],
-            interests: [
-                "Your curiosity tells me what excites you.",
-                "Now I can surface things you'd actually care about.",
-                "I'm learning what you're drawn to.",
-            ],
-            relationships: [
-                "I can see who matters most to you.",
-                "This helps me understand your world.",
-                "I'll help you remember the important moments.",
-            ],
-            schedule: [
-                "Now I understand how you spend your time.",
-                "I can help you protect what matters.",
-                "Your time tells me your real priorities.",
-            ],
-            taste: [
-                "Music says a lot about you. I'm listening.",
-                "Now I know what moves you.",
-                "I can find things that match your vibe.",
-            ],
-            ideas: [
-                "I'll help you build on these when you're ready.",
-                "Your ideas are safe here. I won't forget them.",
-                "Now I can connect dots you might miss.",
-            ],
-        };
-        
-        function getKnowledgeLevel() {
-            for (let i = knowledgeLevels.length - 1; i >= 0; i--) {
-                if (score / 10 >= knowledgeLevels[i].threshold) {
-                    return knowledgeLevels[i];
-                }
-            }
-            return knowledgeLevels[0];
-        }
-        
-        function getRandomFeedback(category) {
-            const messages = feedbackMessages[category];
-            return messages[Math.floor(Math.random() * messages.length)];
-        }
-        
-        function initGame() {
-            snake = [
-                { x: 10, y: 10 },
-                { x: 9, y: 10 },
-                { x: 8, y: 10 }
-            ];
-            dx = 1;
-            dy = 0;
-            score = 0;
-            filesEaten = [];
-            scoreElement.textContent = '0';
-            knowledgeElement.textContent = 'STRANGER';
-            knowledgeElement.style.color = '#808080';
-            fileConsumedElement.textContent = '';
-            feedbackElement.textContent = 'Press SPACE or any arrow key to begin...';
-            gameOverText.classList.remove('visible');
-            placeFood();
-            gameRunning = true;
-            gamePaused = true; // Start paused
-            
-            if (gameLoop) clearInterval(gameLoop);
-            gameLoop = setInterval(updateGame, 100);
-            
-            // Draw initial state
-            drawGame();
-        }
-        
-        function placeFood() {
-            food.x = Math.floor(Math.random() * tileCount);
-            food.y = Math.floor(Math.random() * tileCount);
-            food.type = fileTypes[Math.floor(Math.random() * fileTypes.length)];
-            
-            // Make sure food doesn't spawn on snake
-            for (let segment of snake) {
-                if (segment.x === food.x && segment.y === food.y) {
-                    placeFood();
-                    return;
-                }
-            }
-        }
-        
-        function updateGame() {
-            if (!gameRunning || gamePaused) return;
-            
-            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            
-            // Wall collision
-            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-                gameOver();
-                return;
-            }
-            
-            // Self collision
-            for (let segment of snake) {
-                if (head.x === segment.x && head.y === segment.y) {
-                    gameOver();
-                    return;
-                }
-            }
-            
-            snake.unshift(head);
-            
-            // Food collision
-            if (head.x === food.x && head.y === food.y) {
-                score += 10;
-                scoreElement.textContent = score / 10;
-                
-                // Track what we've eaten
-                filesEaten.push(food.type);
-                
-                // Update knowledge level
-                const knowledge = getKnowledgeLevel();
-                knowledgeElement.textContent = knowledge.level;
-                knowledgeElement.style.color = knowledge.color;
-                
-                // Show file consumed and feedback separately
-                fileConsumedElement.innerHTML = `<span style="color: ${food.type.color}">[${food.type.name}]</span>`;
-                feedbackElement.textContent = getRandomFeedback(food.type.category);
-                
-                placeFood();
-            } else {
-                snake.pop();
-            }
-            
-            drawGame();
-        }
-        
-        function drawGame() {
-            // Clear canvas
-            gameCtx.fillStyle = '#111111';
-            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-            
-            // Draw grid (subtle)
-            gameCtx.strokeStyle = '#1a1a1a';
-            for (let i = 0; i < tileCount; i++) {
-                gameCtx.beginPath();
-                gameCtx.moveTo(i * gridSize, 0);
-                gameCtx.lineTo(i * gridSize, gameCanvas.height);
-                gameCtx.stroke();
-                gameCtx.beginPath();
-                gameCtx.moveTo(0, i * gridSize);
-                gameCtx.lineTo(gameCanvas.width, i * gridSize);
-                gameCtx.stroke();
-            }
-            
-            // Draw snake (The Shadow)
-            snake.forEach((segment, index) => {
-                if (index === 0) {
-                    // Head - brighter with glow effect
-                    gameCtx.shadowColor = '#33FF00';
-                    gameCtx.shadowBlur = 10;
-                    gameCtx.fillStyle = '#33FF00';
-                } else {
-                    gameCtx.shadowBlur = 0;
-                    const alpha = 1 - (index / snake.length) * 0.6;
-                    gameCtx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
-                }
-                gameCtx.fillRect(
-                    segment.x * gridSize + 1,
-                    segment.y * gridSize + 1,
-                    gridSize - 2,
-                    gridSize - 2
-                );
-            });
-            gameCtx.shadowBlur = 0;
-            
-            // Draw food (colored data box)
-            gameCtx.shadowColor = food.type.color;
-            gameCtx.shadowBlur = 8;
-            gameCtx.fillStyle = food.type.color;
-            gameCtx.fillRect(
-                food.x * gridSize + 2,
-                food.y * gridSize + 2,
-                gridSize - 4,
-                gridSize - 4
-            );
-            gameCtx.shadowBlur = 0;
-        }
-        
-        function gameOver() {
-            gameRunning = false;
-            clearInterval(gameLoop);
-            gameOverText.classList.add('visible');
-            fileConsumedElement.textContent = '';
-            
-            // Final feedback based on how much was collected
-            const knowledge = getKnowledgeLevel();
-            const fileCount = score / 10;
-            if (knowledge.level === 'FULLY SYNCED') {
-                feedbackElement.textContent = `${fileCount} files synced. I understand you completely now.`;
-            } else if (fileCount >= 10) {
-                feedbackElement.textContent = `${fileCount} files synced. We're getting to know each other.`;
-            } else if (fileCount >= 5) {
-                feedbackElement.textContent = `${fileCount} files synced. A good start.`;
-            } else {
-                feedbackElement.textContent = `${fileCount} files synced. There's so much more to learn.`;
-            }
-        }
-        
-        function handleGameInput(e) {
-            if (!document.getElementById('gameModal').classList.contains('active')) return;
-            
-            switch(e.key.toLowerCase()) {
-                case 'arrowup':
-                case 'w':
-                    if (dy !== 1) { dx = 0; dy = -1; }
-                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
-                    e.preventDefault();
-                    break;
-                case 'arrowdown':
-                case 's':
-                    if (dy !== -1) { dx = 0; dy = 1; }
-                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
-                    e.preventDefault();
-                    break;
-                case 'arrowleft':
-                case 'a':
-                    if (dx !== 1) { dx = -1; dy = 0; }
-                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
-                    e.preventDefault();
-                    break;
-                case 'arrowright':
-                case 'd':
-                    if (dx !== -1) { dx = 1; dy = 0; }
-                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
-                    e.preventDefault();
-                    break;
-                case ' ':
-                    gamePaused = !gamePaused;
-                    if (gamePaused) {
-                        feedbackElement.textContent = 'Paused...';
-                    } else {
-                        feedbackElement.textContent = 'Syncing your data...';
-                    }
-                    e.preventDefault();
-                    break;
-                case 'r':
-                    initGame();
-                    e.preventDefault();
-                    break;
-            }
-        }
-        
-        document.addEventListener('keydown', handleGameInput);
-        
-        // ===========================================
-        // MODAL FUNCTIONS
-        // ===========================================
-        
-        function openDonateModal() {
-            document.getElementById('donateModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeDonateModal() {
-            document.getElementById('donateModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openWaitlistModal() {
-            document.getElementById('waitlistModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeWaitlistModal() {
-            document.getElementById('waitlistModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openContactModal() {
-            document.getElementById('contactModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeContactModal() {
-            document.getElementById('contactModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openGameModal() {
-            document.getElementById('gameModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            initGame();
-        }
-
-        function closeGameModal() {
-            document.getElementById('gameModal').classList.remove('active');
-            document.body.style.overflow = '';
-            gameRunning = false;
-            if (gameLoop) clearInterval(gameLoop);
-        }
-
-        // Close modals on overlay click
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    if (overlay.id === 'gameModal') {
-                        gameRunning = false;
-                        if (gameLoop) clearInterval(gameLoop);
-                    }
-                }
-            });
-        });
-
-        // Close modals on Escape key (but not during game)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (document.getElementById('gameModal').classList.contains('active')) {
-                    closeGameModal();
-                } else {
-                    closeDonateModal();
-                    closeWaitlistModal();
-                    closeContactModal();
-                }
-            }
-        });
-
-        // Copy ETH address
-        function copyAddress() {
-            const address = 'zerocool.eth\n0xc72C85BDd6584324619176618E86E5e3196C6b47';
-            navigator.clipboard.writeText(address).then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = '[ COPIED ]';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = '[ COPY ADDRESS ]';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Copy email
-        function copyEmail() {
-            const email = 'info@localghost.ai';
-            navigator.clipboard.writeText(email).then(() => {
-                const btn = document.getElementById('copyEmailBtn');
-                btn.textContent = '[ COPIED ]';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = '[ COPY EMAIL ]';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Calendar reminder - generates .ics file
-        function addCalendarReminder() {
-            const event = {
-                title: 'Check LocalGhost.ai',
-                description: 'See if the Sovereign Box has launched. https://localghost.ai',
-                start: '20250501T090000',
-                end: '20250501T093000'
-            };
-
-            const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//LocalGhost//NONSGML v1.0//EN',
-                'BEGIN:VEVENT',
-                'DTSTART:' + event.start,
-                'DTEND:' + event.end,
-                'SUMMARY:' + event.title,
-                'DESCRIPTION:' + event.description,
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ].join('\r\n');
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'localghost-reminder.ics';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-        }
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Easter egg: Konami code unlocks something
-        let konamiCode = [];
-        const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-
-        document.addEventListener('keydown', (e) => {
-            if (document.getElementById('gameModal').classList.contains('active')) return;
-            
-            konamiCode.push(e.keyCode);
-            konamiCode = konamiCode.slice(-10);
-
-            if (konamiCode.join(',') === secretCode.join(',')) {
-                triggerMatrixRain();
-            }
-        });
-    </script>
+    <!-- External JavaScript -->
+    <script src="/js/localghost.js"></script>
 </body>
 </html>
