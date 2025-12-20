@@ -152,55 +152,211 @@
         }
 
         .terminal-box {
-            background: var(--void-lighter);
-            border: 1px solid var(--border);
-            padding: 3rem;
+            background: var(--void);
+            border: 1px solid var(--terminal-dim);
             max-width: 700px;
             width: 100%;
             position: relative;
             font-family: var(--font-mono);
+            box-shadow: 
+                0 0 0 1px rgba(51, 255, 0, 0.1),
+                0 0 30px rgba(51, 255, 0, 0.1),
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 0 100px rgba(51, 255, 0, 0.02);
+            transition: all 0.3s ease;
+            animation: terminalPulse 12s ease-in-out infinite;
         }
 
-        .terminal-box::before {
-            content: '■ ■ ■';
-            position: absolute;
-            top: 0.5rem;
-            left: 1rem;
-            font-size: 0.6rem;
+        @keyframes terminalPulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 0 1px rgba(51, 255, 0, 0.1),
+                    0 0 30px rgba(51, 255, 0, 0.08),
+                    0 20px 50px rgba(0, 0, 0, 0.5),
+                    inset 0 0 100px rgba(51, 255, 0, 0.02);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 0 1px rgba(51, 255, 0, 0.15),
+                    0 0 40px rgba(51, 255, 0, 0.12),
+                    0 20px 50px rgba(0, 0, 0, 0.5),
+                    inset 0 0 100px rgba(51, 255, 0, 0.03);
+            }
+        }
+
+        .terminal-box.fullscreen {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            max-width: none;
+            z-index: 100;
+            animation: none;
+            box-shadow: 
+                0 0 0 1px rgba(51, 255, 0, 0.2),
+                0 0 60px rgba(51, 255, 0, 0.2),
+                0 0 100px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-box.fullscreen .terminal-body {
+            height: calc(100% - 40px);
+            overflow-y: auto;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 1rem;
+            background: var(--void-lighter);
+            border-bottom: 1px solid var(--border);
+            gap: 0.5rem;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.1s;
+        }
+
+        .terminal-btn:hover {
+            transform: scale(1.2);
+            filter: brightness(1.2);
+        }
+
+        .terminal-btn.close { background: #ff5f56; }
+        .terminal-btn.minimize { background: #ffbd2e; }
+        .terminal-btn.maximize { background: #27ca40; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 0.7rem;
             color: var(--text-dim);
-            letter-spacing: 0.3em;
+            letter-spacing: 0.1em;
+        }
+
+        .terminal-title-spacer {
+            width: 44px; /* Balance the buttons on the left */
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            min-height: 250px;
+            position: relative;
+            background: 
+                radial-gradient(ellipse at center, rgba(51, 255, 0, 0.03) 0%, transparent 70%);
+        }
+
+        /* CRT scanline effect inside terminal */
+        .terminal-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Subtle flicker animation - slow and random-feeling */
+        .terminal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(51, 255, 0, 0);
+            pointer-events: none;
+            animation: flicker 6s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes flicker {
+            0%, 5%, 11%, 21%, 26%, 38%, 45%, 64%, 70%, 86%, 93%, 100% { 
+                background: rgba(51, 255, 0, 0); 
+            }
+            7%, 9% { 
+                background: rgba(51, 255, 0, 0.06); 
+            }
+            23%, 24% { 
+                background: rgba(255, 255, 255, 0.04); 
+            }
+            41%, 43% { 
+                background: rgba(51, 255, 0, 0.05); 
+            }
+            67%, 68% { 
+                background: rgba(255, 255, 255, 0.03); 
+            }
+            89%, 91% { 
+                background: rgba(51, 255, 0, 0.04); 
+            }
+        }
+
+        .terminal-output {
+            min-height: 180px;
+            position: relative;
+            z-index: 2;
         }
 
         .terminal-line {
             margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: fadeIn 0.3s ease forwards;
-        }
-
-        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(2) { animation-delay: 1s; }
-        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(4) { animation-delay: 2s; }
-        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
-        .terminal-line:nth-child(6) { animation-delay: 3s; }
-        .terminal-line:nth-child(7) { animation-delay: 3.5s; }
-        .terminal-line:nth-child(8) { animation-delay: 4s; }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+            min-height: 1.7em;
         }
 
         .terminal-prompt {
             color: var(--terminal);
+            text-shadow: 0 0 5px var(--terminal-dim);
         }
 
         .terminal-text {
             color: var(--text);
+            text-shadow: 0 0 2px rgba(224, 224, 224, 0.3);
         }
 
         .terminal-warning {
             color: var(--warning);
             font-weight: 500;
+            text-shadow: 0 0 5px rgba(255, 51, 51, 0.3);
+        }
+
+        .terminal-success {
+            color: var(--terminal);
+            text-shadow: 0 0 5px var(--terminal-dim);
+        }
+
+        .terminal-dim {
+            color: var(--text-dim);
+        }
+
+        .terminal-link {
+            color: var(--terminal);
+            text-decoration: none;
+            border-bottom: 1px solid var(--terminal-dim);
+            transition: all 0.2s;
+            text-shadow: 0 0 5px var(--terminal-dim);
+        }
+
+        .terminal-link:hover {
+            border-bottom-color: var(--terminal);
+            text-shadow: 0 0 15px var(--terminal);
         }
 
         .cursor {
@@ -208,13 +364,48 @@
             width: 0.6em;
             height: 1.2em;
             background: var(--terminal);
-            animation: blink 1s step-end infinite;
+            animation: blink 1.2s step-end infinite;
             vertical-align: middle;
             margin-left: 0.2em;
+            box-shadow: 0 0 8px var(--terminal), 0 0 2px var(--terminal);
+        }
+
+        .cursor.typing {
+            animation: none;
+            opacity: 1;
         }
 
         @keyframes blink {
             50% { opacity: 0; }
+        }
+
+        /* Interactive input line */
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: text;
+            z-index: 2;
+        }
+
+        .terminal-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: transparent;
+            font-size: inherit;
+        }
+
+        .terminal-input-mirror {
+            color: var(--text);
+            font-family: var(--font-mono);
+            white-space: pre;
         }
 
         .cta-button {
@@ -344,6 +535,125 @@
         .commit-desc {
             color: var(--text-dim);
             font-size: 0.85rem;
+        }
+
+        /* FAQ SECTION */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+        }
+
+        .faq-item {
+            background: var(--void);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text);
+            list-style: none;
+            transition: background 0.2s;
+        }
+
+        .faq-question::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-question:hover {
+            background: var(--void-lighter);
+        }
+
+        .faq-icon {
+            color: var(--terminal);
+            flex-shrink: 0;
+        }
+
+        .faq-question > span:nth-child(2) {
+            flex: 1;
+        }
+
+        .faq-toggle {
+            color: var(--terminal);
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .faq-item[open] .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-item[open] .faq-question {
+            border-bottom: 1px solid var(--border);
+            background: var(--void-lighter);
+        }
+
+        .faq-answer {
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            background: var(--void);
+        }
+
+        .faq-answer p {
+            margin-bottom: 1rem;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer code {
+            background: var(--void-lighter);
+            padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+            color: var(--terminal);
+        }
+
+        .faq-list-items {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            list-style: none;
+        }
+
+        .faq-list-items li {
+            position: relative;
+            margin-bottom: 0.75rem;
+            padding-left: 1rem;
+        }
+
+        .faq-list-items li::before {
+            content: '>';
+            position: absolute;
+            left: -1rem;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+        }
+
+        .faq-list-items li strong {
+            color: var(--text);
+        }
+
+        .faq-technical {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--void-lighter);
+            border-left: 2px solid var(--terminal);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .faq-technical strong {
+            color: var(--terminal);
         }
 
         /* FLEET GRID */
@@ -835,6 +1145,112 @@
             color: var(--text);
         }
 
+        /* SNAKE GAME MODAL */
+        #gameModal .modal {
+            max-width: 450px;
+        }
+
+        #gameCanvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid var(--terminal);
+            background: var(--void);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0 0.5rem;
+        }
+
+        .game-score {
+            font-size: 0.8rem;
+            color: var(--terminal);
+        }
+
+        .game-knowledge {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .game-file-consumed {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+            height: 1.2rem;
+            font-family: var(--font-mono);
+        }
+
+        .game-feedback {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-top: 0.25rem;
+            height: 2.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            background: var(--void-lighter);
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        .game-controls {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+        }
+
+        .game-over-text {
+            text-align: center;
+            color: var(--warning);
+            font-size: 1rem;
+            height: 1.5rem;
+            margin-top: 0.5rem;
+            visibility: hidden;
+        }
+
+        .game-over-text.visible {
+            visibility: visible;
+        }
+
+        /* MATRIX RAIN CANVAS */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        #matrixCanvas.active {
+            opacity: 1;
+        }
+
+        /* GLITCH EFFECT */
+        .glitch-active {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); filter: hue-rotate(0deg); }
+            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            40% { transform: translate(2px, -2px); filter: hue-rotate(180deg); }
+            60% { transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
+            80% { transform: translate(2px, 2px); filter: hue-rotate(360deg); }
+            100% { transform: translate(0); filter: hue-rotate(0deg); }
+        }
+
         /* FOOTER */
         footer {
             padding: 3rem 2rem;
@@ -906,6 +1322,9 @@
     </style>
 </head>
 <body>
+    <!-- MATRIX RAIN CANVAS -->
+    <canvas id="matrixCanvas"></canvas>
+
     <!-- NAVIGATION -->
     <nav>
         <div class="nav-logo">
@@ -915,7 +1334,7 @@
         <div class="nav-links">
             <a href="/manifesto.html">MANIFESTO</a>
             <a href="#fleet" class="hide-mobile">SPECS</a>
-            <a href="#economics">ECONOMICS</a>
+            <a href="#economics" class="hide-mobile">ECONOMICS</a>
             <a href="#hardware" class="hide-mobile">HARDWARE</a>
             <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
         </div>
@@ -923,35 +1342,27 @@
 
     <!-- HERO -->
     <section class="hero">
-        <div class="terminal-box">
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">CONNECTING...</span>
+        <div class="terminal-box" id="heroTerminal">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-btn close" onclick="triggerMatrixRain()" title="exit"></span>
+                    <span class="terminal-btn minimize" onclick="document.getElementById('heroTerminal').style.transform='scale(0.95)';setTimeout(()=>document.getElementById('heroTerminal').style.transform='',200)" title="minimize"></span>
+                    <span class="terminal-btn maximize" onclick="document.getElementById('heroTerminal').classList.toggle('fullscreen')" title="maximize"></span>
+                </div>
+                <div class="terminal-title">ghost@localghost: ~</div>
+                <div class="terminal-title-spacer"></div>
             </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">1993 WAS A WARNING.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><span id="current-year"></span> IS THE REALITY.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-warning">WE CANNOT FIX THE INTERNET.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text">BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.</span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="terminal-text"><a href="/manifesto.html" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">READ OUR MANIFESTO →</a></span>
-            </div>
-            <div class="terminal-line">
-                <span class="terminal-prompt">&gt;</span> <span class="cursor"></span>
+            <div class="terminal-body">
+                <div class="terminal-output" id="terminalOutput"></div>
+                <div class="terminal-line terminal-input-line" id="inputLine" style="display: none;">
+                    <span class="terminal-prompt">&gt;</span>&nbsp;<span class="terminal-input-mirror" id="inputMirror"></span><span class="cursor" id="inputCursor"></span>
+                    <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
+                </div>
             </div>
         </div>
         <a href="#manifesto" class="cta-button">
             [ ENTER THE ESCAPE PATH ]
-            <span class="cta-tooltip">&gt; THE ONLY CLOUD IS YOU.</span>
+            <span class="cta-tooltip">&gt; PRIVACY THROUGH CODE, NOT PROMISES.</span>
         </a>
     </section>
 
@@ -1067,7 +1478,7 @@
         <div class="guarantee-box" style="margin-top: 3rem;">
             <p style="margin-bottom: 1rem;">
                 This is not a promise backed by goodwill. This is not a privacy policy written by lawyers.
-                This is physics. This is math. This is <a href="https://github.com/orgs/LocalGhostDao/repositories" style="color: var(--terminal);">code you can read</a>.
+                This is code. This is math. This is <a href="https://github.com/orgs/LocalGhostDao/repositories" style="color: var(--terminal);">code you can read</a>.
             </p>
             <p style="color: var(--terminal); font-weight: 500; margin-bottom: 0;">
                 You do not choose us because you trust us.<br>
@@ -1329,9 +1740,292 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
     <hr class="divider">
 
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="section-header">&gt; SECTION_05</div>
+        <h2>FREQUENTLY ASKED QUESTIONS</h2>
+
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>Okay, but what actually IS it?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, 
+                        and insert the two hardware security keys that come with it. That's the setup.
+                    </p>
+                    <p>
+                        Once connected, you access it through a local web interface (like <code>http://ghost.local</code>) when you're home, 
+                        or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data.
+                    </p>
+                    <p>
+                        From there, you can sync anything to it: photos from your phone, journals, bank exports, health data, browser history, 
+                        notes, voice memos—whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis 
+                        entirely on your hardware.
+                    </p>
+                    <p style="color: var(--terminal);">
+                        Think of it as a private server for your life, with an AI that actually works for you because it literally cannot work for anyone else.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>How do I get my data onto it?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>Multiple ways, depending on what you're syncing:</p>
+                    <ul class="faq-list-items">
+                        <li><strong>Mobile app:</strong> Automatically syncs photos, health data, location history, and notes in the background</li>
+                        <li><strong>Browser extension:</strong> Captures bookmarks, reading history, and saved articles</li>
+                        <li><strong>File drop:</strong> Drag and drop anything into the web interface—PDFs, exports, backups</li>
+                        <li><strong>API imports:</strong> Connect to services that offer data exports (banks, fitness trackers, etc.)</li>
+                        <li><strong>Manual uploads:</strong> For the privacy purists who want to move files by hand</li>
+                    </ul>
+                    <p>
+                        Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel 
+                        directly to your box—never through our servers, because we don't have servers.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>What does the AI actually do?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        The AI runs locally on the box's NPU (Neural Processing Unit). It does several things:
+                    </p>
+                    <ul class="faq-list-items">
+                        <li><strong>Tagging & Organization:</strong> Automatically categorizes your photos, documents, and notes without you lifting a finger</li>
+                        <li><strong>Pattern Recognition:</strong> Finds correlations you'd never spot—like how your sleep affects your spending, or how your mood tracks with your exercise</li>
+                        <li><strong>Goal Tracking:</strong> You tell it what you're working toward, and it holds you accountable with actual data, not vibes</li>
+                        <li><strong>Honest Reflection:</strong> Ask it questions about your life and it answers based on evidence, not what you want to hear</li>
+                        <li><strong>Search:</strong> Find anything you've ever saved, even if you forgot what you called it</li>
+                    </ul>
+                    <p style="color: var(--terminal);">
+                        The key difference: this AI has zero incentive to manipulate you. It can't sell you anything. It can't show you ads. 
+                        It can't optimize for "engagement." It just tells you the truth.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>How does "The Mist" backup system work?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        The Mist is a peer-to-peer backup network. Here's the simple version:
+                    </p>
+                    <p>
+                        <strong>Step 1: Shred.</strong> Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called "shards." 
+                        Each shard is meaningless on its own—like confetti from a shredded document.
+                    </p>
+                    <p>
+                        <strong>Step 2: Scatter.</strong> Those shards get distributed across other LocalGhost boxes in the network. 
+                        Your shards live on dozens of strangers' drives. Their shards live on yours.
+                    </p>
+                    <p>
+                        <strong>Step 3: Rebuild.</strong> When you need your data back, your box collects the shards from the network and reassembles them. 
+                        Only your encryption key can make sense of them.
+                    </p>
+                    <p>
+                        <strong>The beauty:</strong> The people storing your shards can't read them—they're encrypted and incomplete. 
+                        You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist.
+                    </p>
+                    <p style="color: var(--terminal);">
+                        If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. 
+                        The network has no central point of failure.
+                    </p>
+                    <p class="faq-technical">
+                        <strong>Technical note:</strong> This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. 
+                        We use Reed-Solomon encoding so you only need ~50% of shards to reconstruct your data, 
+                        making the system resilient even if half the network goes offline.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>How do the boxes find each other without a central server?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        This is the magic of distributed hash tables (DHT). Here's how it works in plain English:
+                    </p>
+                    <p>
+                        <strong>The Bootstrap Problem:</strong> When your box first connects to the network, it needs to know at least one other box. 
+                        We publish a small list of "bootstrap nodes"—these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. 
+                        Your box contacts one of these to get introduced to the network. After that, it never needs us again.
+                    </p>
+                    <p>
+                        <strong>The Address Book:</strong> Every box on the network has a unique ID (a long random number). 
+                        Each box maintains a partial "address book" of other boxes it knows about. But here's the clever bit: 
+                        you don't need to know everyone. You just need to know boxes whose IDs are "close" to yours in the mathematical sense.
+                    </p>
+                    <p>
+                        <strong>The Hop Game:</strong> When you need to find a specific shard, you ask the boxes you know: "Who's closest to this shard's ID?" 
+                        They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for—even in a network of millions.
+                    </p>
+                    <p>
+                        <strong>No Phone Book Server:</strong> There's no central directory. The network IS the directory. 
+                        If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets.
+                    </p>
+                    <p style="color: var(--terminal);">
+                        Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, 
+                        and within a few asks you're at your destination. No map company required.
+                    </p>
+                    <p class="faq-technical">
+                        <strong>Technical note:</strong> We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. 
+                        Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, 
+                        giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>What if I lose my encryption key?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Then your data is gone. Forever. This is not a bug—it's the point.
+                    </p>
+                    <p>
+                        We cannot recover your data because we never had access to it. There is no "forgot password" flow. 
+                        There is no customer support ticket that can help you. The math doesn't care about your feelings.
+                    </p>
+                    <p>
+                        <strong>The good news:</strong> Every LocalGhost box ships with <strong>two hardware security keys</strong>. 
+                        When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key 
+                        and splits it between the two keys using Shamir's Secret Sharing—neither key alone can decrypt anything.
+                    </p>
+                    <p>
+                        <strong>How to use them:</strong>
+                    </p>
+                    <ul class="faq-list-items">
+                        <li><strong>Key 1:</strong> Keep this one with your box for daily use. Plug it in to unlock your data.</li>
+                        <li><strong>Key 2:</strong> Store this somewhere safe and separate—a bank vault, a trusted friend's house, your parents' place. This is your recovery key.</li>
+                    </ul>
+                    <p>
+                        If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, 
+                        Key 2 can restore everything to a new box. But if you lose both keys? Game over.
+                    </p>
+                    <p style="color: var(--warning);">
+                        Sovereignty means responsibility. Two keys. Two locations. No excuses.
+                    </p>
+                    <p class="faq-technical">
+                        <strong>Technical note:</strong> The keys are FIDO2-compliant hardware tokens with secure elements. 
+                        The master key never leaves the secure enclave—only the derived decryption keys are used at runtime. 
+                        We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>Can I access my box when I'm not home?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Yes. You have two options:
+                    </p>
+                    <p>
+                        <strong>Option A: Secure Tunnel (recommended)</strong><br>
+                        The box creates an encrypted tunnel using WireGuard. Your phone or laptop connects directly to your box 
+                        over the internet, but the traffic is end-to-end encrypted. It's like being on your home network, but from anywhere.
+                    </p>
+                    <p>
+                        <strong>Option B: Air-Gap Mode</strong><br>
+                        For the truly paranoid: disable all remote access. The box only works when you're physically on your home network. 
+                        When you leave, it's a black hole. When you return, it's there waiting.
+                    </p>
+                    <p style="color: var(--text-dim);">
+                        There is no Option C where your data goes through our servers. We don't have servers. 
+                        We couldn't offer that option even if we wanted to.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>What happens if LocalGhost (the company) disappears?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Nothing. Your box keeps working.
+                    </p>
+                    <p>
+                        The software is open source. The hardware is standard parts. The Mist network is decentralized. 
+                        There is no license server to phone home to. There is no authentication service to validate your purchase.
+                    </p>
+                    <p>
+                        If we go bankrupt tomorrow:
+                    </p>
+                    <ul class="faq-list-items">
+                        <li>Your box continues running the last version you installed</li>
+                        <li>The Mist network continues operating (it doesn't need us)</li>
+                        <li>Someone else can fork the code and continue development</li>
+                        <li>You can maintain it yourself if you're technical</li>
+                    </ul>
+                    <p style="color: var(--terminal);">
+                        We have deliberately designed ourselves out of the critical path. 
+                        Your sovereignty does not depend on our survival.
+                    </p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span class="faq-icon">[?]</span>
+                    <span>Is this legal?</span>
+                    <span class="faq-toggle">+</span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Yes. Running a private server in your home is completely legal. Encrypting your own data is legal. 
+                        Storing backups on a peer-to-peer network is legal.
+                    </p>
+                    <p>
+                        We're not helping you hide anything from the law. We're helping you exercise your right to privacy—a right that exists 
+                        in most democracies but has been quietly eroded by decades of "free" services that monetize your attention and data.
+                    </p>
+                    <p>
+                        If law enforcement comes to us with a warrant, we'll comply. But compliance looks like this: 
+                        "We have no data. We have no logs. We don't know who uses our hardware. Here's our open-source code. Good luck."
+                    </p>
+                    <p style="color: var(--terminal);">
+                        The architecture is the legal defense.
+                    </p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <hr class="divider">
+
     <!-- HARDWARE -->
     <section id="hardware">
-        <div class="section-header">&gt; SECTION_05</div>
+        <div class="section-header">&gt; SECTION_06</div>
         <h2>THE BLACK BOX</h2>
 
         <p>
@@ -1342,19 +2036,20 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <div>&gt; Processor: NPU-Native Custom Board (or Bring Your Own)</div>
             <div>&gt; Storage: 4TB NVMe (Silent)</div>
             <div>&gt; Connectivity: Ethernet / Wi-Fi 6E (Air-Gap Capable)</div>
+            <div>&gt; Security: 2× FIDO2 Hardware Keys (Your Encryption. Your Keys.)</div>
             <div>&gt; OS: LocalGhost OS (Linux Kernel)</div>
         </div>
 
         <div class="hardware-options">
             <div class="hardware-option">
                 <h4>OPTION A: THE SOVEREIGN BOX</h4>
-                <p>Pre-built. Plug & Play. 30% margin supports development.</p>
+                <p>Pre-built. Plug & Play. Includes two hardware security keys. 30% margin supports development.</p>
                 <div class="hardware-price">COMING SOON</div>
                 <button class="hardware-btn ghost" onclick="openWaitlistModal()">[ REMIND ME ]</button>
             </div>
             <div class="hardware-option">
                 <h4>OPTION B: THE GHOST BUILD</h4>
-                <p>Source the parts yourself. Flash the OS. We make £0.</p>
+                <p>Source the parts yourself. Flash the OS. BYO security keys. We make £0.</p>
                 <div class="hardware-price">£0 GBP</div>
                 <a href="https://github.com/orgs/LocalGhostDao/repositories" class="hardware-btn ghost">[ VIEW GITHUB SPEC ]</a>
             </div>
@@ -1468,6 +2163,23 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         </div>
     </div>
 
+    <!-- SNAKE GAME MODAL -->
+    <div id="gameModal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeGameModal()">&times;</button>
+            <h3>&gt; THE_SHADOW.EXE</h3>
+            <div class="game-info">
+                <div class="game-score">FILES CONSUMED: <span id="snakeScore">0</span></div>
+                <div class="game-knowledge">KNOWLEDGE: <span id="knowledgeLevel">STRANGER</span></div>
+            </div>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div class="game-file-consumed" id="gameFileConsumed"></div>
+            <div class="game-feedback" id="gameFeedback">Feed me your data...</div>
+            <div class="game-controls">ARROWS or WASD to move | SPACE to pause | R to restart</div>
+            <div class="game-over-text" id="gameOverText">CONNECTION LOST - Press R to reconnect</div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
@@ -1483,48 +2195,764 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     </footer>
 
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // ===========================================
+        // INTERACTIVE TERMINAL
+        // ===========================================
+        
+        const terminalOutput = document.getElementById('terminalOutput');
+        const inputLine = document.getElementById('inputLine');
+        const terminalInput = document.getElementById('terminalInput');
+        const inputCursor = document.getElementById('inputCursor');
+        
+        const introLines = [
+            { text: 'CONNECTING...', delay: 0, type: 'normal' },
+            { text: '1993 WAS A WARNING.', delay: 800, type: 'link', href: '/cypherpunk.html' },
+            { text: `${new Date().getFullYear()} IS THE REALITY.`, delay: 600, type: 'link', href: '/manifesto.html' },
+            { text: '', delay: 400, type: 'empty' },
+            { text: 'WE CANNOT FIX THE INTERNET.', delay: 600, type: 'warning' },
+            { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', delay: 800, type: 'normal' },
+            { text: '', delay: 400, type: 'empty' },
+            { text: 'TYPE "?" FOR COMMANDS', delay: 600, type: 'dim' },
+        ];
+        
+        let currentLineIndex = 0;
+        let currentCharIndex = 0;
+        let isTyping = false;
+        let introComplete = false;
+        let currentLineElement = null;
+        let typingCursor = null;
+        
+        const typeSpeed = 35; // ms per character
+        const lineDelay = 200; // delay between lines
+        
+        function createLine() {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = '<span class="terminal-prompt">&gt;</span> ';
+            terminalOutput.appendChild(line);
+            return line;
+        }
+        
+        function addCursor(element) {
+            if (typingCursor) typingCursor.remove();
+            typingCursor = document.createElement('span');
+            typingCursor.className = 'cursor typing';
+            element.appendChild(typingCursor);
+        }
+        
+        function removeCursor() {
+            if (typingCursor) {
+                typingCursor.remove();
+                typingCursor = null;
+            }
+        }
+        
+        function typeCharacter() {
+            if (currentLineIndex >= introLines.length) {
+                finishIntro();
+                return;
+            }
+            
+            const lineData = introLines[currentLineIndex];
+            
+            if (currentCharIndex === 0) {
+                if (lineData.type === 'empty') {
+                    const emptyLine = document.createElement('div');
+                    emptyLine.className = 'terminal-line';
+                    emptyLine.innerHTML = '<span class="terminal-prompt">&gt;</span>';
+                    terminalOutput.appendChild(emptyLine);
+                    currentLineIndex++;
+                    setTimeout(typeCharacter, lineDelay);
+                    return;
                 }
-            });
-        });
-
-        // Add subtle terminal flicker effect on page load
+                
+                currentLineElement = createLine();
+                addCursor(currentLineElement);
+            }
+            
+            if (currentCharIndex < lineData.text.length) {
+                const char = lineData.text[currentCharIndex];
+                let textSpan = currentLineElement.querySelector('.terminal-text, .terminal-link');
+                
+                if (!textSpan) {
+                    if (lineData.type === 'link') {
+                        textSpan = document.createElement('a');
+                        textSpan.className = 'terminal-link';
+                        textSpan.href = lineData.href;
+                    } else {
+                        textSpan = document.createElement('span');
+                        textSpan.className = lineData.type === 'warning' ? 'terminal-warning' : 
+                                         lineData.type === 'dim' ? 'terminal-dim' : 'terminal-text';
+                    }
+                    currentLineElement.insertBefore(textSpan, typingCursor);
+                }
+                
+                textSpan.textContent += char;
+                currentCharIndex++;
+                
+                // Random typing speed variation for realism
+                const variation = Math.random() * 30 - 15;
+                setTimeout(typeCharacter, typeSpeed + variation);
+            } else {
+                removeCursor();
+                currentCharIndex = 0;
+                currentLineIndex++;
+                
+                const nextDelay = currentLineIndex < introLines.length ? 
+                    introLines[currentLineIndex].delay : lineDelay;
+                setTimeout(typeCharacter, nextDelay);
+            }
+        }
+        
+        function finishIntro() {
+            introComplete = true;
+            inputLine.style.display = 'flex';
+            terminalInput.focus();
+        }
+        
+        // Start typing after page load
         document.addEventListener('DOMContentLoaded', () => {
             document.body.style.opacity = '0';
             setTimeout(() => {
                 document.body.style.transition = 'opacity 0.5s ease';
                 document.body.style.opacity = '1';
+                setTimeout(typeCharacter, 500);
             }, 100);
         });
-
-        // Easter egg: Konami code unlocks something
-        let konamiCode = [];
-        const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.keyCode);
-            konamiCode = konamiCode.slice(-10);
-
-            if (konamiCode.join(',') === secretCode.join(',')) {
-                document.body.style.filter = 'invert(1) hue-rotate(180deg)';
-                setTimeout(() => {
-                    document.body.style.filter = 'none';
-                }, 2000);
+        
+        const inputMirror = document.getElementById('inputMirror');
+        
+        // Handle terminal input
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = terminalInput.value.trim().toLowerCase();
+                processCommand(command);
+                terminalInput.value = '';
+                inputMirror.textContent = '';
             }
         });
-
-        // Modal functions
+        
+        // Sync mirror with input for cursor positioning
+        terminalInput.addEventListener('input', () => {
+            inputMirror.textContent = terminalInput.value;
+        });
+        
+        // Show/hide cursor blink based on focus
+        terminalInput.addEventListener('focus', () => {
+            inputCursor.style.opacity = '1';
+            inputCursor.style.animation = 'blink 1.2s step-end infinite';
+        });
+        
+        terminalInput.addEventListener('blur', () => {
+            inputCursor.style.animation = 'none';
+            inputCursor.style.opacity = '0.5';
+        });
+        
+        // Keep focus on input when clicking terminal
+        document.getElementById('heroTerminal').addEventListener('click', () => {
+            if (introComplete) terminalInput.focus();
+        });
+        
+        // Also focus when clicking the input line directly
+        document.getElementById('inputLine').addEventListener('click', () => {
+            terminalInput.focus();
+        });
+        
+        function addOutputLine(text, type = 'normal') {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            
+            const typeClass = type === 'warning' ? 'terminal-warning' : 
+                             type === 'success' ? 'terminal-success' :
+                             type === 'dim' ? 'terminal-dim' : 'terminal-text';
+            
+            line.innerHTML = `<span class="terminal-prompt">&gt;</span> <span class="${typeClass}">${text}</span>`;
+            terminalOutput.appendChild(line);
+            
+            // Auto-scroll
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+        
+        function restoreIntroLines() {
+            // Add intro lines instantly (no animation)
+            const staticIntro = [
+                { text: 'CONNECTING...', type: 'normal' },
+                { text: '1993 WAS A WARNING.', type: 'link', href: '/cypherpunk.html' },
+                { text: `${new Date().getFullYear()} IS THE REALITY.`, type: 'link', href: '/manifesto.html' },
+                { text: '', type: 'empty' },
+                { text: 'WE CANNOT FIX THE INTERNET.', type: 'warning' },
+                { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', type: 'normal' },
+                { text: '', type: 'empty' },
+                { text: 'TYPE "?" FOR COMMANDS', type: 'dim' },
+            ];
+            
+            staticIntro.forEach(lineData => {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                
+                if (lineData.type === 'empty') {
+                    line.innerHTML = '<span class="terminal-prompt">&gt;</span>';
+                } else if (lineData.type === 'link') {
+                    line.innerHTML = `<span class="terminal-prompt">&gt;</span> <a href="${lineData.href}" class="terminal-link">${lineData.text}</a>`;
+                } else {
+                    const typeClass = lineData.type === 'warning' ? 'terminal-warning' : 
+                                     lineData.type === 'dim' ? 'terminal-dim' : 'terminal-text';
+                    line.innerHTML = `<span class="terminal-prompt">&gt;</span> <span class="${typeClass}">${lineData.text}</span>`;
+                }
+                terminalOutput.appendChild(line);
+            });
+        }
+        
+        function processCommand(cmd) {
+            // Echo the command
+            addOutputLine(cmd, 'dim');
+            
+            switch(cmd) {
+                case 'help':
+                case '?':
+                    addOutputLine('AVAILABLE COMMANDS:', 'success');
+                    addOutputLine('  help      - Show this message');
+                    addOutputLine('  about     - Learn about LocalGhost');
+                    addOutputLine('  manifesto - Read the full manifesto');
+                    addOutputLine('  faq       - Jump to FAQ section');
+                    addOutputLine('  escape    - ???');
+                    addOutputLine('  game      - Play a game');
+                    addOutputLine('  clear     - Clear terminal');
+                    addOutputLine('  github    - Open GitHub');
+                    addOutputLine('  donate    - Support the project');
+                    break;
+                    
+                case 'about':
+                    addOutputLine('LOCALGHOST.AI', 'success');
+                    addOutputLine('The only cloud is you.');
+                    addOutputLine('Privacy through code, not promises.');
+                    break;
+                
+                case 'manifesto':
+                    addOutputLine('LOADING MANIFESTO...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/manifesto.html';
+                    }, 500);
+                    break;
+                
+                case 'faq':
+                case 'wtf':
+                case 'what':
+                    addOutputLine('SCROLLING TO FAQ...', 'success');
+                    setTimeout(() => {
+                        document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+                    }, 300);
+                    break;
+                    
+                case 'escape':
+                    addOutputLine('INITIATING ESCAPE SEQUENCE...', 'warning');
+                    setTimeout(() => {
+                        addOutputLine('REALITY.EXE HAS STOPPED RESPONDING', 'warning');
+                        triggerMatrixRain();
+                    }, 500);
+                    break;
+                    
+                case 'game':
+                case 'snake':
+                    addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
+                    setTimeout(openGameModal, 300);
+                    break;
+                    
+                case 'clear':
+                    terminalOutput.innerHTML = '';
+                    restoreIntroLines();
+                    break;
+                    
+                case 'github':
+                    addOutputLine('OPENING GITHUB...', 'success');
+                    window.open('https://github.com/orgs/LocalGhostDao/repositories', '_blank');
+                    break;
+                    
+                case 'donate':
+                    addOutputLine('OPENING DONATION PORTAL...', 'success');
+                    setTimeout(openDonateModal, 300);
+                    break;
+                    
+                case 'sudo':
+                case 'sudo rm -rf':
+                case 'sudo rm -rf /':
+                    addOutputLine('Nice try.', 'warning');
+                    break;
+                    
+                case 'ls':
+                    addOutputLine('your_data/  your_ai/  your_privacy/  freedom.txt');
+                    break;
+                    
+                case 'cat freedom.txt':
+                    addOutputLine('"The only cloud is you."');
+                    break;
+                    
+                case 'whoami':
+                    addOutputLine('A sovereign individual.', 'success');
+                    break;
+                    
+                case 'matrix':
+                    triggerMatrixRain();
+                    break;
+                    
+                case '':
+                    break;
+                    
+                default:
+                    addOutputLine(`Command not found: ${cmd}`, 'warning');
+                    addOutputLine('Type "help" for available commands.', 'dim');
+            }
+        }
+        
+        // ===========================================
+        // BLACK HOLE ESCAPE EFFECT
+        // ===========================================
+        
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+        let escapeAnimationId = null;
+        let particles = [];
+        let blackHoleTime = 0;
+        
+        class Particle {
+            constructor(canvasWidth, canvasHeight, centerX, centerY) {
+                // Start from edges
+                const edge = Math.floor(Math.random() * 4);
+                switch(edge) {
+                    case 0: this.x = Math.random() * canvasWidth; this.y = 0; break;
+                    case 1: this.x = canvasWidth; this.y = Math.random() * canvasHeight; break;
+                    case 2: this.x = Math.random() * canvasWidth; this.y = canvasHeight; break;
+                    case 3: this.x = 0; this.y = Math.random() * canvasHeight; break;
+                }
+                this.centerX = centerX;
+                this.centerY = centerY;
+                this.size = Math.random() * 3 + 1;
+                this.speed = Math.random() * 2 + 1;
+                this.angle = Math.atan2(centerY - this.y, centerX - this.x);
+                this.char = 'GHOST01░▒▓█'[Math.floor(Math.random() * 11)];
+                this.orbit = Math.random() * 0.02 + 0.01;
+                this.distance = Math.hypot(this.x - centerX, this.y - centerY);
+            }
+            
+            update() {
+                // Spiral inward
+                this.distance -= this.speed;
+                this.angle += this.orbit;
+                this.x = this.centerX + Math.cos(this.angle) * this.distance;
+                this.y = this.centerY + Math.sin(this.angle) * this.distance;
+                return this.distance > 10;
+            }
+        }
+        
+        function initBlackHole() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            particles = [];
+            blackHoleTime = 0;
+        }
+        
+        function drawBlackHole() {
+            const centerX = matrixCanvas.width / 2;
+            const centerY = matrixCanvas.height / 2;
+            
+            // Fade effect
+            matrixCtx.fillStyle = 'rgba(17, 17, 17, 0.1)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            
+            // Add new particles
+            if (blackHoleTime < 150) {
+                for (let i = 0; i < 3; i++) {
+                    particles.push(new Particle(matrixCanvas.width, matrixCanvas.height, centerX, centerY));
+                }
+            }
+            
+            // Draw event horizon (growing)
+            const holeSize = Math.min(blackHoleTime * 0.8, 80);
+            const gradient = matrixCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, holeSize + 50);
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+            gradient.addColorStop(0.5, 'rgba(17, 17, 17, 0.9)');
+            gradient.addColorStop(0.8, 'rgba(51, 255, 0, 0.1)');
+            gradient.addColorStop(1, 'transparent');
+            
+            matrixCtx.beginPath();
+            matrixCtx.arc(centerX, centerY, holeSize + 50, 0, Math.PI * 2);
+            matrixCtx.fillStyle = gradient;
+            matrixCtx.fill();
+            
+            // Draw accretion disk glow
+            matrixCtx.beginPath();
+            matrixCtx.arc(centerX, centerY, holeSize + 30, 0, Math.PI * 2);
+            matrixCtx.strokeStyle = `rgba(51, 255, 0, ${0.3 + Math.sin(blackHoleTime * 0.1) * 0.2})`;
+            matrixCtx.lineWidth = 2;
+            matrixCtx.stroke();
+            
+            // Update and draw particles
+            matrixCtx.font = '14px JetBrains Mono, monospace';
+            particles = particles.filter(p => {
+                const alive = p.update();
+                if (alive) {
+                    const alpha = Math.min(1, p.distance / 200);
+                    matrixCtx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
+                    matrixCtx.fillText(p.char, p.x, p.y);
+                }
+                return alive;
+            });
+            
+            blackHoleTime++;
+            escapeAnimationId = requestAnimationFrame(drawBlackHole);
+        }
+        
+        function triggerEscapeEffect() {
+            initBlackHole();
+            matrixCanvas.classList.add('active');
+            drawBlackHole();
+            
+            setTimeout(() => {
+                cancelAnimationFrame(escapeAnimationId);
+                matrixCanvas.classList.remove('active');
+                matrixCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                addOutputLine('ESCAPE SUCCESSFUL. WELCOME BACK.', 'success');
+            }, 3000);
+        }
+        
+        // Keep old function name for compatibility
+        function triggerMatrixRain() {
+            triggerEscapeEffect();
+        }
+        
+        window.addEventListener('resize', () => {
+            if (matrixCanvas.classList.contains('active')) {
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+            }
+        });
+        
+        // ===========================================
+        // THE SHADOW GAME (Data Collection Snake)
+        // ===========================================
+        
+        const gameCanvas = document.getElementById('gameCanvas');
+        const gameCtx = gameCanvas.getContext('2d');
+        const scoreElement = document.getElementById('snakeScore');
+        const knowledgeElement = document.getElementById('knowledgeLevel');
+        const fileConsumedElement = document.getElementById('gameFileConsumed');
+        const feedbackElement = document.getElementById('gameFeedback');
+        const gameOverText = document.getElementById('gameOverText');
+        
+        const gridSize = 20;
+        const tileCount = gameCanvas.width / gridSize;
+        
+        let snake = [];
+        let food = { x: 0, y: 0, type: null };
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+        let filesEaten = [];
+        let gameLoop = null;
+        let gameRunning = false;
+        let gamePaused = false;
+        
+        // File types the shadow can consume (with distinct colors)
+        const fileTypes = [
+            { color: '#FF6B6B', name: 'journal.txt', category: 'thoughts' },      // coral red
+            { color: '#4ECDC4', name: 'photo.jpg', category: 'memories' },        // teal
+            { color: '#FFE66D', name: 'bank.csv', category: 'finances' },         // gold
+            { color: '#FF8B94', name: 'health.json', category: 'health' },        // pink
+            { color: '#A8E6CF', name: 'location.log', category: 'movement' },     // mint
+            { color: '#DDA0DD', name: 'searches.txt', category: 'interests' },    // plum
+            { color: '#87CEEB', name: 'messages.db', category: 'relationships' }, // sky blue
+            { color: '#F4A460', name: 'calendar.ics', category: 'schedule' },     // sandy orange
+            { color: '#DA70D6', name: 'playlist.m3u', category: 'taste' },        // orchid
+            { color: '#98D8C8', name: 'notes.md', category: 'ideas' },            // seafoam
+        ];
+        
+        // Knowledge levels and their thresholds
+        const knowledgeLevels = [
+            { threshold: 0, level: 'STRANGER', color: '#808080' },
+            { threshold: 3, level: 'ACQUAINTANCE', color: '#A0A0A0' },
+            { threshold: 6, level: 'FAMILIAR', color: '#33FF00' },
+            { threshold: 10, level: 'CONFIDANT', color: '#33FF00' },
+            { threshold: 15, level: 'TRUSTED', color: '#4ECDC4' },
+            { threshold: 20, level: 'FULLY SYNCED', color: '#FFE66D' },
+        ];
+        
+        // Feedback messages based on what categories have been eaten
+        const feedbackMessages = {
+            thoughts: [
+                "Now I can help you process what's on your mind.",
+                "Your reflections help me understand how you think.",
+                "I'll remember these thoughts when you need them.",
+            ],
+            memories: [
+                "That sunset in 2019. You were happy.",
+                "These moments tell me what matters to you.",
+                "I can help you find these memories when you want them.",
+            ],
+            finances: [
+                "Now I can spot patterns in your spending.",
+                "I can help you track your goals over time.",
+                "This helps me understand your priorities.",
+            ],
+            health: [
+                "I can notice trends you might miss.",
+                "This helps me give you better suggestions.",
+                "I'll keep track so you don't have to.",
+            ],
+            movement: [
+                "Now I know your favorite places.",
+                "I can remind you of places you loved.",
+                "This helps me understand your routines.",
+            ],
+            interests: [
+                "Your curiosity tells me what excites you.",
+                "Now I can surface things you'd actually care about.",
+                "I'm learning what you're drawn to.",
+            ],
+            relationships: [
+                "I can see who matters most to you.",
+                "This helps me understand your world.",
+                "I'll help you remember the important moments.",
+            ],
+            schedule: [
+                "Now I understand how you spend your time.",
+                "I can help you protect what matters.",
+                "Your time tells me your real priorities.",
+            ],
+            taste: [
+                "Music says a lot about you. I'm listening.",
+                "Now I know what moves you.",
+                "I can find things that match your vibe.",
+            ],
+            ideas: [
+                "I'll help you build on these when you're ready.",
+                "Your ideas are safe here. I won't forget them.",
+                "Now I can connect dots you might miss.",
+            ],
+        };
+        
+        function getKnowledgeLevel() {
+            for (let i = knowledgeLevels.length - 1; i >= 0; i--) {
+                if (score / 10 >= knowledgeLevels[i].threshold) {
+                    return knowledgeLevels[i];
+                }
+            }
+            return knowledgeLevels[0];
+        }
+        
+        function getRandomFeedback(category) {
+            const messages = feedbackMessages[category];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+        
+        function initGame() {
+            snake = [
+                { x: 10, y: 10 },
+                { x: 9, y: 10 },
+                { x: 8, y: 10 }
+            ];
+            dx = 1;
+            dy = 0;
+            score = 0;
+            filesEaten = [];
+            scoreElement.textContent = '0';
+            knowledgeElement.textContent = 'STRANGER';
+            knowledgeElement.style.color = '#808080';
+            fileConsumedElement.textContent = '';
+            feedbackElement.textContent = 'Press SPACE or any arrow key to begin...';
+            gameOverText.classList.remove('visible');
+            placeFood();
+            gameRunning = true;
+            gamePaused = true; // Start paused
+            
+            if (gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(updateGame, 100);
+            
+            // Draw initial state
+            drawGame();
+        }
+        
+        function placeFood() {
+            food.x = Math.floor(Math.random() * tileCount);
+            food.y = Math.floor(Math.random() * tileCount);
+            food.type = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+            
+            // Make sure food doesn't spawn on snake
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    placeFood();
+                    return;
+                }
+            }
+        }
+        
+        function updateGame() {
+            if (!gameRunning || gamePaused) return;
+            
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            
+            // Wall collision
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                gameOver();
+                return;
+            }
+            
+            // Self collision
+            for (let segment of snake) {
+                if (head.x === segment.x && head.y === segment.y) {
+                    gameOver();
+                    return;
+                }
+            }
+            
+            snake.unshift(head);
+            
+            // Food collision
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreElement.textContent = score / 10;
+                
+                // Track what we've eaten
+                filesEaten.push(food.type);
+                
+                // Update knowledge level
+                const knowledge = getKnowledgeLevel();
+                knowledgeElement.textContent = knowledge.level;
+                knowledgeElement.style.color = knowledge.color;
+                
+                // Show file consumed and feedback separately
+                fileConsumedElement.innerHTML = `<span style="color: ${food.type.color}">[${food.type.name}]</span>`;
+                feedbackElement.textContent = getRandomFeedback(food.type.category);
+                
+                placeFood();
+            } else {
+                snake.pop();
+            }
+            
+            drawGame();
+        }
+        
+        function drawGame() {
+            // Clear canvas
+            gameCtx.fillStyle = '#111111';
+            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+            
+            // Draw grid (subtle)
+            gameCtx.strokeStyle = '#1a1a1a';
+            for (let i = 0; i < tileCount; i++) {
+                gameCtx.beginPath();
+                gameCtx.moveTo(i * gridSize, 0);
+                gameCtx.lineTo(i * gridSize, gameCanvas.height);
+                gameCtx.stroke();
+                gameCtx.beginPath();
+                gameCtx.moveTo(0, i * gridSize);
+                gameCtx.lineTo(gameCanvas.width, i * gridSize);
+                gameCtx.stroke();
+            }
+            
+            // Draw snake (The Shadow)
+            snake.forEach((segment, index) => {
+                if (index === 0) {
+                    // Head - brighter with glow effect
+                    gameCtx.shadowColor = '#33FF00';
+                    gameCtx.shadowBlur = 10;
+                    gameCtx.fillStyle = '#33FF00';
+                } else {
+                    gameCtx.shadowBlur = 0;
+                    const alpha = 1 - (index / snake.length) * 0.6;
+                    gameCtx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
+                }
+                gameCtx.fillRect(
+                    segment.x * gridSize + 1,
+                    segment.y * gridSize + 1,
+                    gridSize - 2,
+                    gridSize - 2
+                );
+            });
+            gameCtx.shadowBlur = 0;
+            
+            // Draw food (colored data box)
+            gameCtx.shadowColor = food.type.color;
+            gameCtx.shadowBlur = 8;
+            gameCtx.fillStyle = food.type.color;
+            gameCtx.fillRect(
+                food.x * gridSize + 2,
+                food.y * gridSize + 2,
+                gridSize - 4,
+                gridSize - 4
+            );
+            gameCtx.shadowBlur = 0;
+        }
+        
+        function gameOver() {
+            gameRunning = false;
+            clearInterval(gameLoop);
+            gameOverText.classList.add('visible');
+            fileConsumedElement.textContent = '';
+            
+            // Final feedback based on how much was collected
+            const knowledge = getKnowledgeLevel();
+            const fileCount = score / 10;
+            if (knowledge.level === 'FULLY SYNCED') {
+                feedbackElement.textContent = `${fileCount} files synced. I understand you completely now.`;
+            } else if (fileCount >= 10) {
+                feedbackElement.textContent = `${fileCount} files synced. We're getting to know each other.`;
+            } else if (fileCount >= 5) {
+                feedbackElement.textContent = `${fileCount} files synced. A good start.`;
+            } else {
+                feedbackElement.textContent = `${fileCount} files synced. There's so much more to learn.`;
+            }
+        }
+        
+        function handleGameInput(e) {
+            if (!document.getElementById('gameModal').classList.contains('active')) return;
+            
+            switch(e.key.toLowerCase()) {
+                case 'arrowup':
+                case 'w':
+                    if (dy !== 1) { dx = 0; dy = -1; }
+                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
+                    e.preventDefault();
+                    break;
+                case 'arrowdown':
+                case 's':
+                    if (dy !== -1) { dx = 0; dy = 1; }
+                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
+                    e.preventDefault();
+                    break;
+                case 'arrowleft':
+                case 'a':
+                    if (dx !== 1) { dx = -1; dy = 0; }
+                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
+                    e.preventDefault();
+                    break;
+                case 'arrowright':
+                case 'd':
+                    if (dx !== -1) { dx = 1; dy = 0; }
+                    if (gamePaused) { gamePaused = false; feedbackElement.textContent = 'Syncing your data...'; }
+                    e.preventDefault();
+                    break;
+                case ' ':
+                    gamePaused = !gamePaused;
+                    if (gamePaused) {
+                        feedbackElement.textContent = 'Paused...';
+                    } else {
+                        feedbackElement.textContent = 'Syncing your data...';
+                    }
+                    e.preventDefault();
+                    break;
+                case 'r':
+                    initGame();
+                    e.preventDefault();
+                    break;
+            }
+        }
+        
+        document.addEventListener('keydown', handleGameInput);
+        
+        // ===========================================
+        // MODAL FUNCTIONS
+        // ===========================================
+        
         function openDonateModal() {
             document.getElementById('donateModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1555,22 +2983,43 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             document.body.style.overflow = '';
         }
 
+        function openGameModal() {
+            document.getElementById('gameModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            initGame();
+        }
+
+        function closeGameModal() {
+            document.getElementById('gameModal').classList.remove('active');
+            document.body.style.overflow = '';
+            gameRunning = false;
+            if (gameLoop) clearInterval(gameLoop);
+        }
+
         // Close modals on overlay click
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
                     overlay.classList.remove('active');
                     document.body.style.overflow = '';
+                    if (overlay.id === 'gameModal') {
+                        gameRunning = false;
+                        if (gameLoop) clearInterval(gameLoop);
+                    }
                 }
             });
         });
 
-        // Close modals on Escape key
+        // Close modals on Escape key (but not during game)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeDonateModal();
-                closeWaitlistModal();
-                closeContactModal();
+                if (document.getElementById('gameModal').classList.contains('active')) {
+                    closeGameModal();
+                } else {
+                    closeDonateModal();
+                    closeWaitlistModal();
+                    closeContactModal();
+                }
             }
         });
 
@@ -1633,6 +3082,35 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
         }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Easter egg: Konami code unlocks something
+        let konamiCode = [];
+        const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('gameModal').classList.contains('active')) return;
+            
+            konamiCode.push(e.keyCode);
+            konamiCode = konamiCode.slice(-10);
+
+            if (konamiCode.join(',') === secretCode.join(',')) {
+                triggerMatrixRain();
+            }
+        });
     </script>
 </body>
 </html>
