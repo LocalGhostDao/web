@@ -557,6 +557,26 @@
             font-weight: 400;
         }
 
+        /* DIRECTORY LINK */
+        .directory-link {
+            display: block;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px dashed var(--terminal-dim);
+            color: var(--terminal);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .directory-link:hover {
+            background: var(--terminal);
+            color: var(--void);
+            border-style: solid;
+        }
+
         /* BACK LINK */
         .back-link {
             display: inline-block;
@@ -783,15 +803,23 @@
             <div class="section-header">&gt; BROADCAST THE SIGNAL</div>
 
             <p>
-                We do not build mailing lists. We build protocols. We need to find each other in the noise.
+                The rotting, rent-seeking monoliths have marketing departments, sales teams, and cold-call budgets. They will find you. They will email you. They will buy ads until you submit.
             </p>
 
             <p>
-                <span class="highlight">If you are building the exit, light the beacon.</span>
+                Open-source, local-first, architecturally immune projects have none of that. They just build products that work—and vanish into the noise. You won't get a cold call about self-hosted software. Nobody is paying for ads to tell you about tools that respect your sovereignty.
+            </p>
+
+            <p class="emphasis">
+                This is the discoverability problem. Great open-source, local-first software doesn't cold-call. It just exists—waiting to be found.
             </p>
 
             <p>
-                <strong>The Method:</strong> Create a file at the root of your project:
+                So we're building a <a href="/directory.html" style="color: var(--terminal);">public index</a>. A directory of projects that run local, export clean, and don't betray the user. No marketing. No pitch decks. Just a machine-readable file that says: <em>I built the exit.</em>
+            </p>
+
+            <p>
+                <strong>The Method:</strong> Add this file to your project root. We crawl for it. You get indexed. Users find you.
             </p>
 
             <div class="code-container">
@@ -816,18 +844,21 @@
                 </div>
                 <div class="code-block">
                     <div class="code-glow"></div>
-                    <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14</div>
+                    <div class="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18</div>
                     <pre><span class="bracket">{</span>
   <span class="key">"version"</span>: <span class="string">"1.0"</span>,
-  <span class="key">"pledge"</span>: <span class="bracket">{</span>
-    <span class="key">"signed"</span>: <span class="boolean">true</span>,
-    <span class="key">"signer"</span>: <span class="string">"YOUR_HANDLE"</span>,
-    <span class="key">"hash"</span>: <span class="string">"I DO NOT LEND MY MIND TO THE DYING MACHINE."</span>,
-    <span class="key">"repository"</span>: <span class="string">"https://github.com/your-username/your-project"</span>
+  <span class="key">"project"</span>: <span class="bracket">{</span>
+    <span class="key">"name"</span>: <span class="string">"Your Project Name"</span>,
+    <span class="key">"description"</span>: <span class="string">"A short description of what it does."</span>,
+    <span class="key">"url"</span>: <span class="string">"https://your-project.com"</span>,
+    <span class="key">"logo"</span>: <span class="string">"https://your-project.com/logo.svg"</span>,
+    <span class="key">"repository"</span>: <span class="string">"https://github.com/your-username/your-project"</span>,
+    <span class="key">"created"</span>: <span class="string">"2025-01-01"</span>
   <span class="bracket">}</span>,
   <span class="key">"code"</span>: <span class="bracket">{</span>
     <span class="key">"local_first"</span>: <span class="boolean">true</span>,
     <span class="key">"offline_capable"</span>: <span class="boolean">true</span>,
+    <span class="key">"architecturally_immune"</span>: <span class="boolean">true</span>,
     <span class="key">"data_export"</span>: <span class="string">"json"</span>
   <span class="bracket">}</span>
 <span class="bracket">}</span></pre>
@@ -836,7 +867,7 @@
 
             <div class="pledge-box">
                 <h3>&gt; THE PLEDGE</h3>
-                <p style="margin-bottom: 1rem; color: var(--text-dim);">By hosting the file you are swearing to the code:</p>
+                <p style="margin-bottom: 1rem; color: var(--text-dim);">By hosting the file you commit to the code:</p>
                 <ul>
                     <li>I reject the renting of my own thoughts.</li>
                     <li>I will run my intelligence locally, or not at all.</li>
@@ -845,9 +876,7 @@
                 </ul>
             </div>
 
-            <p>
-                When the crawlers come, let them read these words. Let them verify the repository. Let them see that the network is alive, that the resistance is self-replicating, and that it is no longer theirs.
-            </p>
+            <a href="/directory.html" class="directory-link">[ BROWSE THE DIRECTORY → ]</a>
 
             <div class="section-header">&gt; BUILD THE EXIT RAMP</div>
 
@@ -880,15 +909,18 @@
     <script>
         const codeContent = `{
   "version": "1.0",
-  "pledge": {
-    "signed": true,
-    "signer": "YOUR_HANDLE",
-    "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
-    "repository": "https://github.com/your-username/your-project"
+  "project": {
+    "name": "Your Project Name",
+    "description": "A short description of what it does.",
+    "url": "https://your-project.com",
+    "logo": "https://your-project.com/logo.svg",
+    "repository": "https://github.com/your-username/your-project",
+    "created": "2025-01-01"
   },
-  "physics": {
+  "code": {
     "local_first": true,
     "offline_capable": true,
+    "architecturally_immune": true,
     "data_export": "json"
   }
 }`;

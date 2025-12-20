@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directory | LocalGhost.ai</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <meta name="theme-color" content="#111111">
+    <style>
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --void: #111111;
+            --void-lighter: #1a1a1a;
+            --text: #E0E0E0;
+            --text-dim: #808080;
+            --terminal: #33FF00;
+            --terminal-dim: #1a8000;
+            --border: #333;
+            --warning: #FF6B6B;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: var(--font-system);
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        ::selection {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* SCANLINES */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(17, 17, 17, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            font-family: var(--font-mono);
+        }
+
+        .nav-logo {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-logo a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-status {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+
+        .nav-logo span {
+            color: var(--terminal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* UNDER CONSTRUCTION */
+        .construction-box {
+            border: 2px solid var(--terminal);
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            background: var(--void-lighter);
+        }
+
+        .construction-box::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, var(--terminal), transparent, var(--terminal));
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .construction-icon {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            color: var(--terminal);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px var(--terminal-dim);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px var(--terminal-dim); }
+            50% { text-shadow: 0 0 40px var(--terminal), 0 0 60px var(--terminal-dim); }
+        }
+
+        .construction-title {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--terminal);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .construction-text {
+            color: var(--text-dim);
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.8;
+        }
+
+        .status-line {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .status-line .blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* WHAT TO EXPECT */
+        .expect-section {
+            margin-top: 3rem;
+        }
+
+        .expect-section h2 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--terminal);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .expect-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .expect-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-dim);
+        }
+
+        .expect-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+        }
+
+        /* BACK LINK */
+        .back-link {
+            display: inline-block;
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.7rem;
+            }
+
+            .nav-links .hide-mobile {
+                display: none;
+            }
+
+            main {
+                padding: 7.5rem 1.5rem 3rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .construction-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .construction-icon {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-logo">
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI</a>
+            <span class="nav-status">| THE ONLY CLOUD IS YOU</span>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto.html">MANIFESTO</a>
+            <a href="/#fleet" class="hide-mobile">SPECS</a>
+            <a href="/#economics">ECONOMICS</a>
+            <a href="/#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/vcealicu" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div class="section-label">&gt; THE_NETWORK</div>
+            <h1>Local-First Directory</h1>
+            <div class="subtitle">Projects that run local, export clean, and don't betray the user.</div>
+        </div>
+
+        <!-- UNDER CONSTRUCTION -->
+        <div class="construction-box">
+            <div class="construction-icon">[ ]</div>
+            <div class="construction-title">BUILDING THE INDEX</div>
+            <p class="construction-text">
+                We're building the crawler. Soon this page will list every project that hosts the beacon file—local-first tools that respect your sovereignty, indexed and searchable.
+            </p>
+            <p class="construction-text">
+                No marketing budgets. No sales pitches. Just code that works.
+            </p>
+            <div class="status-line">
+                <span class="blink">_</span> STATUS: CRAWLER IN DEVELOPMENT
+            </div>
+        </div>
+
+        <!-- WHAT TO EXPECT -->
+        <div class="expect-section">
+            <h2>&gt; WHAT'S COMING</h2>
+            <ul class="expect-list">
+                <li>Automated discovery of projects hosting <code>/.well-known/localghost.json</code></li>
+                <li>Searchable index by capability: offline-first, self-hosted, export formats</li>
+                <li>Verified pledge status and repository links</li>
+                <li>No rankings, no ads, no pay-to-play—just the list</li>
+            </ul>
+        </div>
+
+        <a href="/manifesto.html" class="back-link">[ ← READ THE MANIFESTO ]</a>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-quote">
+            "Great open-source, local-first software doesn't cold-call. It just exists—waiting to be found."<br>
+            — Why We Build
+        </p>
+    </footer>
+</body>
+</html>
