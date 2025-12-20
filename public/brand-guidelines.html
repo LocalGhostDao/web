@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Guidelines | LocalGhost.ai</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/favicon.svg">
+    <meta name="theme-color" content="#111111">
+    <style>
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --void: #111111;
+            --void-lighter: #1a1a1a;
+            --text: #E0E0E0;
+            --text-dim: #808080;
+            --terminal: #33FF00;
+            --terminal-dim: #1a8000;
+            --border: #333;
+            --warning: #FF3333;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: var(--font-system);
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* SCANLINES */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(17, 17, 17, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            font-family: var(--font-mono);
+        }
+
+        .nav-logo {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-logo a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-status {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+
+        .nav-logo span {
+            color: var(--terminal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal);
+        }
+
+        /* MAIN CONTENT */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* TABLE OF CONTENTS */
+        .toc {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc-title {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem 2rem;
+        }
+
+        .toc-list a {
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-list a:hover {
+            color: var(--terminal);
+        }
+
+        .toc-list a::before {
+            content: '>';
+            color: var(--terminal);
+        }
+
+        /* SECTIONS */
+        .brand-section {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-header {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        h3 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 2rem 0 1rem;
+            color: var(--terminal);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        /* COLOR PALETTE */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .color-swatch {
+            background: var(--void);
+            padding: 0;
+        }
+
+        .swatch-preview {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+
+        .swatch-info {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .swatch-name {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .swatch-hex {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .swatch-hex:hover {
+            color: var(--terminal);
+        }
+
+        .swatch-use {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        /* TYPOGRAPHY SAMPLES */
+        .type-sample {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+
+        .type-primary {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .type-secondary {
+            font-family: var(--font-system);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .type-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-weights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .type-weight {
+            font-family: var(--font-mono);
+        }
+
+        .type-weight-label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-bottom: 0.25rem;
+        }
+
+        .type-weight-sample {
+            font-size: 1.5rem;
+        }
+
+        .weight-300 { font-weight: 300; }
+        .weight-400 { font-weight: 400; }
+        .weight-500 { font-weight: 500; }
+        .weight-700 { font-weight: 700; }
+
+        /* VOICE EXAMPLES */
+        .voice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .voice-example {
+            background: var(--void);
+            padding: 1.5rem;
+        }
+
+        .voice-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+
+        .voice-label.do {
+            color: var(--terminal);
+        }
+
+        .voice-label.dont {
+            color: var(--warning);
+        }
+
+        .voice-text {
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* COMPONENT SHOWCASE */
+        .component-box {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+
+        .component-demo {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .component-demo:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .component-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        /* Demo buttons */
+        .demo-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--text);
+            background: transparent;
+            color: var(--text);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-button:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        .demo-button.ghost {
+            border-color: var(--terminal);
+            color: var(--terminal);
+        }
+
+        .demo-button.ghost:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        /* Demo terminal prompt */
+        .demo-prompt {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .demo-prompt .prompt {
+            color: var(--terminal);
+        }
+
+        .demo-prompt .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background: var(--terminal);
+            animation: blink 1.2s step-end infinite;
+            vertical-align: middle;
+            margin-left: 0.2em;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* MOTIF LIST */
+        .motif-list {
+            margin: 1.5rem 0;
+        }
+
+        .motif-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            border: 1px solid var(--border);
+            margin-bottom: -1px;
+        }
+
+        .motif-symbol {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--terminal);
+            flex-shrink: 0;
+            width: 3rem;
+            text-align: center;
+        }
+
+        .motif-content {
+            flex: 1;
+        }
+
+        .motif-name {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .motif-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* PHRASE LIST */
+        .phrase-list {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .phrase-item {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--terminal);
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .phrase-item::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            color: var(--text-dim);
+        }
+
+        .phrase-item::after {
+            content: '"';
+            color: var(--text-dim);
+        }
+
+        /* EFFECT DEMOS */
+        .effect-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .effect-demo {
+            background: var(--void);
+            padding: 2rem;
+            text-align: center;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .effect-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+            margin-top: 1rem;
+        }
+
+        /* Scanline demo */
+        .scanline-demo {
+            width: 100%;
+            height: 60px;
+            background: var(--terminal);
+            position: relative;
+        }
+
+        .scanline-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.3) 2px,
+                rgba(0, 0, 0, 0.3) 4px
+            );
+        }
+
+        /* Glow demo */
+        .glow-demo {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--terminal);
+            text-shadow: 0 0 10px var(--terminal), 0 0 20px var(--terminal-dim);
+        }
+
+        /* Flicker demo */
+        .flicker-demo {
+            width: 100px;
+            height: 60px;
+            background: var(--terminal);
+            animation: flicker-effect 3s infinite;
+        }
+
+        @keyframes flicker-effect {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.7; }
+            94% { opacity: 1; }
+            96% { opacity: 0.8; }
+            97% { opacity: 1; }
+        }
+
+        /* Border demo */
+        .border-demo {
+            width: 100%;
+            height: 60px;
+            border: 1px solid var(--terminal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        /* PRINCIPLES BOX */
+        .principles-box {
+            background: var(--void-lighter);
+            border: 2px solid var(--terminal);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .principles-box h4 {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .principle-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .principle-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .principle-icon {
+            font-family: var(--font-mono);
+            color: var(--terminal);
+            flex-shrink: 0;
+        }
+
+        .principle-text {
+            font-size: 0.9rem;
+        }
+
+        .principle-text strong {
+            color: var(--text);
+        }
+
+        /* LOGO SHOWCASE */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .logo-cell {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+        }
+
+        .logo-cell.dark {
+            background: var(--void);
+        }
+
+        .logo-cell.light {
+            background: #E0E0E0;
+        }
+
+        .logo-cell svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .logo-cell-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--void-lighter);
+            border-top: 1px solid var(--border);
+        }
+
+        .logo-download-box {
+            background: var(--void-lighter);
+            border: 2px solid var(--terminal);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .logo-download-info {
+            flex: 1;
+        }
+
+        .logo-download-info h4 {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--terminal);
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-download-info p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin: 0;
+        }
+
+        .logo-download-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--terminal);
+            background: transparent;
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .logo-download-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        .logo-variants {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .logo-variant {
+            background: var(--void);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .logo-variant-preview {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-variant-name {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .logo-rules {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .logo-rule {
+            background: var(--void);
+            padding: 1.25rem;
+        }
+
+        .logo-rule-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+
+        .logo-rule-label.do {
+            color: var(--terminal);
+        }
+
+        .logo-rule-label.dont {
+            color: var(--warning);
+        }
+
+        .logo-rule-text {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* SPACING GUIDE */
+        .spacing-demo {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .spacing-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .spacing-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .spacing-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .spacing-bar {
+            height: 20px;
+            background: var(--terminal);
+            opacity: 0.3;
+        }
+
+        .spacing-value {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            width: 60px;
+            text-align: right;
+        }
+
+        /* BACK LINK */
+        .back-link {
+            display: inline-block;
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            border: 1px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--text);
+            color: var(--void);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.7rem;
+            }
+
+            .nav-links .hide-mobile {
+                display: none;
+            }
+
+            main {
+                padding: 7.5rem 1.5rem 3rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            .toc-list {
+                grid-template-columns: 1fr;
+            }
+
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .voice-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .effect-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-variants {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .logo-rules {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-download-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .type-weights {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-logo">
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/#fleet" class="hide-mobile">SPECS</a>
+            <a href="/#economics" class="hide-mobile">ECONOMICS</a>
+            <a href="/#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <div class="section-label">&gt; BRAND_SYSTEM</div>
+            <h1>Brand Guidelines</h1>
+            <p class="subtitle">The visual and verbal identity of LocalGhost. Use this to build with us, not against us.</p>
+        </div>
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="toc">
+            <div class="toc-title">&gt; CONTENTS</div>
+            <ul class="toc-list">
+                <li><a href="#identity">Core Identity</a></li>
+                <li><a href="#logo">Logo & Assets</a></li>
+                <li><a href="#colors">Color Palette</a></li>
+                <li><a href="#typography">Typography</a></li>
+                <li><a href="#effects">Visual Effects</a></li>
+                <li><a href="#components">Components</a></li>
+                <li><a href="#motifs">Symbolic Motifs</a></li>
+                <li><a href="#voice">Voice & Tone</a></li>
+                <li><a href="#principles">Design Principles</a></li>
+                <li><a href="#utilities">CSS Utilities</a></li>
+            </ul>
+        </div>
+
+        <!-- CORE IDENTITY -->
+        <section id="identity" class="brand-section">
+            <div class="section-header">&gt; SECTION_01</div>
+            <h2>Core Identity</h2>
+            
+            <p>
+                <strong>Cypherpunk Terminal Brutalism.</strong> The visual language is a deliberate throwback to early computing—CRT monitors, green phosphor terminals, and the hacker aesthetic of the 1990s—executed with modern restraint.
+            </p>
+            
+            <p>
+                This isn't retro for nostalgia. It's retro as ideological statement. The aesthetic says: <em>we remember when computers were tools, not cages.</em>
+            </p>
+
+            <h3>The Positioning</h3>
+            <p>
+                LocalGhost inverts the modern cloud paradigm. We move everything—AI, data, digital identity—from their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
+            </p>
+
+            <div class="principles-box">
+                <h4>&gt; THE CORE PROMISE</h4>
+                <div class="principle-item">
+                    <span class="principle-icon">[1]</span>
+                    <div class="principle-text"><strong>Privacy through architecture, not promises.</strong> We can't see your data because the system prevents it.</div>
+                </div>
+                <div class="principle-item">
+                    <span class="principle-icon">[2]</span>
+                    <div class="principle-text"><strong>Ownership through atoms, not accounts.</strong> You own hardware. Hardware doesn't have terms of service.</div>
+                </div>
+                <div class="principle-item">
+                    <span class="principle-icon">[3]</span>
+                    <div class="principle-text"><strong>Sovereignty through code, not trust.</strong> Verify, don't believe.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGO & ASSETS -->
+        <section id="logo" class="brand-section">
+            <div class="section-header">&gt; SECTION_02</div>
+            <h2>Logo & Assets</h2>
+            
+            <p>
+                The LocalGhost mark is a ghost with a zigzag bottom edge—a nod to the analog waveforms of early computing. The eyes and smile are friendly but minimal. The terminal prompt <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); color: var(--terminal);">&gt;</code> often accompanies the wordmark.
+            </p>
+
+            <div class="logo-download-box">
+                <div class="logo-download-info">
+                    <h4>&gt; LOGO PACK</h4>
+                    <p>SVG source files for icon, wordmark, and full logo. Dark and transparent variants. Includes usage README.</p>
+                </div>
+                <a href="/assets/localghost-logo-pack.zip" class="logo-download-btn" download>[ DOWNLOAD .ZIP ]</a>
+            </div>
+
+            <h3>Primary Marks</h3>
+            
+            <div class="logo-grid">
+                <div>
+                    <div class="logo-cell dark">
+                        <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 2C14 2 2 15 2 32V62L12 55L22 62L32 55L42 62L52 55L62 62V32C62 15 50 2 32 2Z" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                            <circle cx="20" cy="28" r="3.5" fill="#33ff00"/>
+                            <circle cx="44" cy="28" r="3.5" fill="#33ff00"/>
+                            <path d="M20 42 Q 32 50 44 42" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-cell-label">ICON / DARK BG</div>
+                </div>
+                <div>
+                    <div class="logo-cell light">
+                        <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32 2C14 2 2 15 2 32V62L12 55L22 62L32 55L42 62L52 55L62 62V32C62 15 50 2 32 2Z" stroke="#111111" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                            <circle cx="20" cy="28" r="3.5" fill="#111111"/>
+                            <circle cx="44" cy="28" r="3.5" fill="#111111"/>
+                            <path d="M20 42 Q 32 50 44 42" stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-cell-label">ICON / LIGHT BG (INVERTED)</div>
+                </div>
+            </div>
+
+            <div class="logo-grid" style="grid-template-columns: 1fr;">
+                <div>
+                    <div class="logo-cell dark" style="min-height: 100px;">
+                        <svg width="320" height="64" viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g transform="translate(10, 8) scale(1)">
+                                <path d="M32 2C14 2 2 15 2 32V62L12 55L22 62L32 55L42 62L52 55L62 62V32C62 15 50 2 32 2Z" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                                <circle cx="20" cy="28" r="3.5" fill="#33ff00"/>
+                                <circle cx="44" cy="28" r="3.5" fill="#33ff00"/>
+                                <path d="M20 42 Q 32 50 44 42" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                            </g>
+                            <text x="95" y="42" font-family="monospace" font-size="24" font-weight="bold" fill="#33ff00" style="letter-spacing: 2px;">LOCALGHOST.AI</text>
+                            <text x="95" y="60" font-family="monospace" font-size="10" fill="#33ff00" style="letter-spacing: 3px; opacity: 0.8;">THE ONLY CLOUD IS YOU</text>
+                        </svg>
+                    </div>
+                    <div class="logo-cell-label">HORIZONTAL LOCKUP / PREFERRED</div>
+                </div>
+            </div>
+
+            <h3>Logo Variants</h3>
+            
+            <div class="logo-variants">
+                <div class="logo-variant">
+                    <div class="logo-variant-preview">
+                        <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+                            <path d="M32 2C14 2 2 15 2 32V62L12 55L22 62L32 55L42 62L52 55L62 62V32C62 15 50 2 32 2Z" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                            <circle cx="20" cy="28" r="3.5" fill="#33ff00"/>
+                            <circle cx="44" cy="28" r="3.5" fill="#33ff00"/>
+                            <path d="M20 42 Q 32 50 44 42" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="logo-variant-name">Icon</div>
+                </div>
+                <div class="logo-variant">
+                    <div class="logo-variant-preview">
+                        <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--terminal);">&gt; LOCALGHOST</span>
+                    </div>
+                    <div class="logo-variant-name">Wordmark</div>
+                </div>
+                <div class="logo-variant">
+                    <div class="logo-variant-preview">
+                        <svg width="100" height="40" viewBox="0 0 400 80" fill="none">
+                            <g transform="translate(50, 8) scale(1)">
+                                <path d="M32 2C14 2 2 15 2 32V62L12 55L22 62L32 55L42 62L52 55L62 62V32C62 15 50 2 32 2Z" stroke="#33ff00" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                                <circle cx="20" cy="28" r="3.5" fill="#33ff00"/>
+                                <circle cx="44" cy="28" r="3.5" fill="#33ff00"/>
+                            </g>
+                            <text x="135" y="48" font-family="monospace" font-size="20" font-weight="bold" fill="#33ff00">LOCALGHOST</text>
+                        </svg>
+                    </div>
+                    <div class="logo-variant-name">Horizontal</div>
+                </div>
+                <div class="logo-variant">
+                    <div class="logo-variant-preview">
+                        <svg width="50" height="50" viewBox="0 0 550 250" fill="none">
+                            <path d="M275 40C235 40 205 70 205 110V160L220 145L240 160L260 145L275 160L290 145L310 160L330 145L345 160V110C345 70 315 40 275 40Z" stroke="#33ff00" stroke-width="2"/>
+                            <circle cx="255" cy="90" r="3" fill="#33ff00"/>
+                            <circle cx="295" cy="90" r="3" fill="#33ff00"/>
+                            <text x="275" y="200" text-anchor="middle" font-family="monospace" font-size="32" font-weight="bold" fill="#33ff00">LOCALGHOST</text>
+                        </svg>
+                    </div>
+                    <div class="logo-variant-name">Stacked</div>
+                </div>
+            </div>
+
+            <h3>Usage Rules</h3>
+
+            <div class="logo-rules">
+                <div class="logo-rule">
+                    <div class="logo-rule-label do">[✓] DO</div>
+                    <div class="logo-rule-text">Use on dark backgrounds (#111111 or darker)</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label dont">[✗] DON'T</div>
+                    <div class="logo-rule-text">Place on busy backgrounds or photos</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label do">[✓] DO</div>
+                    <div class="logo-rule-text">Maintain terminal green (#33FF00) or inverted dark (#111111)</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label dont">[✗] DON'T</div>
+                    <div class="logo-rule-text">Change the color to off-brand values</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label do">[✓] DO</div>
+                    <div class="logo-rule-text">Maintain clear space equal to icon eye height</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label dont">[✗] DON'T</div>
+                    <div class="logo-rule-text">Add effects (shadows, glows, gradients)</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label do">[✓] DO</div>
+                    <div class="logo-rule-text">Use SVG for maximum quality</div>
+                </div>
+                <div class="logo-rule">
+                    <div class="logo-rule-label dont">[✗] DON'T</div>
+                    <div class="logo-rule-text">Stretch, rotate, or distort</div>
+                </div>
+            </div>
+
+            <h3>Minimum Sizes</h3>
+            <p>
+                <strong>Icon:</strong> 32px minimum<br>
+                <strong>Horizontal logo:</strong> 120px width minimum<br>
+                <strong>Stacked logo:</strong> 200px width minimum
+            </p>
+        </section>
+
+        <!-- COLOR PALETTE -->
+        <section id="colors" class="brand-section">
+            <div class="section-header">&gt; SECTION_03</div>
+            <h2>Color Palette</h2>
+            
+            <p>
+                A deliberately limited palette. Black, green, grey, red. No gradients. No pastels. The constraint is the point.
+            </p>
+
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #111111; color: #E0E0E0;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">The Void</div>
+                        <div class="swatch-hex" onclick="copyColor('#111111')">#111111</div>
+                        <div class="swatch-use">Primary background. Near-black with residual CRT glow.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #1a1a1a; color: #E0E0E0;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Void Lighter</div>
+                        <div class="swatch-hex" onclick="copyColor('#1a1a1a')">#1a1a1a</div>
+                        <div class="swatch-use">Secondary backgrounds, cards, code blocks.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #33FF00; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Terminal Green</div>
+                        <div class="swatch-hex" onclick="copyColor('#33FF00')">#33FF00</div>
+                        <div class="swatch-use">Primary accent. Links, emphasis, success states, "our" values.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #1a8000; color: #E0E0E0;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Terminal Dim</div>
+                        <div class="swatch-hex" onclick="copyColor('#1a8000')">#1a8000</div>
+                        <div class="swatch-use">Muted green for borders, shadows, glow effects.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #E0E0E0; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Text</div>
+                        <div class="swatch-hex" onclick="copyColor('#E0E0E0')">#E0E0E0</div>
+                        <div class="swatch-use">Primary text. Slightly warm white, readable but not harsh.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #808080; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Text Dim</div>
+                        <div class="swatch-hex" onclick="copyColor('#808080')">#808080</div>
+                        <div class="swatch-use">Secondary text, metadata, comments, placeholders.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #333333; color: #E0E0E0;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Border</div>
+                        <div class="swatch-hex" onclick="copyColor('#333333')">#333333</div>
+                        <div class="swatch-use">Dividers, borders, structural lines.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #FF3333; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Warning</div>
+                        <div class="swatch-hex" onclick="copyColor('#FF3333')">#FF3333</div>
+                        <div class="swatch-use">Danger, errors, "their" way, what we reject. Use sparingly.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Usage Rules</h3>
+            <p>
+                Terminal Green is sacred. It represents LocalGhost values, user sovereignty, and correct paths. Warning Red is reserved for highlighting what we reject—surveillance, rent-seeking, enshittification. Don't dilute either.
+            </p>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section id="typography" class="brand-section">
+            <div class="section-header">&gt; SECTION_04</div>
+            <h2>Typography</h2>
+
+            <div class="type-sample">
+                <div class="type-label">PRIMARY TYPEFACE</div>
+                <div class="type-primary">JetBrains Mono</div>
+                <p style="font-family: var(--font-mono); margin-bottom: 0;">
+                    The modern programmer's typeface. Clean, legible, unapologetically technical. Used for all headings, navigation, code, and UI elements.
+                </p>
+                <div class="type-weights">
+                    <div class="type-weight">
+                        <div class="type-weight-label">Light 300</div>
+                        <div class="type-weight-sample weight-300">Sovereignty</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Regular 400</div>
+                        <div class="type-weight-sample weight-400">Sovereignty</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Medium 500</div>
+                        <div class="type-weight-sample weight-500">Sovereignty</div>
+                    </div>
+                    <div class="type-weight">
+                        <div class="type-weight-label">Bold 700</div>
+                        <div class="type-weight-sample weight-700">Sovereignty</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="type-sample">
+                <div class="type-label">SECONDARY TYPEFACE</div>
+                <div class="type-secondary">System Stack</div>
+                <p style="margin-bottom: 0;">
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif. Used for body copy where readability matters more than aesthetic.
+                </p>
+            </div>
+
+            <h3>Type Rules</h3>
+            <p>
+                <strong>No serif fonts. Ever.</strong> Serifs are for institutions that want to look trustworthy. We prove trust through architecture.
+            </p>
+            <p>
+                Section headers use the format <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); color: var(--terminal);">&gt; SECTION_XX</code> with terminal green color and 0.2em letter-spacing.
+            </p>
+        </section>
+
+        <!-- VISUAL EFFECTS -->
+        <section id="effects" class="brand-section">
+            <div class="section-header">&gt; SECTION_05</div>
+            <h2>Visual Effects</h2>
+
+            <p>
+                Subtle texture and animation that evokes CRT monitors without being distracting. The effects are subliminal—you feel them more than see them.
+            </p>
+
+            <div class="effect-grid">
+                <div class="effect-demo">
+                    <div class="scanline-demo"></div>
+                    <div class="effect-label">SCANLINES</div>
+                </div>
+                <div class="effect-demo">
+                    <div class="glow-demo">&gt; GLOW</div>
+                    <div class="effect-label">PHOSPHOR GLOW</div>
+                </div>
+                <div class="effect-demo">
+                    <div class="flicker-demo"></div>
+                    <div class="effect-label">CRT FLICKER</div>
+                </div>
+                <div class="effect-demo">
+                    <div class="border-demo">1px solid</div>
+                    <div class="effect-label">SHARP BORDERS</div>
+                </div>
+            </div>
+
+            <h3>Effect Specifications</h3>
+            <p>
+                <strong>Scanlines:</strong> Repeating linear gradient, 2px transparent / 2px rgba(0,0,0,0.1). Applied as fixed overlay across entire viewport.
+            </p>
+            <p>
+                <strong>Terminal Glow:</strong> Box-shadow and text-shadow on green elements. <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.8rem;">text-shadow: 0 0 5px var(--terminal-dim)</code>
+            </p>
+            <p>
+                <strong>Flicker:</strong> Randomized, slow animation (6s+ duration). Subtle opacity changes. Not annoying—just enough to feel alive.
+            </p>
+            <p>
+                <strong>Borders:</strong> Always 1px. Sharp corners (0 or 4px max border-radius for code blocks). No drop shadows. No blur effects on cards.
+            </p>
+        </section>
+
+        <!-- COMPONENTS -->
+        <section id="components" class="brand-section">
+            <div class="section-header">&gt; SECTION_06</div>
+            <h2>Components</h2>
+
+            <div class="component-box">
+                <div class="component-demo">
+                    <div class="component-label">BUTTONS</div>
+                    <button class="demo-button">[ PRIMARY ACTION ]</button>
+                    <button class="demo-button ghost">[ GHOST VARIANT ]</button>
+                </div>
+
+                <div class="component-demo">
+                    <div class="component-label">TERMINAL PROMPT</div>
+                    <div class="demo-prompt">
+                        <span class="prompt">&gt;</span> ghost@localghost: ~<span class="cursor"></span>
+                    </div>
+                </div>
+
+                <div class="component-demo">
+                    <div class="component-label">SECTION HEADERS</div>
+                    <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--terminal); letter-spacing: 0.2em;">&gt; SECTION_01</div>
+                    <div style="font-family: var(--font-mono); font-size: 1.3rem; font-weight: 500; margin-top: 0.5rem;">Section Title Here</div>
+                </div>
+            </div>
+
+            <h3>Component Rules</h3>
+            <p>
+                <strong>Buttons:</strong> Square brackets in label text. 1px border. No background until hover. Ghost variant uses terminal green.
+            </p>
+            <p>
+                <strong>Cards:</strong> 1px border, no border-radius. Cards are cells—they feel like terminal panes, not material design cards.
+            </p>
+            <p>
+                <strong>Terminal chrome:</strong> The dot-buttons (red/yellow/green) are interactive easter eggs, not decoration. Close triggers Matrix rain. Maximize expands terminal.
+            </p>
+        </section>
+
+        <!-- SYMBOLIC MOTIFS -->
+        <section id="motifs" class="brand-section">
+            <div class="section-header">&gt; SECTION_07</div>
+            <h2>Symbolic Motifs</h2>
+
+            <p>
+                Recurring symbols that carry meaning throughout the brand. These aren't decorative—they're semantic.
+            </p>
+
+            <div class="motif-list">
+                <div class="motif-item">
+                    <div class="motif-symbol">&gt;</div>
+                    <div class="motif-content">
+                        <div class="motif-name">The Terminal Prompt</div>
+                        <div class="motif-desc">Appears everywhere: section headers, navigation, lists. The universal symbol of "your turn to act." It's an invitation, not a command.</div>
+                    </div>
+                </div>
+                <div class="motif-item">
+                    <div class="motif-symbol">▪</div>
+                    <div class="motif-content">
+                        <div class="motif-name">The Black Box</div>
+                        <div class="motif-desc">Matte, silent, sovereign. The anti-smart-device. No lights, no logos—just presence. The physical embodiment of privacy.</div>
+                    </div>
+                </div>
+                <div class="motif-item">
+                    <div class="motif-symbol">☁</div>
+                    <div class="motif-content">
+                        <div class="motif-name">The Mist</div>
+                        <div class="motif-desc">The P2P backup network. Decentralized, ephemeral, impossible to grasp. Your data scattered across strangers' drives, encrypted and sharded.</div>
+                    </div>
+                </div>
+                <div class="motif-item">
+                    <div class="motif-symbol">⚿</div>
+                    <div class="motif-content">
+                        <div class="motif-name">Hardware Keys</div>
+                        <div class="motif-desc">Physical tokens. Tangible ownership. Two keys, two locations. If you lose both, you're gone—and that's the point. Sovereignty means responsibility.</div>
+                    </div>
+                </div>
+                <div class="motif-item">
+                    <div class="motif-symbol">👻</div>
+                    <div class="motif-content">
+                        <div class="motif-name">Daemons</div>
+                        <div class="motif-desc">Not "agents" or "assistants." Daemons—background processes that serve without surveillance. The Scribe, The Observer, The Shadow.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VOICE & TONE -->
+        <section id="voice" class="brand-section">
+            <div class="section-header">&gt; SECTION_08</div>
+            <h2>Voice & Tone</h2>
+
+            <p>
+                <strong>Direct. Technical. Defiant.</strong> The copy doesn't explain—it declares. It assumes intelligence. It treats the reader as a peer, not a prospect.
+            </p>
+
+            <h3>Key Rhetorical Moves</h3>
+            <p>
+                <strong>Manifestos over marketing.</strong> We don't pitch benefits; we state principles.
+            </p>
+            <p>
+                <strong>"We" vs "They."</strong> Clear adversarial framing. Big Tech is the antagonist. The user is the protagonist. LocalGhost is the weapon.
+            </p>
+            <p>
+                <strong>Code as proof.</strong> Every claim is backed by architecture, not policy. "Code, not promises."
+            </p>
+            <p>
+                <strong>Dark humor.</strong> "At least this 404 doesn't require a subscription." Gallows wit that acknowledges the absurdity of the status quo.
+            </p>
+
+            <h3>Signature Phrases</h3>
+            <div class="phrase-list">
+                <div class="phrase-item">The only cloud is you.</div>
+                <div class="phrase-item">We have designed ourselves out of the loop.</div>
+                <div class="phrase-item">Atoms don't have terms of service.</div>
+                <div class="phrase-item">The architecture is the legal defense.</div>
+                <div class="phrase-item">Do not lend your mind to the dying machine.</div>
+                <div class="phrase-item">The exit is open.</div>
+                <div class="phrase-item">Privacy through code, not promises.</div>
+            </div>
+
+            <h3>Voice Comparison</h3>
+            <div class="voice-grid">
+                <div class="voice-example">
+                    <div class="voice-label do">[✓] DO</div>
+                    <div class="voice-text">"We cannot sell your data because we do not have it."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label dont">[✗] DON'T</div>
+                    <div class="voice-text">"We're committed to protecting your privacy."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label do">[✓] DO</div>
+                    <div class="voice-text">"If we go bankrupt tomorrow, your box keeps working."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label dont">[✗] DON'T</div>
+                    <div class="voice-text">"We're excited to announce our new feature!"</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label do">[✓] DO</div>
+                    <div class="voice-text">"Sovereignty means responsibility. Two keys. Two locations. No excuses."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label dont">[✗] DON'T</div>
+                    <div class="voice-text">"Please consider backing up your keys for safety."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label do">[✓] DO</div>
+                    <div class="voice-text">"The math doesn't care about your feelings."</div>
+                </div>
+                <div class="voice-example">
+                    <div class="voice-label dont">[✗] DON'T</div>
+                    <div class="voice-text">"We understand this might seem complicated..."</div>
+                </div>
+            </div>
+
+            <h3>What We Never Sound Like</h3>
+            <p>
+                <strong>Corporate:</strong> "We're excited to announce..." / "Best-in-class solutions..."<br>
+                <strong>Apologetic:</strong> "We understand this might seem..." / "We're sorry but..."<br>
+                <strong>Vague:</strong> "Industry-leading" / "Seamless experience" / "Synergy"<br>
+                <strong>Pleading:</strong> "Please consider..." / "We'd love if you..."
+            </p>
+        </section>
+
+        <!-- DESIGN PRINCIPLES -->
+        <section id="principles" class="brand-section">
+            <div class="section-header">&gt; SECTION_09</div>
+            <h2>Design Principles</h2>
+
+            <div class="principles-box">
+                <h4>&gt; INTERACTION PHILOSOPHY</h4>
+                <div class="principle-item">
+                    <span class="principle-icon">[1]</span>
+                    <div class="principle-text"><strong>Easter eggs over empty polish.</strong> Every interaction rewards curiosity. The terminal is interactive. The snake game teaches data consumption. Buttons do unexpected things.</div>
+                </div>
+                <div class="principle-item">
+                    <span class="principle-icon">[2]</span>
+                    <div class="principle-text"><strong>No dark patterns.</strong> The waitlist modal doesn't collect email. The donate modal shows a raw ETH address. We don't trick. We don't manipulate.</div>
+                </div>
+                <div class="principle-item">
+                    <span class="principle-icon">[3]</span>
+                    <div class="principle-text"><strong>Friction as feature.</strong> We don't auto-play. We don't pop up. We don't interrupt. If you want to engage, you engage. The box waits for you.</div>
+                </div>
+                <div class="principle-item">
+                    <span class="principle-icon">[4]</span>
+                    <div class="principle-text"><strong>Respect for the reader.</strong> No hand-holding. No FAQs that start with "What is a computer?" You're technical, you're skeptical, and you've been burned before.</div>
+                </div>
+            </div>
+
+            <h3>Emotional Register</h3>
+            <p>
+                <strong>Controlled anger.</strong> The copy is political but not preachy. Angry at systems, not people. Channels frustration into action.
+            </p>
+            <p>
+                <strong>Quiet confidence.</strong> We don't beg. We don't compare ourselves to competitors. We state what we've built and let the architecture speak.
+            </p>
+            <p>
+                <strong>Dark humor.</strong> The gallows wit of people who've seen the machine and chosen to build the exit. Never cruel, always knowing.
+            </p>
+
+            <h3>Spacing & Layout</h3>
+            <div class="spacing-demo">
+                <div class="spacing-row">
+                    <div class="spacing-label">xs</div>
+                    <div class="spacing-bar" style="width: 16px;"></div>
+                    <div class="spacing-value">0.5rem</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">sm</div>
+                    <div class="spacing-bar" style="width: 32px;"></div>
+                    <div class="spacing-value">1rem</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">md</div>
+                    <div class="spacing-bar" style="width: 48px;"></div>
+                    <div class="spacing-value">1.5rem</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">lg</div>
+                    <div class="spacing-bar" style="width: 64px;"></div>
+                    <div class="spacing-value">2rem</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">xl</div>
+                    <div class="spacing-bar" style="width: 96px;"></div>
+                    <div class="spacing-value">3rem</div>
+                </div>
+                <div class="spacing-row">
+                    <div class="spacing-label">section</div>
+                    <div class="spacing-bar" style="width: 128px;"></div>
+                    <div class="spacing-value">4rem</div>
+                </div>
+            </div>
+
+            <p>
+                <strong>Grid:</strong> Components align to an implicit grid. Dense but not cluttered. Max content width: 900px for text, 1200px for full layouts.
+            </p>
+            <p>
+                <strong>Line height:</strong> 1.7-1.8 for body text. Generous but not loose.
+            </p>
+        </section>
+
+        <!-- CSS UTILITIES -->
+        <section id="utilities" class="brand-section">
+            <div class="section-header">&gt; SECTION_10</div>
+            <h2>CSS Utilities</h2>
+            
+            <p>
+                Drop-in CSS utilities for building interfaces with the LocalGhost aesthetic. Includes design tokens as CSS custom properties, utility classes, and pre-built components.
+            </p>
+
+            <div class="logo-download-box">
+                <div class="logo-download-info">
+                    <h4>&gt; LOCALGHOST-UTILITIES.CSS</h4>
+                    <p>Design tokens, utility classes, and component styles. 8KB minified.</p>
+                </div>
+                <a href="/assets/localghost-utilities.css" class="logo-download-btn" download>[ DOWNLOAD .CSS ]</a>
+            </div>
+
+            <h3>Usage</h3>
+            
+            <div class="component-box">
+                <div class="component-label">INCLUDE THE STYLESHEET</div>
+                <code class="lg-code" style="display: block; padding: 1rem; font-size: 0.8rem;">&lt;link rel="stylesheet" href="localghost-utilities.css"&gt;</code>
+            </div>
+
+            <h3>Design Tokens (CSS Custom Properties)</h3>
+            
+            <div class="component-box" style="font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8;">
+                <div style="color: var(--text-dim);">/* Colors */</div>
+                <div><span style="color: var(--terminal);">--lg-void:</span> #111111;</div>
+                <div><span style="color: var(--terminal);">--lg-terminal:</span> #33FF00;</div>
+                <div><span style="color: var(--terminal);">--lg-text:</span> #E0E0E0;</div>
+                <div><span style="color: var(--terminal);">--lg-text-dim:</span> #808080;</div>
+                <div><span style="color: var(--terminal);">--lg-border:</span> #333333;</div>
+                <div><span style="color: var(--terminal);">--lg-warning:</span> #FF3333;</div>
+                <div style="margin-top: 1rem; color: var(--text-dim);">/* Typography */</div>
+                <div><span style="color: var(--terminal);">--lg-font-mono:</span> 'JetBrains Mono', monospace;</div>
+                <div><span style="color: var(--terminal);">--lg-font-system:</span> -apple-system, sans-serif;</div>
+                <div style="margin-top: 1rem; color: var(--text-dim);">/* Spacing */</div>
+                <div><span style="color: var(--terminal);">--lg-space-sm:</span> 0.5rem;</div>
+                <div><span style="color: var(--terminal);">--lg-space-md:</span> 1rem;</div>
+                <div><span style="color: var(--terminal);">--lg-space-lg:</span> 1.5rem;</div>
+                <div><span style="color: var(--terminal);">--lg-space-xl:</span> 2rem;</div>
+            </div>
+
+            <h3>Utility Classes</h3>
+            
+            <div class="component-box">
+                <div class="component-demo">
+                    <div class="component-label">TYPOGRAPHY</div>
+                    <code class="lg-code">.lg-mono</code>
+                    <code class="lg-code">.lg-text-sm</code>
+                    <code class="lg-code">.lg-text-lg</code>
+                    <code class="lg-code">.lg-font-bold</code>
+                    <code class="lg-code">.lg-tracking-wide</code>
+                    <code class="lg-code">.lg-prompt</code>
+                </div>
+                <div class="component-demo">
+                    <div class="component-label">COLORS</div>
+                    <code class="lg-code">.lg-color-terminal</code>
+                    <code class="lg-code">.lg-color-dim</code>
+                    <code class="lg-code">.lg-bg-void</code>
+                    <code class="lg-code">.lg-bg-void-lighter</code>
+                </div>
+                <div class="component-demo">
+                    <div class="component-label">SPACING</div>
+                    <code class="lg-code">.lg-p-md</code>
+                    <code class="lg-code">.lg-px-lg</code>
+                    <code class="lg-code">.lg-mb-xl</code>
+                    <code class="lg-code">.lg-gap-md</code>
+                </div>
+                <div class="component-demo">
+                    <div class="component-label">EFFECTS</div>
+                    <code class="lg-code">.lg-glow</code>
+                    <code class="lg-code">.lg-cursor</code>
+                    <code class="lg-code">.lg-flicker</code>
+                    <code class="lg-code">.lg-scanlines</code>
+                </div>
+            </div>
+
+            <h3>Components</h3>
+            
+            <div class="component-box">
+                <div class="component-demo">
+                    <div class="component-label">BUTTONS</div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                        <button class="demo-button">.lg-btn</button>
+                        <button class="demo-button ghost">.lg-btn-terminal</button>
+                    </div>
+                </div>
+                <div class="component-demo">
+                    <div class="component-label">CARDS</div>
+                    <code class="lg-code">.lg-card</code>
+                    <code class="lg-code">.lg-card-terminal</code>
+                    <code class="lg-code">.lg-terminal-box</code>
+                </div>
+                <div class="component-demo">
+                    <div class="component-label">OTHER</div>
+                    <code class="lg-code">.lg-link</code>
+                    <code class="lg-code">.lg-badge</code>
+                    <code class="lg-code">.lg-code</code>
+                    <code class="lg-code">.lg-divider</code>
+                    <code class="lg-code">.lg-list</code>
+                    <code class="lg-code">.lg-section-label</code>
+                </div>
+            </div>
+
+            <h3>Example</h3>
+            
+            <div class="component-box" style="font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.8; white-space: pre; overflow-x: auto;"><span style="color: var(--text-dim);">&lt;!-- Terminal-style card with button --&gt;</span>
+<span style="color: var(--terminal);">&lt;div</span> class="lg-card-terminal lg-p-lg"<span style="color: var(--terminal);">&gt;</span>
+  <span style="color: var(--terminal);">&lt;p</span> class="lg-section-label"<span style="color: var(--terminal);">&gt;</span>SYSTEM_STATUS<span style="color: var(--terminal);">&lt;/p&gt;</span>
+  <span style="color: var(--terminal);">&lt;h2</span> class="lg-mono lg-text-lg lg-glow"<span style="color: var(--terminal);">&gt;</span>All Systems Operational<span style="color: var(--terminal);">&lt;/h2&gt;</span>
+  <span style="color: var(--terminal);">&lt;button</span> class="lg-btn-terminal lg-mt-md"<span style="color: var(--terminal);">&gt;</span>[ VIEW LOGS ]<span style="color: var(--terminal);">&lt;/button&gt;</span>
+<span style="color: var(--terminal);">&lt;/div&gt;</span></div>
+        </section>
+
+        <a href="/" class="back-link">[ ← RETURN TO THE ESCAPE PATH ]</a>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-quote">
+            "We do not ask you to trust us. We ask you to verify that you don't have to."
+        </p>
+    </footer>
+
+    <script>
+        function copyColor(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                // Brief visual feedback
+                event.target.textContent = 'Copied!';
+                setTimeout(() => {
+                    event.target.textContent = hex;
+                }, 1000);
+            });
+        }
+    </script>
+</body>
+</html>

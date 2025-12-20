@@ -1,0 +1,606 @@
+/**
+ * LocalGhost.ai Brand Utilities
+ * 
+ * Drop-in CSS utilities for building interfaces with the LocalGhost aesthetic.
+ * Include this file and use the utility classes, or import just the variables.
+ * 
+ * Usage:
+ *   <link rel="stylesheet" href="localghost-utilities.css">
+ *   
+ * Or import variables only:
+ *   @import url('localghost-utilities.css') layer(tokens);
+ *
+ * Documentation: https://localghost.ai/brand-guidelines
+ */
+
+/* ==========================================================================
+   CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ========================================================================== */
+
+:root {
+    /* Colors - Core Palette */
+    --lg-void: #111111;
+    --lg-void-lighter: #1a1a1a;
+    --lg-void-rgb: 17, 17, 17;
+    
+    --lg-terminal: #33FF00;
+    --lg-terminal-dim: #1a8000;
+    --lg-terminal-rgb: 51, 255, 0;
+    
+    --lg-text: #E0E0E0;
+    --lg-text-dim: #808080;
+    --lg-text-rgb: 224, 224, 224;
+    
+    --lg-border: #333333;
+    --lg-warning: #FF3333;
+    --lg-warning-alt: #FF6B6B;
+    
+    /* Typography */
+    --lg-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', monospace;
+    --lg-font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    
+    --lg-font-size-xs: 0.7rem;
+    --lg-font-size-sm: 0.8rem;
+    --lg-font-size-base: 0.9rem;
+    --lg-font-size-md: 1rem;
+    --lg-font-size-lg: 1.2rem;
+    --lg-font-size-xl: 1.5rem;
+    --lg-font-size-2xl: 2rem;
+    
+    --lg-line-height: 1.7;
+    --lg-letter-spacing-tight: 0.02em;
+    --lg-letter-spacing-normal: 0.05em;
+    --lg-letter-spacing-wide: 0.1em;
+    --lg-letter-spacing-wider: 0.2em;
+    
+    /* Spacing */
+    --lg-space-xs: 0.25rem;
+    --lg-space-sm: 0.5rem;
+    --lg-space-md: 1rem;
+    --lg-space-lg: 1.5rem;
+    --lg-space-xl: 2rem;
+    --lg-space-2xl: 3rem;
+    --lg-space-3xl: 4rem;
+    
+    /* Layout */
+    --lg-max-width-text: 750px;
+    --lg-max-width-content: 900px;
+    --lg-max-width-wide: 1200px;
+    
+    /* Borders */
+    --lg-border-width: 1px;
+    --lg-border-radius: 0;
+    --lg-border-radius-sm: 4px;
+    
+    /* Effects */
+    --lg-glow-terminal: 0 0 10px var(--lg-terminal), 0 0 20px var(--lg-terminal-dim);
+    --lg-glow-text: 0 0 5px var(--lg-terminal-dim);
+    --lg-shadow-terminal: 0 0 30px rgba(51, 255, 0, 0.1);
+    
+    /* Transitions */
+    --lg-transition-fast: 0.1s ease;
+    --lg-transition-base: 0.2s ease;
+    --lg-transition-slow: 0.3s ease;
+    
+    /* Z-index scale */
+    --lg-z-base: 1;
+    --lg-z-dropdown: 100;
+    --lg-z-sticky: 500;
+    --lg-z-modal: 1000;
+    --lg-z-overlay: 9999;
+}
+
+
+/* ==========================================================================
+   BASE RESET & DEFAULTS
+   ========================================================================== */
+
+.lg-base {
+    background: var(--lg-void);
+    color: var(--lg-text);
+    font-family: var(--lg-font-system);
+    font-size: 16px;
+    line-height: var(--lg-line-height);
+}
+
+.lg-base ::selection {
+    background: var(--lg-terminal);
+    color: var(--lg-void);
+}
+
+
+/* ==========================================================================
+   SCANLINE OVERLAY
+   ========================================================================== */
+
+.lg-scanlines::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    z-index: var(--lg-z-overlay);
+}
+
+
+/* ==========================================================================
+   TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+/* Font families */
+.lg-mono { font-family: var(--lg-font-mono); }
+.lg-system { font-family: var(--lg-font-system); }
+
+/* Font sizes */
+.lg-text-xs { font-size: var(--lg-font-size-xs); }
+.lg-text-sm { font-size: var(--lg-font-size-sm); }
+.lg-text-base { font-size: var(--lg-font-size-base); }
+.lg-text-md { font-size: var(--lg-font-size-md); }
+.lg-text-lg { font-size: var(--lg-font-size-lg); }
+.lg-text-xl { font-size: var(--lg-font-size-xl); }
+.lg-text-2xl { font-size: var(--lg-font-size-2xl); }
+
+/* Font weights */
+.lg-font-light { font-weight: 300; }
+.lg-font-normal { font-weight: 400; }
+.lg-font-medium { font-weight: 500; }
+.lg-font-bold { font-weight: 700; }
+
+/* Letter spacing */
+.lg-tracking-tight { letter-spacing: var(--lg-letter-spacing-tight); }
+.lg-tracking-normal { letter-spacing: var(--lg-letter-spacing-normal); }
+.lg-tracking-wide { letter-spacing: var(--lg-letter-spacing-wide); }
+.lg-tracking-wider { letter-spacing: var(--lg-letter-spacing-wider); }
+
+/* Terminal prompt prefix */
+.lg-prompt::before {
+    content: '> ';
+    color: var(--lg-terminal);
+}
+
+
+/* ==========================================================================
+   COLOR UTILITIES
+   ========================================================================== */
+
+/* Text colors */
+.lg-color-text { color: var(--lg-text); }
+.lg-color-dim { color: var(--lg-text-dim); }
+.lg-color-terminal { color: var(--lg-terminal); }
+.lg-color-warning { color: var(--lg-warning); }
+
+/* Background colors */
+.lg-bg-void { background-color: var(--lg-void); }
+.lg-bg-void-lighter { background-color: var(--lg-void-lighter); }
+.lg-bg-terminal { background-color: var(--lg-terminal); }
+.lg-bg-warning { background-color: var(--lg-warning); }
+
+/* Border colors */
+.lg-border-default { border-color: var(--lg-border); }
+.lg-border-terminal { border-color: var(--lg-terminal); }
+.lg-border-terminal-dim { border-color: var(--lg-terminal-dim); }
+.lg-border-warning { border-color: var(--lg-warning); }
+
+
+/* ==========================================================================
+   SPACING UTILITIES
+   ========================================================================== */
+
+/* Padding */
+.lg-p-0 { padding: 0; }
+.lg-p-xs { padding: var(--lg-space-xs); }
+.lg-p-sm { padding: var(--lg-space-sm); }
+.lg-p-md { padding: var(--lg-space-md); }
+.lg-p-lg { padding: var(--lg-space-lg); }
+.lg-p-xl { padding: var(--lg-space-xl); }
+
+.lg-px-md { padding-left: var(--lg-space-md); padding-right: var(--lg-space-md); }
+.lg-py-md { padding-top: var(--lg-space-md); padding-bottom: var(--lg-space-md); }
+.lg-px-lg { padding-left: var(--lg-space-lg); padding-right: var(--lg-space-lg); }
+.lg-py-lg { padding-top: var(--lg-space-lg); padding-bottom: var(--lg-space-lg); }
+.lg-px-xl { padding-left: var(--lg-space-xl); padding-right: var(--lg-space-xl); }
+.lg-py-xl { padding-top: var(--lg-space-xl); padding-bottom: var(--lg-space-xl); }
+
+/* Margin */
+.lg-m-0 { margin: 0; }
+.lg-m-xs { margin: var(--lg-space-xs); }
+.lg-m-sm { margin: var(--lg-space-sm); }
+.lg-m-md { margin: var(--lg-space-md); }
+.lg-m-lg { margin: var(--lg-space-lg); }
+.lg-m-xl { margin: var(--lg-space-xl); }
+
+.lg-mb-sm { margin-bottom: var(--lg-space-sm); }
+.lg-mb-md { margin-bottom: var(--lg-space-md); }
+.lg-mb-lg { margin-bottom: var(--lg-space-lg); }
+.lg-mb-xl { margin-bottom: var(--lg-space-xl); }
+
+.lg-mt-sm { margin-top: var(--lg-space-sm); }
+.lg-mt-md { margin-top: var(--lg-space-md); }
+.lg-mt-lg { margin-top: var(--lg-space-lg); }
+.lg-mt-xl { margin-top: var(--lg-space-xl); }
+
+/* Gap */
+.lg-gap-sm { gap: var(--lg-space-sm); }
+.lg-gap-md { gap: var(--lg-space-md); }
+.lg-gap-lg { gap: var(--lg-space-lg); }
+.lg-gap-xl { gap: var(--lg-space-xl); }
+
+
+/* ==========================================================================
+   BORDER UTILITIES
+   ========================================================================== */
+
+.lg-border { border: var(--lg-border-width) solid var(--lg-border); }
+.lg-border-t { border-top: var(--lg-border-width) solid var(--lg-border); }
+.lg-border-b { border-bottom: var(--lg-border-width) solid var(--lg-border); }
+.lg-border-l { border-left: var(--lg-border-width) solid var(--lg-border); }
+.lg-border-r { border-right: var(--lg-border-width) solid var(--lg-border); }
+
+.lg-border-terminal { border: var(--lg-border-width) solid var(--lg-terminal); }
+.lg-border-2 { border-width: 2px; }
+
+
+/* ==========================================================================
+   EFFECT UTILITIES
+   ========================================================================== */
+
+/* Glow effects */
+.lg-glow {
+    text-shadow: var(--lg-glow-text);
+}
+
+.lg-glow-box {
+    box-shadow: var(--lg-shadow-terminal);
+}
+
+.lg-glow-strong {
+    text-shadow: var(--lg-glow-terminal);
+}
+
+/* Cursor blink */
+.lg-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background: var(--lg-terminal);
+    animation: lg-blink 1.2s step-end infinite;
+    vertical-align: middle;
+    margin-left: 0.2em;
+    box-shadow: 0 0 8px var(--lg-terminal), 0 0 2px var(--lg-terminal);
+}
+
+@keyframes lg-blink {
+    50% { opacity: 0; }
+}
+
+/* Flicker effect */
+.lg-flicker {
+    animation: lg-flicker 6s ease-in-out infinite;
+}
+
+@keyframes lg-flicker {
+    0%, 5%, 11%, 21%, 26%, 38%, 45%, 64%, 70%, 86%, 93%, 100% { 
+        opacity: 1; 
+    }
+    7%, 9% { opacity: 0.94; }
+    23%, 24% { opacity: 0.96; }
+    41%, 43% { opacity: 0.95; }
+    67%, 68% { opacity: 0.97; }
+    89%, 91% { opacity: 0.96; }
+}
+
+
+/* ==========================================================================
+   LAYOUT UTILITIES
+   ========================================================================== */
+
+.lg-flex { display: flex; }
+.lg-flex-col { flex-direction: column; }
+.lg-flex-wrap { flex-wrap: wrap; }
+.lg-items-center { align-items: center; }
+.lg-justify-center { justify-content: center; }
+.lg-justify-between { justify-content: space-between; }
+
+.lg-grid { display: grid; }
+.lg-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.lg-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.lg-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+.lg-max-w-text { max-width: var(--lg-max-width-text); }
+.lg-max-w-content { max-width: var(--lg-max-width-content); }
+.lg-max-w-wide { max-width: var(--lg-max-width-wide); }
+.lg-mx-auto { margin-left: auto; margin-right: auto; }
+
+
+/* ==========================================================================
+   COMPONENT: BUTTONS
+   ========================================================================== */
+
+.lg-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: var(--lg-border-width) solid var(--lg-text);
+    background: transparent;
+    color: var(--lg-text);
+    font-family: var(--lg-font-mono);
+    font-size: var(--lg-font-size-sm);
+    cursor: pointer;
+    transition: all var(--lg-transition-base);
+    text-decoration: none;
+    text-align: center;
+}
+
+.lg-btn:hover {
+    background: var(--lg-text);
+    color: var(--lg-void);
+}
+
+.lg-btn-terminal {
+    border-color: var(--lg-terminal);
+    color: var(--lg-terminal);
+}
+
+.lg-btn-terminal:hover {
+    background: var(--lg-terminal);
+    color: var(--lg-void);
+}
+
+.lg-btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: var(--lg-font-size-xs);
+}
+
+.lg-btn-lg {
+    padding: 1rem 2rem;
+    font-size: var(--lg-font-size-base);
+}
+
+
+/* ==========================================================================
+   COMPONENT: CARDS / BOXES
+   ========================================================================== */
+
+.lg-card {
+    background: var(--lg-void);
+    border: var(--lg-border-width) solid var(--lg-border);
+    padding: var(--lg-space-lg);
+}
+
+.lg-card-terminal {
+    border-color: var(--lg-terminal);
+    box-shadow: var(--lg-shadow-terminal);
+}
+
+.lg-card-warning {
+    border-color: var(--lg-warning);
+}
+
+
+/* ==========================================================================
+   COMPONENT: SECTION HEADER
+   ========================================================================== */
+
+.lg-section-label {
+    font-family: var(--lg-font-mono);
+    font-size: var(--lg-font-size-xs);
+    color: var(--lg-terminal);
+    letter-spacing: var(--lg-letter-spacing-wider);
+    margin-bottom: var(--lg-space-sm);
+}
+
+.lg-section-label::before {
+    content: '> ';
+}
+
+
+/* ==========================================================================
+   COMPONENT: CODE BLOCKS
+   ========================================================================== */
+
+.lg-code {
+    background: var(--lg-void-lighter);
+    padding: 0.2rem 0.5rem;
+    border: var(--lg-border-width) solid var(--lg-border);
+    font-family: var(--lg-font-mono);
+    font-size: 0.85em;
+    color: var(--lg-terminal);
+}
+
+.lg-code-block {
+    background: var(--lg-void-lighter);
+    border: var(--lg-border-width) solid var(--lg-border);
+    padding: var(--lg-space-lg);
+    font-family: var(--lg-font-mono);
+    font-size: var(--lg-font-size-sm);
+    overflow-x: auto;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================================
+   COMPONENT: TERMINAL BOX
+   ========================================================================== */
+
+.lg-terminal-box {
+    background: var(--lg-void);
+    border: var(--lg-border-width) solid var(--lg-terminal-dim);
+    box-shadow: 
+        0 0 0 1px rgba(51, 255, 0, 0.1),
+        0 0 30px rgba(51, 255, 0, 0.1),
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        inset 0 0 100px rgba(51, 255, 0, 0.02);
+    font-family: var(--lg-font-mono);
+}
+
+.lg-terminal-header {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: var(--lg-void-lighter);
+    border-bottom: var(--lg-border-width) solid var(--lg-border);
+    gap: 0.5rem;
+}
+
+.lg-terminal-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lg-terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.lg-terminal-btn-close { background: #ff5f56; }
+.lg-terminal-btn-minimize { background: #ffbd2e; }
+.lg-terminal-btn-maximize { background: #27ca40; }
+
+.lg-terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: var(--lg-font-size-xs);
+    color: var(--lg-text-dim);
+    letter-spacing: var(--lg-letter-spacing-wide);
+}
+
+.lg-terminal-body {
+    padding: var(--lg-space-lg);
+    min-height: 200px;
+}
+
+
+/* ==========================================================================
+   COMPONENT: DIVIDER
+   ========================================================================== */
+
+.lg-divider {
+    border: none;
+    border-top: var(--lg-border-width) solid var(--lg-border);
+    margin: var(--lg-space-3xl) 0;
+}
+
+
+/* ==========================================================================
+   COMPONENT: LINKS
+   ========================================================================== */
+
+.lg-link {
+    color: var(--lg-terminal);
+    text-decoration: none;
+    border-bottom: var(--lg-border-width) solid var(--lg-terminal-dim);
+    transition: all var(--lg-transition-base);
+}
+
+.lg-link:hover {
+    border-bottom-color: var(--lg-terminal);
+    text-shadow: var(--lg-glow-text);
+}
+
+
+/* ==========================================================================
+   COMPONENT: BADGES / TAGS
+   ========================================================================== */
+
+.lg-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-family: var(--lg-font-mono);
+    font-size: var(--lg-font-size-xs);
+    border: var(--lg-border-width) solid var(--lg-border);
+    color: var(--lg-text-dim);
+}
+
+.lg-badge-terminal {
+    border-color: var(--lg-terminal-dim);
+    color: var(--lg-terminal);
+}
+
+.lg-badge-warning {
+    border-color: var(--lg-warning);
+    color: var(--lg-warning);
+}
+
+
+/* ==========================================================================
+   COMPONENT: LISTS
+   ========================================================================== */
+
+.lg-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lg-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: var(--lg-space-sm);
+}
+
+.lg-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--lg-terminal);
+    font-family: var(--lg-font-mono);
+}
+
+
+/* ==========================================================================
+   RESPONSIVE UTILITIES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .lg-hide-mobile { display: none; }
+    
+    .lg-grid-2,
+    .lg-grid-3,
+    .lg-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .lg-text-2xl { font-size: var(--lg-font-size-xl); }
+    .lg-text-xl { font-size: var(--lg-font-size-lg); }
+}
+
+@media (min-width: 769px) {
+    .lg-hide-desktop { display: none; }
+}
+
+
+/* ==========================================================================
+   ANIMATION UTILITIES
+   ========================================================================== */
+
+.lg-animate-pulse {
+    animation: lg-pulse 2s infinite;
+}
+
+@keyframes lg-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.lg-transition {
+    transition: all var(--lg-transition-base);
+}
+
+.lg-transition-fast {
+    transition: all var(--lg-transition-fast);
+}
+
+.lg-transition-slow {
+    transition: all var(--lg-transition-slow);
+}
