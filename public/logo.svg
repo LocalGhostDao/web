@@ -1,0 +1,18 @@
+<svg width="550" height="250" viewBox="0 0 550 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="550" height="250" fill="#000000"/>
+  
+  <path d="M275 40C235 40 205 70 205 110V160L220 145L240 160L260 145L275 160L290 145L310 160L330 145L345 160V110C345 70 315 40 275 40Z" stroke="#33ff00" stroke-width="2"/>
+  
+  <circle cx="255" cy="90" r="3" fill="#33ff00"/>
+  <circle cx="295" cy="90" r="3" fill="#33ff00"/>
+
+  <text x="275" y="200" text-anchor="middle" font-family="monospace" font-size="32" font-weight="bold" fill="#33ff00" style="letter-spacing: 2px;">
+    LOCALGHOST.AI
+  </text>
+  
+  <text x="275" y="230" text-anchor="middle" font-family="monospace" font-size="14" fill="#33ff00" style="letter-spacing: 4px; opacity: 0.8;">
+    THE ONLY CLOUD IS YOU
+  </text>
+  
+  <text x="110" y="200" font-family="monospace" font-size="32" fill="#33ff00">></text>
+</svg>

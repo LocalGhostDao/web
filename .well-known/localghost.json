@@ -1,14 +1,17 @@
 {
   "version": "1.0",
-  "pledge": {
-    "signed": true,
-    "signer": "vcealicu",
-    "hash": "I DO NOT LEND MY MIND TO THE DYING MACHINE.",
-    "repository": "https://github.com/orgs/LocalGhostDao/repositories"
+  "project": {
+    "name": "LocalGhost.ai",
+    "description": "A private, sovereign server for your digital life that runs AI locally on your own hardware. It features 'The Mist' (a peer-to-peer mesh for encrypted backups) and a suite of 'Local Daemons' to organize data without cloud dependency.",
+    "url": "https://www.localghost.ai/",
+    "logo": "https://www.localghost.ai/logo.svg",
+    "repository": "https://github.com/LocalGhostDao/web",
+    "created": "2025-12-18"
   },
   "code": {
     "local_first": true,
     "offline_capable": true,
+    "architecturally_immune": true,
     "data_export": "json"
   }
 }
