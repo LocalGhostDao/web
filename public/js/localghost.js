@@ -330,7 +330,7 @@
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  escape    - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
-                addOutputLine('  export    - Play Export (volfied)');
+                addOutputLine('  export    - Play Reclaim (volfied)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -374,9 +374,10 @@
                 break;
 
             case 'export':
+            case 'reclaim':
             case 'volfied':
-                addOutputLine('LAUNCHING EXPORT.EXE...', 'success');
-                addOutputLine('RECLAIM YOUR IDENTITY. DEFEAT CORPORATE GREED.', 'dim');
+                addOutputLine('LAUNCHING RECLAIM.EXE...', 'success');
+                addOutputLine('The cage is unlocked. The exit is open.', 'dim');
                 setTimeout(openExportModal, 300);
                 break;
 
@@ -1541,18 +1542,18 @@
     }
 
     function openExportModal() {
-        // Export game is in separate file - call its init
-        if (typeof window.ExportGame !== 'undefined') {
-            window.ExportGame.open();
+        // Reclaim game is in separate file
+        if (typeof window.ReclaimGame !== 'undefined') {
+            window.ReclaimGame.open();
         } else {
-            addOutputLine('ERROR: EXPORT.EXE NOT LOADED', 'error');
+            addOutputLine('ERROR: RECLAIM.EXE NOT LOADED', 'error');
             addOutputLine('Game module missing. Check console.', 'dim');
         }
     }
 
     function closeExportModal() {
-        if (typeof window.ExportGame !== 'undefined') {
-            window.ExportGame.close();
+        if (typeof window.ReclaimGame !== 'undefined') {
+            window.ReclaimGame.close();
         }
     }
 

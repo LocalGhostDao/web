@@ -1240,7 +1240,7 @@
             outline: none;
         }
 
-        /* EXPORT GAME MODAL */
+        /* RECLAIM GAME MODAL */
         #exportModal .modal {
             max-width: 450px;
         }
@@ -1251,49 +1251,35 @@
 
         .export-subtitle {
             color: var(--text-dim);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 0.1em;
-            margin-bottom: 1rem;
-        }
-
-        .export-info {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .export-goal {
-            font-size: 0.8rem;
-            color: var(--terminal);
+            margin-bottom: 0.75rem;
         }
 
         #exportCanvas {
             display: block;
             margin: 0 auto;
-            border: 1px solid var(--terminal);
             background: #0a0a0a;
         }
 
         .export-feedback {
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-dim);
-            margin-top: 0.75rem;
-            min-height: 1.2rem;
+            margin-top: 0.6rem;
         }
 
         .export-controls {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-dim);
-            margin-top: 0.5rem;
-            letter-spacing: 0.03em;
+            margin-top: 0.4rem;
+            letter-spacing: 0.02em;
         }
 
         #gameCanvas {
             display: block;
             margin: 0 auto;
-            border: 1px solid var(--terminal);
             background: var(--void);
         }
 
@@ -2481,21 +2467,17 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         </div>
     </div>
 
-    <!-- EXPORT GAME MODAL -->
+    <!-- RECLAIM GAME MODAL -->
     <div id="exportModal" class="modal-overlay" tabindex="-1">
         <div class="modal export-modal">
             <button class="modal-close" onclick="LocalGhost.closeExportModal()">&times;</button>
-            <h3>&gt; EXPORT.EXE</h3>
-            <p class="export-subtitle">RECLAIM YOUR DATA FROM CORPORATE GREED</p>
-            
-            <div class="export-info">
-                <div class="export-goal">GOAL: Reclaim <span id="exportGoal">80%</span> of your data</div>
-            </div>
+            <h3>&gt; RECLAIM.EXE</h3>
+            <p class="export-subtitle">THE EXIT IS OPEN. TAKE BACK WHAT'S YOURS.</p>
             
             <canvas id="exportCanvas" width="400" height="400"></canvas>
             
             <div class="export-feedback" id="exportFeedback">
-                Move along the border. Hold SPACE + move to cut into stolen territory.
+                Move on green borders. Hold SPACE + direction to cut. Reclaim 80% to exit.
             </div>
             <div class="export-controls">
                 ARROWS/WASD move | HOLD SPACE to cut | P pause | R restart | ESC exit
@@ -2520,6 +2502,6 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
     <!-- External JavaScript -->
     <script src="/js/localghost.js"></script>
-    <script src="/js/export.js"></script>
+    <script src="/js/reclaim.js"></script>
 </body>
 </html>
