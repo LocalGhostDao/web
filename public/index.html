@@ -1232,7 +1232,7 @@
         /* SNAKE GAME MODAL */
         #gameModal .modal {
             max-width: 450px;
-            transition: box-shadow 0.3s ease, filter 0.1s ease, transform 0.1s ease;
+            transition: box-shadow 0.3s ease, transform 0.1s ease;
         }
 
         #gameModal:focus {
@@ -1250,30 +1250,24 @@
 
         @keyframes fireFlicker {
             0% {
-                filter: brightness(1);
                 transform: translateY(0);
             }
             100% {
-                filter: brightness(1.08);
                 transform: translateY(-1px);
             }
         }
 
         @keyframes fireFlickerIntense {
             0% {
-                filter: brightness(1) saturate(1);
                 transform: translateY(0) scale(1);
             }
             33% {
-                filter: brightness(1.15) saturate(1.1);
                 transform: translateY(-2px) scale(1.002);
             }
             66% {
-                filter: brightness(1.05) saturate(1.05);
                 transform: translateY(-1px) scale(1.001);
             }
             100% {
-                filter: brightness(1.2) saturate(1.15);
                 transform: translateY(-3px) scale(1.003);
             }
         }
