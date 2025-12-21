@@ -1235,6 +1235,10 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        #gameModal:focus {
+            outline: none;
+        }
+
         #gameCanvas {
             display: block;
             margin: 0 auto;
@@ -2388,7 +2392,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     </div>
 
     <!-- SNAKE GAME MODAL -->
-    <div id="gameModal" class="modal-overlay">
+    <div id="gameModal" class="modal-overlay" tabindex="-1">
         <div class="modal">
             <button class="modal-close" onclick="LocalGhost.closeGameModal()">&times;</button>
             <h3>&gt; THE_SHADOW.EXE</h3>

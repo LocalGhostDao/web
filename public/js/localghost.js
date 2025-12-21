@@ -1245,6 +1245,7 @@
             // But allow arrow keys to blur and start game
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
                 activeEl.blur();
+                elements.gameModal.focus();
             } else {
                 return;
             }
@@ -1284,6 +1285,7 @@
                 break;
             case 'r':
                 initGame();
+                elements.gameModal.focus();
                 e.preventDefault();
                 break;
             case 'h':
@@ -1331,9 +1333,13 @@
     function openGameModal() {
         elements.gameModal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        // Blur terminal input so keystrokes go to game
+        // Clear and blur terminal input so keystrokes go to game
+        elements.terminalInput.value = '';
+        elements.inputMirror.textContent = '';
         elements.terminalInput.blur();
         initGame();
+        // Focus the modal itself to capture key events
+        elements.gameModal.focus();
     }
 
     function closeGameModal() {
@@ -1435,6 +1441,9 @@
     function setupEventListeners() {
         // Terminal input
         elements.terminalInput.addEventListener('keydown', (e) => {
+            // Ignore if game modal is open
+            if (elements.gameModal.classList.contains('active')) return;
+            
             if (e.key === 'Enter') {
                 const command = elements.terminalInput.value.trim().toLowerCase();
                 processCommand(command);
@@ -1444,6 +1453,9 @@
         });
 
         elements.terminalInput.addEventListener('input', () => {
+            // Ignore if game modal is open
+            if (elements.gameModal.classList.contains('active')) return;
+            
             elements.inputMirror.textContent = elements.terminalInput.value;
         });
 
@@ -1458,15 +1470,27 @@
         });
 
         elements.heroTerminal.addEventListener('click', () => {
-            if (terminalState.introComplete) elements.terminalInput.focus();
+            if (terminalState.introComplete && !elements.gameModal.classList.contains('active')) {
+                elements.terminalInput.focus();
+            }
         });
 
         elements.inputLine.addEventListener('click', () => {
-            elements.terminalInput.focus();
+            if (!elements.gameModal.classList.contains('active')) {
+                elements.terminalInput.focus();
+            }
         });
 
         // Game input
         document.addEventListener('keydown', handleGameInput);
+
+        // Game modal focus management
+        elements.gameModal.addEventListener('click', (e) => {
+            // Don't steal focus if clicking on the name input
+            if (e.target !== elements.playerNameInput) {
+                elements.gameModal.focus();
+            }
+        });
 
         // Player name input
         if (elements.playerNameInput) {
@@ -1475,10 +1499,12 @@
                 localStorage.setItem('localghost_player_name', gameState.playerName);
             });
             
-            // Blur input when Enter is pressed so game controls work
+            // Tab or Enter exits input and focuses game
             elements.playerNameInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' || e.key === 'Tab') {
+                    e.preventDefault();
                     elements.playerNameInput.blur();
+                    elements.gameModal.focus();
                 }
             });
         }
