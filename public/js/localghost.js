@@ -1242,7 +1242,12 @@
         // Don't handle game controls if typing in any input field
         const activeEl = document.activeElement;
         if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
-            return;
+            // But allow arrow keys to blur and start game
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                activeEl.blur();
+            } else {
+                return;
+            }
         }
 
         switch (e.key.toLowerCase()) {
@@ -1326,6 +1331,8 @@
     function openGameModal() {
         elements.gameModal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        // Blur terminal input so keystrokes go to game
+        elements.terminalInput.blur();
         initGame();
     }
 
@@ -1335,6 +1342,8 @@
         gameState.running = false;
         if (gameState.loop) clearInterval(gameState.loop);
         resetBorderColor();
+        // Return focus to terminal
+        elements.terminalInput.focus();
     }
 
     function closeAllModals() {
