@@ -1232,11 +1232,41 @@
         /* SNAKE GAME MODAL */
         #gameModal .modal {
             max-width: 450px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.5s ease;
         }
 
         #gameModal:focus {
             outline: none;
+        }
+
+        /* Fire animation effects */
+        #gameModal .modal.fire-medium {
+            animation: fireFlicker 0.15s ease-in-out infinite alternate;
+        }
+
+        #gameModal .modal.fire-intense {
+            animation: fireFlickerIntense 0.1s ease-in-out infinite alternate;
+        }
+
+        @keyframes fireFlicker {
+            0% {
+                filter: brightness(1);
+            }
+            100% {
+                filter: brightness(1.05);
+            }
+        }
+
+        @keyframes fireFlickerIntense {
+            0% {
+                filter: brightness(1) drop-shadow(0 -5px 10px rgba(51, 255, 0, 0.3));
+            }
+            50% {
+                filter: brightness(1.1) drop-shadow(0 -8px 15px rgba(100, 255, 50, 0.4));
+            }
+            100% {
+                filter: brightness(1.05) drop-shadow(0 -3px 8px rgba(51, 255, 0, 0.35));
+            }
         }
 
         #gameCanvas {

@@ -15,19 +15,7 @@
         gridSize: 20,
         gameSpeed: 100,
         highScoreThreshold: 4,
-        borderColors: [
-            '#33FF00',  // 0-10: terminal green
-            '#4ECDC4',  // 10-20: teal
-            '#45B7D1',  // 20-30: cyan
-            '#96E6A1',  // 30-40: light green
-            '#DDA0DD',  // 40-50: plum
-            '#FFE66D',  // 50-60: gold
-            '#FF8B94',  // 60-70: coral
-            '#F4A460',  // 70-80: sandy
-            '#FF6B6B',  // 80-90: red
-            '#FF00FF',  // 90-100: magenta
-            '#FFFFFF',  // 100+: white (ascended)
-        ]
+        maxFireScore: 60  // Score at which fire is at maximum intensity
     };
 
     const introLines = [
@@ -984,7 +972,7 @@
         };
         gameState.highScores.push(entry);
         gameState.highScores.sort((a, b) => b.score - a.score);
-        gameState.highScores = gameState.highScores.slice(0, 10);
+        gameState.highScores = gameState.highScores.slice(0, 5);
         localStorage.setItem('localghost_shadow_scores', JSON.stringify(gameState.highScores));
         renderHighScores();
     }
@@ -1007,20 +995,77 @@
             .join('');
     }
 
-    function updateBorderColor() {
+    function updateFireEffect() {
         if (!elements.gameModalContent) return;
         
-        const colorIndex = Math.min(Math.floor(gameState.score / 10), CONFIG.borderColors.length - 1);
-        const color = CONFIG.borderColors[colorIndex];
+        const score = gameState.score;
+        const maxScore = CONFIG.maxFireScore;
         
-        elements.gameModalContent.style.borderColor = color;
-        elements.gameModalContent.style.boxShadow = `0 0 20px ${color}40, 0 0 40px ${color}20`;
+        // Calculate intensity (0 to 1)
+        // Before 10: barely noticeable (0 to 0.15)
+        // 10 to 60: gradual increase (0.15 to 1)
+        let intensity;
+        if (score < 10) {
+            intensity = (score / 10) * 0.15; // 0 to 0.15
+        } else {
+            intensity = 0.15 + ((Math.min(score, maxScore) - 10) / (maxScore - 10)) * 0.85; // 0.15 to 1
+        }
+        
+        // Base glow that increases
+        const glowSize1 = Math.floor(5 + intensity * 25);
+        const glowSize2 = Math.floor(10 + intensity * 40);
+        const glowSize3 = Math.floor(15 + intensity * 60);
+        
+        // Opacity increases with intensity
+        const opacity1 = (0.2 + intensity * 0.6).toFixed(2);
+        const opacity2 = (0.1 + intensity * 0.4).toFixed(2);
+        const opacity3 = (0.05 + intensity * 0.25).toFixed(2);
+        
+        // Create layered green fire glow
+        const shadows = [
+            `0 0 ${glowSize1}px rgba(51, 255, 0, ${opacity1})`,
+            `0 0 ${glowSize2}px rgba(0, 255, 100, ${opacity2})`,
+            `0 0 ${glowSize3}px rgba(100, 255, 50, ${opacity3})`,
+            `inset 0 0 ${Math.floor(intensity * 15)}px rgba(51, 255, 0, ${(intensity * 0.3).toFixed(2)})`
+        ];
+        
+        // Add flickering flame particles at higher intensities
+        if (intensity > 0.3) {
+            const flameCount = Math.floor((intensity - 0.3) * 10);
+            for (let i = 0; i < flameCount; i++) {
+                const angle = (i / flameCount) * 360;
+                const distance = glowSize2 + Math.random() * 10;
+                const size = 3 + Math.random() * 5 * intensity;
+                const xOff = Math.cos(angle * Math.PI / 180) * distance;
+                const yOff = Math.sin(angle * Math.PI / 180) * distance;
+                shadows.push(`${xOff}px ${yOff}px ${size}px rgba(51, 255, 0, ${(0.3 + Math.random() * 0.4).toFixed(2)})`);
+            }
+        }
+        
+        // Border color intensifies
+        const borderBrightness = Math.floor(51 + intensity * 50);
+        const borderColor = `rgb(${borderBrightness}, 255, 0)`;
+        
+        elements.gameModalContent.style.borderColor = borderColor;
+        elements.gameModalContent.style.boxShadow = shadows.join(', ');
+        
+        // Add fire animation class at higher intensities
+        if (intensity > 0.5) {
+            elements.gameModalContent.classList.add('fire-intense');
+            elements.gameModalContent.classList.remove('fire-medium');
+        } else if (intensity > 0.25) {
+            elements.gameModalContent.classList.add('fire-medium');
+            elements.gameModalContent.classList.remove('fire-intense');
+        } else {
+            elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
+        }
     }
 
-    function resetBorderColor() {
+    function resetFireEffect() {
         if (!elements.gameModalContent) return;
         elements.gameModalContent.style.borderColor = '';
         elements.gameModalContent.style.boxShadow = '';
+        elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
     }
 
     function toggleLeaderboard() {
@@ -1065,7 +1110,7 @@
         }
 
         // Reset border color and hide leaderboard overlay
-        resetBorderColor();
+        resetFireEffect();
         gameState.leaderboardVisible = false;
         gameState.pausedByLeaderboard = false;
         if (elements.gameLeaderboard) {
@@ -1146,7 +1191,7 @@
             elements.gameFeedback.textContent = getRandomFeedback(gameState.food.type.category);
 
             // Update border color based on new score
-            updateBorderColor();
+            updateFireEffect();
 
             placeFood();
         } else {
@@ -1347,7 +1392,7 @@
         document.body.style.overflow = '';
         gameState.running = false;
         if (gameState.loop) clearInterval(gameState.loop);
-        resetBorderColor();
+        resetFireEffect();
         // Return focus to terminal
         elements.terminalInput.focus();
     }
