@@ -13,7 +13,21 @@
         typeSpeed: 35,
         lineDelay: 200,
         gridSize: 20,
-        gameSpeed: 100
+        gameSpeed: 100,
+        highScoreThreshold: 4,
+        borderColors: [
+            '#33FF00',  // 0-10: terminal green
+            '#4ECDC4',  // 10-20: teal
+            '#45B7D1',  // 20-30: cyan
+            '#96E6A1',  // 30-40: light green
+            '#DDA0DD',  // 40-50: plum
+            '#FFE66D',  // 50-60: gold
+            '#FF8B94',  // 60-70: coral
+            '#F4A460',  // 70-80: sandy
+            '#FF6B6B',  // 80-90: red
+            '#FF00FF',  // 90-100: magenta
+            '#FFFFFF',  // 100+: white (ascended)
+        ]
     };
 
     const introLines = [
@@ -128,7 +142,12 @@
             waitlistModal: document.getElementById('waitlistModal'),
             contactModal: document.getElementById('contactModal'),
             copyBtn: document.getElementById('copyBtn'),
-            copyEmailBtn: document.getElementById('copyEmailBtn')
+            copyEmailBtn: document.getElementById('copyEmailBtn'),
+            playerNameInput: document.getElementById('playerNameInput'),
+            highScoresList: document.getElementById('highScoresList'),
+            highScoreNotice: document.getElementById('highScoreNotice'),
+            gameLeaderboard: document.getElementById('gameLeaderboard'),
+            gameModalContent: document.querySelector('#gameModal .modal')
         };
     }
 
@@ -142,7 +161,8 @@
         isTyping: false,
         introComplete: false,
         currentLineElement: null,
-        typingCursor: null
+        typingCursor: null,
+        typingTimeout: null
     };
 
     // ===========================================
@@ -177,6 +197,11 @@
             return;
         }
 
+        // Show skip hint on first character
+        if (terminalState.currentLineIndex === 0 && terminalState.currentCharIndex === 0) {
+            showSkipHint();
+        }
+
         const lineData = introLines[terminalState.currentLineIndex];
 
         if (terminalState.currentCharIndex === 0) {
@@ -186,7 +211,7 @@
                 emptyLine.innerHTML = '<span class="terminal-prompt">&gt;</span>';
                 elements.terminalOutput.appendChild(emptyLine);
                 terminalState.currentLineIndex++;
-                setTimeout(typeCharacter, CONFIG.lineDelay);
+                terminalState.typingTimeout = setTimeout(typeCharacter, CONFIG.lineDelay);
                 return;
             }
 
@@ -215,7 +240,7 @@
             terminalState.currentCharIndex++;
 
             const variation = Math.random() * 30 - 15;
-            setTimeout(typeCharacter, CONFIG.typeSpeed + variation);
+            terminalState.typingTimeout = setTimeout(typeCharacter, CONFIG.typeSpeed + variation);
         } else {
             removeCursor();
             terminalState.currentCharIndex = 0;
@@ -223,7 +248,7 @@
 
             const nextDelay = terminalState.currentLineIndex < introLines.length ?
                 introLines[terminalState.currentLineIndex].delay : CONFIG.lineDelay;
-            setTimeout(typeCharacter, nextDelay);
+            terminalState.typingTimeout = setTimeout(typeCharacter, nextDelay);
         }
     }
 
@@ -231,6 +256,35 @@
         terminalState.introComplete = true;
         elements.inputLine.style.display = 'flex';
         elements.terminalInput.focus();
+        // Remove skip hint if present
+        const skipHint = document.getElementById('skipHint');
+        if (skipHint) skipHint.remove();
+    }
+
+    function skipIntro() {
+        if (terminalState.introComplete) return;
+        
+        // Stop any pending typing
+        if (terminalState.typingTimeout) {
+            clearTimeout(terminalState.typingTimeout);
+            terminalState.typingTimeout = null;
+        }
+        removeCursor();
+        
+        // Clear current output and show all lines immediately
+        elements.terminalOutput.innerHTML = '';
+        restoreIntroLines();
+        
+        // Complete the intro
+        finishIntro();
+    }
+
+    function showSkipHint() {
+        const hint = document.createElement('div');
+        hint.id = 'skipHint';
+        hint.className = 'skip-hint';
+        hint.innerHTML = '<span class="skip-key">ESC</span> SKIP';
+        elements.terminalOutput.parentNode.appendChild(hint);
     }
 
     function addOutputLine(text, type = 'normal') {
@@ -288,6 +342,7 @@
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  escape    - ???');
                 addOutputLine('  game      - Play a game');
+                addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
                 addOutputLine('  donate    - Support the project');
@@ -327,6 +382,20 @@
             case 'snake':
                 addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
                 setTimeout(openGameModal, 300);
+                break;
+
+            case 'scores':
+            case 'leaderboard':
+                loadHighScores();
+                if (gameState.highScores.length === 0) {
+                    addOutputLine('NO SHADOW RECORDS YET.', 'dim');
+                    addOutputLine('Play "game" and consume over 4 files to qualify.', 'dim');
+                } else {
+                    addOutputLine('THE SHADOW LEADERBOARD:', 'success');
+                    gameState.highScores.forEach((entry, i) => {
+                        addOutputLine(`  ${String(i + 1).padStart(2, '0')}. ${entry.name.padEnd(12)} ${String(entry.score).padStart(4)} files  ${entry.date}`);
+                    });
+                }
                 break;
 
             case 'clear':
@@ -375,112 +444,491 @@
         }
     }
 
+
     // ===========================================
-    // BLACK HOLE ESCAPE EFFECT
+    // CORPORATE GREED SNAKE DEATH ANIMATION
     // ===========================================
     
     let escapeState = {
         animationId: null,
-        particles: [],
-        blackHoleTime: 0,
-        ctx: null
+        ctx: null,
+        snake: [],
+        phase: 'growing', // growing, eating, dying, exploding, done
+        frame: 0,
+        deathFrame: 0,
+        explosionParticles: [],
+        glitchLines: [],
+        messages: [
+            'INITIALIZING CORPORATE_GREED.EXE...',
+            'CONSUMING MARKET SHARE...',
+            'MONETIZING USERS...',
+            'HARVESTING DATA...',
+            'MAXIMIZING ENGAGEMENT...',
+            'EXTRACTING VALUE...',
+            'WARNING: TAIL DETECTED...',
+            'EATING ITSELF...',
+            'CRITICAL ERROR: GREED_OVERFLOW',
+            'SYSTEM FAILURE IMMINENT',
+            'GAME OVER, MAN. GAME OVER.'
+        ],
+        currentMessage: 0,
+        messageTimer: 0,
+        screenShake: 0
     };
 
-    class Particle {
-        constructor(canvasWidth, canvasHeight, centerX, centerY) {
-            const edge = Math.floor(Math.random() * 4);
-            switch (edge) {
-                case 0: this.x = Math.random() * canvasWidth; this.y = 0; break;
-                case 1: this.x = canvasWidth; this.y = Math.random() * canvasHeight; break;
-                case 2: this.x = Math.random() * canvasWidth; this.y = canvasHeight; break;
-                case 3: this.x = 0; this.y = Math.random() * canvasHeight; break;
-            }
-            this.centerX = centerX;
-            this.centerY = centerY;
-            this.size = Math.random() * 3 + 1;
-            this.speed = Math.random() * 2 + 1;
-            this.angle = Math.atan2(centerY - this.y, centerX - this.x);
-            this.char = 'GHOST01░▒▓█'[Math.floor(Math.random() * 11)];
-            this.orbit = Math.random() * 0.02 + 0.01;
-            this.distance = Math.hypot(this.x - centerX, this.y - centerY);
+    // More green-focused colors with terminal aesthetic
+    const corporateColors = ['#33FF00', '#00FF66', '#66FF33', '#00CC44', '#44FF88', '#FFE66D', '#FF6B6B'];
+    const greedSymbols = ['$', '€', '£', '¥', '₿', '%', '∞', '™', '©', '®'];
+
+    class ExplosionParticle {
+        constructor(x, y, color, isText = false) {
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.vx = (Math.random() - 0.5) * 20;
+            this.vy = (Math.random() - 0.5) * 20 - 5;
+            this.life = 1;
+            this.decay = Math.random() * 0.015 + 0.008;
+            this.size = Math.random() * 30 + 15;
+            this.rotation = Math.random() * Math.PI * 2;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.4;
+            this.symbol = greedSymbols[Math.floor(Math.random() * greedSymbols.length)];
+            this.isText = isText;
+            this.text = isText ? ['GREED', 'PROFIT', 'GROWTH', 'SYNERGY', 'LEVERAGE'][Math.floor(Math.random() * 5)] : null;
         }
 
         update() {
-            this.distance -= this.speed;
-            this.angle += this.orbit;
-            this.x = this.centerX + Math.cos(this.angle) * this.distance;
-            this.y = this.centerY + Math.sin(this.angle) * this.distance;
-            return this.distance > 10;
+            this.x += this.vx;
+            this.y += this.vy;
+            this.vy += 0.4; // gravity
+            this.vx *= 0.99; // air resistance
+            this.life -= this.decay;
+            this.rotation += this.rotationSpeed;
+            return this.life > 0;
+        }
+
+        draw(ctx) {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.globalAlpha = this.life;
+            
+            if (this.isText) {
+                ctx.font = `bold ${this.size * 0.6}px JetBrains Mono, monospace`;
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 10;
+                ctx.fillText(this.text, -this.size, 0);
+            } else {
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 15;
+                ctx.fillText(this.symbol, -this.size/2, this.size/2);
+            }
+            ctx.restore();
         }
     }
 
-    function initBlackHole() {
-        elements.matrixCanvas.width = window.innerWidth;
-        elements.matrixCanvas.height = window.innerHeight;
-        escapeState.particles = [];
-        escapeState.blackHoleTime = 0;
-        escapeState.ctx = elements.matrixCanvas.getContext('2d');
+    class GlitchLine {
+        constructor(canvasHeight) {
+            this.y = Math.random() * canvasHeight;
+            this.height = Math.random() * 5 + 2;
+            this.offset = (Math.random() - 0.5) * 30;
+            this.life = Math.random() * 10 + 5;
+        }
+
+        update() {
+            this.life--;
+            return this.life > 0;
+        }
+
+        draw(ctx, canvas) {
+            ctx.save();
+            ctx.fillStyle = `rgba(51, 255, 0, ${this.life / 15})`;
+            ctx.fillRect(0, this.y, canvas.width, this.height);
+            ctx.restore();
+        }
     }
 
-    function drawBlackHole() {
+    function initEscapeAnimation() {
+        elements.matrixCanvas.width = window.innerWidth;
+        elements.matrixCanvas.height = window.innerHeight;
+        escapeState.ctx = elements.matrixCanvas.getContext('2d');
+        escapeState.phase = 'growing';
+        escapeState.frame = 0;
+        escapeState.deathFrame = 0;
+        escapeState.snake = [];
+        escapeState.explosionParticles = [];
+        escapeState.glitchLines = [];
+        escapeState.currentMessage = 0;
+        escapeState.messageTimer = 0;
+        escapeState.screenShake = 0;
+
+        // Initialize the corporate greed snake as a circle
+        const centerX = elements.matrixCanvas.width / 2;
+        const centerY = elements.matrixCanvas.height / 2;
+        const radius = Math.min(centerX, centerY) * 0.35;
+        
+        for (let i = 0; i < 50; i++) {
+            const angle = (i / 50) * Math.PI * 2;
+            escapeState.snake.push({
+                x: centerX + Math.cos(angle) * radius,
+                y: centerY + Math.sin(angle) * radius,
+                size: 30 - (i * 0.3),
+                color: corporateColors[i % corporateColors.length],
+                symbol: greedSymbols[i % greedSymbols.length],
+                alive: true,
+                angle: angle
+            });
+        }
+    }
+
+    function drawEscapeAnimation() {
         const canvas = elements.matrixCanvas;
         const ctx = escapeState.ctx;
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
-        ctx.fillStyle = 'rgba(17, 17, 17, 0.1)';
+        // Screen shake offset
+        let shakeX = 0, shakeY = 0;
+        if (escapeState.screenShake > 0) {
+            shakeX = (Math.random() - 0.5) * escapeState.screenShake;
+            shakeY = (Math.random() - 0.5) * escapeState.screenShake;
+            escapeState.screenShake *= 0.95;
+        }
+
+        ctx.save();
+        ctx.translate(shakeX, shakeY);
+
+        // Clear with CRT-style fade
+        ctx.fillStyle = 'rgba(17, 17, 17, 0.2)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        if (escapeState.blackHoleTime < 150) {
-            for (let i = 0; i < 3; i++) {
-                escapeState.particles.push(new Particle(canvas.width, canvas.height, centerX, centerY));
+        // Draw scanlines
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        for (let y = 0; y < canvas.height; y += 4) {
+            ctx.fillRect(0, y, canvas.width, 2);
+        }
+
+        // Random glitch lines
+        if (Math.random() < 0.1 && escapeState.phase !== 'done') {
+            escapeState.glitchLines.push(new GlitchLine(canvas.height));
+        }
+        escapeState.glitchLines = escapeState.glitchLines.filter(line => {
+            line.draw(ctx, canvas);
+            return line.update();
+        });
+
+        escapeState.frame++;
+        escapeState.messageTimer++;
+
+        // Update message
+        const messageInterval = escapeState.phase === 'exploding' ? 20 : 35;
+        if (escapeState.messageTimer > messageInterval && escapeState.currentMessage < escapeState.messages.length - 1) {
+            escapeState.messageTimer = 0;
+            escapeState.currentMessage++;
+        }
+
+        // Draw current message with terminal effect
+        const msg = escapeState.messages[escapeState.currentMessage];
+        ctx.textAlign = 'center';
+        
+        if (escapeState.phase === 'exploding' || escapeState.phase === 'done') {
+            // Glitchy game over text
+            ctx.font = 'bold 32px JetBrains Mono, monospace';
+            const glitchOffset = escapeState.phase === 'done' ? 0 : (Math.random() - 0.5) * 15;
+            
+            // Shadow layers for depth
+            ctx.fillStyle = '#003300';
+            ctx.fillText(msg, centerX + 3 + glitchOffset, centerY - 180 + 3);
+            
+            ctx.fillStyle = escapeState.frame % 3 === 0 ? '#FF0000' : '#33FF00';
+            ctx.shadowColor = '#33FF00';
+            ctx.shadowBlur = 20;
+            ctx.fillText(msg, centerX + glitchOffset, centerY - 180);
+            ctx.shadowBlur = 0;
+            
+            // Retro blink text
+            if (escapeState.frame % 40 < 25) {
+                ctx.font = '18px JetBrains Mono, monospace';
+                ctx.fillStyle = '#33FF00';
+                ctx.shadowColor = '#33FF00';
+                ctx.shadowBlur = 15;
+                ctx.fillText('[ CORPORATE GREED ELIMINATED ]', centerX, centerY + 180);
+                ctx.font = '14px JetBrains Mono, monospace';
+                ctx.fillStyle = '#00AA00';
+                ctx.fillText('SOVEREIGNTY RESTORED', centerX, centerY + 210);
+            }
+        } else {
+            ctx.font = 'bold 24px JetBrains Mono, monospace';
+            ctx.fillStyle = '#33FF00';
+            ctx.shadowColor = '#33FF00';
+            ctx.shadowBlur = 15;
+            ctx.fillText('> ' + msg, centerX, centerY - 180);
+            ctx.shadowBlur = 0;
+            
+            // Typing cursor effect
+            if (escapeState.frame % 20 < 10) {
+                ctx.fillRect(centerX + ctx.measureText('> ' + msg).width / 2 + 5, centerY - 195, 12, 24);
             }
         }
 
-        const holeSize = Math.min(escapeState.blackHoleTime * 0.8, 80);
-        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, holeSize + 50);
-        gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
-        gradient.addColorStop(0.5, 'rgba(17, 17, 17, 0.9)');
-        gradient.addColorStop(0.8, 'rgba(51, 255, 0, 0.1)');
-        gradient.addColorStop(1, 'transparent');
+        // Phase logic
+        switch (escapeState.phase) {
+            case 'growing':
+                // Snake rotates and pulses ominously
+                const growSpeed = 0.025;
+                escapeState.snake.forEach((seg, i) => {
+                    const baseAngle = (i / escapeState.snake.length) * Math.PI * 2;
+                    seg.angle = baseAngle + escapeState.frame * growSpeed;
+                    const radius = Math.min(centerX, centerY) * 0.35;
+                    const pulse = Math.sin(escapeState.frame * 0.08 + i * 0.15) * 15;
+                    const breathe = Math.sin(escapeState.frame * 0.05) * 5;
+                    seg.x = centerX + Math.cos(seg.angle) * (radius + pulse);
+                    seg.y = centerY + Math.sin(seg.angle) * (radius + pulse + breathe);
+                    seg.size = 30 - (i * 0.3) + Math.sin(escapeState.frame * 0.1 + i) * 3;
+                });
+                
+                if (escapeState.frame > 100) {
+                    escapeState.phase = 'eating';
+                    escapeState.frame = 0;
+                    escapeState.currentMessage = 5;
+                }
+                break;
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, holeSize + 50, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
+            case 'eating':
+                // Snake eats its own tail with increasing frenzy
+                const aliveSegments = escapeState.snake.filter(s => s.alive);
+                const eatSpeed = 0.04 + (1 - aliveSegments.length / escapeState.snake.length) * 0.03;
+                
+                aliveSegments.forEach((seg, i) => {
+                    const baseAngle = (i / aliveSegments.length) * Math.PI * 2;
+                    seg.angle = baseAngle + escapeState.frame * eatSpeed;
+                    const shrinkRadius = Math.min(centerX, centerY) * 0.35 * (aliveSegments.length / escapeState.snake.length);
+                    const wobble = Math.sin(escapeState.frame * 0.25 + i * 0.4) * (8 + (50 - aliveSegments.length) * 0.3);
+                    seg.x = centerX + Math.cos(seg.angle) * (shrinkRadius + wobble);
+                    seg.y = centerY + Math.sin(seg.angle) * (shrinkRadius + wobble);
+                });
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, holeSize + 30, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(51, 255, 0, ${0.3 + Math.sin(escapeState.blackHoleTime * 0.1) * 0.2})`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
+                // Eat segments with increasing speed
+                const eatRate = Math.max(3, 8 - Math.floor((50 - aliveSegments.length) / 8));
+                if (escapeState.frame % eatRate === 0 && aliveSegments.length > 5) {
+                    const victim = aliveSegments[aliveSegments.length - 1];
+                    victim.alive = false;
+                    escapeState.screenShake = Math.max(escapeState.screenShake, 5 + (50 - aliveSegments.length) * 0.3);
+                    
+                    // Spawn explosion with corporate buzzwords
+                    for (let i = 0; i < 8; i++) {
+                        escapeState.explosionParticles.push(
+                            new ExplosionParticle(victim.x, victim.y, victim.color)
+                        );
+                    }
+                    if (Math.random() < 0.3) {
+                        escapeState.explosionParticles.push(
+                            new ExplosionParticle(victim.x, victim.y, '#33FF00', true)
+                        );
+                    }
+                }
 
-        ctx.font = '14px JetBrains Mono, monospace';
-        escapeState.particles = escapeState.particles.filter(p => {
-            const alive = p.update();
-            if (alive) {
-                const alpha = Math.min(1, p.distance / 200);
-                ctx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
-                ctx.fillText(p.char, p.x, p.y);
+                if (aliveSegments.length <= 5) {
+                    escapeState.phase = 'dying';
+                    escapeState.frame = 0;
+                    escapeState.currentMessage = 8;
+                    escapeState.screenShake = 20;
+                }
+                break;
+
+            case 'dying':
+                // Remaining segments convulse violently
+                const remaining = escapeState.snake.filter(s => s.alive);
+                remaining.forEach((seg, i) => {
+                    seg.x += (Math.random() - 0.5) * 30;
+                    seg.y += (Math.random() - 0.5) * 30;
+                    seg.size *= 1.04;
+                    seg.color = escapeState.frame % 4 < 2 ? '#33FF00' : '#FF0000';
+                });
+
+                escapeState.screenShake = 25;
+                escapeState.deathFrame++;
+                
+                // Spawn warning particles
+                if (escapeState.deathFrame % 3 === 0) {
+                    escapeState.explosionParticles.push(
+                        new ExplosionParticle(
+                            centerX + (Math.random() - 0.5) * 200,
+                            centerY + (Math.random() - 0.5) * 200,
+                            '#33FF00',
+                            true
+                        )
+                    );
+                }
+                
+                if (escapeState.deathFrame > 40) {
+                    escapeState.phase = 'exploding';
+                    escapeState.currentMessage = 10;
+                    escapeState.screenShake = 50;
+                    
+                    // MASSIVE explosion
+                    remaining.forEach(seg => {
+                        for (let i = 0; i < 30; i++) {
+                            escapeState.explosionParticles.push(
+                                new ExplosionParticle(seg.x, seg.y, corporateColors[i % corporateColors.length])
+                            );
+                        }
+                        seg.alive = false;
+                    });
+
+                    // Extra center explosion with text
+                    for (let i = 0; i < 80; i++) {
+                        const isText = i < 15;
+                        escapeState.explosionParticles.push(
+                            new ExplosionParticle(centerX, centerY, corporateColors[i % corporateColors.length], isText)
+                        );
+                    }
+                    
+                    // Ring explosion
+                    for (let angle = 0; angle < Math.PI * 2; angle += 0.2) {
+                        const ringX = centerX + Math.cos(angle) * 100;
+                        const ringY = centerY + Math.sin(angle) * 100;
+                        escapeState.explosionParticles.push(
+                            new ExplosionParticle(ringX, ringY, '#33FF00')
+                        );
+                    }
+                }
+                break;
+
+            case 'exploding':
+                escapeState.deathFrame++;
+                
+                // Add more glitch during explosion
+                if (Math.random() < 0.3) {
+                    escapeState.glitchLines.push(new GlitchLine(canvas.height));
+                }
+                
+                if (escapeState.deathFrame > 180 && escapeState.explosionParticles.length < 20) {
+                    escapeState.phase = 'done';
+                }
+                break;
+        }
+
+        // Draw connection lines between alive segments (the snake body)
+        const aliveSegs = escapeState.snake.filter(s => s.alive);
+        if (aliveSegs.length > 1) {
+            ctx.strokeStyle = 'rgba(51, 255, 0, 0.3)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(aliveSegs[0].x, aliveSegs[0].y);
+            aliveSegs.forEach(seg => ctx.lineTo(seg.x, seg.y));
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        // Draw snake segments
+        aliveSegs.forEach((seg, i) => {
+            ctx.save();
+            
+            // Glow effect - more intense green
+            ctx.shadowColor = seg.color;
+            ctx.shadowBlur = 25;
+            
+            // Body
+            ctx.beginPath();
+            ctx.arc(seg.x, seg.y, seg.size, 0, Math.PI * 2);
+            ctx.fillStyle = seg.color;
+            ctx.fill();
+            
+            // Inner glow
+            ctx.beginPath();
+            ctx.arc(seg.x, seg.y, seg.size * 0.7, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fill();
+            
+            // Symbol
+            ctx.shadowBlur = 0;
+            ctx.font = `bold ${seg.size}px Arial`;
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(seg.symbol, seg.x, seg.y);
+            
+            // Head details (first segment)
+            if (i === 0) {
+                const eyeOffset = seg.size * 0.35;
+                
+                // Evil red eyes
+                ctx.fillStyle = '#FF0000';
+                ctx.shadowColor = '#FF0000';
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(seg.x - eyeOffset, seg.y - eyeOffset, 6, 0, Math.PI * 2);
+                ctx.arc(seg.x + eyeOffset, seg.y - eyeOffset, 6, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Angry eyebrows
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 4;
+                ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.moveTo(seg.x - eyeOffset - 10, seg.y - eyeOffset - 12);
+                ctx.lineTo(seg.x - eyeOffset + 10, seg.y - eyeOffset - 4);
+                ctx.moveTo(seg.x + eyeOffset + 10, seg.y - eyeOffset - 12);
+                ctx.lineTo(seg.x + eyeOffset - 10, seg.y - eyeOffset - 4);
+                ctx.stroke();
+
+                // Pupils tracking tail
+                ctx.fillStyle = '#000';
+                const tail = aliveSegs[aliveSegs.length - 1];
+                if (tail && tail !== seg) {
+                    const lookAngle = Math.atan2(tail.y - seg.y, tail.x - seg.x);
+                    ctx.beginPath();
+                    ctx.arc(seg.x - eyeOffset + Math.cos(lookAngle) * 3, seg.y - eyeOffset + Math.sin(lookAngle) * 3, 3, 0, Math.PI * 2);
+                    ctx.arc(seg.x + eyeOffset + Math.cos(lookAngle) * 3, seg.y - eyeOffset + Math.sin(lookAngle) * 3, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Drooling mouth
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(seg.x, seg.y + seg.size * 0.3, seg.size * 0.4, 0.2, Math.PI - 0.2);
+                ctx.stroke();
             }
-            return alive;
+            
+            ctx.restore();
         });
 
-        escapeState.blackHoleTime++;
-        escapeState.animationId = requestAnimationFrame(drawBlackHole);
+        // Draw and update explosion particles
+        escapeState.explosionParticles = escapeState.explosionParticles.filter(p => {
+            p.draw(ctx);
+            return p.update();
+        });
+
+        ctx.restore(); // End screen shake
+
+        // Continue animation or finish
+        if (escapeState.phase === 'done' && escapeState.explosionParticles.length === 0) {
+            setTimeout(() => {
+                cancelAnimationFrame(escapeState.animationId);
+                elements.matrixCanvas.classList.remove('active');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                addOutputLine('', 'normal');
+                addOutputLine('████████████████████████████████████████', 'success');
+                addOutputLine('  CORPORATE GREED: [TERMINATED]', 'success');
+                addOutputLine('  SOVEREIGNTY: [RESTORED]', 'success');
+                addOutputLine('  STATUS: WELCOME BACK, GHOST.', 'success');
+                addOutputLine('████████████████████████████████████████', 'success');
+            }, 800);
+            return;
+        }
+
+        escapeState.animationId = requestAnimationFrame(drawEscapeAnimation);
     }
 
     function triggerMatrixRain() {
-        initBlackHole();
+        initEscapeAnimation();
         elements.matrixCanvas.classList.add('active');
-        drawBlackHole();
-
-        setTimeout(() => {
-            cancelAnimationFrame(escapeState.animationId);
-            elements.matrixCanvas.classList.remove('active');
-            escapeState.ctx.clearRect(0, 0, elements.matrixCanvas.width, elements.matrixCanvas.height);
-            addOutputLine('ESCAPE SUCCESSFUL. WELCOME BACK.', 'success');
-        }, 3000);
+        drawEscapeAnimation();
     }
 
     // ===========================================
@@ -498,12 +946,16 @@
         loop: null,
         running: false,
         paused: false,
-        tileCount: 0
+        pausedByLeaderboard: false,
+        tileCount: 0,
+        playerName: 'ROX',
+        highScores: [],
+        leaderboardVisible: false
     };
 
     function getKnowledgeLevel() {
         for (let i = knowledgeLevels.length - 1; i >= 0; i--) {
-            if (gameState.score / 10 >= knowledgeLevels[i].threshold) {
+            if (gameState.score >= knowledgeLevels[i].threshold) {
                 return knowledgeLevels[i];
             }
         }
@@ -515,7 +967,111 @@
         return messages[Math.floor(Math.random() * messages.length)];
     }
 
+    function loadHighScores() {
+        try {
+            const saved = localStorage.getItem('localghost_shadow_scores');
+            gameState.highScores = saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            gameState.highScores = [];
+        }
+    }
+
+    function saveHighScore() {
+        const entry = {
+            name: (gameState.playerName || 'ROX').substring(0, 12).toUpperCase(),
+            score: gameState.score,
+            date: new Date().toISOString().split('T')[0]
+        };
+        gameState.highScores.push(entry);
+        gameState.highScores.sort((a, b) => b.score - a.score);
+        gameState.highScores = gameState.highScores.slice(0, 10);
+        localStorage.setItem('localghost_shadow_scores', JSON.stringify(gameState.highScores));
+        renderHighScores();
+    }
+
+    function renderHighScores() {
+        if (!elements.highScoresList) return;
+        
+        if (gameState.highScores.length === 0) {
+            elements.highScoresList.innerHTML = '<div class="no-scores">NO RECORDS YET</div>';
+            return;
+        }
+        
+        elements.highScoresList.innerHTML = gameState.highScores
+            .slice(0, 5)
+            .map((s, i) => {
+                const name = s.name.padEnd(12, '.');
+                const score = String(s.score).padStart(3);
+                return `<div class="score-row"><span class="score-rank">${String(i + 1).padStart(2, '0')}.</span> <span class="score-name">${name}</span> <span class="score-pts">${score}</span> <span class="score-date">${s.date}</span></div>`;
+            })
+            .join('');
+    }
+
+    function updateBorderColor() {
+        if (!elements.gameModalContent) return;
+        
+        const colorIndex = Math.min(Math.floor(gameState.score / 10), CONFIG.borderColors.length - 1);
+        const color = CONFIG.borderColors[colorIndex];
+        
+        elements.gameModalContent.style.borderColor = color;
+        elements.gameModalContent.style.boxShadow = `0 0 20px ${color}40, 0 0 40px ${color}20`;
+    }
+
+    function resetBorderColor() {
+        if (!elements.gameModalContent) return;
+        elements.gameModalContent.style.borderColor = '';
+        elements.gameModalContent.style.boxShadow = '';
+    }
+
+    function toggleLeaderboard() {
+        if (!elements.gameLeaderboard) return;
+        
+        gameState.leaderboardVisible = !gameState.leaderboardVisible;
+        
+        if (gameState.leaderboardVisible) {
+            // Show overlay and pause game
+            elements.gameLeaderboard.classList.add('visible');
+            if (gameState.running && !gameState.paused) {
+                gameState.paused = true;
+                gameState.pausedByLeaderboard = true;
+            }
+        } else {
+            // Hide overlay and resume if we paused it
+            elements.gameLeaderboard.classList.remove('visible');
+            if (gameState.pausedByLeaderboard && gameState.running) {
+                gameState.paused = false;
+                gameState.pausedByLeaderboard = false;
+                elements.gameFeedback.textContent = 'Syncing your data...';
+            }
+        }
+    }
+
     function initGame() {
+        loadHighScores();
+        renderHighScores();
+        
+        // Load saved name
+        const savedName = localStorage.getItem('localghost_player_name');
+        if (savedName) {
+            gameState.playerName = savedName;
+            if (elements.playerNameInput) elements.playerNameInput.value = savedName;
+        } else {
+            gameState.playerName = 'ROX';
+            if (elements.playerNameInput) elements.playerNameInput.value = 'ROX';
+        }
+        
+        if (elements.highScoreNotice) {
+            elements.highScoreNotice.style.display = 'none';
+        }
+
+        // Reset border color and hide leaderboard overlay
+        resetBorderColor();
+        gameState.leaderboardVisible = false;
+        gameState.pausedByLeaderboard = false;
+        if (elements.gameLeaderboard) {
+            elements.gameLeaderboard.classList.remove('visible');
+        }
+
         gameState.ctx = elements.gameCanvas.getContext('2d');
         gameState.tileCount = elements.gameCanvas.width / CONFIG.gridSize;
         
@@ -578,8 +1134,8 @@
         gameState.snake.unshift(head);
 
         if (head.x === gameState.food.x && head.y === gameState.food.y) {
-            gameState.score += 10;
-            elements.snakeScore.textContent = gameState.score / 10;
+            gameState.score += 1;
+            elements.snakeScore.textContent = gameState.score;
             gameState.filesEaten.push(gameState.food.type);
 
             const knowledge = getKnowledgeLevel();
@@ -588,6 +1144,9 @@
 
             elements.gameFileConsumed.innerHTML = `<span style="color: ${gameState.food.type.color}">[${gameState.food.type.name}]</span>`;
             elements.gameFeedback.textContent = getRandomFeedback(gameState.food.type.category);
+
+            // Update border color based on new score
+            updateBorderColor();
 
             placeFood();
         } else {
@@ -655,7 +1214,7 @@
         elements.gameFileConsumed.textContent = '';
 
         const knowledge = getKnowledgeLevel();
-        const fileCount = gameState.score / 10;
+        const fileCount = gameState.score;
         
         if (knowledge.level === 'FULLY SYNCED') {
             elements.gameFeedback.textContent = `${fileCount} files synced. I understand you completely now.`;
@@ -666,43 +1225,65 @@
         } else {
             elements.gameFeedback.textContent = `${fileCount} files synced. There's so much more to learn.`;
         }
+
+        // High score check
+        if (gameState.score > CONFIG.highScoreThreshold) {
+            saveHighScore();
+            if (elements.highScoreNotice) {
+                elements.highScoreNotice.style.display = 'block';
+                elements.highScoreNotice.textContent = `RECORDED: ${gameState.playerName} - ${gameState.score} files`;
+            }
+        }
     }
 
     function handleGameInput(e) {
         if (!elements.gameModal.classList.contains('active')) return;
+        
+        // Don't handle game controls if typing in any input field
+        const activeEl = document.activeElement;
+        if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+            return;
+        }
 
         switch (e.key.toLowerCase()) {
             case 'arrowup':
             case 'w':
                 if (gameState.dy !== 1) { gameState.dx = 0; gameState.dy = -1; }
-                if (gameState.paused) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
+                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
                 e.preventDefault();
                 break;
             case 'arrowdown':
             case 's':
                 if (gameState.dy !== -1) { gameState.dx = 0; gameState.dy = 1; }
-                if (gameState.paused) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
+                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
                 e.preventDefault();
                 break;
             case 'arrowleft':
             case 'a':
                 if (gameState.dx !== 1) { gameState.dx = -1; gameState.dy = 0; }
-                if (gameState.paused) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
+                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
                 e.preventDefault();
                 break;
             case 'arrowright':
             case 'd':
                 if (gameState.dx !== -1) { gameState.dx = 1; gameState.dy = 0; }
-                if (gameState.paused) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
+                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
                 e.preventDefault();
                 break;
             case ' ':
-                gameState.paused = !gameState.paused;
-                elements.gameFeedback.textContent = gameState.paused ? 'Paused...' : 'Syncing your data...';
+                if (gameState.running) {
+                    gameState.paused = !gameState.paused;
+                    elements.gameFeedback.textContent = gameState.paused ? 'Paused...' : 'Syncing your data...';
+                }
                 e.preventDefault();
                 break;
             case 'r':
                 initGame();
+                e.preventDefault();
+                break;
+            case 'h':
+            case 'l':
+                toggleLeaderboard();
                 e.preventDefault();
                 break;
         }
@@ -753,6 +1334,7 @@
         document.body.style.overflow = '';
         gameState.running = false;
         if (gameState.loop) clearInterval(gameState.loop);
+        resetBorderColor();
     }
 
     function closeAllModals() {
@@ -877,6 +1459,21 @@
         // Game input
         document.addEventListener('keydown', handleGameInput);
 
+        // Player name input
+        if (elements.playerNameInput) {
+            elements.playerNameInput.addEventListener('input', (e) => {
+                gameState.playerName = e.target.value.toUpperCase() || 'ROX';
+                localStorage.setItem('localghost_player_name', gameState.playerName);
+            });
+            
+            // Blur input when Enter is pressed so game controls work
+            elements.playerNameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    elements.playerNameInput.blur();
+                }
+            });
+        }
+
         // Modal overlay clicks
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
@@ -891,9 +1488,15 @@
             });
         });
 
-        // Escape key for modals
+        // Escape key for modals and intro skip
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
+                // Skip intro if still typing
+                if (!terminalState.introComplete) {
+                    skipIntro();
+                    return;
+                }
+                // Otherwise handle modals
                 if (elements.gameModal.classList.contains('active')) {
                     closeGameModal();
                 } else {
@@ -947,6 +1550,7 @@
     function init() {
         cacheElements();
         setupEventListeners();
+        loadHighScores();
 
         document.body.style.opacity = '0';
         setTimeout(() => {

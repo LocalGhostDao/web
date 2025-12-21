@@ -432,6 +432,37 @@
             50% { opacity: 0; }
         }
 
+        /* Skip hint */
+        .skip-hint {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            opacity: 0.6;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .skip-key {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--terminal);
+            font-size: 0.6rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.6; }
+        }
+
         /* Interactive input line */
         .terminal-input-line {
             display: flex;
@@ -1201,6 +1232,7 @@
         /* SNAKE GAME MODAL */
         #gameModal .modal {
             max-width: 450px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         #gameCanvas {
@@ -1208,6 +1240,39 @@
             margin: 0 auto;
             border: 1px solid var(--terminal);
             background: var(--void);
+        }
+
+        /* GAME NAME INPUT */
+        .game-header {
+            margin-bottom: 1rem;
+        }
+
+        .game-name-input {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+
+        .game-name-input label {
+            color: var(--text-dim);
+        }
+
+        .game-name-input input {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            color: var(--terminal);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.5rem;
+            width: 120px;
+            text-transform: uppercase;
+        }
+
+        .game-name-input input:focus {
+            outline: none;
+            border-color: var(--terminal);
         }
 
         .game-info {
@@ -1271,6 +1336,113 @@
 
         .game-over-text.visible {
             visibility: visible;
+        }
+
+        /* HIGH SCORE NOTICE */
+        .high-score-notice {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            margin-top: 0.5rem;
+            padding: 0.3rem;
+            border: 1px solid var(--terminal);
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* LEADERBOARD OVERLAY */
+        .game-canvas-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .game-leaderboard-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(17, 17, 17, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            border: 1px solid var(--terminal);
+        }
+
+        .game-leaderboard-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .leaderboard-content {
+            text-align: center;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .leaderboard-title {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--terminal);
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--terminal);
+        }
+
+        .high-scores-list {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .score-rank {
+            color: var(--terminal);
+            min-width: 2rem;
+        }
+
+        .score-name {
+            color: var(--text);
+            min-width: 10rem;
+            text-align: left;
+        }
+
+        .score-pts {
+            color: var(--terminal);
+            min-width: 3rem;
+            text-align: right;
+        }
+
+        .score-date {
+            color: var(--text-dim);
+            min-width: 6rem;
+        }
+
+        .no-scores {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        .leaderboard-hint {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
         }
 
         /* MATRIX RAIN CANVAS */
@@ -2220,14 +2392,36 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <div class="modal">
             <button class="modal-close" onclick="LocalGhost.closeGameModal()">&times;</button>
             <h3>&gt; THE_SHADOW.EXE</h3>
+            
+            <div class="game-header">
+                <div class="game-name-input">
+                    <label for="playerNameInput">HANDLE:</label>
+                    <input type="text" id="playerNameInput" value="ROX" maxlength="12" spellcheck="false" autocomplete="off">
+                </div>
+            </div>
+            
             <div class="game-info">
                 <div class="game-score">FILES CONSUMED: <span id="snakeScore">0</span></div>
                 <div class="game-knowledge">KNOWLEDGE: <span id="knowledgeLevel">STRANGER</span></div>
             </div>
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            
+            <div class="game-canvas-container">
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+                <div class="game-leaderboard-overlay" id="gameLeaderboard">
+                    <div class="leaderboard-content">
+                        <div class="leaderboard-title">HIGH SCORES</div>
+                        <div class="high-scores-list" id="highScoresList">
+                            <div class="no-scores">NO RECORDS YET</div>
+                        </div>
+                        <div class="leaderboard-hint">Press H to close</div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="game-file-consumed" id="gameFileConsumed"></div>
             <div class="game-feedback" id="gameFeedback">Feed me your data...</div>
-            <div class="game-controls">ARROWS or WASD to move | SPACE to pause | R to restart</div>
+            <div class="high-score-notice" id="highScoreNotice" style="display: none;"></div>
+            <div class="game-controls">ARROWS or WASD to move | SPACE pause | R restart | H scores</div>
             <div class="game-over-text" id="gameOverText">CONNECTION LOST - Press R to reconnect</div>
         </div>
     </div>
