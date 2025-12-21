@@ -329,7 +329,8 @@
                 addOutputLine('  manifesto - Read the full manifesto');
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  escape    - ???');
-                addOutputLine('  game      - Play a game');
+                addOutputLine('  shadow    - Play The Shadow (snake)');
+                addOutputLine('  export    - Play Export (volfied)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -366,10 +367,17 @@
                 }, 500);
                 break;
 
-            case 'game':
+            case 'shadow':
             case 'snake':
                 addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
                 setTimeout(openGameModal, 300);
+                break;
+
+            case 'export':
+            case 'volfied':
+                addOutputLine('LAUNCHING EXPORT.EXE...', 'success');
+                addOutputLine('RECLAIM YOUR IDENTITY. DEFEAT CORPORATE GREED.', 'dim');
+                setTimeout(openExportModal, 300);
                 break;
 
             case 'scores':
@@ -377,7 +385,7 @@
                 loadHighScores();
                 if (gameState.highScores.length === 0) {
                     addOutputLine('NO SHADOW RECORDS YET.', 'dim');
-                    addOutputLine('Play "game" and consume over 4 files to qualify.', 'dim');
+                    addOutputLine('Play "shadow" and consume over 4 files to qualify.', 'dim');
                 } else {
                     addOutputLine('THE SHADOW LEADERBOARD:', 'success');
                     gameState.highScores.forEach((entry, i) => {
@@ -938,7 +946,8 @@
         tileCount: 0,
         playerName: 'ROX',
         highScores: [],
-        leaderboardVisible: false
+        leaderboardVisible: false,
+        fireIntensity: 0
     };
 
     function getKnowledgeLevel() {
@@ -995,6 +1004,53 @@
             .join('');
     }
 
+    // Fire animation state
+    let fireAnimationId = null;
+    let fireParticles = [];
+
+    class FireParticle {
+        constructor(x, y, side, intensity) {
+            this.x = x;
+            this.y = y;
+            this.side = side; // 'top', 'right', 'bottom', 'left'
+            this.size = 2 + Math.random() * 5 * intensity;
+            this.life = 0.2 + Math.random() * 0.3 + intensity * 0.2;
+            this.maxLife = this.life;
+            this.speed = 0.8 + Math.random() * 1.5 * intensity;
+            this.drift = (Math.random() - 0.5) * 0.8;
+            this.intensity = intensity;
+            this.flicker = Math.random();
+        }
+
+        update() {
+            this.life -= 0.02;
+            this.flicker = Math.random(); // Random flicker each frame
+            
+            // Flames rise outward from border edges
+            switch(this.side) {
+                case 'top':
+                    this.y -= this.speed;
+                    this.x += this.drift;
+                    break;
+                case 'bottom':
+                    this.y -= this.speed * 0.4;
+                    this.x += this.drift;
+                    break;
+                case 'left':
+                    this.y -= this.speed * 0.6;
+                    this.x -= this.speed * 0.4;
+                    break;
+                case 'right':
+                    this.y -= this.speed * 0.6;
+                    this.x += this.speed * 0.4;
+                    break;
+            }
+            
+            this.size *= 0.95;
+            return this.life > 0 && this.size > 0.3;
+        }
+    }
+
     function updateFireEffect() {
         if (!elements.gameModalContent) return;
         
@@ -1002,8 +1058,8 @@
         const maxScore = CONFIG.maxFireScore;
         
         // Calculate intensity (0 to 1)
-        // Before 10: barely noticeable (0 to 0.2)
-        // 10 to 60: gradual increase (0.2 to 1)
+        // 0-10: very subtle (0 to 0.2)
+        // 10-60: grows steadily (0.2 to 1)
         let intensity;
         if (score < 10) {
             intensity = (score / 10) * 0.2;
@@ -1011,67 +1067,139 @@
             intensity = 0.2 + ((Math.min(score, maxScore) - 10) / (maxScore - 10)) * 0.8;
         }
         
-        // More aggressive glow sizes
-        const glowSize1 = Math.floor(8 + intensity * 35);
-        const glowSize2 = Math.floor(15 + intensity * 60);
-        const glowSize3 = Math.floor(25 + intensity * 90);
-        const glowSize4 = Math.floor(40 + intensity * 120);
+        // Subtle base glow
+        const glowSize = Math.floor(2 + intensity * 12);
+        const glowOpacity = (0.05 + intensity * 0.3).toFixed(2);
         
-        // Higher opacity for more visible fire
-        const opacity1 = (0.3 + intensity * 0.7).toFixed(2);
-        const opacity2 = (0.2 + intensity * 0.5).toFixed(2);
-        const opacity3 = (0.15 + intensity * 0.4).toFixed(2);
-        const opacity4 = (0.1 + intensity * 0.3).toFixed(2);
+        elements.gameModalContent.style.boxShadow = `0 0 ${glowSize}px rgba(51, 255, 0, ${glowOpacity})`;
         
-        // Create layered green fire glow - more layers, more dramatic
-        const shadows = [
-            // Inner glow
-            `inset 0 0 ${Math.floor(5 + intensity * 20)}px rgba(51, 255, 0, ${(intensity * 0.4).toFixed(2)})`,
-            // Core fire layers
-            `0 0 ${glowSize1}px rgba(51, 255, 0, ${opacity1})`,
-            `0 0 ${glowSize2}px rgba(0, 255, 80, ${opacity2})`,
-            `0 0 ${glowSize3}px rgba(50, 255, 50, ${opacity3})`,
-            `0 0 ${glowSize4}px rgba(0, 200, 50, ${opacity4})`
-        ];
-        
-        // Add rising flame particles at higher intensities
-        if (intensity > 0.15) {
-            const flameCount = Math.floor(4 + intensity * 16);
-            for (let i = 0; i < flameCount; i++) {
-                const angle = (i / flameCount) * 360;
-                const distance = glowSize2 * 0.8 + Math.random() * 20 * intensity;
-                const size = 5 + Math.random() * 12 * intensity;
-                const xOff = Math.cos(angle * Math.PI / 180) * distance;
-                // Flames rise upward more
-                const yOff = Math.sin(angle * Math.PI / 180) * distance - (Math.random() * 15 * intensity);
-                const flameOpacity = (0.4 + Math.random() * 0.5) * intensity;
-                shadows.push(`${xOff.toFixed(1)}px ${yOff.toFixed(1)}px ${size.toFixed(1)}px rgba(51, 255, 0, ${flameOpacity.toFixed(2)})`);
-            }
+        // Start fire canvas animation once we have any score
+        if (score > 0 && !fireAnimationId) {
+            startFireAnimation();
+        } else if (score === 0 && fireAnimationId) {
+            stopFireAnimation();
         }
         
-        // Extra bright spots at very high intensity
-        if (intensity > 0.6) {
-            const sparkCount = Math.floor((intensity - 0.6) * 15);
-            for (let i = 0; i < sparkCount; i++) {
-                const angle = Math.random() * 360;
-                const distance = 30 + Math.random() * glowSize3;
-                const xOff = Math.cos(angle * Math.PI / 180) * distance;
-                const yOff = Math.sin(angle * Math.PI / 180) * distance - Math.random() * 30;
-                shadows.push(`${xOff.toFixed(1)}px ${yOff.toFixed(1)}px ${2 + Math.random() * 4}px rgba(150, 255, 100, ${(0.6 + Math.random() * 0.4).toFixed(2)})`);
-            }
+        // Store intensity for fire animation
+        gameState.fireIntensity = intensity;
+    }
+
+    function startFireAnimation() {
+        const modal = elements.gameModalContent;
+        if (!modal) return;
+        
+        // Create fire canvas if it doesn't exist
+        let fireCanvas = document.getElementById('fireCanvas');
+        if (!fireCanvas) {
+            fireCanvas = document.createElement('canvas');
+            fireCanvas.id = 'fireCanvas';
+            fireCanvas.style.cssText = 'position:absolute;top:-30px;left:-10px;width:calc(100% + 20px);height:calc(100% + 40px);pointer-events:none;';
+            modal.style.position = 'relative';
+            modal.style.overflow = 'visible';
+            // Insert as first child so it renders behind content
+            modal.insertBefore(fireCanvas, modal.firstChild);
         }
         
-        elements.gameModalContent.style.boxShadow = shadows.join(', ');
+        const ctx = fireCanvas.getContext('2d');
+        fireParticles = [];
         
-        // Add fire animation class at higher intensities
-        if (intensity > 0.5) {
-            elements.gameModalContent.classList.add('fire-intense');
-            elements.gameModalContent.classList.remove('fire-medium');
-        } else if (intensity > 0.2) {
-            elements.gameModalContent.classList.add('fire-medium');
-            elements.gameModalContent.classList.remove('fire-intense');
-        } else {
-            elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
+        function animateFire() {
+            // Size canvas to modal plus extra space for flames
+            const w = modal.offsetWidth + 20;
+            const h = modal.offsetHeight + 40;
+            fireCanvas.width = w;
+            fireCanvas.height = h;
+            
+            // Offset for the extra padding
+            const offsetX = 10;
+            const offsetY = 30;
+            
+            ctx.clearRect(0, 0, w, h);
+            
+            const intensity = gameState.fireIntensity || 0;
+            
+            // Spawn new particles along edges - favor top for more realistic fire
+            const spawnRate = Math.floor(1 + intensity * 10);
+            const modalW = modal.offsetWidth;
+            const modalH = modal.offsetHeight;
+            
+            for (let i = 0; i < spawnRate; i++) {
+                // Weight towards top edge where fire looks most natural
+                const rand = Math.random();
+                let side;
+                if (rand < 0.5) {
+                    side = 'top';
+                } else if (rand < 0.7) {
+                    side = 'left';
+                } else if (rand < 0.9) {
+                    side = 'right';
+                } else {
+                    side = 'bottom';
+                }
+                
+                let x, y;
+                
+                switch(side) {
+                    case 'top':
+                        x = offsetX + Math.random() * modalW;
+                        y = offsetY + 2;
+                        break;
+                    case 'bottom':
+                        x = offsetX + Math.random() * modalW;
+                        y = offsetY + modalH - 2;
+                        break;
+                    case 'left':
+                        x = offsetX + 2;
+                        y = offsetY + Math.random() * modalH;
+                        break;
+                    case 'right':
+                        x = offsetX + modalW - 2;
+                        y = offsetY + Math.random() * modalH;
+                        break;
+                }
+                
+                if (Math.random() < 0.1 + intensity * 0.6) {
+                    fireParticles.push(new FireParticle(x, y, side, intensity));
+                }
+            }
+            
+            // Update and draw particles
+            fireParticles = fireParticles.filter(p => {
+                const alive = p.update();
+                if (alive) {
+                    const lifeRatio = p.life / p.maxLife;
+                    const alpha = lifeRatio * p.intensity * (0.5 + p.flicker * 0.5);
+                    
+                    // Flame gradient - bright core fading to dark edges
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 1.5);
+                    gradient.addColorStop(0, `rgba(220, 255, 180, ${alpha})`);
+                    gradient.addColorStop(0.3, `rgba(100, 255, 50, ${alpha * 0.8})`);
+                    gradient.addColorStop(0.7, `rgba(30, 200, 30, ${alpha * 0.4})`);
+                    gradient.addColorStop(1, `rgba(0, 80, 0, 0)`);
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+                return alive;
+            });
+            
+            fireAnimationId = requestAnimationFrame(animateFire);
+        }
+        
+        fireAnimationId = requestAnimationFrame(animateFire);
+    }
+
+    function stopFireAnimation() {
+        if (fireAnimationId) {
+            cancelAnimationFrame(fireAnimationId);
+            fireAnimationId = null;
+        }
+        fireParticles = [];
+        const fireCanvas = document.getElementById('fireCanvas');
+        if (fireCanvas) {
+            fireCanvas.remove();
         }
     }
 
@@ -1079,6 +1207,8 @@
         if (!elements.gameModalContent) return;
         elements.gameModalContent.style.boxShadow = '';
         elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
+        stopFireAnimation();
+        gameState.fireIntensity = 0;
     }
 
     function toggleLeaderboard() {
@@ -1410,10 +1540,27 @@
         elements.terminalInput.focus();
     }
 
+    function openExportModal() {
+        // Export game is in separate file - call its init
+        if (typeof window.ExportGame !== 'undefined') {
+            window.ExportGame.open();
+        } else {
+            addOutputLine('ERROR: EXPORT.EXE NOT LOADED', 'error');
+            addOutputLine('Game module missing. Check console.', 'dim');
+        }
+    }
+
+    function closeExportModal() {
+        if (typeof window.ExportGame !== 'undefined') {
+            window.ExportGame.close();
+        }
+    }
+
     function closeAllModals() {
         closeDonateModal();
         closeWaitlistModal();
         closeContactModal();
+        closeExportModal();
     }
 
     // ===========================================
@@ -1669,9 +1816,12 @@
         closeContactModal,
         openGameModal,
         closeGameModal,
+        openExportModal,
+        closeExportModal,
         copyAddress,
         copyEmail,
-        addCalendarReminder
+        addCalendarReminder,
+        addOutputLine  // Expose for export game to use
     };
 
     // Start when DOM is ready

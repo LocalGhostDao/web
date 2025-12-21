@@ -1050,6 +1050,7 @@
             width: 90%;
             position: relative;
             font-family: var(--font-mono);
+            overflow: visible;
         }
 
         .modal-close {
@@ -1232,44 +1233,61 @@
         /* SNAKE GAME MODAL */
         #gameModal .modal {
             max-width: 450px;
-            transition: box-shadow 0.3s ease, transform 0.1s ease;
+            transition: box-shadow 0.5s ease;
         }
 
         #gameModal:focus {
             outline: none;
         }
 
-        /* Fire animation effects */
-        #gameModal .modal.fire-medium {
-            animation: fireFlicker 0.12s ease-in-out infinite alternate;
+        /* EXPORT GAME MODAL */
+        #exportModal .modal {
+            max-width: 450px;
         }
 
-        #gameModal .modal.fire-intense {
-            animation: fireFlickerIntense 0.08s ease-in-out infinite alternate;
+        #exportModal:focus {
+            outline: none;
         }
 
-        @keyframes fireFlicker {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-1px);
-            }
+        .export-subtitle {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
         }
 
-        @keyframes fireFlickerIntense {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-            33% {
-                transform: translateY(-2px) scale(1.002);
-            }
-            66% {
-                transform: translateY(-1px) scale(1.001);
-            }
-            100% {
-                transform: translateY(-3px) scale(1.003);
-            }
+        .export-info {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .export-goal {
+            font-size: 0.8rem;
+            color: var(--terminal);
+        }
+
+        #exportCanvas {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid var(--terminal);
+            background: #0a0a0a;
+        }
+
+        .export-feedback {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 0.75rem;
+            min-height: 1.2rem;
+        }
+
+        .export-controls {
+            text-align: center;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+            letter-spacing: 0.03em;
         }
 
         #gameCanvas {
@@ -2463,6 +2481,28 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         </div>
     </div>
 
+    <!-- EXPORT GAME MODAL -->
+    <div id="exportModal" class="modal-overlay" tabindex="-1">
+        <div class="modal export-modal">
+            <button class="modal-close" onclick="LocalGhost.closeExportModal()">&times;</button>
+            <h3>&gt; EXPORT.EXE</h3>
+            <p class="export-subtitle">RECLAIM YOUR DATA FROM CORPORATE GREED</p>
+            
+            <div class="export-info">
+                <div class="export-goal">GOAL: Reclaim <span id="exportGoal">80%</span> of your data</div>
+            </div>
+            
+            <canvas id="exportCanvas" width="400" height="400"></canvas>
+            
+            <div class="export-feedback" id="exportFeedback">
+                Move along the border. Hold SPACE + move to cut into stolen territory.
+            </div>
+            <div class="export-controls">
+                ARROWS/WASD move | HOLD SPACE to cut | P pause | R restart | ESC exit
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
@@ -2480,5 +2520,6 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
     <!-- External JavaScript -->
     <script src="/js/localghost.js"></script>
+    <script src="/js/export.js"></script>
 </body>
 </html>
