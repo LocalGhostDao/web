@@ -1002,58 +1002,72 @@
         const maxScore = CONFIG.maxFireScore;
         
         // Calculate intensity (0 to 1)
-        // Before 10: barely noticeable (0 to 0.15)
-        // 10 to 60: gradual increase (0.15 to 1)
+        // Before 10: barely noticeable (0 to 0.2)
+        // 10 to 60: gradual increase (0.2 to 1)
         let intensity;
         if (score < 10) {
-            intensity = (score / 10) * 0.15; // 0 to 0.15
+            intensity = (score / 10) * 0.2;
         } else {
-            intensity = 0.15 + ((Math.min(score, maxScore) - 10) / (maxScore - 10)) * 0.85; // 0.15 to 1
+            intensity = 0.2 + ((Math.min(score, maxScore) - 10) / (maxScore - 10)) * 0.8;
         }
         
-        // Base glow that increases
-        const glowSize1 = Math.floor(5 + intensity * 25);
-        const glowSize2 = Math.floor(10 + intensity * 40);
-        const glowSize3 = Math.floor(15 + intensity * 60);
+        // More aggressive glow sizes
+        const glowSize1 = Math.floor(8 + intensity * 35);
+        const glowSize2 = Math.floor(15 + intensity * 60);
+        const glowSize3 = Math.floor(25 + intensity * 90);
+        const glowSize4 = Math.floor(40 + intensity * 120);
         
-        // Opacity increases with intensity
-        const opacity1 = (0.2 + intensity * 0.6).toFixed(2);
-        const opacity2 = (0.1 + intensity * 0.4).toFixed(2);
-        const opacity3 = (0.05 + intensity * 0.25).toFixed(2);
+        // Higher opacity for more visible fire
+        const opacity1 = (0.3 + intensity * 0.7).toFixed(2);
+        const opacity2 = (0.2 + intensity * 0.5).toFixed(2);
+        const opacity3 = (0.15 + intensity * 0.4).toFixed(2);
+        const opacity4 = (0.1 + intensity * 0.3).toFixed(2);
         
-        // Create layered green fire glow
+        // Create layered green fire glow - more layers, more dramatic
         const shadows = [
+            // Inner glow
+            `inset 0 0 ${Math.floor(5 + intensity * 20)}px rgba(51, 255, 0, ${(intensity * 0.4).toFixed(2)})`,
+            // Core fire layers
             `0 0 ${glowSize1}px rgba(51, 255, 0, ${opacity1})`,
-            `0 0 ${glowSize2}px rgba(0, 255, 100, ${opacity2})`,
-            `0 0 ${glowSize3}px rgba(100, 255, 50, ${opacity3})`,
-            `inset 0 0 ${Math.floor(intensity * 15)}px rgba(51, 255, 0, ${(intensity * 0.3).toFixed(2)})`
+            `0 0 ${glowSize2}px rgba(0, 255, 80, ${opacity2})`,
+            `0 0 ${glowSize3}px rgba(50, 255, 50, ${opacity3})`,
+            `0 0 ${glowSize4}px rgba(0, 200, 50, ${opacity4})`
         ];
         
-        // Add flickering flame particles at higher intensities
-        if (intensity > 0.3) {
-            const flameCount = Math.floor((intensity - 0.3) * 10);
+        // Add rising flame particles at higher intensities
+        if (intensity > 0.15) {
+            const flameCount = Math.floor(4 + intensity * 16);
             for (let i = 0; i < flameCount; i++) {
                 const angle = (i / flameCount) * 360;
-                const distance = glowSize2 + Math.random() * 10;
-                const size = 3 + Math.random() * 5 * intensity;
+                const distance = glowSize2 * 0.8 + Math.random() * 20 * intensity;
+                const size = 5 + Math.random() * 12 * intensity;
                 const xOff = Math.cos(angle * Math.PI / 180) * distance;
-                const yOff = Math.sin(angle * Math.PI / 180) * distance;
-                shadows.push(`${xOff}px ${yOff}px ${size}px rgba(51, 255, 0, ${(0.3 + Math.random() * 0.4).toFixed(2)})`);
+                // Flames rise upward more
+                const yOff = Math.sin(angle * Math.PI / 180) * distance - (Math.random() * 15 * intensity);
+                const flameOpacity = (0.4 + Math.random() * 0.5) * intensity;
+                shadows.push(`${xOff.toFixed(1)}px ${yOff.toFixed(1)}px ${size.toFixed(1)}px rgba(51, 255, 0, ${flameOpacity.toFixed(2)})`);
             }
         }
         
-        // Border color intensifies
-        const borderBrightness = Math.floor(51 + intensity * 50);
-        const borderColor = `rgb(${borderBrightness}, 255, 0)`;
+        // Extra bright spots at very high intensity
+        if (intensity > 0.6) {
+            const sparkCount = Math.floor((intensity - 0.6) * 15);
+            for (let i = 0; i < sparkCount; i++) {
+                const angle = Math.random() * 360;
+                const distance = 30 + Math.random() * glowSize3;
+                const xOff = Math.cos(angle * Math.PI / 180) * distance;
+                const yOff = Math.sin(angle * Math.PI / 180) * distance - Math.random() * 30;
+                shadows.push(`${xOff.toFixed(1)}px ${yOff.toFixed(1)}px ${2 + Math.random() * 4}px rgba(150, 255, 100, ${(0.6 + Math.random() * 0.4).toFixed(2)})`);
+            }
+        }
         
-        elements.gameModalContent.style.borderColor = borderColor;
         elements.gameModalContent.style.boxShadow = shadows.join(', ');
         
         // Add fire animation class at higher intensities
         if (intensity > 0.5) {
             elements.gameModalContent.classList.add('fire-intense');
             elements.gameModalContent.classList.remove('fire-medium');
-        } else if (intensity > 0.25) {
+        } else if (intensity > 0.2) {
             elements.gameModalContent.classList.add('fire-medium');
             elements.gameModalContent.classList.remove('fire-intense');
         } else {
@@ -1063,7 +1077,6 @@
 
     function resetFireEffect() {
         if (!elements.gameModalContent) return;
-        elements.gameModalContent.style.borderColor = '';
         elements.gameModalContent.style.boxShadow = '';
         elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
     }
