@@ -1,0 +1,766 @@
+/* ===========================================
+   LOCALGHOST - BRAND GUIDELINES PAGE
+   Page-specific styles for /brand-guidelines
+   Requires: base.css, pages.css
+   =========================================== */
+
+/* ===========================================
+   TABLE OF CONTENTS
+   =========================================== */
+
+.toc {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin-bottom: 3rem;
+}
+
+.toc-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--terminal);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 2rem;
+}
+
+.toc-list a {
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toc-list a:hover {
+    color: var(--terminal);
+}
+
+.toc-list a::before {
+    content: '>';
+    color: var(--terminal);
+}
+
+/* ===========================================
+   BRAND SECTIONS
+   =========================================== */
+
+.brand-section {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-section:last-of-type {
+    border-bottom: none;
+}
+
+/* ===========================================
+   COLOR PALETTE
+   =========================================== */
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.color-swatch {
+    background: var(--void);
+    padding: 0;
+}
+
+.swatch-preview {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.swatch-info {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.swatch-name {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.swatch-hex:hover {
+    color: var(--terminal);
+}
+
+.swatch-use {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+}
+
+/* ===========================================
+   TYPOGRAPHY SAMPLES
+   =========================================== */
+
+.type-sample {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 1rem 0;
+}
+
+.type-primary {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.type-secondary {
+    font-family: var(--font-system);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.type-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--terminal);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.type-weights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.type-weight {
+    font-family: var(--font-mono);
+}
+
+.type-weight-label {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+}
+
+.type-weight-sample {
+    font-size: 1.5rem;
+}
+
+.weight-300 { font-weight: 300; }
+.weight-400 { font-weight: 400; }
+.weight-500 { font-weight: 500; }
+.weight-700 { font-weight: 700; }
+
+/* ===========================================
+   VOICE EXAMPLES (Do/Don't Grid)
+   =========================================== */
+
+.voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.voice-example {
+    background: var(--void);
+    padding: 1.5rem;
+}
+
+.voice-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.voice-label.do {
+    color: var(--terminal);
+}
+
+.voice-label.dont {
+    color: var(--warning);
+}
+
+.voice-text {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* ===========================================
+   COMPONENT SHOWCASE
+   =========================================== */
+
+.component-box {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 1rem 0;
+}
+
+.component-demo {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.component-demo:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.component-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--terminal);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+/* Demo buttons */
+.demo-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--text);
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.demo-button:hover {
+    background: var(--text);
+    color: var(--void);
+}
+
+.demo-button.ghost {
+    border-color: var(--terminal);
+    color: var(--terminal);
+}
+
+.demo-button.ghost:hover {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+/* Demo terminal prompt */
+.demo-prompt {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+}
+
+.demo-prompt .prompt {
+    color: var(--terminal);
+}
+
+.demo-prompt .cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background: var(--terminal);
+    animation: cursor-blink 1.2s step-end infinite;
+    vertical-align: middle;
+    margin-left: 0.2em;
+}
+
+@keyframes cursor-blink {
+    50% { opacity: 0; }
+}
+
+/* ===========================================
+   MOTIF LIST
+   =========================================== */
+
+.motif-list {
+    margin: 1.5rem 0;
+}
+
+.motif-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    margin-bottom: -1px;
+}
+
+.motif-symbol {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--terminal);
+    flex-shrink: 0;
+    width: 3rem;
+    text-align: center;
+}
+
+.motif-content {
+    flex: 1;
+}
+
+.motif-name {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.motif-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* ===========================================
+   PHRASE LIST
+   =========================================== */
+
+.phrase-list {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+}
+
+.phrase-item {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--terminal);
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.phrase-item::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    color: var(--text-dim);
+}
+
+.phrase-item::after {
+    content: '"';
+    color: var(--text-dim);
+}
+
+/* ===========================================
+   EFFECT DEMOS
+   =========================================== */
+
+.effect-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.effect-demo {
+    background: var(--void);
+    padding: 2rem;
+    text-align: center;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.effect-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-top: 1rem;
+}
+
+/* Scanline demo */
+.scanline-demo {
+    width: 100%;
+    height: 60px;
+    background: var(--terminal);
+    position: relative;
+}
+
+.scanline-demo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.3) 2px,
+        rgba(0, 0, 0, 0.3) 4px
+    );
+}
+
+/* Glow demo */
+.glow-demo {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: var(--terminal);
+    text-shadow: 0 0 10px var(--terminal), 0 0 20px var(--terminal-dim);
+}
+
+/* Flicker demo */
+.flicker-demo {
+    width: 100px;
+    height: 60px;
+    background: var(--terminal);
+    animation: flicker-effect 3s infinite;
+}
+
+@keyframes flicker-effect {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.7; }
+    94% { opacity: 1; }
+    96% { opacity: 0.8; }
+    97% { opacity: 1; }
+}
+
+/* Border demo */
+.border-demo {
+    width: 100%;
+    height: 60px;
+    border: 1px solid var(--terminal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+/* ===========================================
+   PRINCIPLES BOX
+   =========================================== */
+
+.principles-box {
+    background: var(--void-lighter);
+    border: 2px solid var(--terminal);
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.principles-box h4 {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--terminal);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+}
+
+.principle-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.principle-item:last-child {
+    margin-bottom: 0;
+}
+
+.principle-icon {
+    font-family: var(--font-mono);
+    color: var(--terminal);
+    flex-shrink: 0;
+}
+
+.principle-text {
+    font-size: 0.9rem;
+}
+
+.principle-text strong {
+    color: var(--text);
+}
+
+/* ===========================================
+   LOGO SHOWCASE
+   =========================================== */
+
+.logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.logo-cell {
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+}
+
+.logo-cell.dark {
+    background: var(--void);
+}
+
+.logo-cell.light {
+    background: #E0E0E0;
+}
+
+.logo-cell svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.logo-cell-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--void-lighter);
+    border-top: 1px solid var(--border);
+}
+
+.logo-download-box {
+    background: var(--void-lighter);
+    border: 2px solid var(--terminal);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.logo-download-info {
+    flex: 1;
+}
+
+.logo-download-info h4 {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--terminal);
+    margin-bottom: 0.25rem;
+}
+
+.logo-download-info p {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+.logo-download-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--terminal);
+    background: transparent;
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.logo-download-btn:hover {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+.logo-variants {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.logo-variant {
+    background: var(--void);
+    border: 1px solid var(--border);
+    padding: 1rem;
+    text-align: center;
+}
+
+.logo-variant-preview {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.logo-variant-name {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+.logo-rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.logo-rule {
+    background: var(--void);
+    padding: 1.25rem;
+}
+
+.logo-rule-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.logo-rule-label.do {
+    color: var(--terminal);
+}
+
+.logo-rule-label.dont {
+    color: var(--warning);
+}
+
+.logo-rule-text {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* ===========================================
+   SPACING GUIDE
+   =========================================== */
+
+.spacing-demo {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 1.5rem 0;
+}
+
+.spacing-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.spacing-row:last-child {
+    margin-bottom: 0;
+}
+
+.spacing-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.spacing-bar {
+    height: 20px;
+    background: var(--terminal);
+    opacity: 0.3;
+}
+
+.spacing-value {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--terminal);
+    width: 60px;
+    text-align: right;
+}
+
+/* ===========================================
+   BACK LINK ALIGNMENT
+   =========================================== */
+
+main > .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+    .toc-list {
+        grid-template-columns: 1fr;
+    }
+
+    .color-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .voice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .effect-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .logo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .logo-variants {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .logo-rules {
+        grid-template-columns: 1fr;
+    }
+
+    .logo-download-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .type-weights {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

@@ -1,0 +1,124 @@
+/* ===========================================
+   LOCALGHOST - SHARED CONTENT PAGE STYLES
+   Common styles for interior/content pages
+   =========================================== */
+
+/* ===========================================
+   MAIN CONTENT CONTAINER
+   =========================================== */
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+}
+
+/* Narrower variant for text-heavy pages */
+main.narrow {
+    max-width: 750px;
+}
+
+/* Full-height flex layout variant */
+main.flex-center {
+    min-height: calc(100vh - 8rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ===========================================
+   PAGE HEADER
+   =========================================== */
+
+.page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.page-header .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--terminal);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+/* Additional metadata (author, date) */
+.author {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.date {
+    font-family: var(--font-mono);
+    color: var(--terminal);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* ===========================================
+   BACK LINK
+   =========================================== */
+
+.back-link {
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 1rem 2rem;
+    border: 1px solid var(--text);
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    background: var(--text);
+    color: var(--void);
+}
+
+/* ===========================================
+   INLINE CODE
+   =========================================== */
+
+code {
+    background: var(--void-lighter);
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--terminal);
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+    main {
+        padding: 7.5rem 1.5rem 3rem;
+    }
+
+    main.narrow {
+        padding: 6rem 1.5rem 3rem;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+}

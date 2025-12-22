@@ -1,0 +1,494 @@
+/* ===========================================
+   LOCALGHOST - MANIFESTO PAGE
+   Page-specific styles for /manifesto
+   Requires: base.css, pages.css
+   =========================================== */
+
+/* Use: <main class="narrow"> */
+
+/* ===========================================
+   SIGNAL BANNER
+   =========================================== */
+
+.signal-banner {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--warning);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--warning);
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ===========================================
+   MANIFESTO TEXT
+   =========================================== */
+
+.manifesto-text {
+    margin-bottom: 4rem;
+}
+
+.manifesto-text p {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.manifesto-text .highlight {
+    color: var(--terminal);
+    font-weight: 500;
+}
+
+.manifesto-text .warning-text {
+    color: var(--warning);
+    font-weight: 500;
+}
+
+.manifesto-text .emphasis {
+    border-left: 2px solid var(--terminal);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+}
+
+.manifesto-text .emphasis.warning {
+    border-left-color: var(--warning);
+}
+
+/* ===========================================
+   DYSTOPIA BOX
+   =========================================== */
+
+.dystopia-box {
+    border: 2px solid var(--warning);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.dystopia-box p {
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.dystopia-box p:last-child {
+    margin-bottom: 0;
+}
+
+.dystopia-box strong {
+    color: #fff;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+}
+
+/* ===========================================
+   SECTION HEADERS (inline)
+   =========================================== */
+
+.section-header {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--terminal);
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+}
+
+/* ===========================================
+   MANDATE LIST
+   =========================================== */
+
+.mandate-list {
+    margin: 1.5rem 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.mandate-list li {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.mandate-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-weight: bold;
+}
+
+.mandate-list .label {
+    font-family: var(--font-mono);
+    color: var(--terminal);
+    font-weight: 500;
+}
+
+/* ===========================================
+   CODE BLOCK
+   =========================================== */
+
+.code-container {
+    position: relative;
+    margin: 1.5rem 0;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0a0a0a;
+    border: 1px solid var(--terminal-dim);
+    border-bottom: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px 4px 0 0;
+    transition: all 0.3s ease;
+}
+
+.code-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.window-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.window-controls span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+}
+
+.window-controls span:nth-child(1) { background: #ff5f56; }
+.window-controls span:nth-child(2) { background: #ffbd2e; }
+.window-controls span:nth-child(3) { background: #27ca40; }
+
+.code-filepath {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+}
+
+.copy-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--terminal-dim);
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.05em;
+    width: 130px;
+    height: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.copy-btn .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.copy-btn:hover {
+    background: var(--terminal);
+    color: var(--void);
+    box-shadow: 0 0 10px var(--terminal-dim);
+}
+
+.copy-btn.copied {
+    background: linear-gradient(135deg, #FF6B00, #FF3300);
+    color: #fff;
+    border-color: #FF6B00;
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3);
+    animation: beacon-glow 0.5s ease;
+}
+
+@keyframes beacon-glow {
+    0% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
+    50% { box-shadow: 0 0 35px rgba(255, 107, 0, 0.8), 0 0 70px rgba(255, 51, 0, 0.6); }
+    100% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.5), 0 0 40px rgba(255, 51, 0, 0.3); }
+}
+
+.copy-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.copy-btn .btn-text {
+    min-width: 90px;
+    text-align: center;
+}
+
+.code-block {
+    background: linear-gradient(180deg, #0d0d0d 0%, #080808 100%);
+    border: 1px solid var(--terminal-dim);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 0;
+    margin: 0;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.code-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--terminal-dim), transparent);
+}
+
+.code-block pre {
+    margin: 0;
+    padding: 1.25rem;
+    padding-left: 3.5rem;
+    position: relative;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
+    min-height: 520px; /* Prevent scrollbar on 18 lines */
+}
+
+.line-numbers {
+    position: absolute;
+    left: 0;
+    top: 1.25rem;
+    width: 2.5rem;
+    text-align: right;
+    padding-right: 0.75rem;
+    color: var(--terminal-dim);
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    user-select: none;
+    border-right: 1px solid var(--border);
+    line-height: 1.7;
+}
+
+/* Syntax highlighting */
+.code-block .comment {
+    color: #5c6370;
+    font-style: italic;
+}
+
+.code-block .key {
+    color: var(--terminal);
+    text-shadow: 0 0 8px var(--terminal-dim);
+    animation: key-glow 3s ease-in-out infinite;
+}
+
+@keyframes key-glow {
+    0%, 100% { text-shadow: 0 0 8px var(--terminal-dim); }
+    50% { text-shadow: 0 0 12px var(--terminal), 0 0 20px var(--terminal-dim); }
+}
+
+.code-block .string {
+    color: #e5c07b;
+}
+
+.code-block .boolean {
+    color: #c678dd;
+}
+
+.code-block .bracket {
+    color: var(--text-dim);
+}
+
+.code-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(51, 255, 0, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.code-container:hover .code-block {
+    border-color: var(--terminal);
+    box-shadow: 0 0 20px rgba(51, 255, 0, 0.1), inset 0 0 30px rgba(51, 255, 0, 0.02);
+}
+
+.code-container:hover .code-header {
+    border-color: var(--terminal);
+}
+
+.code-container:hover .code-glow {
+    background: radial-gradient(ellipse, rgba(51, 255, 0, 0.06) 0%, transparent 70%);
+}
+
+/* ===========================================
+   PLEDGE BOX
+   =========================================== */
+
+.pledge-box {
+    background: var(--void-lighter);
+    border: 2px solid var(--terminal);
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.pledge-box h3 {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--terminal);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+}
+
+.pledge-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pledge-box li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-style: italic;
+}
+
+.pledge-box li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--terminal);
+}
+
+/* ===========================================
+   DIRECTORY LINK
+   =========================================== */
+
+.directory-link {
+    display: block;
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px dashed var(--terminal-dim);
+    color: var(--terminal);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.directory-link:hover {
+    background: var(--terminal);
+    color: var(--void);
+    border-style: solid;
+}
+
+/* ===========================================
+   FINAL WORDS
+   =========================================== */
+
+.final-words {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--terminal);
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    border: 1px solid var(--terminal);
+    font-weight: 500;
+}
+
+.final-words .small {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    font-weight: 400;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+    .code-container {
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+
+    .code-block {
+        font-size: 0.65rem;
+        border-radius: 0;
+    }
+
+    .code-block pre {
+        padding: 1rem;
+        padding-left: 2.5rem;
+        min-height: 400px;
+    }
+
+    .code-header {
+        border-radius: 0;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .line-numbers {
+        width: 2rem;
+        font-size: 0.65rem;
+        top: 1rem;
+        padding-right: 0.5rem;
+    }
+
+    .code-filepath {
+        font-size: 0.6rem;
+    }
+
+    .copy-btn {
+        font-size: 0.6rem;
+        padding: 0.25rem 0.5rem;
+        width: 115px;
+        height: 24px;
+    }
+
+    .copy-btn svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .pledge-box {
+        padding: 1.5rem;
+    }
+
+    .dystopia-box {
+        padding: 1.25rem;
+    }
+
+    .dystopia-box strong {
+        font-size: 1.1rem;
+    }
+}

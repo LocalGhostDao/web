@@ -1,0 +1,163 @@
+/* ===========================================
+   LOCALGHOST - 404 PAGE
+   Page-specific styles for /404
+   Requires: base.css, pages.css
+   =========================================== */
+
+/* ===========================================
+   ERROR DISPLAY
+   =========================================== */
+
+.error-code {
+    font-family: var(--font-mono);
+    font-size: 8rem;
+    font-weight: 500;
+    color: var(--warning);
+    line-height: 1;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+    animation: flicker 3s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+    97% { opacity: 1; }
+}
+
+.error-message {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 2rem;
+}
+
+/* ===========================================
+   TERMINAL BLOCK
+   =========================================== */
+
+.terminal-block {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    text-align: left;
+    max-width: 500px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.terminal-block .line {
+    margin-bottom: 0.5rem;
+}
+
+.terminal-block .line:last-child {
+    margin-bottom: 0;
+}
+
+.terminal-block .prompt {
+    color: var(--terminal);
+}
+
+.terminal-block .error {
+    color: var(--warning);
+}
+
+.terminal-block .dim {
+    color: var(--text-dim);
+}
+
+.terminal-block .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.2em;
+    background: var(--terminal);
+    margin-left: 4px;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* ===========================================
+   SUBTEXT
+   =========================================== */
+
+.subtext {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    max-width: 400px;
+    margin-bottom: 2rem;
+}
+
+/* ===========================================
+   BACK LINK OVERRIDE (Green variant)
+   =========================================== */
+
+.back-link {
+    border-color: var(--terminal);
+    color: var(--terminal);
+}
+
+.back-link:hover {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+/* ===========================================
+   BODY OVERRIDE (flex for footer positioning)
+   =========================================== */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================================
+   MAIN OVERRIDE (centered content)
+   =========================================== */
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ===========================================
+   FOOTER OVERRIDE (mono font)
+   =========================================== */
+
+footer {
+    font-family: var(--font-mono);
+    padding: 2rem;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 5rem;
+    }
+
+    .error-message {
+        font-size: 1rem;
+    }
+
+    .terminal-block {
+        padding: 1rem 1.25rem;
+        font-size: 0.75rem;
+        margin: 1.5rem 1rem;
+    }
+}
