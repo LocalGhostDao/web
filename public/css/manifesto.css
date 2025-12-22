@@ -274,7 +274,6 @@
     white-space: pre;
     word-wrap: normal;
     overflow-x: auto;
-    min-height: 520px; /* Prevent scrollbar on 18 lines */
 }
 
 .line-numbers {
@@ -432,6 +431,16 @@
 }
 
 /* ===========================================
+   BACK LINK ALIGNMENT
+   =========================================== */
+
+main > .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+/* ===========================================
    RESPONSIVE
    =========================================== */
 
@@ -449,7 +458,6 @@
     .code-block pre {
         padding: 1rem;
         padding-left: 2.5rem;
-        min-height: 400px;
     }
 
     .code-header {
