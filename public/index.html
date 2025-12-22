@@ -1240,14 +1240,46 @@
             outline: none;
         }
 
-        /* RECLAIM GAME MODAL */
-        #exportModal .modal {
-            max-width: 450px;
+        /* RECLAIM GAME MODAL - Updated for 800x800 canvas */
+        #exportModal .modal.export-modal {
+            width: 840px;
+            max-width: 95vw;
+            max-height: 95vh;
+            padding: 20px;
         }
 
-        #exportModal:focus {
-            outline: none;
+        #exportModal .export-modal h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
         }
+
+        #exportModal .export-subtitle {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        #exportModal #exportCanvas {
+            width: 800px;
+            height: 800px;
+            max-width: 100%;
+            max-height: calc(95vh - 150px);
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #exportModal .export-feedback {
+            font-size: 12px;
+            margin-top: 15px;
+            min-height: 20px;
+        }
+
+        #exportModal .export-controls {
+            font-size: 11px;
+            margin-top: 10px;
+            color: #666;
+        }
+
 
         .export-subtitle {
             color: var(--text-dim);
@@ -1547,7 +1579,19 @@
             margin: 0 auto;
             line-height: 1.6;
         }
-
+        
+        @media (max-width: 860px) {
+            #exportModal .modal.export-modal {
+                width: 95vw;
+                padding: 15px;
+            }
+            
+            #exportModal #exportCanvas {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1 / 1;
+            }
+        }
         /* RESPONSIVE */
         @media (max-width: 768px) {
             nav {
@@ -1610,7 +1654,7 @@
         <div class="terminal-box" id="heroTerminal">
             <div class="terminal-header">
                 <div class="terminal-buttons">
-                    <span class="terminal-btn close" onclick="LocalGhost.triggerMatrixRain()" title="exit"></span>
+                    <span class="terminal-btn close" onclick="LocalGhost.triggerEscapeSequance()" title="exit"></span>
                     <span class="terminal-btn minimize" onclick="LocalGhost.terminalMinimize()" title="minimize"></span>
                     <span class="terminal-btn maximize" onclick="LocalGhost.terminalMaximize()" title="maximize"></span>
                 </div>
@@ -2475,13 +2519,13 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <h3>&gt; RECLAIM.EXE</h3>
             <p class="export-subtitle">TAKE BACK WHAT'S YOURS.</p>
             
-            <canvas id="exportCanvas" width="400" height="400"></canvas>
+            <canvas id="exportCanvas" width="800" height="800"></canvas>
             
             <div class="export-feedback" id="exportFeedback">
-                Move on green borders. Hold SPACE + direction to cut. Reclaim 80% to exit.
+                Move on the wire. Hold SPACE + direction to cut. Reclaim 80% to win.
             </div>
             <div class="export-controls">
-                ARROWS/WASD move | HOLD SPACE to cut | P pause | R restart | ESC exit
+                ARROWS/WASD move | SPACE+DIR cut | I info | P pause | R restart | ESC exit
             </div>
         </div>
     </div>

@@ -8,19 +8,19 @@
     'use strict';
 
     const CONFIG = {
-        canvasWidth: 400,
-        canvasHeight: 360,
-        hudHeight: 40,
-        totalHeight: 400,
-        borderSpeed: 3,
-        cutSpeed: 2.5,
+        canvasWidth: 800,
+        canvasHeight: 750,
+        hudHeight: 50,
+        totalHeight: 800,
+        borderSpeed: 4,
+        cutSpeed: 3.5,
         winPercentage: 80,
         regionKillPercent: 90,
         targetFPS: 40
     };
 
-    // Game area - 10px margin for the wire border
-    const MARGIN = 10;
+    // Game area - 15px margin for the wire border (more visible at larger size)
+    const MARGIN = 15;
     const GAME_LEFT = MARGIN;
     const GAME_RIGHT = CONFIG.canvasWidth - MARGIN;
     const GAME_TOP = MARGIN;
@@ -37,12 +37,12 @@
     ];
 
     const GREED_TYPES = [
-        { name: 'THE CLOUD', color: '#DC143C', size: 12, speed: 0.8, behavior: 'patrol', quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE'] },
-        { name: 'THE TRACKER', color: '#FF2222', size: 9, speed: 1.5, behavior: 'chase', quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED'] },
-        { name: 'THE ENSHITTIFIER', color: '#8B4513', size: 14, speed: 0.7, behavior: 'erratic', quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY'] },
-        { name: 'THE RENT SEEKER', color: '#B22222', size: 10, speed: 1.2, behavior: 'chase', quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION'] },
-        { name: 'THE LOCK-IN', color: '#CD5C5C', size: 11, speed: 0.4, behavior: 'wander', quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED'] },
-        { name: 'THE KILL SWITCH', color: '#8B0000', size: 13, speed: 0.6, behavior: 'predict', quotes: ['BRICKING...', 'REVOKED', 'DISABLED'] }
+        { name: 'THE CLOUD', color: '#DC143C', size: 22, speed: 1.2, behavior: 'patrol', quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE'], desc: 'Circles lazily, pulling data to remote servers.' },
+        { name: 'THE TRACKER', color: '#FF2222', size: 16, speed: 3.5, behavior: 'chase', quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED'], desc: 'Relentlessly hunts you. Always watching.' },
+        { name: 'THE ENSHITTIFIER', color: '#8B4513', size: 26, speed: 1.0, behavior: 'erratic', quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY'], desc: 'Unpredictable. Degrades everything it touches.' },
+        { name: 'THE RENT SEEKER', color: '#B22222', size: 18, speed: 1.8, behavior: 'chase', quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION'], desc: 'Chases you down for recurring payments.' },
+        { name: 'THE LOCK-IN', color: '#CD5C5C', size: 20, speed: 0.8, behavior: 'wander', quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED'], desc: 'Slow but inevitable. Traps your data forever.' },
+        { name: 'THE KILL SWITCH', color: '#8B0000', size: 24, speed: 0.9, behavior: 'predict', quotes: ['BRICKING...', 'REVOKED', 'DISABLED'], desc: 'Anticipates your moves. Can disable anything.' }
     ];
 
     // The unclaimed area polygon - player walks on its edges, enemies live inside
@@ -60,12 +60,14 @@
         paused: false,
         cutting: false,
         won: false,
+        showInfo: false,
         player: { x: 0, y: 0 },
         // Border walking state
         edgeIndex: 0,
         edgeT: 0,
         // Cutting state
         cutStart: null,
+        cutDirection: null,
         trail: [],
         // Game
         enemies: [],
@@ -203,10 +205,17 @@
     }
     
     function checkRegionKills() {
+        // Count alive enemies
+        const aliveCount = gameState.enemies.filter(e => !e.dead).length;
+        
         for (const e of gameState.enemies) {
             if (e.dead) continue;
             const pct = regionClaimPercent[e.regionIndex];
             if (pct >= CONFIG.regionKillPercent) {
+                // Don't kill if it's the last one - they must trap it
+                if (aliveCount <= 1) {
+                    continue;
+                }
                 e.dead = true;
                 const regionName = DATA_REGIONS[e.regionIndex].name;
                 showMessage(`${regionName} LIBERATED!`);
@@ -251,8 +260,10 @@
                 case 'chase': {
                     const d = Math.hypot(playerX - this.x, playerY - this.y);
                     if (d > 0) {
-                        this.vx += ((playerX - this.x) / d) * 0.03;
-                        this.vy += ((playerY - this.y) / d) * 0.03;
+                        // THE TRACKER is extremely aggressive
+                        const accel = this.type.name === 'THE TRACKER' ? 0.1 : 0.03;
+                        this.vx += ((playerX - this.x) / d) * accel;
+                        this.vy += ((playerY - this.y) / d) * accel;
                     }
                     break;
                 }
@@ -269,13 +280,20 @@
                     this.vy += Math.sin(this.patrolAngle) * 0.02;
                     break;
                 case 'wander': {
-                    // Slow wandering - gently changes direction over time
-                    this.patrolAngle += (Math.random() - 0.5) * 0.1;
-                    this.vx += Math.cos(this.patrolAngle) * 0.015;
-                    this.vy += Math.sin(this.patrolAngle) * 0.015;
-                    // Add some momentum dampening to prevent getting stuck
-                    this.vx *= 0.98;
-                    this.vy *= 0.98;
+                    // Slow but persistent wandering - THE LOCK-IN
+                    // Occasionally drift toward center to avoid corners
+                    if (Math.random() < 0.02) {
+                        const cx = unclaimedPoly.reduce((s, p) => s + p.x, 0) / unclaimedPoly.length;
+                        const cy = unclaimedPoly.reduce((s, p) => s + p.y, 0) / unclaimedPoly.length;
+                        this.patrolAngle = Math.atan2(cy - this.y, cx - this.x) + (Math.random() - 0.5) * 1.5;
+                    } else {
+                        this.patrolAngle += (Math.random() - 0.5) * 0.15;
+                    }
+                    this.vx += Math.cos(this.patrolAngle) * 0.025;
+                    this.vy += Math.sin(this.patrolAngle) * 0.025;
+                    // Light dampening
+                    this.vx *= 0.995;
+                    this.vy *= 0.995;
                     break;
                 }
                 case 'predict': {
@@ -292,11 +310,12 @@
             const maxSpd = this.type.speed * 1.3;
             if (spd > maxSpd) { this.vx *= maxSpd / spd; this.vy *= maxSpd / spd; }
             
-            // If nearly stopped, give a random push
-            if (spd < 0.2) {
+            // If nearly stopped, give a random push (more aggressive for wander type)
+            const minSpd = this.type.behavior === 'wander' ? 0.3 : 0.2;
+            if (spd < minSpd) {
                 const pushAngle = Math.random() * Math.PI * 2;
-                this.vx = Math.cos(pushAngle) * this.type.speed * 0.5;
-                this.vy = Math.sin(pushAngle) * this.type.speed * 0.5;
+                this.vx = Math.cos(pushAngle) * this.type.speed * 0.7;
+                this.vy = Math.sin(pushAngle) * this.type.speed * 0.7;
             }
 
             const nx = this.x + this.vx, ny = this.y + this.vy;
@@ -309,13 +328,17 @@
                 // Hit boundary - bounce with randomness
                 this.stuckCounter = (this.stuckCounter || 0) + 1;
                 
-                if (this.stuckCounter > 10) {
+                // Wander gets unstuck faster
+                const stuckThreshold = this.type.behavior === 'wander' ? 5 : 10;
+                if (this.stuckCounter > stuckThreshold) {
                     // Really stuck - teleport toward center of polygon and reset
                     const cx = unclaimedPoly.reduce((s, p) => s + p.x, 0) / unclaimedPoly.length;
                     const cy = unclaimedPoly.reduce((s, p) => s + p.y, 0) / unclaimedPoly.length;
-                    this.x = this.x * 0.7 + cx * 0.3;
-                    this.y = this.y * 0.7 + cy * 0.3;
+                    this.x = this.x * 0.6 + cx * 0.4;
+                    this.y = this.y * 0.6 + cy * 0.4;
                     this.stuckCounter = 0;
+                    // Also reset patrol angle toward center
+                    this.patrolAngle = Math.atan2(cy - this.y, cx - this.x);
                 }
                 
                 // Reverse and add random direction
@@ -362,95 +385,116 @@
             ctx.restore();
 
             if (this.quoteTimer > 0 && this.currentQuote) {
+                ctx.save();
                 ctx.globalAlpha = Math.min(1, this.quoteTimer / 25) * 0.9;
                 ctx.fillStyle = this.type.color;
-                ctx.font = 'bold 8px monospace';
+                ctx.font = 'bold 10px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText(this.currentQuote, this.x, this.y - this.size - 12);
-                ctx.globalAlpha = 1;
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText(this.currentQuote, this.x, this.y - this.size - 15);
+                ctx.restore();
             }
         }
 
         drawEye(ctx, s) {
             const lookAngle = Math.atan2(gameState.player.y - this.y, gameState.player.x - this.x);
             
-            // Glow
-            ctx.shadowColor = this.type.color;
-            ctx.shadowBlur = 10;
+            // Intense glow - pulsing
+            const pulse = 1 + Math.sin(this.angle * 4) * 0.15;
+            ctx.shadowColor = '#FF0000';
+            ctx.shadowBlur = 15 * pulse;
             
-            // Sclera (white of eye) - almond shape
-            ctx.fillStyle = '#F5F5F5';
+            // Larger sclera with yellow tint (unhealthy eye)
+            const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 1.5);
+            grad.addColorStop(0, '#FFFFEE');
+            grad.addColorStop(0.7, '#FFEECC');
+            grad.addColorStop(1, '#FFDDBB');
+            ctx.fillStyle = grad;
             ctx.beginPath();
-            ctx.ellipse(0, 0, s * 1.3, s * 0.8, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, s * 1.5, s * 0.9, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Bloodshot veins
+            // Many bloodshot veins - thicker and angrier
             ctx.shadowBlur = 0;
-            ctx.strokeStyle = '#CC3333';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < 6; i++) {
-                const veinAngle = (i / 6) * Math.PI * 2 + this.angle * 0.1;
-                const startR = s * 0.5;
-                const endR = s * 1.1;
+            for (let i = 0; i < 10; i++) {
+                const veinAngle = (i / 10) * Math.PI * 2 + this.angle * 0.15;
+                const startR = s * 0.55;
+                const endR = s * 1.4;
+                
+                // Varying thickness
+                ctx.strokeStyle = i % 2 === 0 ? '#DD2222' : '#BB4444';
+                ctx.lineWidth = i % 3 === 0 ? 1.5 : 0.8;
+                
                 ctx.beginPath();
                 ctx.moveTo(Math.cos(veinAngle) * startR, Math.sin(veinAngle) * startR * 0.6);
-                // Squiggly vein
+                
+                // More squiggly veins
                 const midR = (startR + endR) / 2;
-                const wobble = Math.sin(this.angle * 2 + i) * s * 0.1;
-                ctx.quadraticCurveTo(
-                    Math.cos(veinAngle) * midR + wobble,
-                    Math.sin(veinAngle) * midR * 0.6,
+                const wobble1 = Math.sin(this.angle * 3 + i) * s * 0.15;
+                const wobble2 = Math.cos(this.angle * 2 + i * 2) * s * 0.1;
+                ctx.bezierCurveTo(
+                    Math.cos(veinAngle) * midR * 0.7 + wobble1,
+                    Math.sin(veinAngle) * midR * 0.5,
+                    Math.cos(veinAngle) * midR * 1.2 + wobble2,
+                    Math.sin(veinAngle) * midR * 0.7,
                     Math.cos(veinAngle) * endR,
                     Math.sin(veinAngle) * endR * 0.6
                 );
                 ctx.stroke();
             }
             
-            // Iris - tracks player
-            const irisOffsetX = Math.cos(lookAngle) * s * 0.25;
-            const irisOffsetY = Math.sin(lookAngle) * s * 0.15;
+            // Iris - tracks player aggressively (moves more)
+            const irisOffsetX = Math.cos(lookAngle) * s * 0.35;
+            const irisOffsetY = Math.sin(lookAngle) * s * 0.2;
             
-            // Iris gradient (red/crimson)
-            const irisGrad = ctx.createRadialGradient(irisOffsetX, irisOffsetY, 0, irisOffsetX, irisOffsetY, s * 0.5);
-            irisGrad.addColorStop(0, '#8B0000');
-            irisGrad.addColorStop(0.7, '#DC143C');
-            irisGrad.addColorStop(1, '#8B0000');
+            // Larger, more intense iris
+            const irisGrad = ctx.createRadialGradient(irisOffsetX, irisOffsetY, 0, irisOffsetX, irisOffsetY, s * 0.6);
+            irisGrad.addColorStop(0, '#FF0000');
+            irisGrad.addColorStop(0.5, '#CC0000');
+            irisGrad.addColorStop(0.8, '#990000');
+            irisGrad.addColorStop(1, '#660000');
             ctx.fillStyle = irisGrad;
             ctx.beginPath();
-            ctx.arc(irisOffsetX, irisOffsetY, s * 0.5, 0, Math.PI * 2);
+            ctx.arc(irisOffsetX, irisOffsetY, s * 0.6, 0, Math.PI * 2);
             ctx.fill();
             
-            // Iris detail lines
-            ctx.strokeStyle = '#5C0000';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < 12; i++) {
-                const lineAngle = (i / 12) * Math.PI * 2;
+            // Iris detail lines - more of them
+            ctx.strokeStyle = '#440000';
+            ctx.lineWidth = 0.7;
+            for (let i = 0; i < 16; i++) {
+                const lineAngle = (i / 16) * Math.PI * 2;
                 ctx.beginPath();
-                ctx.moveTo(irisOffsetX + Math.cos(lineAngle) * s * 0.2, irisOffsetY + Math.sin(lineAngle) * s * 0.2);
-                ctx.lineTo(irisOffsetX + Math.cos(lineAngle) * s * 0.45, irisOffsetY + Math.sin(lineAngle) * s * 0.45);
+                ctx.moveTo(irisOffsetX + Math.cos(lineAngle) * s * 0.25, irisOffsetY + Math.sin(lineAngle) * s * 0.25);
+                ctx.lineTo(irisOffsetX + Math.cos(lineAngle) * s * 0.55, irisOffsetY + Math.sin(lineAngle) * s * 0.55);
                 ctx.stroke();
             }
             
-            // Pupil
+            // Larger, slitted pupil (reptilian)
             ctx.fillStyle = '#000000';
             ctx.beginPath();
-            ctx.arc(irisOffsetX, irisOffsetY, s * 0.2, 0, Math.PI * 2);
+            ctx.ellipse(irisOffsetX, irisOffsetY, s * 0.12, s * 0.35, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Pupil highlight
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
+            // Evil glint
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
             ctx.beginPath();
-            ctx.arc(irisOffsetX - s * 0.08, irisOffsetY - s * 0.08, s * 0.06, 0, Math.PI * 2);
+            ctx.arc(irisOffsetX - s * 0.15, irisOffsetY - s * 0.15, s * 0.08, 0, Math.PI * 2);
             ctx.fill();
             
-            // Eyelid lines (top and bottom)
-            ctx.strokeStyle = '#AA2222';
-            ctx.lineWidth = 2;
+            // Second smaller glint
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
             ctx.beginPath();
-            ctx.ellipse(0, 0, s * 1.35, s * 0.85, 0, Math.PI * 0.9, Math.PI * 0.1, true);
+            ctx.arc(irisOffsetX + s * 0.1, irisOffsetY - s * 0.2, s * 0.04, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Eyelid lines - angry/narrowed
+            ctx.strokeStyle = '#882222';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, s * 1.55, s * 0.95, 0, Math.PI * 0.85, Math.PI * 0.15, true);
             ctx.stroke();
             ctx.beginPath();
-            ctx.ellipse(0, 0, s * 1.35, s * 0.85, 0, Math.PI * 0.9, Math.PI * 2.1);
+            ctx.ellipse(0, 0, s * 1.55, s * 0.95, 0, Math.PI * 0.85, Math.PI * 2.15);
             ctx.stroke();
         }
 
@@ -865,21 +909,21 @@
             }
         }
 
-        // Second pass: remove collinear points
+        // Second pass: remove collinear points (be more aggressive)
         let simplified = [];
         for (let i = 0; i < result.length; i++) {
             const prev = result[(i - 1 + result.length) % result.length];
             const curr = result[i];
             const next = result[(i + 1) % result.length];
             const cross = (curr.x - prev.x) * (next.y - prev.y) - (curr.y - prev.y) * (next.x - prev.x);
-            if (Math.abs(cross) > 1) simplified.push(curr);
+            if (Math.abs(cross) > 5) simplified.push(curr); // Increased threshold
         }
         
         if (simplified.length < 3) simplified = result;
         
         // Third pass: remove very short edges by merging points
         let final = [];
-        const minEdgeLength = 3;
+        const minEdgeLength = 4; // Increased minimum
         for (let i = 0; i < simplified.length; i++) {
             const curr = simplified[i];
             const next = simplified[(i + 1) % simplified.length];
@@ -896,8 +940,11 @@
                 final.push(curr);
             }
         }
+        
+        // Ensure we have a valid polygon
+        if (final.length < 3) final = simplified.length >= 3 ? simplified : result;
 
-        return final.length >= 3 ? final : simplified;
+        return final;
     }
 
     function killTrappedEnemies() {
@@ -925,16 +972,19 @@
         gameState.edgeIndex = closest.edge;
         gameState.edgeT = closest.t;
         gameState.cutting = false;
+        gameState.cutDirection = null;
     }
 
     function cancelCut() {
         gameState.trail = [];
         gameState.cutting = false;
         gameState.cutStart = null;
+        gameState.cutDirection = null;
     }
 
     function startCutting(dx, dy) {
         gameState.cutting = true;
+        gameState.cutDirection = { dx, dy }; // Lock direction
         gameState.cutStart = {
             edgeIndex: gameState.edgeIndex,
             edgeT: gameState.edgeT,
@@ -995,41 +1045,113 @@
         if (dx === 0 && dy === 0) return;
 
         if (gameState.cutting) {
-            const nx = gameState.player.x + dx * CONFIG.cutSpeed;
-            const ny = gameState.player.y + dy * CONFIG.cutSpeed;
+            // Strictly one axis at a time - no diagonals ever
+            let cdx = 0, cdy = 0;
+            
+            // Priority: use the LAST single key pressed (check each axis separately)
+            // If both axes have input, pick the one that matches current direction, or default to horizontal
+            const wantX = (gameState.keys['ArrowLeft'] || gameState.keys['a'] || gameState.keys['A']) ? -1 :
+                          (gameState.keys['ArrowRight'] || gameState.keys['d'] || gameState.keys['D']) ? 1 : 0;
+            const wantY = (gameState.keys['ArrowUp'] || gameState.keys['w'] || gameState.keys['W']) ? -1 :
+                          (gameState.keys['ArrowDown'] || gameState.keys['s'] || gameState.keys['S']) ? 1 : 0;
+            
+            const currentDir = gameState.cutDirection;
+            
+            if (wantX !== 0 && wantY !== 0) {
+                // Both axes pressed - continue in current direction axis
+                if (currentDir.dx !== 0) {
+                    cdx = wantX;
+                } else {
+                    cdy = wantY;
+                }
+            } else if (wantX !== 0) {
+                cdx = wantX;
+            } else if (wantY !== 0) {
+                cdy = wantY;
+            } else {
+                return; // No input
+            }
+            
+            // Detect direction change and add corner point
+            if ((currentDir.dx !== 0 && cdy !== 0) || (currentDir.dy !== 0 && cdx !== 0)) {
+                // Direction changed - add corner at current position
+                const last = gameState.trail[gameState.trail.length - 1];
+                if (last.x !== gameState.player.x || last.y !== gameState.player.y) {
+                    gameState.trail.push({ x: gameState.player.x, y: gameState.player.y });
+                }
+                gameState.cutDirection = { dx: cdx, dy: cdy };
+            }
+            
+            const nx = gameState.player.x + cdx * CONFIG.cutSpeed;
+            const ny = gameState.player.y + cdy * CONFIG.cutSpeed;
+            
+            // SAFEGUARD: Ensure we only moved on one axis (should already be true, but belt and suspenders)
+            // This prevents any edge case diagonal movement
+            const actualDx = nx - gameState.player.x;
+            const actualDy = ny - gameState.player.y;
+            let finalNx = nx, finalNy = ny;
+            if (Math.abs(actualDx) > 0.1 && Math.abs(actualDy) > 0.1) {
+                // Somehow both axes changed - pick the dominant one
+                if (Math.abs(actualDx) >= Math.abs(actualDy)) {
+                    finalNy = gameState.player.y; // Zero out Y movement
+                } else {
+                    finalNx = gameState.player.x; // Zero out X movement
+                }
+            }
 
-            const borderCheck = closestOnBoundary(nx, ny);
-            const distFromStart = Math.hypot(nx - gameState.cutStart.x, ny - gameState.cutStart.y);
+            const borderCheck = closestOnBoundary(finalNx, finalNy);
+            const distFromStart = Math.hypot(finalNx - gameState.cutStart.x, finalNy - gameState.cutStart.y);
             
             // Complete cut if we're close to border and far from start
-            if (borderCheck.dist < 4 && distFromStart > 20) {
-                gameState.player.x = borderCheck.x;
-                gameState.player.y = borderCheck.y;
-                gameState.trail.push({ x: borderCheck.x, y: borderCheck.y });
+            if (borderCheck.dist < 6 && distFromStart > 30) {
+                // Add corner point if needed to avoid diagonal to border
+                const last = gameState.trail[gameState.trail.length - 1];
+                const snapX = borderCheck.x;
+                const snapY = borderCheck.y;
+                if (Math.abs(snapX - last.x) > 1 && Math.abs(snapY - last.y) > 1) {
+                    // Need a corner - use current direction to determine which way
+                    if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
+                        gameState.trail.push({ x: snapX, y: last.y });
+                    } else {
+                        gameState.trail.push({ x: last.x, y: snapY });
+                    }
+                }
+                gameState.player.x = snapX;
+                gameState.player.y = snapY;
+                gameState.trail.push({ x: snapX, y: snapY });
                 completeCut();
                 return;
             }
 
             // Check if still inside unclaimed area
-            if (pointInPoly(nx, ny, unclaimedPoly)) {
+            if (pointInPoly(finalNx, finalNy, unclaimedPoly)) {
                 // Check collision with own trail
                 for (let i = 0; i < gameState.trail.length - 2; i++) {
-                    if (Math.hypot(nx - gameState.trail[i].x, ny - gameState.trail[i].y) < 4) {
+                    if (Math.hypot(finalNx - gameState.trail[i].x, finalNy - gameState.trail[i].y) < 6) {
                         loseLife();
                         return;
                     }
                 }
 
-                gameState.player.x = nx;
-                gameState.player.y = ny;
+                gameState.player.x = finalNx;
+                gameState.player.y = finalNy;
 
                 const last = gameState.trail[gameState.trail.length - 1];
-                if (Math.hypot(nx - last.x, ny - last.y) > 2) {
-                    gameState.trail.push({ x: nx, y: ny });
+                if (Math.hypot(finalNx - last.x, finalNy - last.y) > 3) {
+                    gameState.trail.push({ x: finalNx, y: finalNy });
                 }
             } else {
                 // We've exited the unclaimed area - complete the cut
-                const snapped = closestOnBoundary(nx, ny);
+                const snapped = closestOnBoundary(finalNx, finalNy);
+                // Add corner point if needed to avoid diagonal to border
+                const last = gameState.trail[gameState.trail.length - 1];
+                if (Math.abs(snapped.x - last.x) > 1 && Math.abs(snapped.y - last.y) > 1) {
+                    if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
+                        gameState.trail.push({ x: snapped.x, y: last.y });
+                    } else {
+                        gameState.trail.push({ x: last.x, y: snapped.y });
+                    }
+                }
                 gameState.player.x = snapped.x;
                 gameState.player.y = snapped.y;
                 gameState.trail.push({ x: snapped.x, y: snapped.y });
@@ -1118,12 +1240,12 @@
 
             if (!e.dead && gameState.cutting) {
                 for (const t of gameState.trail) {
-                    if (Math.hypot(e.x - t.x, e.y - t.y) < e.size + 3) {
+                    if (Math.hypot(e.x - t.x, e.y - t.y) < e.size + 5) {
                         loseLife();
                         return alive;
                     }
                 }
-                if (Math.hypot(e.x - px, e.y - py) < e.size + 5) {
+                if (Math.hypot(e.x - px, e.y - py) < e.size + 8) {
                     loseLife();
                 }
             }
@@ -1136,7 +1258,7 @@
     // ===================== DRAWING =====================
 
     function drawLocalGhost(ctx, x, y, cutting) {
-        const size = 8;
+        const size = 14;
         ctx.save();
         ctx.translate(x, y);
 
@@ -1145,26 +1267,26 @@
             const shieldAngle = Math.atan2(normal.y, normal.x);
             
             ctx.shadowColor = '#33FF00';
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 12;
             
             ctx.strokeStyle = '#33FF00';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.arc(0, 0, size + 4, shieldAngle - Math.PI * 0.4, shieldAngle + Math.PI * 0.4);
+            ctx.arc(0, 0, size + 6, shieldAngle - Math.PI * 0.4, shieldAngle + Math.PI * 0.4);
             ctx.stroke();
             
             ctx.strokeStyle = 'rgba(136, 255, 136, 0.5)';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(0, 0, size + 6, shieldAngle - Math.PI * 0.3, shieldAngle + Math.PI * 0.3);
+            ctx.arc(0, 0, size + 9, shieldAngle - Math.PI * 0.3, shieldAngle + Math.PI * 0.3);
             ctx.stroke();
         }
 
         ctx.shadowColor = '#33FF00';
-        ctx.shadowBlur = cutting ? 15 : 10;
+        ctx.shadowBlur = cutting ? 20 : 15;
         ctx.fillStyle = cutting ? 'rgba(255, 100, 100, 0.3)' : 'rgba(51, 255, 0, 0.15)';
         ctx.strokeStyle = cutting ? '#FF6666' : '#33FF00';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2;
 
         ctx.beginPath();
         ctx.arc(0, -size * 0.3, size * 0.6, Math.PI, 0);
@@ -1181,8 +1303,8 @@
         ctx.shadowBlur = 0;
         ctx.fillStyle = cutting ? '#FF6666' : '#33FF00';
         ctx.beginPath();
-        ctx.arc(-size * 0.2, -size * 0.2, 1.5, 0, Math.PI * 2);
-        ctx.arc(size * 0.2, -size * 0.2, 1.5, 0, Math.PI * 2);
+        ctx.arc(-size * 0.2, -size * 0.2, 2.5, 0, Math.PI * 2);
+        ctx.arc(size * 0.2, -size * 0.2, 2.5, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore();
@@ -1234,7 +1356,7 @@
             ctx.fill();
 
             // Region labels - always visible
-            ctx.font = '9px monospace';
+            ctx.font = '16px monospace';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             for (let ry = 0; ry < 2; ry++) {
@@ -1247,16 +1369,16 @@
                     
                     // Brighter in unclaimed area, dimmer when claimed
                     const inUnclaimed = pointInPoly(cx, cy, unclaimedPoly);
-                    ctx.fillStyle = inUnclaimed ? r.color + '50' : r.color + '25';
+                    ctx.fillStyle = inUnclaimed ? r.color + '60' : r.color + '30';
                     ctx.fillText(r.name, cx, cy);
                 }
             }
 
             // Wire border of unclaimed area (the green line ghost walks on)
             ctx.strokeStyle = '#33FF00';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.shadowColor = '#33FF00';
-            ctx.shadowBlur = 5;
+            ctx.shadowBlur = 8;
             ctx.beginPath();
             ctx.moveTo(unclaimedPoly[0].x, unclaimedPoly[0].y);
             for (let i = 1; i < unclaimedPoly.length; i++) {
@@ -1270,17 +1392,35 @@
         // Cut trail
         if (gameState.trail.length > 1) {
             ctx.strokeStyle = '#33FF00';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.shadowColor = '#33FF00';
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 12;
             ctx.beginPath();
             ctx.moveTo(gameState.trail[0].x, gameState.trail[0].y);
             for (let i = 1; i < gameState.trail.length; i++) {
                 ctx.lineTo(gameState.trail[i].x, gameState.trail[i].y);
             }
-            ctx.lineTo(gameState.player.x, gameState.player.y);
+            // Draw line to current player position - ensure no diagonals
+            const lastTrail = gameState.trail[gameState.trail.length - 1];
+            const px = gameState.player.x;
+            const py = gameState.player.y;
+            const dxToPlayer = Math.abs(px - lastTrail.x);
+            const dyToPlayer = Math.abs(py - lastTrail.y);
+            
+            // If both axes differ, add a corner point for drawing
+            if (dxToPlayer > 1 && dyToPlayer > 1) {
+                // Add visual corner - go horizontal first, then vertical
+                if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
+                    // Currently moving horizontally - draw horizontal then vertical
+                    ctx.lineTo(px, lastTrail.y);
+                } else {
+                    // Currently moving vertically - draw vertical then horizontal
+                    ctx.lineTo(lastTrail.x, py);
+                }
+            }
+            ctx.lineTo(px, py);
             ctx.stroke();
             ctx.shadowBlur = 0;
         }
@@ -1297,9 +1437,9 @@
 
         if (gameState.messageTimer > 0) {
             ctx.fillStyle = `rgba(51,255,0,${gameState.messageTimer / 40})`;
-            ctx.font = 'bold 12px monospace';
+            ctx.font = 'bold 16px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText(gameState.message, CONFIG.canvasWidth / 2, CONFIG.hudHeight + 25);
+            ctx.fillText(gameState.message, CONFIG.canvasWidth / 2, CONFIG.hudHeight + 35);
         }
 
         if (!gameState.running || gameState.paused) {
@@ -1310,15 +1450,15 @@
             if (gameState.won) {
                 // Victory screen with manifesto-inspired text
                 ctx.fillStyle = '#33FF00';
-                ctx.font = 'bold 20px monospace';
-                ctx.fillText('DATA RECLAIMED', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 80);
+                ctx.font = 'bold 36px monospace';
+                ctx.fillText('DATA RECLAIMED', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 120);
                 
                 ctx.fillStyle = '#33FF00';
-                ctx.font = 'bold 14px monospace';
-                ctx.fillText('THE EXIT IS OPEN', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 50);
+                ctx.font = 'bold 22px monospace';
+                ctx.fillText('THE EXIT IS OPEN', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 70);
                 
-                ctx.fillStyle = '#888';
-                ctx.font = '9px monospace';
+                ctx.fillStyle = '#AAA';
+                ctx.font = '14px monospace';
                 const lines = [
                     'The cage is unlocked.',
                     'Your data runs local. Your keys. Your rules.',
@@ -1327,41 +1467,188 @@
                     'Physics, not promises.'
                 ];
                 lines.forEach((line, i) => {
-                    ctx.fillText(line, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 15 + i * 14);
+                    ctx.fillText(line, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 20 + i * 24);
                 });
                 
                 ctx.fillStyle = '#33FF00';
+                ctx.font = '16px monospace';
+                ctx.fillText(`Score: ${gameState.score}  |  ${gameState.claimedPercent.toFixed(1)}% Reclaimed`, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 120);
+                
+                ctx.fillStyle = '#888';
+                ctx.font = '14px monospace';
+                ctx.fillText('Press R to reclaim another sector', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 160);
+                
+                ctx.fillStyle = '#33FF0066';
                 ctx.font = '12px monospace';
-                ctx.fillText(`Score: ${gameState.score}  |  ${gameState.claimedPercent.toFixed(1)}% Reclaimed`, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 70);
-                
-                ctx.fillStyle = '#666';
-                ctx.font = '10px monospace';
-                ctx.fillText('Press R to reclaim another sector', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 95);
-                
-                ctx.fillStyle = '#33FF0044';
-                ctx.font = '7px monospace';
-                ctx.fillText('"The only scarcity left is your courage to use it."', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 115);
+                ctx.fillText('"The only scarcity left is your courage to use it."', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 200);
                 
             } else if (gameState.lives <= 0) {
                 ctx.fillStyle = '#FF3333';
-                ctx.font = 'bold 18px monospace';
-                ctx.fillText('THE MACHINE WINS', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 40);
-                ctx.fillStyle = '#888';
-                ctx.font = '10px monospace';
-                ctx.fillText('Your data remains in their dungeons.', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 15);
+                ctx.font = 'bold 32px monospace';
+                ctx.fillText('THE MACHINE WINS', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 60);
+                ctx.fillStyle = '#AAA';
+                ctx.font = '14px monospace';
+                ctx.fillText('Your data remains in their dungeons.', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 20);
                 ctx.fillStyle = '#33FF00';
-                ctx.font = '12px monospace';
-                ctx.fillText(`Score: ${gameState.score}  |  ${gameState.claimedPercent.toFixed(1)}% Reclaimed`, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 15);
+                ctx.font = '16px monospace';
+                ctx.fillText(`Score: ${gameState.score}  |  ${gameState.claimedPercent.toFixed(1)}% Reclaimed`, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 30);
+                ctx.fillStyle = '#888';
+                ctx.font = '14px monospace';
+                ctx.fillText('Press R to try again', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 70);
                 ctx.fillStyle = '#666';
-                ctx.fillText('Press R to try again', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 45);
-                ctx.fillStyle = '#444';
-                ctx.font = '8px monospace';
-                ctx.fillText('The exit is still open.', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 65);
+                ctx.font = '12px monospace';
+                ctx.fillText('The exit is still open.', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 100);
             } else if (gameState.paused) {
                 ctx.fillStyle = '#33FF00';
-                ctx.font = 'bold 18px monospace';
+                ctx.font = 'bold 32px monospace';
                 ctx.fillText('PAUSED', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2);
+                ctx.fillStyle = '#888';
+                ctx.font = '14px monospace';
+                ctx.fillText('Press P to continue', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 40);
             }
+        }
+        
+        // Info screen overlay
+        if (gameState.showInfo) {
+            ctx.save();
+            
+            // Full black overlay
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.totalHeight);
+            
+            // Reset text settings
+            ctx.textBaseline = 'alphabetic';
+            
+            // Title
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#33FF00';
+            ctx.font = 'bold 28px monospace';
+            ctx.fillText('ENTITIES', CONFIG.canvasWidth / 2, 50);
+            
+            ctx.font = '12px monospace';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Press I or ESC to close', CONFIG.canvasWidth / 2, 75);
+            
+            // 2x3 grid
+            const cols = 3;
+            const cellW = CONFIG.canvasWidth / cols;
+            const cellH = 280;
+            const startY = 100;
+            
+            // Save real player position
+            const realPlayerX = gameState.player.x;
+            const realPlayerY = gameState.player.y;
+            
+            for (let i = 0; i < GREED_TYPES.length; i++) {
+                const t = GREED_TYPES[i];
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const cx = (col + 0.5) * cellW;
+                const cy = startY + row * cellH + 50;
+                
+                // Make monsters look toward viewer (below them, relative to translated position)
+                gameState.player.x = 0;
+                gameState.player.y = 100;
+                
+                // Draw monster - manually translate since Enemy.draw uses its own translate
+                ctx.save();
+                ctx.translate(cx, cy);
+                try {
+                    const tempEnemy = new Enemy(t, 0, 0); // Position at origin, we already translated
+                    tempEnemy.angle = performance.now() * 0.002;
+                    tempEnemy.patrolAngle = performance.now() * 0.001;
+                    tempEnemy.size = t.size * 2.2;
+                    tempEnemy.dead = false;
+                    tempEnemy.deathTimer = 0;
+                    tempEnemy.quoteTimer = 0; // Don't show quotes
+                    
+                    // Draw the specific monster type directly
+                    const s = tempEnemy.size;
+                    switch (t.name) {
+                        case 'THE TRACKER': tempEnemy.drawEye(ctx, s); break;
+                        case 'THE CLOUD': tempEnemy.drawCloud(ctx, s); break;
+                        case 'THE ENSHITTIFIER': tempEnemy.drawEnshittifier(ctx, s); break;
+                        case 'THE RENT SEEKER': tempEnemy.drawRentSeeker(ctx, s); break;
+                        case 'THE LOCK-IN': tempEnemy.drawLockIn(ctx, s); break;
+                        case 'THE KILL SWITCH': tempEnemy.drawKillSwitch(ctx, s); break;
+                        default:
+                            ctx.fillStyle = t.color;
+                            ctx.beginPath();
+                            ctx.arc(0, 0, s, 0, Math.PI * 2);
+                            ctx.fill();
+                    }
+                } catch(e) {
+                    ctx.fillStyle = t.color;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, t.size * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+                
+                // Reset after monster draw
+                ctx.textBaseline = 'alphabetic';
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+                
+                // Name
+                ctx.fillStyle = t.color;
+                ctx.font = 'bold 15px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(t.name, cx, cy + 70);
+                
+                // Speed label and bar
+                ctx.fillStyle = '#888';
+                ctx.font = '11px monospace';
+                ctx.fillText('SPEED', cx - 40, cy + 95);
+                
+                const barW = 80;
+                const barX = cx - 10;
+                const barY = cy + 87;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(barX, barY, barW, 10);
+                ctx.fillStyle = t.color;
+                ctx.fillRect(barX, barY, (t.speed / 4.0) * barW, 10);
+                
+                // Behavior
+                const behaviorTags = {
+                    'chase': 'HUNTS YOU',
+                    'patrol': 'PATROLS',
+                    'erratic': 'CHAOTIC',
+                    'wander': 'DRIFTS',
+                    'predict': 'PREDICTS'
+                };
+                ctx.fillStyle = '#AAA';
+                ctx.font = 'bold 11px monospace';
+                ctx.fillText(behaviorTags[t.behavior] || t.behavior.toUpperCase(), cx, cy + 120);
+                
+                // Tagline
+                const taglines = {
+                    'THE CLOUD': 'Always syncing. Never forgetting.',
+                    'THE TRACKER': 'It knows where you are.',
+                    'THE ENSHITTIFIER': 'Features become paywalls.',
+                    'THE RENT SEEKER': 'You will own nothing.',
+                    'THE LOCK-IN': 'Data checks in. Never out.',
+                    'THE KILL SWITCH': 'They giveth and taketh.'
+                };
+                ctx.fillStyle = '#666';
+                ctx.font = 'italic 10px monospace';
+                ctx.fillText(taglines[t.name] || '', cx, cy + 145);
+            }
+            
+            // Restore player position
+            gameState.player.x = realPlayerX;
+            gameState.player.y = realPlayerY;
+            
+            // Bottom tips
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#33FF00';
+            ctx.font = '14px monospace';
+            ctx.fillText('Trap them or claim 90% of their region to destroy', CONFIG.canvasWidth / 2, CONFIG.totalHeight - 55);
+            ctx.fillStyle = '#888';
+            ctx.font = '12px monospace';
+            ctx.fillText('Safe on the wire. Vulnerable when cutting.', CONFIG.canvasWidth / 2, CONFIG.totalHeight - 30);
+            
+            ctx.restore();
         }
     }
 
@@ -1372,7 +1659,7 @@
         ctx.lineWidth = 1;
         ctx.strokeRect(0, 0, CONFIG.canvasWidth, CONFIG.hudHeight);
 
-        const barX = 55, barY = 15, barW = CONFIG.canvasWidth - 110, barH = 10;
+        const barX = 80, barY = 18, barW = CONFIG.canvasWidth - 180, barH = 14;
         ctx.fillStyle = '#1a1a1a';
         ctx.fillRect(barX, barY, barW, barH);
         ctx.fillStyle = '#33FF00';
@@ -1382,24 +1669,26 @@
         ctx.lineWidth = 2;
         ctx.beginPath();
         const targetX = barX + (CONFIG.winPercentage / 100) * barW;
-        ctx.moveTo(targetX, barY - 2);
-        ctx.lineTo(targetX, barY + barH + 2);
+        ctx.moveTo(targetX, barY - 3);
+        ctx.lineTo(targetX, barY + barH + 3);
         ctx.stroke();
 
         ctx.fillStyle = '#33FF00';
-        ctx.font = '10px monospace';
+        ctx.font = '14px monospace';
         ctx.textAlign = 'left';
-        ctx.fillText(`${gameState.claimedPercent.toFixed(0)}%`, 8, 23);
+        ctx.fillText(`${gameState.claimedPercent.toFixed(0)}%`, 12, 29);
         ctx.textAlign = 'right';
-        ctx.fillText(`♥${gameState.lives}  L${gameState.level}`, CONFIG.canvasWidth - 8, 23);
+        ctx.fillText(`♥${gameState.lives}  L${gameState.level}`, CONFIG.canvasWidth - 12, 29);
 
         ctx.textAlign = 'center';
         if (gameState.cutting) {
             ctx.fillStyle = '#FF6B6B';
-            ctx.fillText('◆ CUTTING', CONFIG.canvasWidth / 2, 35);
+            ctx.font = '12px monospace';
+            ctx.fillText('◆ CUTTING', CONFIG.canvasWidth / 2, 44);
         } else if (gameState.spaceHeld) {
             ctx.fillStyle = '#FFE66D';
-            ctx.fillText('◇ SPACE + DIRECTION', CONFIG.canvasWidth / 2, 35);
+            ctx.font = '12px monospace';
+            ctx.fillText('◇ SPACE + DIRECTION', CONFIG.canvasWidth / 2, 44);
         }
     }
 
@@ -1407,10 +1696,10 @@
         const elapsed = ts - lastFrameTime;
         if (elapsed >= frameInterval) {
             lastFrameTime = ts - (elapsed % frameInterval);
-            update();
+            if (!gameState.showInfo) update();
             draw();
         }
-        if (gameState.running || gameState.paused || gameState.won || gameState.lives <= 0) {
+        if (gameState.running || gameState.paused || gameState.won || gameState.lives <= 0 || gameState.showInfo) {
             gameState.animationId = requestAnimationFrame(gameLoop);
         }
     }
@@ -1429,6 +1718,7 @@
         gameState.running = true;
         gameState.paused = false;
         gameState.won = false;
+        gameState.showInfo = false;
         gameState.spaceHeld = false;
         gameState.message = '';
         gameState.messageTimer = 0;
@@ -1445,8 +1735,16 @@
         gameState.keys[e.key] = true;
         if (e.key === ' ') { gameState.spaceHeld = true; e.preventDefault(); }
         if (e.key === 'p' || e.key === 'P') { if (gameState.running) gameState.paused = !gameState.paused; e.preventDefault(); }
+        if (e.key === 'i' || e.key === 'I') { 
+            gameState.showInfo = !gameState.showInfo; 
+            e.preventDefault(); 
+        }
         if (e.key === 'r' || e.key === 'R') { initGame(); e.preventDefault(); }
-        if (e.key === 'Escape') { window.ReclaimGame.close(); e.preventDefault(); }
+        if (e.key === 'Escape') { 
+            if (gameState.showInfo) { gameState.showInfo = false; }
+            else { window.ReclaimGame.close(); }
+            e.preventDefault(); 
+        }
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault();
     }
 

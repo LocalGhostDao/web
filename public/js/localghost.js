@@ -53,54 +53,54 @@
 
     const feedbackMessages = {
         thoughts: [
-            "Now I can help you process what's on your mind.",
-            "Your reflections help me understand how you think.",
-            "I'll remember these thoughts when you need them.",
+            "Stored locally. Ready when you need to revisit.",
+            "Your reflections, encrypted and yours alone.",
+            "No cloud ever sees this. Only you.",
         ],
         memories: [
-            "That sunset in 2019. You were happy.",
-            "These moments tell me what matters to you.",
-            "I can help you find these memories when you want them.",
+            "Safe on your hardware. Searchable by you.",
+            "These stay yours. Forever findable.",
+            "Backed up locally. Never scraped. Never sold.",
         ],
         finances: [
-            "Now I can spot patterns in your spending.",
-            "I can help you track your goals over time.",
-            "This helps me understand your priorities.",
+            "Patterns only you can see. No bank can sell this.",
+            "Your spending, your insights, your device.",
+            "Track your goals without feeding an algorithm.",
         ],
         health: [
-            "I can notice trends you might miss.",
-            "This helps me give you better suggestions.",
-            "I'll keep track so you don't have to.",
+            "Trends stay private. No insurer will ever see this.",
+            "Your body, your data, your business.",
+            "Health insights without the surveillance.",
         ],
         movement: [
-            "Now I know your favorite places.",
-            "I can remind you of places you loved.",
-            "This helps me understand your routines.",
+            "Your places. Not a timeline for advertisers.",
+            "Location history that stays in your house.",
+            "Remember where you've been. Share with no one.",
         ],
         interests: [
-            "Your curiosity tells me what excites you.",
-            "Now I can surface things you'd actually care about.",
-            "I'm learning what you're drawn to.",
+            "Curiosity without a profile being built on you.",
+            "Discover more. Feed no recommendation engine.",
+            "Your interests, not their targeting data.",
         ],
         relationships: [
-            "I can see who matters most to you.",
-            "This helps me understand your world.",
-            "I'll help you remember the important moments.",
+            "The people who matter. Visible only to you.",
+            "Your connections, off the social graph.",
+            "Memories with loved ones. Zero data brokers.",
         ],
         schedule: [
-            "Now I understand how you spend your time.",
-            "I can help you protect what matters.",
-            "Your time tells me your real priorities.",
+            "Your time. Not optimised for someone else's profit.",
+            "A calendar that doesn't report back.",
+            "Plan your life without feeding the machine.",
         ],
         taste: [
-            "Music says a lot about you. I'm listening.",
-            "Now I know what moves you.",
-            "I can find things that match your vibe.",
+            "What moves you stays between us.",
+            "No playlist sold to advertisers.",
+            "Your vibe. Your secret.",
         ],
         ideas: [
-            "I'll help you build on these when you're ready.",
-            "Your ideas are safe here. I won't forget them.",
-            "Now I can connect dots you might miss.",
+            "Captured locally. Built on when you're ready.",
+            "Your ideas don't train someone else's model.",
+            "Safe here. Waiting for you. No one else.",
         ],
     };
 
@@ -330,7 +330,7 @@
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  escape    - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
-                addOutputLine('  export    - Play Reclaim (volfied)');
+                addOutputLine('  reclaim   - Play Reclaim (volfied)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -363,13 +363,15 @@
                 addOutputLine('INITIATING ESCAPE SEQUENCE...', 'warning');
                 setTimeout(() => {
                     addOutputLine('REALITY.EXE HAS STOPPED RESPONDING', 'warning');
-                    triggerMatrixRain();
+                    triggerEscapeSequance();
                 }, 500);
                 break;
 
+            case 'game':
             case 'shadow':
             case 'snake':
                 addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
+                addOutputLine('The more I learn, the more I can help.', 'dim');
                 setTimeout(openGameModal, 300);
                 break;
 
@@ -377,7 +379,7 @@
             case 'reclaim':
             case 'volfied':
                 addOutputLine('LAUNCHING RECLAIM.EXE...', 'success');
-                addOutputLine('The cage is unlocked. The exit is open.', 'dim');
+                addOutputLine('Trap the greedy entities. Reclaim your data.', 'dim');
                 setTimeout(openExportModal, 300);
                 break;
 
@@ -429,7 +431,7 @@
                 break;
 
             case 'matrix':
-                triggerMatrixRain();
+                triggerEscapeSequance();
                 break;
 
             case '':
@@ -922,7 +924,7 @@
         escapeState.animationId = requestAnimationFrame(drawEscapeAnimation);
     }
 
-    function triggerMatrixRain() {
+    function triggerEscapeSequance() {
         initEscapeAnimation();
         elements.matrixCanvas.classList.add('active');
         drawEscapeAnimation();
@@ -1779,7 +1781,7 @@
             konamiCode = konamiCode.slice(-10);
 
             if (konamiCode.join(',') === secretCode.join(',')) {
-                triggerMatrixRain();
+                triggerEscapeSequance();
             }
         });
     }
@@ -1806,7 +1808,7 @@
     // ===========================================
     
     window.LocalGhost = {
-        triggerMatrixRain,
+        triggerEscapeSequance,
         terminalMinimize,
         terminalMaximize,
         openDonateModal,
