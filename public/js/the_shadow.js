@@ -1063,9 +1063,20 @@
         // Player name input handling
         if (elements.playerNameInput) {
             elements.playerNameInput.addEventListener('input', (e) => {
-                state.playerName = (e.target.value.toUpperCase() || 'GHOST').substring(0, 6);
+                state.playerName = e.target.value.toUpperCase().substring(0, 6);
                 e.target.value = state.playerName;
-                localStorage.setItem(CONFIG.storageKeys.playerName, state.playerName);
+                if (state.playerName) {
+                    localStorage.setItem(CONFIG.storageKeys.playerName, state.playerName);
+                }
+            });
+            
+            // Default to GHOST only on blur if empty
+            elements.playerNameInput.addEventListener('blur', (e) => {
+                if (!state.playerName) {
+                    state.playerName = 'GHOST';
+                    e.target.value = 'GHOST';
+                    localStorage.setItem(CONFIG.storageKeys.playerName, state.playerName);
+                }
             });
             
             elements.playerNameInput.addEventListener('keydown', (e) => {
