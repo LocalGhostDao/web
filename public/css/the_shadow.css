@@ -393,8 +393,8 @@
 }
 
 .joystick-base {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background: var(--void);
     border: 1px solid var(--border);
     position: relative;
@@ -406,25 +406,25 @@
 .joystick-base::before {
     content: '↑';
     position: absolute;
-    top: 8px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 12px;
+    font-size: 14px;
     color: var(--border);
     font-family: var(--font-mono);
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .joystick-base::after {
     content: '↓';
     position: absolute;
-    bottom: 8px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 12px;
+    font-size: 14px;
     color: var(--border);
     font-family: var(--font-mono);
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 /* Crosshair grid lines */
@@ -440,31 +440,31 @@
 .joystick-grid::before {
     content: '←';
     position: absolute;
-    left: 8px;
+    left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
+    font-size: 14px;
     color: var(--border);
     font-family: var(--font-mono);
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 .joystick-grid::after {
     content: '→';
     position: absolute;
-    right: 8px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
+    font-size: 14px;
     color: var(--border);
     font-family: var(--font-mono);
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 /* The nub - small dot indicator */
 .joystick-nub {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: var(--terminal-dim);
     border: 1px solid var(--terminal);
     position: absolute;
@@ -565,13 +565,13 @@
 /* Small phones */
 @media (max-width: 380px) {
     .joystick-base {
-        width: 85px;
-        height: 85px;
+        width: 100px;
+        height: 100px;
     }
     
     .joystick-nub {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
     }
     
     .mobile-btn {
@@ -605,13 +605,13 @@
     }
     
     .joystick-base {
-        width: 75px;
-        height: 75px;
+        width: 90px;
+        height: 90px;
     }
     
     .joystick-nub {
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
     }
     
     .mobile-btn {
