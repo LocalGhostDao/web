@@ -93,7 +93,7 @@
             --terminal: #33FF00;
             --terminal-dim: #1a8000;
             --border: #333;
-            --warning: #FF3333;
+            --warning: #FF6B6B;
             --font-mono: 'JetBrains Mono', monospace;
             --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
@@ -1754,7 +1754,7 @@
         <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
             The internet is a panopticon.<br>
             <span style="color: var(--terminal);">LocalGhost is the blind spot.</span><br>
-            <a href="/cypherpunk" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">Read the full 1993 Cypherpunk Manifesto →</a>
+            <a href="/manifesto" style="color: var(--terminal); text-decoration: none; border-bottom: 1px solid var(--terminal);">"Do not lend your mind to the dying machine." — Read Why We Build →</a>
         </p>
     </section>
 
@@ -2210,12 +2210,13 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 </summary>
                 <div class="faq-answer">
                     <p>
-                        Yes. You have two options:
+                        Yes. The box comes with an encrypted VPN that you can choose to enable for remote access.
                     </p>
                     <p>
-                        <strong>Option A: Secure Tunnel (recommended)</strong><br>
-                        The box creates an encrypted tunnel using WireGuard. Your phone or laptop connects directly to your box 
-                        over the internet, but the traffic is end-to-end encrypted. It's like being on your home network, but from anywhere.
+                        <strong>Option A: Encrypted VPN (included)</strong><br>
+                        Every LocalGhost box ships with a built-in encrypted VPN. When enabled, your phone or laptop connects directly to your box 
+                        over the internet through an end-to-end encrypted tunnel. It's like being on your home network, but from anywhere. 
+                        Your traffic never touches our servers—because we don't have any.
                     </p>
                     <p>
                         <strong>Option B: Air-Gap Mode</strong><br>
@@ -2472,7 +2473,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <div class="modal export-modal">
             <button class="modal-close" onclick="LocalGhost.closeExportModal()">&times;</button>
             <h3>&gt; RECLAIM.EXE</h3>
-            <p class="export-subtitle">THE EXIT IS OPEN. TAKE BACK WHAT'S YOURS.</p>
+            <p class="export-subtitle">TAKE BACK WHAT'S YOURS.</p>
             
             <canvas id="exportCanvas" width="400" height="400"></canvas>
             

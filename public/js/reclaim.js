@@ -1,103 +1,74 @@
 // ===========================================
 // RECLAIM.EXE - TAKE BACK YOUR IDENTITY
 // A Volfied/Qix-style game for LocalGhost.ai
+// Pure polygon-based logic with enhanced visuals
 // ===========================================
 
 (function() {
     'use strict';
 
     const CONFIG = {
-        gridSize: 4,
         canvasWidth: 400,
         canvasHeight: 360,
         hudHeight: 40,
         totalHeight: 400,
-        playerSpeed: 3,
+        borderSpeed: 3,
         cutSpeed: 2.5,
         winPercentage: 80,
+        regionKillPercent: 90,
         targetFPS: 40
     };
 
+    // Game area - 10px margin for the wire border
+    const MARGIN = 10;
+    const GAME_LEFT = MARGIN;
+    const GAME_RIGHT = CONFIG.canvasWidth - MARGIN;
+    const GAME_TOP = MARGIN;
+    const GAME_BOTTOM = CONFIG.canvasHeight - MARGIN;
+    const TOTAL_AREA = (GAME_RIGHT - GAME_LEFT) * (GAME_BOTTOM - GAME_TOP);
+
     const DATA_REGIONS = [
-        { name: 'PHOTOS', color: '#4ECDC4', darkColor: '#1a3d3a' },
-        { name: 'MESSAGES', color: '#FFE66D', darkColor: '#3d3720' },
-        { name: 'LOCATION', color: '#FF6B6B', darkColor: '#3d1f1f' },
-        { name: 'CONTACTS', color: '#96E6A1', darkColor: '#2a3d2c' },
-        { name: 'BROWSING', color: '#DDA0DD', darkColor: '#362a36' },
-        { name: 'PURCHASES', color: '#F4A460', darkColor: '#3d2a1a' }
+        { name: 'PHOTOS', color: '#4ECDC4' },
+        { name: 'MESSAGES', color: '#FFE66D' },
+        { name: 'LOCATION', color: '#FF6B6B' },
+        { name: 'CONTACTS', color: '#96E6A1' },
+        { name: 'BROWSING', color: '#DDA0DD' },
+        { name: 'PURCHASES', color: '#F4A460' }
     ];
 
-    // Corporate villains - abstract shapes in shades of red
     const GREED_TYPES = [
-        { 
-            name: 'THE CLOUD', 
-            color: '#DC143C',  // Crimson
-            size: 12, 
-            speed: 0.8, 
-            behavior: 'patrol',
-            quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE']
-        },
-        { 
-            name: 'THE TRACKER', 
-            color: '#FF2222',  // Bright red
-            size: 9, 
-            speed: 1.5, 
-            behavior: 'chase',
-            quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED']
-        },
-        { 
-            name: 'THE ENSHITTIFIER', 
-            color: '#8B4513',  // Brown
-            size: 14, 
-            speed: 0.7, 
-            behavior: 'erratic',
-            quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY']
-        },
-        { 
-            name: 'THE RENT SEEKER', 
-            color: '#B22222',  // Firebrick
-            size: 10, 
-            speed: 1.2, 
-            behavior: 'chase',
-            quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION']
-        },
-        { 
-            name: 'THE LOCK-IN', 
-            color: '#CD5C5C',  // Indian red
-            size: 11, 
-            speed: 0.9, 
-            behavior: 'edges',
-            quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED']
-        },
-        { 
-            name: 'THE KILL SWITCH', 
-            color: '#8B0000',  // Dark red
-            size: 13, 
-            speed: 0.6, 
-            behavior: 'predict',
-            quotes: ['BRICKING...', 'REVOKED', 'DISABLED']
-        }
+        { name: 'THE CLOUD', color: '#DC143C', size: 12, speed: 0.8, behavior: 'patrol', quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE'] },
+        { name: 'THE TRACKER', color: '#FF2222', size: 9, speed: 1.5, behavior: 'chase', quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED'] },
+        { name: 'THE ENSHITTIFIER', color: '#8B4513', size: 14, speed: 0.7, behavior: 'erratic', quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY'] },
+        { name: 'THE RENT SEEKER', color: '#B22222', size: 10, speed: 1.2, behavior: 'chase', quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION'] },
+        { name: 'THE LOCK-IN', color: '#CD5C5C', size: 11, speed: 0.4, behavior: 'wander', quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED'] },
+        { name: 'THE KILL SWITCH', color: '#8B0000', size: 13, speed: 0.6, behavior: 'predict', quotes: ['BRICKING...', 'REVOKED', 'DISABLED'] }
     ];
 
-    let canvas, ctx;
-    let offscreenCanvas, offscreenCtx;
-    let gridWidth, gridHeight;
-    let grid = [];
-    let dataMap = [];
+    // The unclaimed area polygon - player walks on its edges, enemies live inside
+    let unclaimedPoly = [];
+    
+    // Region claim tracking
     let regionClaimPercent = [];
-    let gridDirty = true;
     
+    let canvas, ctx;
     let lastFrameTime = 0;
-    let frameInterval = 1000 / CONFIG.targetFPS;
-    
+    const frameInterval = 1000 / CONFIG.targetFPS;
+
     let gameState = {
         running: false,
         paused: false,
         cutting: false,
-        cutStartPos: null,
-        player: { x: 0, y: 0, gx: 0, gy: 0 },
-        enemies: [],
+        won: false,
+        player: { x: 0, y: 0 },
+        // Border walking state
+        edgeIndex: 0,
+        edgeT: 0,
+        // Cutting state
+        cutStart: null,
         trail: [],
+        // Game
+        enemies: [],
         claimedPercent: 0,
         level: 1,
         lives: 3,
@@ -109,14 +80,151 @@
         messageTimer: 0
     };
 
+    // ===================== POLYGON MATH =====================
+
+    function polyArea(poly) {
+        if (!poly || poly.length < 3) return 0;
+        let area = 0;
+        for (let i = 0; i < poly.length; i++) {
+            const j = (i + 1) % poly.length;
+            area += poly[i].x * poly[j].y - poly[j].x * poly[i].y;
+        }
+        return Math.abs(area) / 2;
+    }
+
+    function pointInPoly(x, y, poly) {
+        if (!poly || poly.length < 3) return false;
+        let inside = false;
+        for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+            const xi = poly[i].x, yi = poly[i].y;
+            const xj = poly[j].x, yj = poly[j].y;
+            if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) {
+                inside = !inside;
+            }
+        }
+        return inside;
+    }
+
+    function getEdge(i) {
+        const p1 = unclaimedPoly[i];
+        const p2 = unclaimedPoly[(i + 1) % unclaimedPoly.length];
+        return { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y };
+    }
+
+    function edgeLength(i) {
+        const e = getEdge(i);
+        return Math.hypot(e.x2 - e.x1, e.y2 - e.y1);
+    }
+
+    function pointOnEdge(i, t) {
+        const e = getEdge(i);
+        return { x: e.x1 + t * (e.x2 - e.x1), y: e.y1 + t * (e.y2 - e.y1) };
+    }
+
+    function getEdgeInwardNormal(i) {
+        const e = getEdge(i);
+        const dx = e.x2 - e.x1;
+        const dy = e.y2 - e.y1;
+        const len = Math.hypot(dx, dy);
+        if (len === 0) return { x: 0, y: -1 };
+        const mid = { x: (e.x1 + e.x2) / 2, y: (e.y1 + e.y2) / 2 };
+        const testPt = { x: mid.x - dy / len * 5, y: mid.y + dx / len * 5 };
+        if (pointInPoly(testPt.x, testPt.y, unclaimedPoly)) {
+            return { x: -dy / len, y: dx / len };
+        } else {
+            return { x: dy / len, y: -dx / len };
+        }
+    }
+
+    function closestOnBoundary(px, py) {
+        let best = { dist: Infinity, edge: 0, t: 0, x: 0, y: 0 };
+        
+        for (let i = 0; i < unclaimedPoly.length; i++) {
+            const e = getEdge(i);
+            const dx = e.x2 - e.x1, dy = e.y2 - e.y1;
+            const lenSq = dx * dx + dy * dy;
+            
+            let t = lenSq > 0 ? ((px - e.x1) * dx + (py - e.y1) * dy) / lenSq : 0;
+            t = Math.max(0, Math.min(1, t));
+            
+            const cx = e.x1 + t * dx, cy = e.y1 + t * dy;
+            const dist = Math.hypot(px - cx, py - cy);
+            
+            if (dist < best.dist) {
+                best = { dist, edge: i, t, x: cx, y: cy };
+            }
+        }
+        return best;
+    }
+
+    // ===================== REGION TRACKING =====================
+    
+    function getRegionBounds(regionIndex) {
+        const rx = regionIndex % 3;
+        const ry = Math.floor(regionIndex / 3);
+        const rw = CONFIG.canvasWidth / 3;
+        const rh = CONFIG.canvasHeight / 2;
+        return {
+            left: rx * rw,
+            right: (rx + 1) * rw,
+            top: ry * rh,
+            bottom: (ry + 1) * rh
+        };
+    }
+    
+    function calculateRegionClaim() {
+        // Sample points in each region to determine claim percentage
+        const samples = 10;
+        regionClaimPercent = [];
+        
+        for (let r = 0; r < 6; r++) {
+            const bounds = getRegionBounds(r);
+            let claimed = 0;
+            let total = 0;
+            
+            for (let sy = 0; sy < samples; sy++) {
+                for (let sx = 0; sx < samples; sx++) {
+                    const x = bounds.left + (sx + 0.5) * (bounds.right - bounds.left) / samples;
+                    const y = bounds.top + (sy + 0.5) * (bounds.bottom - bounds.top) / samples;
+                    
+                    // Only count points inside the game area (within the wire border)
+                    if (x >= GAME_LEFT && x <= GAME_RIGHT && y >= GAME_TOP && y <= GAME_BOTTOM) {
+                        total++;
+                        // Point is claimed if it's NOT inside unclaimed polygon
+                        if (!pointInPoly(x, y, unclaimedPoly)) {
+                            claimed++;
+                        }
+                    }
+                }
+            }
+            
+            regionClaimPercent[r] = total > 0 ? (claimed / total) * 100 : 0;
+        }
+    }
+    
+    function checkRegionKills() {
+        for (const e of gameState.enemies) {
+            if (e.dead) continue;
+            const pct = regionClaimPercent[e.regionIndex];
+            if (pct >= CONFIG.regionKillPercent) {
+                e.dead = true;
+                const regionName = DATA_REGIONS[e.regionIndex].name;
+                showMessage(`${regionName} LIBERATED!`);
+                gameState.score += 150;
+            }
+        }
+    }
+
+    // ===================== ENEMY CLASS =====================
+
     class Enemy {
         constructor(type, regionIndex, x, y) {
             this.type = type;
             this.regionIndex = regionIndex;
             this.x = x;
             this.y = y;
-            this.vx = (Math.random() > 0.5 ? 1 : -1) * type.speed;
-            this.vy = (Math.random() > 0.5 ? 1 : -1) * type.speed;
+            this.vx = (Math.random() - 0.5) * type.speed * 2;
+            this.vy = (Math.random() - 0.5) * type.speed * 2;
             this.size = type.size;
             this.angle = Math.random() * Math.PI * 2;
             this.quoteTimer = 0;
@@ -134,27 +242,22 @@
             }
 
             this.angle += 0.03;
-            this.quoteTimer--;
-
-            if (this.quoteTimer <= 0 && Math.random() < 0.003) {
+            if (--this.quoteTimer <= 0 && Math.random() < 0.003) {
                 this.currentQuote = this.type.quotes[Math.floor(Math.random() * this.type.quotes.length)];
                 this.quoteTimer = 90;
             }
 
-            // Behavior-based velocity adjustments
             switch (this.type.behavior) {
-                case 'chase':
-                    const dx = playerX - this.x;
-                    const dy = playerY - this.y;
-                    const dist = Math.hypot(dx, dy);
-                    if (dist > 0) {
-                        this.vx += (dx / dist) * 0.03;
-                        this.vy += (dy / dist) * 0.03;
+                case 'chase': {
+                    const d = Math.hypot(playerX - this.x, playerY - this.y);
+                    if (d > 0) {
+                        this.vx += ((playerX - this.x) / d) * 0.03;
+                        this.vy += ((playerY - this.y) / d) * 0.03;
                     }
                     break;
+                }
                 case 'erratic':
-                    this.erraticTimer--;
-                    if (this.erraticTimer <= 0) {
+                    if (--this.erraticTimer <= 0) {
                         this.vx = (Math.random() - 0.5) * this.type.speed * 2;
                         this.vy = (Math.random() - 0.5) * this.type.speed * 2;
                         this.erraticTimer = 30 + Math.random() * 40;
@@ -165,76 +268,62 @@
                     this.vx += Math.cos(this.patrolAngle) * 0.02;
                     this.vy += Math.sin(this.patrolAngle) * 0.02;
                     break;
-                case 'edges':
-                    const cx = CONFIG.canvasWidth / 2;
-                    const cy = CONFIG.canvasHeight / 2;
-                    this.vx += (cy - this.y) * 0.0006;
-                    this.vy -= (cx - this.x) * 0.0006;
+                case 'wander': {
+                    // Slow wandering - gently changes direction over time
+                    this.patrolAngle += (Math.random() - 0.5) * 0.1;
+                    this.vx += Math.cos(this.patrolAngle) * 0.015;
+                    this.vy += Math.sin(this.patrolAngle) * 0.015;
+                    // Add some momentum dampening to prevent getting stuck
+                    this.vx *= 0.98;
+                    this.vy *= 0.98;
                     break;
-                case 'predict':
-                    const px = playerX;
-                    const py = playerY;
-                    const pdx = px - this.x;
-                    const pdy = py - this.y;
-                    const pd = Math.hypot(pdx, pdy);
-                    if (pd > 0) {
-                        this.vx += (pdx / pd) * 0.025;
-                        this.vy += (pdy / pd) * 0.025;
+                }
+                case 'predict': {
+                    const d = Math.hypot(playerX - this.x, playerY - this.y);
+                    if (d > 0) {
+                        this.vx += ((playerX - this.x) / d) * 0.025;
+                        this.vy += ((playerY - this.y) / d) * 0.025;
                     }
                     break;
+                }
             }
 
-            // Speed limit
-            const speed = Math.hypot(this.vx, this.vy);
-            const maxSpeed = this.type.speed * 1.3;
-            if (speed > maxSpeed) {
-                this.vx = (this.vx / speed) * maxSpeed;
-                this.vy = (this.vy / speed) * maxSpeed;
-            }
-            // Minimum speed to prevent getting stuck
-            if (speed < 0.3) {
-                this.vx += (Math.random() - 0.5) * 0.5;
-                this.vy += (Math.random() - 0.5) * 0.5;
+            const spd = Math.hypot(this.vx, this.vy);
+            const maxSpd = this.type.speed * 1.3;
+            if (spd > maxSpd) { this.vx *= maxSpd / spd; this.vy *= maxSpd / spd; }
+            
+            // If nearly stopped, give a random push
+            if (spd < 0.2) {
+                const pushAngle = Math.random() * Math.PI * 2;
+                this.vx = Math.cos(pushAngle) * this.type.speed * 0.5;
+                this.vy = Math.sin(pushAngle) * this.type.speed * 0.5;
             }
 
-            let nextX = this.x + this.vx;
-            let nextY = this.y + this.vy;
+            const nx = this.x + this.vx, ny = this.y + this.vy;
 
-            // Check collision with walls
-            const margin = this.size + 5;
-            if (nextX < margin) {
-                nextX = margin;
-                this.vx = Math.abs(this.vx) * 0.8;
-            }
-            if (nextX > CONFIG.canvasWidth - margin) {
-                nextX = CONFIG.canvasWidth - margin;
-                this.vx = -Math.abs(this.vx) * 0.8;
-            }
-            if (nextY < margin) {
-                nextY = margin;
-                this.vy = Math.abs(this.vy) * 0.8;
-            }
-            if (nextY > CONFIG.canvasHeight - margin) {
-                nextY = CONFIG.canvasHeight - margin;
-                this.vy = -Math.abs(this.vy) * 0.8;
-            }
-
-            // Check collision with claimed territory
-            const gx = Math.floor(nextX / CONFIG.gridSize);
-            const gy = Math.floor(nextY / CONFIG.gridSize);
-            if (gx >= 0 && gx < gridWidth && gy >= 0 && gy < gridHeight && grid[gy][gx] === 1) {
-                // Bounce off claimed areas
-                this.vx *= -0.9;
-                this.vy *= -0.9;
-                // Add some randomness to prevent getting stuck
-                this.vx += (Math.random() - 0.5) * 0.8;
-                this.vy += (Math.random() - 0.5) * 0.8;
-                // Don't update position
+            if (pointInPoly(nx, ny, unclaimedPoly)) {
+                this.x = nx;
+                this.y = ny;
+                this.stuckCounter = 0;
             } else {
-                this.x = nextX;
-                this.y = nextY;
+                // Hit boundary - bounce with randomness
+                this.stuckCounter = (this.stuckCounter || 0) + 1;
+                
+                if (this.stuckCounter > 10) {
+                    // Really stuck - teleport toward center of polygon and reset
+                    const cx = unclaimedPoly.reduce((s, p) => s + p.x, 0) / unclaimedPoly.length;
+                    const cy = unclaimedPoly.reduce((s, p) => s + p.y, 0) / unclaimedPoly.length;
+                    this.x = this.x * 0.7 + cx * 0.3;
+                    this.y = this.y * 0.7 + cy * 0.3;
+                    this.stuckCounter = 0;
+                }
+                
+                // Reverse and add random direction
+                const bounceAngle = Math.atan2(this.vy, this.vx) + Math.PI + (Math.random() - 0.5) * 1.5;
+                const bounceSpeed = this.type.speed * 0.6;
+                this.vx = Math.cos(bounceAngle) * bounceSpeed;
+                this.vy = Math.sin(bounceAngle) * bounceSpeed;
             }
-
             return true;
         }
 
@@ -259,38 +348,21 @@
 
             ctx.save();
             ctx.translate(this.x, this.y);
-            
             const s = this.size;
 
             switch (this.type.name) {
-                case 'THE TRACKER':
-                    this.drawEyeOfSauron(ctx, s);
-                    break;
-                case 'THE CLOUD':
-                    this.drawDataVortex(ctx, s);
-                    break;
-                case 'THE ENSHITTIFIER':
-                    this.drawEnshittifier(ctx, s);
-                    break;
-                case 'THE RENT SEEKER':
-                    this.drawRentSeeker(ctx, s);
-                    break;
-                case 'THE LOCK-IN':
-                    this.drawLockIn(ctx, s);
-                    break;
-                case 'THE KILL SWITCH':
-                    this.drawKillSwitch(ctx, s);
-                    break;
-                default:
-                    this.drawDefault(ctx, s);
+                case 'THE TRACKER': this.drawEye(ctx, s); break;
+                case 'THE CLOUD': this.drawCloud(ctx, s); break;
+                case 'THE ENSHITTIFIER': this.drawEnshittifier(ctx, s); break;
+                case 'THE RENT SEEKER': this.drawRentSeeker(ctx, s); break;
+                case 'THE LOCK-IN': this.drawLockIn(ctx, s); break;
+                case 'THE KILL SWITCH': this.drawKillSwitch(ctx, s); break;
+                default: this.drawDefault(ctx, s);
             }
-
             ctx.restore();
 
-            // Quote bubble
             if (this.quoteTimer > 0 && this.currentQuote) {
-                const alpha = Math.min(1, this.quoteTimer / 25) * 0.9;
-                ctx.globalAlpha = alpha;
+                ctx.globalAlpha = Math.min(1, this.quoteTimer / 25) * 0.9;
                 ctx.fillStyle = this.type.color;
                 ctx.font = 'bold 8px monospace';
                 ctx.textAlign = 'center';
@@ -299,141 +371,181 @@
             }
         }
 
-        // Eye of Sauron - always watching, follows player
-        drawEyeOfSauron(ctx, s) {
-            // Calculate angle to player
-            const px = gameState.player.x * CONFIG.gridSize;
-            const py = gameState.player.y * CONFIG.gridSize;
-            const lookAngle = Math.atan2(py - this.y, px - this.x);
+        drawEye(ctx, s) {
+            const lookAngle = Math.atan2(gameState.player.y - this.y, gameState.player.x - this.x);
             
-            // Outer flaming eye shape
+            // Glow
             ctx.shadowColor = this.type.color;
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 10;
             
-            // Fiery glow layers
-            for (let i = 3; i >= 0; i--) {
-                const alpha = 0.3 - i * 0.07;
-                ctx.fillStyle = `rgba(255, ${50 + i * 30}, 0, ${alpha})`;
-                ctx.beginPath();
-                ctx.ellipse(0, 0, s * (1.3 + i * 0.15), s * (0.7 + i * 0.1), 0, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            
-            // Main eye - cat-like slit
-            ctx.fillStyle = '#FF2200';
+            // Sclera (white of eye) - almond shape
+            ctx.fillStyle = '#F5F5F5';
             ctx.beginPath();
-            ctx.ellipse(0, 0, s * 1.2, s * 0.6, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, s * 1.3, s * 0.8, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Inner dark with fire
-            ctx.fillStyle = '#220000';
-            ctx.beginPath();
-            ctx.ellipse(0, 0, s * 0.9, s * 0.45, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // The slit pupil - follows player
+            // Bloodshot veins
             ctx.shadowBlur = 0;
-            const pupilX = Math.cos(lookAngle) * s * 0.2;
-            const pupilY = Math.sin(lookAngle) * s * 0.1;
-            
-            // Fiery pupil
-            ctx.fillStyle = '#FF4400';
-            ctx.beginPath();
-            ctx.ellipse(pupilX, pupilY, s * 0.15, s * 0.4, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Bright center slit
-            ctx.fillStyle = '#FFAA00';
-            ctx.beginPath();
-            ctx.ellipse(pupilX, pupilY, s * 0.06, s * 0.35, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Flame wisps at top and bottom
-            ctx.strokeStyle = '#FF4400';
-            ctx.lineWidth = 2;
-            for (let i = 0; i < 4; i++) {
-                const flicker = Math.sin(this.angle * 3 + i) * 0.3;
-                const side = i < 2 ? -1 : 1;
-                const xOff = (i % 2) * 0.3 - 0.15;
+            ctx.strokeStyle = '#CC3333';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 6; i++) {
+                const veinAngle = (i / 6) * Math.PI * 2 + this.angle * 0.1;
+                const startR = s * 0.5;
+                const endR = s * 1.1;
                 ctx.beginPath();
-                ctx.moveTo(xOff * s, side * s * 0.5);
+                ctx.moveTo(Math.cos(veinAngle) * startR, Math.sin(veinAngle) * startR * 0.6);
+                // Squiggly vein
+                const midR = (startR + endR) / 2;
+                const wobble = Math.sin(this.angle * 2 + i) * s * 0.1;
                 ctx.quadraticCurveTo(
-                    xOff * s + flicker * s * 0.3, 
-                    side * s * (0.8 + Math.abs(flicker) * 0.3),
-                    xOff * s + flicker * s * 0.5,
-                    side * s * 1.1
+                    Math.cos(veinAngle) * midR + wobble,
+                    Math.sin(veinAngle) * midR * 0.6,
+                    Math.cos(veinAngle) * endR,
+                    Math.sin(veinAngle) * endR * 0.6
                 );
                 ctx.stroke();
             }
-        }
-
-        // Data Vortex - swirling cloud sucking in data
-        drawDataVortex(ctx, s) {
-            ctx.shadowColor = this.type.color;
-            ctx.shadowBlur = 12;
             
-            // Swirling vortex arms
-            const arms = 4;
-            const rotSpeed = this.angle * 1.5;
+            // Iris - tracks player
+            const irisOffsetX = Math.cos(lookAngle) * s * 0.25;
+            const irisOffsetY = Math.sin(lookAngle) * s * 0.15;
             
-            for (let a = 0; a < arms; a++) {
-                const baseAngle = (a / arms) * Math.PI * 2 + rotSpeed;
-                
-                // Each arm is a spiral
-                ctx.strokeStyle = this.type.color;
-                ctx.lineWidth = 3;
-                ctx.lineCap = 'round';
+            // Iris gradient (red/crimson)
+            const irisGrad = ctx.createRadialGradient(irisOffsetX, irisOffsetY, 0, irisOffsetX, irisOffsetY, s * 0.5);
+            irisGrad.addColorStop(0, '#8B0000');
+            irisGrad.addColorStop(0.7, '#DC143C');
+            irisGrad.addColorStop(1, '#8B0000');
+            ctx.fillStyle = irisGrad;
+            ctx.beginPath();
+            ctx.arc(irisOffsetX, irisOffsetY, s * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Iris detail lines
+            ctx.strokeStyle = '#5C0000';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 12; i++) {
+                const lineAngle = (i / 12) * Math.PI * 2;
                 ctx.beginPath();
-                
-                for (let t = 0; t < 1; t += 0.05) {
-                    const spiralAngle = baseAngle + t * Math.PI * 1.5;
-                    const r = t * s * 1.2;
-                    const x = Math.cos(spiralAngle) * r;
-                    const y = Math.sin(spiralAngle) * r;
-                    if (t === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
+                ctx.moveTo(irisOffsetX + Math.cos(lineAngle) * s * 0.2, irisOffsetY + Math.sin(lineAngle) * s * 0.2);
+                ctx.lineTo(irisOffsetX + Math.cos(lineAngle) * s * 0.45, irisOffsetY + Math.sin(lineAngle) * s * 0.45);
                 ctx.stroke();
             }
             
-            // Dark center - the void
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#000';
+            // Pupil
+            ctx.fillStyle = '#000000';
             ctx.beginPath();
-            ctx.arc(0, 0, s * 0.35, 0, Math.PI * 2);
+            ctx.arc(irisOffsetX, irisOffsetY, s * 0.2, 0, Math.PI * 2);
             ctx.fill();
             
-            // Data bits being sucked in
-            ctx.fillStyle = '#33FF0066';
-            ctx.font = '6px monospace';
+            // Pupil highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.4)';
+            ctx.beginPath();
+            ctx.arc(irisOffsetX - s * 0.08, irisOffsetY - s * 0.08, s * 0.06, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Eyelid lines (top and bottom)
+            ctx.strokeStyle = '#AA2222';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, s * 1.35, s * 0.85, 0, Math.PI * 0.9, Math.PI * 0.1, true);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.ellipse(0, 0, s * 1.35, s * 0.85, 0, Math.PI * 0.9, Math.PI * 2.1);
+            ctx.stroke();
+        }
+
+        drawCloud(ctx, s) {
+            // Evil cloud glow
+            ctx.shadowColor = this.type.color;
+            ctx.shadowBlur = 15;
+            
+            // Cloud puffs - overlapping circles to form cloud shape
+            const puffs = [
+                { x: 0, y: 0, r: s * 0.7 },           // Center
+                { x: -s * 0.6, y: s * 0.1, r: s * 0.5 },   // Left
+                { x: s * 0.6, y: s * 0.1, r: s * 0.5 },    // Right
+                { x: -s * 0.3, y: -s * 0.4, r: s * 0.45 }, // Top left
+                { x: s * 0.3, y: -s * 0.4, r: s * 0.45 },  // Top right
+                { x: 0, y: s * 0.35, r: s * 0.4 },         // Bottom
+                { x: -s * 0.8, y: s * 0.3, r: s * 0.35 },  // Far left
+                { x: s * 0.8, y: s * 0.3, r: s * 0.35 },   // Far right
+            ];
+            
+            // Animate puffs slightly
+            const pulse = 1 + Math.sin(this.angle * 2) * 0.05;
+            
+            // Dark crimson gradient for evil cloud
+            const cloudGrad = ctx.createRadialGradient(0, -s * 0.2, 0, 0, 0, s * 1.2);
+            cloudGrad.addColorStop(0, '#DC143C');
+            cloudGrad.addColorStop(0.5, '#8B0000');
+            cloudGrad.addColorStop(1, '#4A0000');
+            
+            // Draw all puffs
+            ctx.fillStyle = cloudGrad;
+            ctx.beginPath();
+            for (const p of puffs) {
+                const wobbleX = Math.sin(this.angle * 1.5 + p.x) * s * 0.05;
+                const wobbleY = Math.cos(this.angle * 1.5 + p.y) * s * 0.03;
+                ctx.moveTo(p.x + wobbleX + p.r * pulse, p.y + wobbleY);
+                ctx.arc(p.x + wobbleX, p.y + wobbleY, p.r * pulse, 0, Math.PI * 2);
+            }
+            ctx.fill();
+            
+            ctx.shadowBlur = 0;
+            
+            // Darker bottom for depth
+            ctx.fillStyle = 'rgba(30, 0, 0, 0.4)';
+            ctx.beginPath();
+            ctx.ellipse(0, s * 0.3, s * 0.9, s * 0.3, 0, 0, Math.PI);
+            ctx.fill();
+            
+            // Lightning/data sparks inside
+            ctx.strokeStyle = '#FF6666';
+            ctx.lineWidth = 1.5;
+            const sparkTime = this.angle * 3;
+            if (Math.sin(sparkTime) > 0.7) {
+                ctx.beginPath();
+                ctx.moveTo(-s * 0.2, -s * 0.1);
+                ctx.lineTo(0, s * 0.1);
+                ctx.lineTo(s * 0.1, -s * 0.05);
+                ctx.lineTo(s * 0.2, s * 0.2);
+                ctx.stroke();
+            }
+            
+            // Data bits being absorbed (floating around cloud)
+            ctx.fillStyle = '#33FF0088';
+            ctx.font = '5px monospace';
             ctx.textAlign = 'center';
-            const bits = ['01', '10', '00', '11', 'FF', 'DB'];
-            for (let i = 0; i < 6; i++) {
-                const bitAngle = rotSpeed * 2 + (i / 6) * Math.PI * 2;
-                const bitR = s * (0.6 + Math.sin(this.angle + i) * 0.2);
-                const bx = Math.cos(bitAngle) * bitR;
-                const by = Math.sin(bitAngle) * bitR;
+            ctx.textBaseline = 'middle';
+            const bits = ['01', '10', 'DB', '{}'];
+            for (let i = 0; i < 4; i++) {
+                const orbitAngle = this.angle + (i / 4) * Math.PI * 2;
+                const orbitR = s * 1.3;
+                const bx = Math.cos(orbitAngle) * orbitR;
+                const by = Math.sin(orbitAngle) * orbitR * 0.5;
                 ctx.fillText(bits[i], bx, by);
             }
             
-            // Menacing inner glow
-            const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, s * 0.4);
-            gradient.addColorStop(0, 'rgba(220, 20, 60, 0.8)');
-            gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            ctx.fillStyle = gradient;
+            // Menacing "eyes" in cloud (two darker spots)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.beginPath();
-            ctx.arc(0, 0, s * 0.4, 0, Math.PI * 2);
+            ctx.ellipse(-s * 0.25, -s * 0.1, s * 0.12, s * 0.08, 0, 0, Math.PI * 2);
+            ctx.ellipse(s * 0.25, -s * 0.1, s * 0.12, s * 0.08, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Glowing red pupils
+            ctx.fillStyle = '#FF3333';
+            ctx.beginPath();
+            ctx.arc(-s * 0.25, -s * 0.1, s * 0.04, 0, Math.PI * 2);
+            ctx.arc(s * 0.25, -s * 0.1, s * 0.04, 0, Math.PI * 2);
             ctx.fill();
         }
 
-        // Enshittifier - decaying spiral with poop
         drawEnshittifier(ctx, s) {
             ctx.rotate(this.angle * 0.5);
             
             ctx.shadowColor = this.type.color;
             ctx.shadowBlur = 8;
-            
-            // Decaying spiral - gets messier as it goes out
             ctx.strokeStyle = this.type.color;
             ctx.lineCap = 'round';
             
@@ -454,7 +566,6 @@
                 ctx.stroke();
             }
             
-            // Poop emoji in center
             ctx.shadowBlur = 0;
             ctx.rotate(-this.angle * 0.5);
             ctx.font = `${s * 1.1}px Arial`;
@@ -463,21 +574,17 @@
             ctx.fillText('💩', 0, 0);
         }
 
-        // Rent Seeker - dollar signs orbiting a hungry mouth
         drawRentSeeker(ctx, s) {
             ctx.shadowColor = this.type.color;
             ctx.shadowBlur = 10;
             
-            // Hungry grabbing shape
             ctx.fillStyle = this.type.color;
             ctx.beginPath();
-            // Open mouth shape
             ctx.arc(0, 0, s, 0.3, Math.PI * 2 - 0.3);
             ctx.lineTo(s * 0.3, 0);
             ctx.closePath();
             ctx.fill();
             
-            // Teeth
             ctx.fillStyle = '#FFF';
             ctx.shadowBlur = 0;
             for (let i = 0; i < 4; i++) {
@@ -491,7 +598,6 @@
                 ctx.fill();
             }
             
-            // Orbiting dollar signs
             ctx.fillStyle = '#FFD700';
             ctx.font = `bold ${s * 0.5}px Arial`;
             ctx.textAlign = 'center';
@@ -504,19 +610,16 @@
             }
         }
 
-        // Lock-In - cage/prison bars
         drawLockIn(ctx, s) {
             ctx.shadowColor = this.type.color;
             ctx.shadowBlur = 8;
             
-            // Cage outline
             ctx.strokeStyle = this.type.color;
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(0, 0, s, 0, Math.PI * 2);
             ctx.stroke();
             
-            // Prison bars
             ctx.lineWidth = 3;
             const bars = 5;
             for (let i = 0; i < bars; i++) {
@@ -527,7 +630,6 @@
                 ctx.stroke();
             }
             
-            // Cross bars
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(-s, -s * 0.4);
@@ -536,7 +638,6 @@
             ctx.lineTo(s, s * 0.4);
             ctx.stroke();
             
-            // Padlock at bottom
             ctx.shadowBlur = 0;
             ctx.fillStyle = '#333';
             ctx.fillRect(-s * 0.25, s * 0.5, s * 0.5, s * 0.4);
@@ -547,28 +648,24 @@
             ctx.stroke();
         }
 
-        // Kill Switch - power button with skull
         drawKillSwitch(ctx, s) {
             ctx.rotate(this.angle * 0.2);
             
             ctx.shadowColor = this.type.color;
             ctx.shadowBlur = 12;
             
-            // Outer ring
             ctx.strokeStyle = this.type.color;
             ctx.lineWidth = s * 0.2;
             ctx.beginPath();
             ctx.arc(0, 0, s * 0.85, 0.4, Math.PI * 2 - 0.4);
             ctx.stroke();
             
-            // Power line
             ctx.lineCap = 'round';
             ctx.beginPath();
             ctx.moveTo(0, -s * 0.9);
             ctx.lineTo(0, -s * 0.2);
             ctx.stroke();
             
-            // Skull in center
             ctx.shadowBlur = 0;
             ctx.rotate(-this.angle * 0.2);
             ctx.fillStyle = this.type.color;
@@ -595,181 +692,219 @@
             ctx.closePath();
             ctx.fill();
         }
-
-        checkTrailCollision(trail) {
-            if (this.dead) return false;
-            for (const p of trail) {
-                const px = p.x * CONFIG.gridSize + CONFIG.gridSize / 2;
-                const py = p.y * CONFIG.gridSize + CONFIG.gridSize / 2;
-                if (Math.hypot(this.x - px, this.y - py) < this.size + CONFIG.gridSize) {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 
-    function initGrid() {
-        gridWidth = Math.floor(CONFIG.canvasWidth / CONFIG.gridSize);
-        gridHeight = Math.floor(CONFIG.canvasHeight / CONFIG.gridSize);
-        
-        grid = [];
-        dataMap = [];
-        regionClaimPercent = DATA_REGIONS.map(() => 0);
+    // ===================== GAME LOGIC =====================
 
-        for (let y = 0; y < gridHeight; y++) {
-            grid[y] = [];
-            dataMap[y] = [];
-            for (let x = 0; x < gridWidth; x++) {
-                const isBorder = x < 2 || x >= gridWidth - 2 || y < 2 || y >= gridHeight - 2;
-                grid[y][x] = isBorder ? 1 : 0;
-                
-                const regionX = Math.floor(x / (gridWidth / 3));
-                const regionY = Math.floor(y / (gridHeight / 2));
-                dataMap[y][x] = Math.min((regionY * 3 + regionX), DATA_REGIONS.length - 1);
-            }
-        }
-
-        gridDirty = true;
-        calculateClaimedPercent();
-        initOffscreenCanvas();
-    }
-
-    function initOffscreenCanvas() {
-        offscreenCanvas = document.createElement('canvas');
-        offscreenCanvas.width = CONFIG.canvasWidth;
-        offscreenCanvas.height = CONFIG.canvasHeight;
-        offscreenCtx = offscreenCanvas.getContext('2d');
-        renderGridToOffscreen();
-    }
-
-    function renderGridToOffscreen() {
-        const c = offscreenCtx;
-        c.fillStyle = '#050505';
-        c.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
-
-        // Draw cells - unclaimed is dark, claimed is clearly visible
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                const cell = grid[y][x];
-                const dt = DATA_REGIONS[dataMap[y][x]];
-                const px = x * CONFIG.gridSize;
-                const py = y * CONFIG.gridSize;
-
-                if (cell === 1) {
-                    // Claimed - bright and visible
-                    c.fillStyle = dt.color + '40';
-                    c.fillRect(px, py, CONFIG.gridSize, CONFIG.gridSize);
-                } else {
-                    // Unclaimed - dark
-                    c.fillStyle = dt.darkColor + '30';
-                    c.fillRect(px, py, CONFIG.gridSize, CONFIG.gridSize);
-                }
-            }
-        }
-
-        // Single 1px green border - the playable edge
-        c.strokeStyle = '#33FF00';
-        c.lineWidth = 1;
-        
-        // Draw border where claimed meets unclaimed
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                if (grid[y][x] === 1 && isOnBorder(x, y)) {
-                    const px = x * CONFIG.gridSize;
-                    const py = y * CONFIG.gridSize;
-                    // Draw edge segments where we touch unclaimed
-                    if (x > 0 && grid[y][x-1] === 0) {
-                        c.beginPath(); c.moveTo(px, py); c.lineTo(px, py + CONFIG.gridSize); c.stroke();
-                    }
-                    if (x < gridWidth-1 && grid[y][x+1] === 0) {
-                        c.beginPath(); c.moveTo(px + CONFIG.gridSize, py); c.lineTo(px + CONFIG.gridSize, py + CONFIG.gridSize); c.stroke();
-                    }
-                    if (y > 0 && grid[y-1][x] === 0) {
-                        c.beginPath(); c.moveTo(px, py); c.lineTo(px + CONFIG.gridSize, py); c.stroke();
-                    }
-                    if (y < gridHeight-1 && grid[y+1][x] === 0) {
-                        c.beginPath(); c.moveTo(px, py + CONFIG.gridSize); c.lineTo(px + CONFIG.gridSize, py + CONFIG.gridSize); c.stroke();
-                    }
-                }
-            }
-        }
-
-        // Region labels - dim, only in unclaimed
-        c.font = '9px monospace';
-        c.textAlign = 'center';
-        c.textBaseline = 'middle';
-        for (let ry = 0; ry < 2; ry++) {
-            for (let rx = 0; rx < 3; rx++) {
-                const idx = ry * 3 + rx;
-                if (idx >= DATA_REGIONS.length) continue;
-                const region = DATA_REGIONS[idx];
-                const cx = (rx + 0.5) * (CONFIG.canvasWidth / 3);
-                const cy = (ry + 0.5) * (CONFIG.canvasHeight / 2);
-                const gx = Math.floor(cx / CONFIG.gridSize);
-                const gy = Math.floor(cy / CONFIG.gridSize);
-                if (gx >= 0 && gx < gridWidth && gy >= 0 && gy < gridHeight && grid[gy][gx] === 0) {
-                    c.fillStyle = region.color + '25';
-                    c.fillText(region.name, cx, cy);
-                }
-            }
-        }
-
-        gridDirty = false;
-    }
-
-    function isOnBorder(x, y) {
-        if (x < 0 || x >= gridWidth || y < 0 || y >= gridHeight) return false;
-        if (grid[y][x] !== 1) return false;
-        
-        // Check if any neighbor is unclaimed (0)
-        const neighbors = [
-            [x-1, y], [x+1, y], [x, y-1], [x, y+1]
+    function initPolygon() {
+        unclaimedPoly = [
+            { x: GAME_LEFT, y: GAME_TOP },
+            { x: GAME_RIGHT, y: GAME_TOP },
+            { x: GAME_RIGHT, y: GAME_BOTTOM },
+            { x: GAME_LEFT, y: GAME_BOTTOM }
         ];
-        for (const [nx, ny] of neighbors) {
-            if (nx >= 0 && nx < gridWidth && ny >= 0 && ny < gridHeight) {
-                if (grid[ny][nx] === 0) return true;
-            }
-        }
-        
-        // Also count as border if on the outer edge
-        if (x <= 1 || x >= gridWidth - 2 || y <= 1 || y >= gridHeight - 2) {
-            return true;
-        }
-        
-        return false;
+        calculateClaimed();
     }
 
-    function calculateClaimedPercent() {
-        let claimed = 0, total = 0;
-        const regionClaimed = DATA_REGIONS.map(() => 0);
-        const regionTotal = DATA_REGIONS.map(() => 0);
+    function calculateClaimed() {
+        const unclaimed = polyArea(unclaimedPoly);
+        gameState.claimedPercent = ((TOTAL_AREA - unclaimed) / TOTAL_AREA) * 100;
+        calculateRegionClaim();
+    }
 
-        for (let y = 2; y < gridHeight - 2; y++) {
-            for (let x = 2; x < gridWidth - 2; x++) {
-                total++;
-                const ri = dataMap[y][x];
-                regionTotal[ri]++;
-                if (grid[y][x] === 1) {
-                    claimed++;
-                    regionClaimed[ri]++;
-                }
-            }
-        }
-
-        gameState.claimedPercent = total > 0 ? (claimed / total) * 100 : 0;
-        
-        for (let i = 0; i < DATA_REGIONS.length; i++) {
-            regionClaimPercent[i] = regionTotal[i] > 0 ? (regionClaimed[i] / regionTotal[i]) * 100 : 0;
+    function spawnEnemies() {
+        gameState.enemies = [];
+        // Always spawn 6 enemies, one per region
+        for (let i = 0; i < 6; i++) {
+            const type = GREED_TYPES[i];
+            const rx = i % 3, ry = Math.floor(i / 3);
+            const cx = GAME_LEFT + (rx + 0.5) * ((GAME_RIGHT - GAME_LEFT) / 3);
+            const cy = GAME_TOP + (ry + 0.5) * ((GAME_BOTTOM - GAME_TOP) / 2);
+            gameState.enemies.push(new Enemy(type, i, cx, cy));
         }
     }
 
-    function checkEnemyDeaths() {
-        for (const enemy of gameState.enemies) {
-            if (enemy.dead) continue;
-            if (regionClaimPercent[enemy.regionIndex] >= 70) {
-                enemy.dead = true;
-                const deathMessages = {
+    // FIXED: Correct polygon splitting for Volfied-style cuts
+    function completeCut() {
+        const trail = gameState.trail;
+        if (trail.length < 2) { cancelCut(); return; }
+
+        const endPt = closestOnBoundary(gameState.player.x, gameState.player.y);
+        const startEdge = gameState.cutStart.edgeIndex;
+        const startT = gameState.cutStart.edgeT;
+        const endEdge = endPt.edge;
+        const endT = endPt.t;
+
+        // Build two candidate polygons
+        const polyA = buildSplitPoly(trail, startEdge, startT, endEdge, endT, 1);
+        const polyB = buildSplitPoly(trail, startEdge, startT, endEdge, endT, -1);
+
+        // Count enemies in each
+        const enemiesA = countEnemies(polyA);
+        const enemiesB = countEnemies(polyB);
+
+        // Volfied rule: KEEP the side WITH enemies (claim the empty side)
+        let newPoly;
+        if (enemiesA > 0 && enemiesB === 0) {
+            newPoly = polyA;
+        } else if (enemiesB > 0 && enemiesA === 0) {
+            newPoly = polyB;
+        } else if (enemiesA === 0 && enemiesB === 0) {
+            // No enemies - keep smaller polygon (claim more)
+            newPoly = polyArea(polyA) < polyArea(polyB) ? polyA : polyB;
+        } else {
+            // Both have enemies - keep larger (more room for enemies)
+            newPoly = polyArea(polyA) > polyArea(polyB) ? polyA : polyB;
+        }
+
+        if (newPoly && newPoly.length >= 3) {
+            const oldArea = polyArea(unclaimedPoly);
+            unclaimedPoly = simplifyPoly(newPoly);
+            const newArea = polyArea(unclaimedPoly);
+            
+            if (newArea < oldArea && newArea > 100) {
+                const pctGained = ((oldArea - newArea) / TOTAL_AREA) * 100;
+                gameState.score += Math.floor(pctGained * 10);
+                if (pctGained > 2) showMessage(`+${pctGained.toFixed(1)}% RECLAIMED`);
+                calculateClaimed();
+                killTrappedEnemies();
+                checkRegionKills();
+            }
+        }
+
+        snapToBorder();
+        cancelCut();
+
+        if (gameState.claimedPercent >= CONFIG.winPercentage) {
+            levelComplete();
+        }
+    }
+
+    // Build one of the two split polygons
+    // Trail goes from startEdge/startT to endEdge/endT
+    // dir=1: walk boundary forward (CW) from end back to start
+    // dir=-1: walk boundary backward (CCW) from end back to start
+    function buildSplitPoly(trail, startEdge, startT, endEdge, endT, dir) {
+        const poly = [];
+        const n = unclaimedPoly.length;
+
+        // Add trail points (from cut start to cut end)
+        for (const pt of trail) {
+            const last = poly[poly.length - 1];
+            if (!last || Math.hypot(pt.x - last.x, pt.y - last.y) > 0.5) {
+                poly.push({ x: pt.x, y: pt.y });
+            }
+        }
+
+        // Calculate how many vertices to add when walking the boundary
+        // from (endEdge, endT) back to (startEdge, startT)
+        
+        if (dir > 0) {
+            // Forward (clockwise): walk from end to start via increasing edge indices
+            // Vertices to add: (endEdge+1), (endEdge+2), ..., startEdge
+            let numVertices;
+            if (startEdge === endEdge) {
+                // Same edge: if endT > startT, we go the long way (all vertices)
+                // if endT < startT, short way (no vertices, but that's the other polygon)
+                numVertices = (endT >= startT) ? n : 0;
+            } else {
+                numVertices = ((startEdge - endEdge) + n) % n;
+            }
+            
+            let v = (endEdge + 1) % n;
+            for (let i = 0; i < numVertices; i++) {
+                poly.push({ x: unclaimedPoly[v].x, y: unclaimedPoly[v].y });
+                v = (v + 1) % n;
+            }
+        } else {
+            // Backward (counter-clockwise): walk from end to start via decreasing edge indices
+            // Vertices to add: endEdge, (endEdge-1), ..., (startEdge+1)
+            let numVertices;
+            if (startEdge === endEdge) {
+                // Same edge: if endT < startT, we go the long way (all vertices)
+                numVertices = (endT <= startT) ? n : 0;
+            } else {
+                numVertices = ((endEdge - startEdge) + n) % n;
+            }
+            
+            let v = endEdge;
+            for (let i = 0; i < numVertices; i++) {
+                poly.push({ x: unclaimedPoly[v].x, y: unclaimedPoly[v].y });
+                v = (v - 1 + n) % n;
+            }
+        }
+
+        return poly;
+    }
+
+    function countEnemies(poly) {
+        let c = 0;
+        for (const e of gameState.enemies) {
+            if (!e.dead && pointInPoly(e.x, e.y, poly)) c++;
+        }
+        return c;
+    }
+
+    function simplifyPoly(poly) {
+        if (!poly || poly.length < 3) return poly;
+        
+        // First pass: remove near-duplicate points (threshold: 2px)
+        let result = [];
+        for (const pt of poly) {
+            const last = result[result.length - 1];
+            if (!last || Math.hypot(pt.x - last.x, pt.y - last.y) > 2) {
+                result.push({ x: pt.x, y: pt.y });
+            }
+        }
+        
+        // Check first/last
+        if (result.length > 2) {
+            const first = result[0], last = result[result.length - 1];
+            if (Math.hypot(first.x - last.x, first.y - last.y) < 2) {
+                result.pop();
+            }
+        }
+
+        // Second pass: remove collinear points
+        let simplified = [];
+        for (let i = 0; i < result.length; i++) {
+            const prev = result[(i - 1 + result.length) % result.length];
+            const curr = result[i];
+            const next = result[(i + 1) % result.length];
+            const cross = (curr.x - prev.x) * (next.y - prev.y) - (curr.y - prev.y) * (next.x - prev.x);
+            if (Math.abs(cross) > 1) simplified.push(curr);
+        }
+        
+        if (simplified.length < 3) simplified = result;
+        
+        // Third pass: remove very short edges by merging points
+        let final = [];
+        const minEdgeLength = 3;
+        for (let i = 0; i < simplified.length; i++) {
+            const curr = simplified[i];
+            const next = simplified[(i + 1) % simplified.length];
+            const edgeLen = Math.hypot(next.x - curr.x, next.y - curr.y);
+            
+            if (edgeLen >= minEdgeLength) {
+                final.push(curr);
+            } else if (final.length > 0) {
+                // Merge with previous point (take midpoint)
+                const prev = final[final.length - 1];
+                prev.x = (prev.x + curr.x) / 2;
+                prev.y = (prev.y + curr.y) / 2;
+            } else {
+                final.push(curr);
+            }
+        }
+
+        return final.length >= 3 ? final : simplified;
+    }
+
+    function killTrappedEnemies() {
+        for (const e of gameState.enemies) {
+            if (!e.dead && !pointInPoly(e.x, e.y, unclaimedPoly)) {
+                e.dead = true;
+                const msgs = {
                     'THE CLOUD': 'CLOUD GROUNDED!',
                     'THE TRACKER': 'TRACKER BLINDED!',
                     'THE ENSHITTIFIER': 'QUALITY RESTORED!',
@@ -777,115 +912,55 @@
                     'THE LOCK-IN': 'CAGE OPENED!',
                     'THE KILL SWITCH': 'CONTROL RESTORED!'
                 };
-                showMessage(deathMessages[enemy.type.name] || `${DATA_REGIONS[enemy.regionIndex].name} LIBERATED!`);
-                gameState.score += 50;
+                showMessage(msgs[e.type.name] || 'ENTITY FREED!');
+                gameState.score += 100;
             }
         }
     }
 
-    function completeTrail() {
-        if (gameState.trail.length < 2) {
-            clearTrail();
-            return;
-        }
-
-        // Convert trail to claimed
-        for (const p of gameState.trail) {
-            if (p.x >= 0 && p.x < gridWidth && p.y >= 0 && p.y < gridHeight) {
-                grid[p.y][p.x] = 1;
-            }
-        }
-
-        fillEnclosedArea();
-
-        const oldPct = gameState.claimedPercent;
-        calculateClaimedPercent();
-        const gained = gameState.claimedPercent - oldPct;
-        gameState.score += Math.floor(gained * 10);
-
-        if (gained > 2) {
-            showMessage(`+${gained.toFixed(1)}% RECLAIMED`);
-        }
-
-        checkEnemyDeaths();
-        
-        // Player is now on the new border - find a valid border position
-        const p = gameState.player;
-        // Current position should now be claimed and on border
-        if (!isOnBorder(p.gx, p.gy)) {
-            // Find nearest border cell
-            for (let r = 1; r < 10; r++) {
-                let found = false;
-                for (let dy = -r; dy <= r && !found; dy++) {
-                    for (let dx = -r; dx <= r && !found; dx++) {
-                        const nx = p.gx + dx;
-                        const ny = p.gy + dy;
-                        if (nx >= 0 && nx < gridWidth && ny >= 0 && ny < gridHeight) {
-                            if (grid[ny][nx] === 1 && isOnBorder(nx, ny)) {
-                                p.gx = nx;
-                                p.gy = ny;
-                                p.x = nx + 0.5;
-                                p.y = ny + 0.5;
-                                found = true;
-                            }
-                        }
-                    }
-                }
-                if (found) break;
-            }
-        }
-        
-        gridDirty = true;
-        clearTrail();
-
-        if (gameState.claimedPercent >= CONFIG.winPercentage) {
-            levelComplete();
-        }
+    function snapToBorder() {
+        const closest = closestOnBoundary(gameState.player.x, gameState.player.y);
+        gameState.player.x = closest.x;
+        gameState.player.y = closest.y;
+        gameState.edgeIndex = closest.edge;
+        gameState.edgeT = closest.t;
+        gameState.cutting = false;
     }
 
-    function fillEnclosedArea() {
-        const visited = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false));
-        const regions = [];
-
-        for (let y = 0; y < gridHeight; y++) {
-            for (let x = 0; x < gridWidth; x++) {
-                if (grid[y][x] === 0 && !visited[y][x]) {
-                    const region = [];
-                    const stack = [{ x, y }];
-                    while (stack.length) {
-                        const { x: cx, y: cy } = stack.pop();
-                        if (cx < 0 || cx >= gridWidth || cy < 0 || cy >= gridHeight) continue;
-                        if (visited[cy][cx] || grid[cy][cx] !== 0) continue;
-                        visited[cy][cx] = true;
-                        region.push({ x: cx, y: cy });
-                        stack.push({ x: cx - 1, y: cy }, { x: cx + 1, y: cy }, { x: cx, y: cy - 1 }, { x: cx, y: cy + 1 });
-                    }
-                    regions.push(region);
-                }
-            }
-        }
-
-        for (const region of regions) {
-            let hasEnemy = false;
-            for (const enemy of gameState.enemies) {
-                if (enemy.dead) continue;
-                const ex = Math.floor(enemy.x / CONFIG.gridSize);
-                const ey = Math.floor(enemy.y / CONFIG.gridSize);
-                if (region.some(c => c.x === ex && c.y === ey)) {
-                    hasEnemy = true;
-                    break;
-                }
-            }
-            if (!hasEnemy) {
-                for (const c of region) grid[c.y][c.x] = 1;
-            }
-        }
-    }
-
-    function clearTrail() {
+    function cancelCut() {
         gameState.trail = [];
         gameState.cutting = false;
-        gameState.cutStartPos = null;
+        gameState.cutStart = null;
+    }
+
+    function startCutting(dx, dy) {
+        gameState.cutting = true;
+        gameState.cutStart = {
+            edgeIndex: gameState.edgeIndex,
+            edgeT: gameState.edgeT,
+            x: gameState.player.x,
+            y: gameState.player.y
+        };
+        gameState.trail = [{ x: gameState.player.x, y: gameState.player.y }];
+        
+        gameState.player.x += dx * CONFIG.cutSpeed;
+        gameState.player.y += dy * CONFIG.cutSpeed;
+        gameState.trail.push({ x: gameState.player.x, y: gameState.player.y });
+    }
+
+    function loseLife() {
+        gameState.lives--;
+        showMessage('BREACH DETECTED');
+        
+        if (gameState.cutStart) {
+            gameState.player.x = gameState.cutStart.x;
+            gameState.player.y = gameState.cutStart.y;
+            gameState.edgeIndex = gameState.cutStart.edgeIndex;
+            gameState.edgeT = gameState.cutStart.edgeT;
+        }
+        
+        cancelCut();
+        if (gameState.lives <= 0) gameOver();
     }
 
     function showMessage(msg) {
@@ -893,142 +968,164 @@
         gameState.messageTimer = 60;
     }
 
-    function loseLife() {
-        gameState.lives--;
-        const deathMessages = ['BREACH DETECTED', 'THEY FOUND YOU', 'DATA EXPOSED', 'CAGE CLOSING'];
-        showMessage(deathMessages[Math.floor(Math.random() * deathMessages.length)]);
-        
-        // Reset to where we started cutting (if we were cutting)
-        if (gameState.cutStartPos) {
-            gameState.player = {
-                x: gameState.cutStartPos.x + 0.5,
-                y: gameState.cutStartPos.y + 0.5,
-                gx: gameState.cutStartPos.x,
-                gy: gameState.cutStartPos.y
-            };
-        }
-        // Otherwise stay where we are (but snap to valid border)
-        
-        clearTrail();
-        gridDirty = true;
-        if (gameState.lives <= 0) gameOver();
-    }
-
     function levelComplete() {
         gameState.running = false;
+        gameState.won = true;
         gameState.level++;
-        showMessage('EXIT SECURED. NEW SECTOR.');
-        setTimeout(() => {
-            initGrid();
-            const startY = Math.floor(gridHeight / 2);
-            gameState.player = { x: 1 + 0.5, y: startY + 0.5, gx: 1, gy: startY };
-            spawnEnemies();
-            gameState.running = true;
-            requestAnimationFrame(gameLoop);
-        }, 2000);
     }
 
     function gameOver() {
         gameState.running = false;
+        gameState.won = false;
     }
 
-    function spawnEnemies() {
-        gameState.enemies = [];
-        for (let i = 0; i < DATA_REGIONS.length; i++) {
-            const type = GREED_TYPES[i % GREED_TYPES.length];
-            const rx = i % 3;
-            const ry = Math.floor(i / 3);
-            const cx = (rx + 0.5) * (CONFIG.canvasWidth / 3);
-            const cy = (ry + 0.5) * (CONFIG.canvasHeight / 2);
-            gameState.enemies.push(new Enemy(type, i, cx, cy));
-        }
-    }
+    // ===================== UPDATE =====================
 
     function update() {
         if (!gameState.running || gameState.paused) return;
 
-        const p = gameState.player;
         let dx = 0, dy = 0;
-
-        // Only move when keys are pressed
         if (gameState.keys['ArrowUp'] || gameState.keys['w'] || gameState.keys['W']) dy = -1;
         else if (gameState.keys['ArrowDown'] || gameState.keys['s'] || gameState.keys['S']) dy = 1;
         else if (gameState.keys['ArrowLeft'] || gameState.keys['a'] || gameState.keys['A']) dx = -1;
         else if (gameState.keys['ArrowRight'] || gameState.keys['d'] || gameState.keys['D']) dx = 1;
 
-        // Update enemies regardless of player movement
         updateEnemies();
 
-        // No movement if no keys pressed
         if (dx === 0 && dy === 0) return;
 
-        const speed = gameState.cutting ? CONFIG.cutSpeed : CONFIG.playerSpeed;
-        const newX = p.x + dx * speed * 0.15;
-        const newY = p.y + dy * speed * 0.15;
-        const newGX = Math.floor(newX);
-        const newGY = Math.floor(newY);
+        if (gameState.cutting) {
+            const nx = gameState.player.x + dx * CONFIG.cutSpeed;
+            const ny = gameState.player.y + dy * CONFIG.cutSpeed;
 
-        // Bounds check
-        if (newGX < 0 || newGX >= gridWidth || newGY < 0 || newGY >= gridHeight) {
-            return;
-        }
+            const borderCheck = closestOnBoundary(nx, ny);
+            const distFromStart = Math.hypot(nx - gameState.cutStart.x, ny - gameState.cutStart.y);
+            
+            // Complete cut if we're close to border and far from start
+            if (borderCheck.dist < 4 && distFromStart > 20) {
+                gameState.player.x = borderCheck.x;
+                gameState.player.y = borderCheck.y;
+                gameState.trail.push({ x: borderCheck.x, y: borderCheck.y });
+                completeCut();
+                return;
+            }
 
-        // Check if moved to new grid cell
-        if (newGX !== p.gx || newGY !== p.gy) {
-            const targetCell = grid[newGY][newGX];
+            // Check if still inside unclaimed area
+            if (pointInPoly(nx, ny, unclaimedPoly)) {
+                // Check collision with own trail
+                for (let i = 0; i < gameState.trail.length - 2; i++) {
+                    if (Math.hypot(nx - gameState.trail[i].x, ny - gameState.trail[i].y) < 4) {
+                        loseLife();
+                        return;
+                    }
+                }
 
-            if (gameState.cutting) {
-                // While cutting, can move through unclaimed or complete by reaching claimed
-                if (targetCell === 1) {
-                    // Reached claimed territory - complete the cut!
-                    completeTrail();
-                } else if (gameState.trail.some(t => t.x === newGX && t.y === newGY)) {
-                    // Hit our own trail - lose life
-                    loseLife();
-                    return;
-                } else if (targetCell === 0) {
-                    // Continue cutting through unclaimed
-                    gameState.trail.push({ x: newGX, y: newGY });
-                    p.x = newGX + 0.5;
-                    p.y = newGY + 0.5;
-                    p.gx = newGX;
-                    p.gy = newGY;
+                gameState.player.x = nx;
+                gameState.player.y = ny;
+
+                const last = gameState.trail[gameState.trail.length - 1];
+                if (Math.hypot(nx - last.x, ny - last.y) > 2) {
+                    gameState.trail.push({ x: nx, y: ny });
                 }
             } else {
-                // Not cutting - can ONLY move to adjacent border cells
-                if (targetCell === 1 && isOnBorder(newGX, newGY)) {
-                    // Moving to another border cell - this is the only allowed move
-                    p.x = newGX + 0.5;
-                    p.y = newGY + 0.5;
-                    p.gx = newGX;
-                    p.gy = newGY;
-                } else if (targetCell === 0 && gameState.spaceHeld && isOnBorder(p.gx, p.gy)) {
-                    // Start cutting into unclaimed - must hold SPACE
-                    gameState.cutting = true;
-                    gameState.cutStartPos = { x: p.gx, y: p.gy };
-                    gameState.trail = [{ x: p.gx, y: p.gy }, { x: newGX, y: newGY }];
-                    p.x = newGX + 0.5;
-                    p.y = newGY + 0.5;
-                    p.gx = newGX;
-                    p.gy = newGY;
-                }
-                // Any other move is blocked - stay in place
+                // We've exited the unclaimed area - complete the cut
+                const snapped = closestOnBoundary(nx, ny);
+                gameState.player.x = snapped.x;
+                gameState.player.y = snapped.y;
+                gameState.trail.push({ x: snapped.x, y: snapped.y });
+                completeCut();
             }
         } else {
-            // Same grid cell - allow smooth movement toward valid directions
-            p.x = newX;
-            p.y = newY;
+            // ON BORDER: Move along polygon boundary
+            // Simple approach: project movement onto current edge, handle edge transitions cleanly
+            
+            const n = unclaimedPoly.length;
+            const speed = CONFIG.borderSpeed;
+            
+            // Get current position on boundary
+            let pos = pointOnEdge(gameState.edgeIndex, gameState.edgeT);
+            
+            // Calculate target position in world space
+            const targetX = pos.x + dx * speed;
+            const targetY = pos.y + dy * speed;
+            
+            // Check for cutting into unclaimed (space + movement into polygon)
+            if (gameState.spaceHeld) {
+                const testX = pos.x + dx * 8;
+                const testY = pos.y + dy * 8;
+                if (pointInPoly(testX, testY, unclaimedPoly)) {
+                    startCutting(dx, dy);
+                    return;
+                }
+            }
+            
+            // Find the closest point on the boundary to the target
+            let bestDist = Infinity;
+            let bestEdge = gameState.edgeIndex;
+            let bestT = gameState.edgeT;
+            let bestX = pos.x;
+            let bestY = pos.y;
+            
+            // Check current edge and neighbors
+            for (let offset = -2; offset <= 2; offset++) {
+                const edgeIdx = (gameState.edgeIndex + offset + n) % n;
+                const e = getEdge(edgeIdx);
+                const len = edgeLength(edgeIdx);
+                if (len < 0.5) continue;
+                
+                // Project target onto this edge
+                const ex = e.x2 - e.x1;
+                const ey = e.y2 - e.y1;
+                let t = ((targetX - e.x1) * ex + (targetY - e.y1) * ey) / (len * len);
+                t = Math.max(0, Math.min(1, t));
+                
+                const projX = e.x1 + t * ex;
+                const projY = e.y1 + t * ey;
+                const dist = Math.hypot(projX - targetX, projY - targetY);
+                
+                // Prefer points that are "ahead" in the movement direction
+                const moveDist = Math.hypot(projX - pos.x, projY - pos.y);
+                const moveDir = (projX - pos.x) * dx + (projY - pos.y) * dy;
+                
+                // Weight: prefer closer to target AND in the right direction
+                const score = dist - (moveDir > 0 ? moveDist * 0.5 : -moveDist * 2);
+                
+                if (score < bestDist) {
+                    bestDist = score;
+                    bestEdge = edgeIdx;
+                    bestT = t;
+                    bestX = projX;
+                    bestY = projY;
+                }
+            }
+            
+            // Only move if we're actually moving (not stuck)
+            const actualMove = Math.hypot(bestX - pos.x, bestY - pos.y);
+            if (actualMove > 0.1) {
+                gameState.edgeIndex = bestEdge;
+                gameState.edgeT = bestT;
+                gameState.player.x = bestX;
+                gameState.player.y = bestY;
+            }
         }
     }
 
     function updateEnemies() {
-        const playerPx = gameState.player.gx * CONFIG.gridSize + CONFIG.gridSize / 2;
-        const playerPy = gameState.player.gy * CONFIG.gridSize + CONFIG.gridSize / 2;
+        const px = gameState.player.x, py = gameState.player.y;
 
         gameState.enemies = gameState.enemies.filter(e => {
-            const alive = e.update(playerPx, playerPy);
-            if (!e.dead && gameState.trail.length > 0 && e.checkTrailCollision(gameState.trail)) {
-                loseLife();
+            const alive = e.update(px, py);
+
+            if (!e.dead && gameState.cutting) {
+                for (const t of gameState.trail) {
+                    if (Math.hypot(e.x - t.x, e.y - t.y) < e.size + 3) {
+                        loseLife();
+                        return alive;
+                    }
+                }
+                if (Math.hypot(e.x - px, e.y - py) < e.size + 5) {
+                    loseLife();
+                }
             }
             return alive;
         });
@@ -1036,57 +1133,58 @@
         if (gameState.messageTimer > 0) gameState.messageTimer--;
     }
 
+    // ===================== DRAWING =====================
+
     function drawLocalGhost(ctx, x, y, cutting) {
-        const size = 10;  // Ghost size
+        const size = 8;
         ctx.save();
         ctx.translate(x, y);
-        
-        // Glow effect
+
+        if (!cutting && unclaimedPoly.length > 0) {
+            const normal = getEdgeInwardNormal(gameState.edgeIndex);
+            const shieldAngle = Math.atan2(normal.y, normal.x);
+            
+            ctx.shadowColor = '#33FF00';
+            ctx.shadowBlur = 8;
+            
+            ctx.strokeStyle = '#33FF00';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, 0, size + 4, shieldAngle - Math.PI * 0.4, shieldAngle + Math.PI * 0.4);
+            ctx.stroke();
+            
+            ctx.strokeStyle = 'rgba(136, 255, 136, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(0, 0, size + 6, shieldAngle - Math.PI * 0.3, shieldAngle + Math.PI * 0.3);
+            ctx.stroke();
+        }
+
         ctx.shadowColor = '#33FF00';
-        ctx.shadowBlur = cutting ? 18 : 12;
-        
-        // Ghost body - rounded top, wavy bottom
-        ctx.strokeStyle = cutting ? '#88FF88' : '#33FF00';
-        ctx.lineWidth = 1.5;
-        ctx.fillStyle = 'rgba(51, 255, 0, 0.15)';
-        
+        ctx.shadowBlur = cutting ? 15 : 10;
+        ctx.fillStyle = cutting ? 'rgba(255, 100, 100, 0.3)' : 'rgba(51, 255, 0, 0.15)';
+        ctx.strokeStyle = cutting ? '#FF6666' : '#33FF00';
+        ctx.lineWidth = 1;
+
         ctx.beginPath();
-        // Start from bottom left wave
-        ctx.moveTo(-size * 0.8, size * 0.6);
-        // Wave pattern at bottom
-        ctx.lineTo(-size * 0.5, size * 0.3);
-        ctx.lineTo(-size * 0.2, size * 0.6);
-        ctx.lineTo(size * 0.1, size * 0.3);
-        ctx.lineTo(size * 0.4, size * 0.6);
-        ctx.lineTo(size * 0.7, size * 0.3);
-        ctx.lineTo(size * 0.8, size * 0.6);
-        // Right side going up
-        ctx.lineTo(size * 0.8, -size * 0.2);
-        // Rounded top (ghost head)
-        ctx.quadraticCurveTo(size * 0.8, -size * 0.9, 0, -size * 0.9);
-        ctx.quadraticCurveTo(-size * 0.8, -size * 0.9, -size * 0.8, -size * 0.2);
-        // Left side going down
-        ctx.lineTo(-size * 0.8, size * 0.6);
+        ctx.arc(0, -size * 0.3, size * 0.6, Math.PI, 0);
+        ctx.lineTo(size * 0.6, size * 0.3);
+        ctx.lineTo(size * 0.35, size * 0.15);
+        ctx.lineTo(size * 0.1, size * 0.4);
+        ctx.lineTo(-size * 0.15, size * 0.15);
+        ctx.lineTo(-size * 0.4, size * 0.4);
+        ctx.lineTo(-size * 0.6, size * 0.2);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-        
-        // Eyes
+
         ctx.shadowBlur = 0;
-        ctx.fillStyle = cutting ? '#88FF88' : '#33FF00';
+        ctx.fillStyle = cutting ? '#FF6666' : '#33FF00';
         ctx.beginPath();
-        ctx.arc(-size * 0.35, -size * 0.3, size * 0.15, 0, Math.PI * 2);
-        ctx.arc(size * 0.35, -size * 0.3, size * 0.15, 0, Math.PI * 2);
+        ctx.arc(-size * 0.2, -size * 0.2, 1.5, 0, Math.PI * 2);
+        ctx.arc(size * 0.2, -size * 0.2, 1.5, 0, Math.PI * 2);
         ctx.fill();
-        
-        // Smile
-        ctx.strokeStyle = cutting ? '#88FF88' : '#33FF00';
-        ctx.lineWidth = 1.2;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.arc(0, size * 0.05, size * 0.35, 0.2, Math.PI - 0.2);
-        ctx.stroke();
-        
+
         ctx.restore();
     }
 
@@ -1094,55 +1192,109 @@
         ctx.fillStyle = '#0a0a0a';
         ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.totalHeight);
 
-        if (gridDirty) renderGridToOffscreen();
-        ctx.drawImage(offscreenCanvas, 0, CONFIG.hudHeight);
+        ctx.save();
+        ctx.translate(0, CONFIG.hudHeight);
 
-        // Draw cutting trail as sharp green line
-        if (gameState.trail.length > 0) {
-            ctx.strokeStyle = '#33FF00';
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'square';
-            ctx.lineJoin = 'miter';
-            ctx.shadowColor = '#33FF00';
-            ctx.shadowBlur = 6;
-
-            ctx.beginPath();
-            const first = gameState.trail[0];
-            ctx.moveTo(
-                first.x * CONFIG.gridSize + CONFIG.gridSize / 2,
-                first.y * CONFIG.gridSize + CONFIG.gridSize / 2 + CONFIG.hudHeight
-            );
-            for (let i = 1; i < gameState.trail.length; i++) {
-                const pt = gameState.trail[i];
-                ctx.lineTo(
-                    pt.x * CONFIG.gridSize + CONFIG.gridSize / 2,
-                    pt.y * CONFIG.gridSize + CONFIG.gridSize / 2 + CONFIG.hudHeight
-                );
+        // Draw data region backgrounds across FULL canvas (not just game area)
+        // These extend to edges so they're visible outside the wire border
+        const rw = CONFIG.canvasWidth / 3;
+        const rh = CONFIG.canvasHeight / 2;
+        for (let ry = 0; ry < 2; ry++) {
+            for (let rx = 0; rx < 3; rx++) {
+                const idx = ry * 3 + rx;
+                if (idx >= DATA_REGIONS.length) continue;
+                const r = DATA_REGIONS[idx];
+                const x = rx * rw;
+                const y = ry * rh;
+                
+                // Dark tinted background for each region
+                ctx.fillStyle = r.color + '15';
+                ctx.fillRect(x, y, rw, rh);
+                
+                // Subtle border between regions
+                ctx.strokeStyle = r.color + '20';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, rw, rh);
             }
-            // Draw to current player position
-            ctx.lineTo(
-                gameState.player.x * CONFIG.gridSize + CONFIG.gridSize / 2,
-                gameState.player.y * CONFIG.gridSize + CONFIG.gridSize / 2 + CONFIG.hudHeight
-            );
+        }
+
+        // Claimed area tint - full canvas (the 10px border is already "yours")
+        ctx.fillStyle = 'rgba(51,255,0,0.06)';
+        ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
+
+        // Unclaimed area (dark overlay)
+        if (unclaimedPoly.length > 0) {
+            ctx.fillStyle = 'rgba(5,5,5,0.85)';
+            ctx.beginPath();
+            ctx.moveTo(unclaimedPoly[0].x, unclaimedPoly[0].y);
+            for (let i = 1; i < unclaimedPoly.length; i++) {
+                ctx.lineTo(unclaimedPoly[i].x, unclaimedPoly[i].y);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Region labels - always visible
+            ctx.font = '9px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let ry = 0; ry < 2; ry++) {
+                for (let rx = 0; rx < 3; rx++) {
+                    const idx = ry * 3 + rx;
+                    if (idx >= DATA_REGIONS.length) continue;
+                    const r = DATA_REGIONS[idx];
+                    const cx = (rx + 0.5) * rw;
+                    const cy = (ry + 0.5) * rh;
+                    
+                    // Brighter in unclaimed area, dimmer when claimed
+                    const inUnclaimed = pointInPoly(cx, cy, unclaimedPoly);
+                    ctx.fillStyle = inUnclaimed ? r.color + '50' : r.color + '25';
+                    ctx.fillText(r.name, cx, cy);
+                }
+            }
+
+            // Wire border of unclaimed area (the green line ghost walks on)
+            ctx.strokeStyle = '#33FF00';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = '#33FF00';
+            ctx.shadowBlur = 5;
+            ctx.beginPath();
+            ctx.moveTo(unclaimedPoly[0].x, unclaimedPoly[0].y);
+            for (let i = 1; i < unclaimedPoly.length; i++) {
+                ctx.lineTo(unclaimedPoly[i].x, unclaimedPoly[i].y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        // Cut trail
+        if (gameState.trail.length > 1) {
+            ctx.strokeStyle = '#33FF00';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.shadowColor = '#33FF00';
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.moveTo(gameState.trail[0].x, gameState.trail[0].y);
+            for (let i = 1; i < gameState.trail.length; i++) {
+                ctx.lineTo(gameState.trail[i].x, gameState.trail[i].y);
+            }
+            ctx.lineTo(gameState.player.x, gameState.player.y);
             ctx.stroke();
             ctx.shadowBlur = 0;
         }
 
         // Enemies
-        ctx.save();
-        ctx.translate(0, CONFIG.hudHeight);
         for (const e of gameState.enemies) e.draw(ctx);
+
+        // Player
+        drawLocalGhost(ctx, gameState.player.x, gameState.player.y, gameState.cutting);
+
         ctx.restore();
-
-        // Player - LocalGhost icon
-        const px = gameState.player.x * CONFIG.gridSize + CONFIG.gridSize / 2;
-        const py = gameState.player.y * CONFIG.gridSize + CONFIG.gridSize / 2 + CONFIG.hudHeight;
-
-        drawLocalGhost(ctx, px, py, gameState.cutting);
 
         drawHUD();
 
-        // Message
         if (gameState.messageTimer > 0) {
             ctx.fillStyle = `rgba(51,255,0,${gameState.messageTimer / 40})`;
             ctx.font = 'bold 12px monospace';
@@ -1150,13 +1302,47 @@
             ctx.fillText(gameState.message, CONFIG.canvasWidth / 2, CONFIG.hudHeight + 25);
         }
 
-        // Overlays
         if (!gameState.running || gameState.paused) {
             ctx.fillStyle = 'rgba(0,0,0,0.85)';
             ctx.fillRect(0, CONFIG.hudHeight, CONFIG.canvasWidth, CONFIG.canvasHeight);
             ctx.textAlign = 'center';
-            
-            if (gameState.lives <= 0) {
+
+            if (gameState.won) {
+                // Victory screen with manifesto-inspired text
+                ctx.fillStyle = '#33FF00';
+                ctx.font = 'bold 20px monospace';
+                ctx.fillText('DATA RECLAIMED', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 80);
+                
+                ctx.fillStyle = '#33FF00';
+                ctx.font = 'bold 14px monospace';
+                ctx.fillText('THE EXIT IS OPEN', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 50);
+                
+                ctx.fillStyle = '#888';
+                ctx.font = '9px monospace';
+                const lines = [
+                    'The cage is unlocked.',
+                    'Your data runs local. Your keys. Your rules.',
+                    'No kill switch. No rent. No betrayal.',
+                    '',
+                    'Physics, not promises.'
+                ];
+                lines.forEach((line, i) => {
+                    ctx.fillText(line, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 15 + i * 14);
+                });
+                
+                ctx.fillStyle = '#33FF00';
+                ctx.font = '12px monospace';
+                ctx.fillText(`Score: ${gameState.score}  |  ${gameState.claimedPercent.toFixed(1)}% Reclaimed`, CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 70);
+                
+                ctx.fillStyle = '#666';
+                ctx.font = '10px monospace';
+                ctx.fillText('Press R to reclaim another sector', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 95);
+                
+                ctx.fillStyle = '#33FF0044';
+                ctx.font = '7px monospace';
+                ctx.fillText('"The only scarcity left is your courage to use it."', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 + 115);
+                
+            } else if (gameState.lives <= 0) {
                 ctx.fillStyle = '#FF3333';
                 ctx.font = 'bold 18px monospace';
                 ctx.fillText('THE MACHINE WINS', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 40);
@@ -1192,10 +1378,10 @@
         ctx.fillStyle = '#33FF00';
         ctx.fillRect(barX, barY, (gameState.claimedPercent / 100) * barW, barH);
 
-        const targetX = barX + (CONFIG.winPercentage / 100) * barW;
         ctx.strokeStyle = '#FFE66D';
         ctx.lineWidth = 2;
         ctx.beginPath();
+        const targetX = barX + (CONFIG.winPercentage / 100) * barW;
         ctx.moveTo(targetX, barY - 2);
         ctx.lineTo(targetX, barY + barH + 2);
         ctx.stroke();
@@ -1217,31 +1403,32 @@
         }
     }
 
-    function gameLoop(timestamp) {
-        const elapsed = timestamp - lastFrameTime;
+    function gameLoop(ts) {
+        const elapsed = ts - lastFrameTime;
         if (elapsed >= frameInterval) {
-            lastFrameTime = timestamp - (elapsed % frameInterval);
+            lastFrameTime = ts - (elapsed % frameInterval);
             update();
             draw();
         }
-
-        if (gameState.running || gameState.paused) {
+        if (gameState.running || gameState.paused || gameState.won || gameState.lives <= 0) {
             gameState.animationId = requestAnimationFrame(gameLoop);
         }
     }
 
     function initGame() {
-        initGrid();
-        // Start on the left border (x=1 is claimed border)
-        const startY = Math.floor(gridHeight / 2);
-        gameState.player = { x: 1 + 0.5, y: startY + 0.5, gx: 1, gy: startY };
-        gameState.trail = [];
+        initPolygon();
+        gameState.player = { x: GAME_LEFT, y: (GAME_TOP + GAME_BOTTOM) / 2 };
+        gameState.edgeIndex = 3;
+        gameState.edgeT = 0.5;
         gameState.cutting = false;
+        gameState.trail = [];
+        gameState.cutStart = null;
         gameState.lives = 3;
         gameState.score = 0;
         gameState.level = 1;
         gameState.running = true;
         gameState.paused = false;
+        gameState.won = false;
         gameState.spaceHeld = false;
         gameState.message = '';
         gameState.messageTimer = 0;
