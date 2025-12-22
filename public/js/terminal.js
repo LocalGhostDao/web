@@ -11,11 +11,7 @@
     
     const CONFIG = {
         typeSpeed: 35,
-        lineDelay: 200,
-        gridSize: 20,
-        gameSpeed: 100,
-        highScoreThreshold: 4,
-        maxFireScore: 60  // Score at which fire is at maximum intensity
+        lineDelay: 200
     };
 
     const introLines = [
@@ -28,81 +24,6 @@
         { text: '', delay: 400, type: 'empty' },
         { text: 'TYPE "?" FOR COMMANDS', delay: 600, type: 'dim' },
     ];
-
-    const fileTypes = [
-        { color: '#FF6B6B', name: 'journal.txt', category: 'thoughts' },
-        { color: '#4ECDC4', name: 'photo.jpg', category: 'memories' },
-        { color: '#FFE66D', name: 'bank.csv', category: 'finances' },
-        { color: '#FF8B94', name: 'health.json', category: 'health' },
-        { color: '#A8E6CF', name: 'location.log', category: 'movement' },
-        { color: '#DDA0DD', name: 'searches.txt', category: 'interests' },
-        { color: '#87CEEB', name: 'messages.db', category: 'relationships' },
-        { color: '#F4A460', name: 'calendar.ics', category: 'schedule' },
-        { color: '#DA70D6', name: 'playlist.m3u', category: 'taste' },
-        { color: '#98D8C8', name: 'notes.md', category: 'ideas' },
-    ];
-
-    const knowledgeLevels = [
-        { threshold: 0, level: 'STRANGER', color: '#808080' },
-        { threshold: 3, level: 'ACQUAINTANCE', color: '#A0A0A0' },
-        { threshold: 6, level: 'FAMILIAR', color: '#33FF00' },
-        { threshold: 10, level: 'CONFIDANT', color: '#33FF00' },
-        { threshold: 15, level: 'TRUSTED', color: '#4ECDC4' },
-        { threshold: 20, level: 'FULLY SYNCED', color: '#FFE66D' },
-    ];
-
-    const feedbackMessages = {
-        thoughts: [
-            "Stored locally. Ready when you need to revisit.",
-            "Your reflections, encrypted and yours alone.",
-            "No cloud ever sees this. Only you.",
-        ],
-        memories: [
-            "Safe on your hardware. Searchable by you.",
-            "These stay yours. Forever findable.",
-            "Backed up locally. Never scraped. Never sold.",
-        ],
-        finances: [
-            "Patterns only you can see. No bank can sell this.",
-            "Your spending, your insights, your device.",
-            "Track your goals without feeding an algorithm.",
-        ],
-        health: [
-            "Trends stay private. No insurer will ever see this.",
-            "Your body, your data, your business.",
-            "Health insights without the surveillance.",
-        ],
-        movement: [
-            "Your places. Not a timeline for advertisers.",
-            "Location history that stays in your house.",
-            "Remember where you've been. Share with no one.",
-        ],
-        interests: [
-            "Curiosity without a profile being built on you.",
-            "Discover more. Feed no recommendation engine.",
-            "Your interests, not their targeting data.",
-        ],
-        relationships: [
-            "The people who matter. Visible only to you.",
-            "Your connections, off the social graph.",
-            "Memories with loved ones. Zero data brokers.",
-        ],
-        schedule: [
-            "Your time. Not optimised for someone else's profit.",
-            "A calendar that doesn't report back.",
-            "Plan your life without feeding the machine.",
-        ],
-        taste: [
-            "What moves you stays between us.",
-            "No playlist sold to advertisers.",
-            "Your vibe. Your secret.",
-        ],
-        ideas: [
-            "Captured locally. Built on when you're ready.",
-            "Your ideas don't train someone else's model.",
-            "Safe here. Waiting for you. No one else.",
-        ],
-    };
 
     // ===========================================
     // DOM REFERENCES
@@ -119,23 +40,12 @@
             inputMirror: document.getElementById('inputMirror'),
             heroTerminal: document.getElementById('heroTerminal'),
             matrixCanvas: document.getElementById('matrixCanvas'),
-            gameCanvas: document.getElementById('gameCanvas'),
-            snakeScore: document.getElementById('snakeScore'),
-            knowledgeLevel: document.getElementById('knowledgeLevel'),
-            gameFileConsumed: document.getElementById('gameFileConsumed'),
-            gameFeedback: document.getElementById('gameFeedback'),
-            gameOverText: document.getElementById('gameOverText'),
             gameModal: document.getElementById('gameModal'),
             donateModal: document.getElementById('donateModal'),
             waitlistModal: document.getElementById('waitlistModal'),
             contactModal: document.getElementById('contactModal'),
             copyBtn: document.getElementById('copyBtn'),
-            copyEmailBtn: document.getElementById('copyEmailBtn'),
-            playerNameInput: document.getElementById('playerNameInput'),
-            highScoresList: document.getElementById('highScoresList'),
-            highScoreNotice: document.getElementById('highScoreNotice'),
-            gameLeaderboard: document.getElementById('gameLeaderboard'),
-            gameModalContent: document.querySelector('#gameModal .modal')
+            copyEmailBtn: document.getElementById('copyEmailBtn')
         };
     }
 
@@ -271,7 +181,15 @@
         const hint = document.createElement('div');
         hint.id = 'skipHint';
         hint.className = 'skip-hint';
-        hint.innerHTML = '<span class="skip-key">ESC</span> SKIP';
+        
+        // Check if mobile/touch device
+        const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        hint.innerHTML = isMobile 
+            ? '<span class="skip-key">TAP</span> SKIP'
+            : '<span class="skip-key">ESC</span> SKIP';
+        
+        hint.style.cursor = 'pointer';
+        hint.addEventListener('click', skipIntro);
         elements.terminalOutput.parentNode.appendChild(hint);
     }
 
@@ -363,7 +281,7 @@
                 addOutputLine('INITIATING ESCAPE SEQUENCE...', 'warning');
                 setTimeout(() => {
                     addOutputLine('REALITY.EXE HAS STOPPED RESPONDING', 'warning');
-                    triggerEscapeSequance();
+                    triggerEscapeSequence();
                 }, 500);
                 break;
 
@@ -372,7 +290,13 @@
             case 'snake':
                 addOutputLine('LAUNCHING THE_SHADOW.EXE...', 'success');
                 addOutputLine('The more I learn, the more I can help.', 'dim');
-                setTimeout(openGameModal, 300);
+                setTimeout(() => {
+                    if (typeof window.TheShadow !== 'undefined') {
+                        window.TheShadow.open();
+                    } else {
+                        addOutputLine('ERROR: THE_SHADOW.EXE NOT LOADED', 'warning');
+                    }
+                }, 300);
                 break;
 
             case 'export':
@@ -380,20 +304,25 @@
             case 'volfied':
                 addOutputLine('LAUNCHING RECLAIM.EXE...', 'success');
                 addOutputLine('Trap the greedy entities. Reclaim your data.', 'dim');
-                setTimeout(openExportModal, 300);
+                setTimeout(openReclaimGame, 300);
                 break;
 
             case 'scores':
             case 'leaderboard':
-                loadHighScores();
-                if (gameState.highScores.length === 0) {
-                    addOutputLine('NO SHADOW RECORDS YET.', 'dim');
-                    addOutputLine('Play "shadow" and consume over 4 files to qualify.', 'dim');
+                if (typeof window.TheShadow !== 'undefined') {
+                    window.TheShadow.loadHighScores();
+                    const scores = window.TheShadow.getHighScores();
+                    if (scores.length === 0) {
+                        addOutputLine('NO SHADOW RECORDS YET.', 'dim');
+                        addOutputLine('Play "shadow" and consume over 4 files to qualify.', 'dim');
+                    } else {
+                        addOutputLine('THE SHADOW LEADERBOARD:', 'success');
+                        scores.forEach((entry, i) => {
+                            addOutputLine(`  ${String(i + 1).padStart(2, '0')}. ${entry.name.padEnd(12)} ${String(entry.score).padStart(4)} files  ${entry.date}`);
+                        });
+                    }
                 } else {
-                    addOutputLine('THE SHADOW LEADERBOARD:', 'success');
-                    gameState.highScores.forEach((entry, i) => {
-                        addOutputLine(`  ${String(i + 1).padStart(2, '0')}. ${entry.name.padEnd(12)} ${String(entry.score).padStart(4)} files  ${entry.date}`);
-                    });
+                    addOutputLine('NO SHADOW RECORDS YET.', 'dim');
                 }
                 break;
 
@@ -431,7 +360,7 @@
                 break;
 
             case 'matrix':
-                triggerEscapeSequance();
+                triggerEscapeSequence();
                 break;
 
             case '':
@@ -443,7 +372,6 @@
         }
     }
 
-
     // ===========================================
     // CORPORATE GREED SNAKE DEATH ANIMATION
     // ===========================================
@@ -452,7 +380,7 @@
         animationId: null,
         ctx: null,
         snake: [],
-        phase: 'growing', // growing, eating, dying, exploding, done
+        phase: 'growing',
         frame: 0,
         deathFrame: 0,
         explosionParticles: [],
@@ -475,7 +403,6 @@
         screenShake: 0
     };
 
-    // More green-focused colors with terminal aesthetic
     const corporateColors = ['#33FF00', '#00FF66', '#66FF33', '#00CC44', '#44FF88', '#FFE66D', '#FF6B6B'];
     const greedSymbols = ['$', '€', '£', '¥', '₿', '%', '∞', '™', '©', '®'];
 
@@ -499,8 +426,8 @@
         update() {
             this.x += this.vx;
             this.y += this.vy;
-            this.vy += 0.4; // gravity
-            this.vx *= 0.99; // air resistance
+            this.vy += 0.4;
+            this.vx *= 0.99;
             this.life -= this.decay;
             this.rotation += this.rotationSpeed;
             return this.life > 0;
@@ -564,7 +491,6 @@
         escapeState.messageTimer = 0;
         escapeState.screenShake = 0;
 
-        // Initialize the corporate greed snake as a circle
         const centerX = elements.matrixCanvas.width / 2;
         const centerY = elements.matrixCanvas.height / 2;
         const radius = Math.min(centerX, centerY) * 0.35;
@@ -589,7 +515,6 @@
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
-        // Screen shake offset
         let shakeX = 0, shakeY = 0;
         if (escapeState.screenShake > 0) {
             shakeX = (Math.random() - 0.5) * escapeState.screenShake;
@@ -600,17 +525,14 @@
         ctx.save();
         ctx.translate(shakeX, shakeY);
 
-        // Clear with CRT-style fade
         ctx.fillStyle = 'rgba(17, 17, 17, 0.2)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw scanlines
         ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
         for (let y = 0; y < canvas.height; y += 4) {
             ctx.fillRect(0, y, canvas.width, 2);
         }
 
-        // Random glitch lines
         if (Math.random() < 0.1 && escapeState.phase !== 'done') {
             escapeState.glitchLines.push(new GlitchLine(canvas.height));
         }
@@ -622,23 +544,19 @@
         escapeState.frame++;
         escapeState.messageTimer++;
 
-        // Update message
         const messageInterval = escapeState.phase === 'exploding' ? 20 : 35;
         if (escapeState.messageTimer > messageInterval && escapeState.currentMessage < escapeState.messages.length - 1) {
             escapeState.messageTimer = 0;
             escapeState.currentMessage++;
         }
 
-        // Draw current message with terminal effect
         const msg = escapeState.messages[escapeState.currentMessage];
         ctx.textAlign = 'center';
         
         if (escapeState.phase === 'exploding' || escapeState.phase === 'done') {
-            // Glitchy game over text
             ctx.font = 'bold 32px JetBrains Mono, monospace';
             const glitchOffset = escapeState.phase === 'done' ? 0 : (Math.random() - 0.5) * 15;
             
-            // Shadow layers for depth
             ctx.fillStyle = '#003300';
             ctx.fillText(msg, centerX + 3 + glitchOffset, centerY - 180 + 3);
             
@@ -648,7 +566,6 @@
             ctx.fillText(msg, centerX + glitchOffset, centerY - 180);
             ctx.shadowBlur = 0;
             
-            // Retro blink text
             if (escapeState.frame % 40 < 25) {
                 ctx.font = '18px JetBrains Mono, monospace';
                 ctx.fillStyle = '#33FF00';
@@ -667,16 +584,13 @@
             ctx.fillText('> ' + msg, centerX, centerY - 180);
             ctx.shadowBlur = 0;
             
-            // Typing cursor effect
             if (escapeState.frame % 20 < 10) {
                 ctx.fillRect(centerX + ctx.measureText('> ' + msg).width / 2 + 5, centerY - 195, 12, 24);
             }
         }
 
-        // Phase logic
         switch (escapeState.phase) {
             case 'growing':
-                // Snake rotates and pulses ominously
                 const growSpeed = 0.025;
                 escapeState.snake.forEach((seg, i) => {
                     const baseAngle = (i / escapeState.snake.length) * Math.PI * 2;
@@ -697,7 +611,6 @@
                 break;
 
             case 'eating':
-                // Snake eats its own tail with increasing frenzy
                 const aliveSegments = escapeState.snake.filter(s => s.alive);
                 const eatSpeed = 0.04 + (1 - aliveSegments.length / escapeState.snake.length) * 0.03;
                 
@@ -710,14 +623,12 @@
                     seg.y = centerY + Math.sin(seg.angle) * (shrinkRadius + wobble);
                 });
 
-                // Eat segments with increasing speed
                 const eatRate = Math.max(3, 8 - Math.floor((50 - aliveSegments.length) / 8));
                 if (escapeState.frame % eatRate === 0 && aliveSegments.length > 5) {
                     const victim = aliveSegments[aliveSegments.length - 1];
                     victim.alive = false;
                     escapeState.screenShake = Math.max(escapeState.screenShake, 5 + (50 - aliveSegments.length) * 0.3);
                     
-                    // Spawn explosion with corporate buzzwords
                     for (let i = 0; i < 8; i++) {
                         escapeState.explosionParticles.push(
                             new ExplosionParticle(victim.x, victim.y, victim.color)
@@ -739,7 +650,6 @@
                 break;
 
             case 'dying':
-                // Remaining segments convulse violently
                 const remaining = escapeState.snake.filter(s => s.alive);
                 remaining.forEach((seg, i) => {
                     seg.x += (Math.random() - 0.5) * 30;
@@ -751,7 +661,6 @@
                 escapeState.screenShake = 25;
                 escapeState.deathFrame++;
                 
-                // Spawn warning particles
                 if (escapeState.deathFrame % 3 === 0) {
                     escapeState.explosionParticles.push(
                         new ExplosionParticle(
@@ -768,7 +677,6 @@
                     escapeState.currentMessage = 10;
                     escapeState.screenShake = 50;
                     
-                    // MASSIVE explosion
                     remaining.forEach(seg => {
                         for (let i = 0; i < 30; i++) {
                             escapeState.explosionParticles.push(
@@ -778,7 +686,6 @@
                         seg.alive = false;
                     });
 
-                    // Extra center explosion with text
                     for (let i = 0; i < 80; i++) {
                         const isText = i < 15;
                         escapeState.explosionParticles.push(
@@ -786,7 +693,6 @@
                         );
                     }
                     
-                    // Ring explosion
                     for (let angle = 0; angle < Math.PI * 2; angle += 0.2) {
                         const ringX = centerX + Math.cos(angle) * 100;
                         const ringY = centerY + Math.sin(angle) * 100;
@@ -800,7 +706,6 @@
             case 'exploding':
                 escapeState.deathFrame++;
                 
-                // Add more glitch during explosion
                 if (Math.random() < 0.3) {
                     escapeState.glitchLines.push(new GlitchLine(canvas.height));
                 }
@@ -811,7 +716,6 @@
                 break;
         }
 
-        // Draw connection lines between alive segments (the snake body)
         const aliveSegs = escapeState.snake.filter(s => s.alive);
         if (aliveSegs.length > 1) {
             ctx.strokeStyle = 'rgba(51, 255, 0, 0.3)';
@@ -823,27 +727,22 @@
             ctx.stroke();
         }
 
-        // Draw snake segments
         aliveSegs.forEach((seg, i) => {
             ctx.save();
             
-            // Glow effect - more intense green
             ctx.shadowColor = seg.color;
             ctx.shadowBlur = 25;
             
-            // Body
             ctx.beginPath();
             ctx.arc(seg.x, seg.y, seg.size, 0, Math.PI * 2);
             ctx.fillStyle = seg.color;
             ctx.fill();
             
-            // Inner glow
             ctx.beginPath();
             ctx.arc(seg.x, seg.y, seg.size * 0.7, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
             ctx.fill();
             
-            // Symbol
             ctx.shadowBlur = 0;
             ctx.font = `bold ${seg.size}px Arial`;
             ctx.fillStyle = '#000';
@@ -851,11 +750,9 @@
             ctx.textBaseline = 'middle';
             ctx.fillText(seg.symbol, seg.x, seg.y);
             
-            // Head details (first segment)
             if (i === 0) {
                 const eyeOffset = seg.size * 0.35;
                 
-                // Evil red eyes
                 ctx.fillStyle = '#FF0000';
                 ctx.shadowColor = '#FF0000';
                 ctx.shadowBlur = 10;
@@ -864,7 +761,6 @@
                 ctx.arc(seg.x + eyeOffset, seg.y - eyeOffset, 6, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Angry eyebrows
                 ctx.strokeStyle = '#000';
                 ctx.lineWidth = 4;
                 ctx.shadowBlur = 0;
@@ -875,7 +771,6 @@
                 ctx.lineTo(seg.x + eyeOffset - 10, seg.y - eyeOffset - 4);
                 ctx.stroke();
 
-                // Pupils tracking tail
                 ctx.fillStyle = '#000';
                 const tail = aliveSegs[aliveSegs.length - 1];
                 if (tail && tail !== seg) {
@@ -886,7 +781,6 @@
                     ctx.fill();
                 }
                 
-                // Drooling mouth
                 ctx.strokeStyle = '#000';
                 ctx.lineWidth = 3;
                 ctx.beginPath();
@@ -897,15 +791,13 @@
             ctx.restore();
         });
 
-        // Draw and update explosion particles
         escapeState.explosionParticles = escapeState.explosionParticles.filter(p => {
             p.draw(ctx);
             return p.update();
         });
 
-        ctx.restore(); // End screen shake
+        ctx.restore();
 
-        // Continue animation or finish
         if (escapeState.phase === 'done' && escapeState.explosionParticles.length === 0) {
             setTimeout(() => {
                 cancelAnimationFrame(escapeState.animationId);
@@ -924,567 +816,10 @@
         escapeState.animationId = requestAnimationFrame(drawEscapeAnimation);
     }
 
-    function triggerEscapeSequance() {
+    function triggerEscapeSequence() {
         initEscapeAnimation();
         elements.matrixCanvas.classList.add('active');
         drawEscapeAnimation();
-    }
-
-    // ===========================================
-    // SNAKE GAME (THE SHADOW)
-    // ===========================================
-    
-    let gameState = {
-        ctx: null,
-        snake: [],
-        food: { x: 0, y: 0, type: null },
-        dx: 0,
-        dy: 0,
-        score: 0,
-        filesEaten: [],
-        loop: null,
-        running: false,
-        paused: false,
-        pausedByLeaderboard: false,
-        tileCount: 0,
-        playerName: 'ROX',
-        highScores: [],
-        leaderboardVisible: false,
-        fireIntensity: 0
-    };
-
-    function getKnowledgeLevel() {
-        for (let i = knowledgeLevels.length - 1; i >= 0; i--) {
-            if (gameState.score >= knowledgeLevels[i].threshold) {
-                return knowledgeLevels[i];
-            }
-        }
-        return knowledgeLevels[0];
-    }
-
-    function getRandomFeedback(category) {
-        const messages = feedbackMessages[category];
-        return messages[Math.floor(Math.random() * messages.length)];
-    }
-
-    function loadHighScores() {
-        try {
-            const saved = localStorage.getItem('localghost_shadow_scores');
-            gameState.highScores = saved ? JSON.parse(saved) : [];
-        } catch (e) {
-            gameState.highScores = [];
-        }
-    }
-
-    function saveHighScore() {
-        const entry = {
-            name: (gameState.playerName || 'ROX').substring(0, 12).toUpperCase(),
-            score: gameState.score,
-            date: new Date().toISOString().split('T')[0]
-        };
-        gameState.highScores.push(entry);
-        gameState.highScores.sort((a, b) => b.score - a.score);
-        gameState.highScores = gameState.highScores.slice(0, 5);
-        localStorage.setItem('localghost_shadow_scores', JSON.stringify(gameState.highScores));
-        renderHighScores();
-    }
-
-    function renderHighScores() {
-        if (!elements.highScoresList) return;
-        
-        if (gameState.highScores.length === 0) {
-            elements.highScoresList.innerHTML = '<div class="no-scores">NO RECORDS YET</div>';
-            return;
-        }
-        
-        elements.highScoresList.innerHTML = gameState.highScores
-            .slice(0, 5)
-            .map((s, i) => {
-                const name = s.name.padEnd(12, '.');
-                const score = String(s.score).padStart(3);
-                return `<div class="score-row"><span class="score-rank">${String(i + 1).padStart(2, '0')}.</span> <span class="score-name">${name}</span> <span class="score-pts">${score}</span> <span class="score-date">${s.date}</span></div>`;
-            })
-            .join('');
-    }
-
-    // Fire animation state
-    let fireAnimationId = null;
-    let fireParticles = [];
-
-    class FireParticle {
-        constructor(x, y, side, intensity) {
-            this.x = x;
-            this.y = y;
-            this.side = side; // 'top', 'right', 'bottom', 'left'
-            this.size = 2 + Math.random() * 5 * intensity;
-            this.life = 0.2 + Math.random() * 0.3 + intensity * 0.2;
-            this.maxLife = this.life;
-            this.speed = 0.8 + Math.random() * 1.5 * intensity;
-            this.drift = (Math.random() - 0.5) * 0.8;
-            this.intensity = intensity;
-            this.flicker = Math.random();
-        }
-
-        update() {
-            this.life -= 0.02;
-            this.flicker = Math.random(); // Random flicker each frame
-            
-            // Flames rise outward from border edges
-            switch(this.side) {
-                case 'top':
-                    this.y -= this.speed;
-                    this.x += this.drift;
-                    break;
-                case 'bottom':
-                    this.y -= this.speed * 0.4;
-                    this.x += this.drift;
-                    break;
-                case 'left':
-                    this.y -= this.speed * 0.6;
-                    this.x -= this.speed * 0.4;
-                    break;
-                case 'right':
-                    this.y -= this.speed * 0.6;
-                    this.x += this.speed * 0.4;
-                    break;
-            }
-            
-            this.size *= 0.95;
-            return this.life > 0 && this.size > 0.3;
-        }
-    }
-
-    function updateFireEffect() {
-        if (!elements.gameModalContent) return;
-        
-        const score = gameState.score;
-        const maxScore = CONFIG.maxFireScore;
-        
-        // Calculate intensity (0 to 1)
-        // 0-10: very subtle (0 to 0.2)
-        // 10-60: grows steadily (0.2 to 1)
-        let intensity;
-        if (score < 10) {
-            intensity = (score / 10) * 0.2;
-        } else {
-            intensity = 0.2 + ((Math.min(score, maxScore) - 10) / (maxScore - 10)) * 0.8;
-        }
-        
-        // Subtle base glow
-        const glowSize = Math.floor(2 + intensity * 12);
-        const glowOpacity = (0.05 + intensity * 0.3).toFixed(2);
-        
-        elements.gameModalContent.style.boxShadow = `0 0 ${glowSize}px rgba(51, 255, 0, ${glowOpacity})`;
-        
-        // Start fire canvas animation once we have any score
-        if (score > 0 && !fireAnimationId) {
-            startFireAnimation();
-        } else if (score === 0 && fireAnimationId) {
-            stopFireAnimation();
-        }
-        
-        // Store intensity for fire animation
-        gameState.fireIntensity = intensity;
-    }
-
-    function startFireAnimation() {
-        const modal = elements.gameModalContent;
-        if (!modal) return;
-        
-        // Create fire canvas if it doesn't exist
-        let fireCanvas = document.getElementById('fireCanvas');
-        if (!fireCanvas) {
-            fireCanvas = document.createElement('canvas');
-            fireCanvas.id = 'fireCanvas';
-            fireCanvas.style.cssText = 'position:absolute;top:-30px;left:-10px;width:calc(100% + 20px);height:calc(100% + 40px);pointer-events:none;';
-            modal.style.position = 'relative';
-            modal.style.overflow = 'visible';
-            // Insert as first child so it renders behind content
-            modal.insertBefore(fireCanvas, modal.firstChild);
-        }
-        
-        const ctx = fireCanvas.getContext('2d');
-        fireParticles = [];
-        
-        function animateFire() {
-            // Size canvas to modal plus extra space for flames
-            const w = modal.offsetWidth + 20;
-            const h = modal.offsetHeight + 40;
-            fireCanvas.width = w;
-            fireCanvas.height = h;
-            
-            // Offset for the extra padding
-            const offsetX = 10;
-            const offsetY = 30;
-            
-            ctx.clearRect(0, 0, w, h);
-            
-            const intensity = gameState.fireIntensity || 0;
-            
-            // Spawn new particles along edges - favor top for more realistic fire
-            const spawnRate = Math.floor(1 + intensity * 10);
-            const modalW = modal.offsetWidth;
-            const modalH = modal.offsetHeight;
-            
-            for (let i = 0; i < spawnRate; i++) {
-                // Weight towards top edge where fire looks most natural
-                const rand = Math.random();
-                let side;
-                if (rand < 0.5) {
-                    side = 'top';
-                } else if (rand < 0.7) {
-                    side = 'left';
-                } else if (rand < 0.9) {
-                    side = 'right';
-                } else {
-                    side = 'bottom';
-                }
-                
-                let x, y;
-                
-                switch(side) {
-                    case 'top':
-                        x = offsetX + Math.random() * modalW;
-                        y = offsetY + 2;
-                        break;
-                    case 'bottom':
-                        x = offsetX + Math.random() * modalW;
-                        y = offsetY + modalH - 2;
-                        break;
-                    case 'left':
-                        x = offsetX + 2;
-                        y = offsetY + Math.random() * modalH;
-                        break;
-                    case 'right':
-                        x = offsetX + modalW - 2;
-                        y = offsetY + Math.random() * modalH;
-                        break;
-                }
-                
-                if (Math.random() < 0.1 + intensity * 0.6) {
-                    fireParticles.push(new FireParticle(x, y, side, intensity));
-                }
-            }
-            
-            // Update and draw particles
-            fireParticles = fireParticles.filter(p => {
-                const alive = p.update();
-                if (alive) {
-                    const lifeRatio = p.life / p.maxLife;
-                    const alpha = lifeRatio * p.intensity * (0.5 + p.flicker * 0.5);
-                    
-                    // Flame gradient - bright core fading to dark edges
-                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 1.5);
-                    gradient.addColorStop(0, `rgba(220, 255, 180, ${alpha})`);
-                    gradient.addColorStop(0.3, `rgba(100, 255, 50, ${alpha * 0.8})`);
-                    gradient.addColorStop(0.7, `rgba(30, 200, 30, ${alpha * 0.4})`);
-                    gradient.addColorStop(1, `rgba(0, 80, 0, 0)`);
-                    
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size * 1.5, 0, Math.PI * 2);
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                }
-                return alive;
-            });
-            
-            fireAnimationId = requestAnimationFrame(animateFire);
-        }
-        
-        fireAnimationId = requestAnimationFrame(animateFire);
-    }
-
-    function stopFireAnimation() {
-        if (fireAnimationId) {
-            cancelAnimationFrame(fireAnimationId);
-            fireAnimationId = null;
-        }
-        fireParticles = [];
-        const fireCanvas = document.getElementById('fireCanvas');
-        if (fireCanvas) {
-            fireCanvas.remove();
-        }
-    }
-
-    function resetFireEffect() {
-        if (!elements.gameModalContent) return;
-        elements.gameModalContent.style.boxShadow = '';
-        elements.gameModalContent.classList.remove('fire-medium', 'fire-intense');
-        stopFireAnimation();
-        gameState.fireIntensity = 0;
-    }
-
-    function toggleLeaderboard() {
-        if (!elements.gameLeaderboard) return;
-        
-        gameState.leaderboardVisible = !gameState.leaderboardVisible;
-        
-        if (gameState.leaderboardVisible) {
-            // Show overlay and pause game
-            elements.gameLeaderboard.classList.add('visible');
-            if (gameState.running && !gameState.paused) {
-                gameState.paused = true;
-                gameState.pausedByLeaderboard = true;
-            }
-        } else {
-            // Hide overlay and resume if we paused it
-            elements.gameLeaderboard.classList.remove('visible');
-            if (gameState.pausedByLeaderboard && gameState.running) {
-                gameState.paused = false;
-                gameState.pausedByLeaderboard = false;
-                elements.gameFeedback.textContent = 'Syncing your data...';
-            }
-        }
-    }
-
-    function initGame() {
-        loadHighScores();
-        renderHighScores();
-        
-        // Load saved name
-        const savedName = localStorage.getItem('localghost_player_name');
-        if (savedName) {
-            gameState.playerName = savedName;
-            if (elements.playerNameInput) elements.playerNameInput.value = savedName;
-        } else {
-            gameState.playerName = 'ROX';
-            if (elements.playerNameInput) elements.playerNameInput.value = 'ROX';
-        }
-        
-        if (elements.highScoreNotice) {
-            elements.highScoreNotice.style.display = 'none';
-        }
-
-        // Reset border color and hide leaderboard overlay
-        resetFireEffect();
-        gameState.leaderboardVisible = false;
-        gameState.pausedByLeaderboard = false;
-        if (elements.gameLeaderboard) {
-            elements.gameLeaderboard.classList.remove('visible');
-        }
-
-        gameState.ctx = elements.gameCanvas.getContext('2d');
-        gameState.tileCount = elements.gameCanvas.width / CONFIG.gridSize;
-        
-        gameState.snake = [
-            { x: 10, y: 10 },
-            { x: 9, y: 10 },
-            { x: 8, y: 10 }
-        ];
-        gameState.dx = 1;
-        gameState.dy = 0;
-        gameState.score = 0;
-        gameState.filesEaten = [];
-        
-        elements.snakeScore.textContent = '0';
-        elements.knowledgeLevel.textContent = 'STRANGER';
-        elements.knowledgeLevel.style.color = '#808080';
-        elements.gameFileConsumed.textContent = '';
-        elements.gameFeedback.textContent = 'Press SPACE or any arrow key to begin...';
-        elements.gameOverText.classList.remove('visible');
-        
-        placeFood();
-        gameState.running = true;
-        gameState.paused = true;
-
-        if (gameState.loop) clearInterval(gameState.loop);
-        gameState.loop = setInterval(updateGame, CONFIG.gameSpeed);
-        drawGame();
-    }
-
-    function placeFood() {
-        gameState.food.x = Math.floor(Math.random() * gameState.tileCount);
-        gameState.food.y = Math.floor(Math.random() * gameState.tileCount);
-        gameState.food.type = fileTypes[Math.floor(Math.random() * fileTypes.length)];
-
-        for (let segment of gameState.snake) {
-            if (segment.x === gameState.food.x && segment.y === gameState.food.y) {
-                placeFood();
-                return;
-            }
-        }
-    }
-
-    function updateGame() {
-        if (!gameState.running || gameState.paused) return;
-
-        const head = { x: gameState.snake[0].x + gameState.dx, y: gameState.snake[0].y + gameState.dy };
-
-        if (head.x < 0 || head.x >= gameState.tileCount || head.y < 0 || head.y >= gameState.tileCount) {
-            gameOver();
-            return;
-        }
-
-        for (let segment of gameState.snake) {
-            if (head.x === segment.x && head.y === segment.y) {
-                gameOver();
-                return;
-            }
-        }
-
-        gameState.snake.unshift(head);
-
-        if (head.x === gameState.food.x && head.y === gameState.food.y) {
-            gameState.score += 1;
-            elements.snakeScore.textContent = gameState.score;
-            gameState.filesEaten.push(gameState.food.type);
-
-            const knowledge = getKnowledgeLevel();
-            elements.knowledgeLevel.textContent = knowledge.level;
-            elements.knowledgeLevel.style.color = knowledge.color;
-
-            elements.gameFileConsumed.innerHTML = `<span style="color: ${gameState.food.type.color}">[${gameState.food.type.name}]</span>`;
-            elements.gameFeedback.textContent = getRandomFeedback(gameState.food.type.category);
-
-            // Update border color based on new score
-            updateFireEffect();
-
-            placeFood();
-        } else {
-            gameState.snake.pop();
-        }
-
-        drawGame();
-    }
-
-    function drawGame() {
-        const ctx = gameState.ctx;
-        const canvas = elements.gameCanvas;
-        const gridSize = CONFIG.gridSize;
-
-        ctx.fillStyle = '#111111';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.strokeStyle = '#1a1a1a';
-        for (let i = 0; i < gameState.tileCount; i++) {
-            ctx.beginPath();
-            ctx.moveTo(i * gridSize, 0);
-            ctx.lineTo(i * gridSize, canvas.height);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(0, i * gridSize);
-            ctx.lineTo(canvas.width, i * gridSize);
-            ctx.stroke();
-        }
-
-        gameState.snake.forEach((segment, index) => {
-            if (index === 0) {
-                ctx.shadowColor = '#33FF00';
-                ctx.shadowBlur = 10;
-                ctx.fillStyle = '#33FF00';
-            } else {
-                ctx.shadowBlur = 0;
-                const alpha = 1 - (index / gameState.snake.length) * 0.6;
-                ctx.fillStyle = `rgba(51, 255, 0, ${alpha})`;
-            }
-            ctx.fillRect(
-                segment.x * gridSize + 1,
-                segment.y * gridSize + 1,
-                gridSize - 2,
-                gridSize - 2
-            );
-        });
-        ctx.shadowBlur = 0;
-
-        ctx.shadowColor = gameState.food.type.color;
-        ctx.shadowBlur = 8;
-        ctx.fillStyle = gameState.food.type.color;
-        ctx.fillRect(
-            gameState.food.x * gridSize + 2,
-            gameState.food.y * gridSize + 2,
-            gridSize - 4,
-            gridSize - 4
-        );
-        ctx.shadowBlur = 0;
-    }
-
-    function gameOver() {
-        gameState.running = false;
-        clearInterval(gameState.loop);
-        elements.gameOverText.classList.add('visible');
-        elements.gameFileConsumed.textContent = '';
-
-        const knowledge = getKnowledgeLevel();
-        const fileCount = gameState.score;
-        
-        if (knowledge.level === 'FULLY SYNCED') {
-            elements.gameFeedback.textContent = `${fileCount} files synced. I understand you completely now.`;
-        } else if (fileCount >= 10) {
-            elements.gameFeedback.textContent = `${fileCount} files synced. We're getting to know each other.`;
-        } else if (fileCount >= 5) {
-            elements.gameFeedback.textContent = `${fileCount} files synced. A good start.`;
-        } else {
-            elements.gameFeedback.textContent = `${fileCount} files synced. There's so much more to learn.`;
-        }
-
-        // High score check
-        if (gameState.score > CONFIG.highScoreThreshold) {
-            saveHighScore();
-            if (elements.highScoreNotice) {
-                elements.highScoreNotice.style.display = 'block';
-                elements.highScoreNotice.textContent = `RECORDED: ${gameState.playerName} - ${gameState.score} files`;
-            }
-        }
-    }
-
-    function handleGameInput(e) {
-        if (!elements.gameModal.classList.contains('active')) return;
-        
-        // Don't handle game controls if typing in any input field
-        const activeEl = document.activeElement;
-        if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
-            // But allow arrow keys to blur and start game
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                activeEl.blur();
-                elements.gameModal.focus();
-            } else {
-                return;
-            }
-        }
-
-        switch (e.key.toLowerCase()) {
-            case 'arrowup':
-            case 'w':
-                if (gameState.dy !== 1) { gameState.dx = 0; gameState.dy = -1; }
-                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
-                e.preventDefault();
-                break;
-            case 'arrowdown':
-            case 's':
-                if (gameState.dy !== -1) { gameState.dx = 0; gameState.dy = 1; }
-                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
-                e.preventDefault();
-                break;
-            case 'arrowleft':
-            case 'a':
-                if (gameState.dx !== 1) { gameState.dx = -1; gameState.dy = 0; }
-                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
-                e.preventDefault();
-                break;
-            case 'arrowright':
-            case 'd':
-                if (gameState.dx !== -1) { gameState.dx = 1; gameState.dy = 0; }
-                if (gameState.paused && gameState.running) { gameState.paused = false; elements.gameFeedback.textContent = 'Syncing your data...'; }
-                e.preventDefault();
-                break;
-            case ' ':
-                if (gameState.running) {
-                    gameState.paused = !gameState.paused;
-                    elements.gameFeedback.textContent = gameState.paused ? 'Paused...' : 'Syncing your data...';
-                }
-                e.preventDefault();
-                break;
-            case 'r':
-                initGame();
-                elements.gameModal.focus();
-                e.preventDefault();
-                break;
-            case 'h':
-            case 'l':
-                toggleLeaderboard();
-                e.preventDefault();
-                break;
-        }
     }
 
     // ===========================================
@@ -1521,39 +856,16 @@
         document.body.style.overflow = '';
     }
 
-    function openGameModal() {
-        elements.gameModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        // Clear and blur terminal input so keystrokes go to game
-        elements.terminalInput.value = '';
-        elements.inputMirror.textContent = '';
-        elements.terminalInput.blur();
-        initGame();
-        // Focus the modal itself to capture key events
-        elements.gameModal.focus();
-    }
-
-    function closeGameModal() {
-        elements.gameModal.classList.remove('active');
-        document.body.style.overflow = '';
-        gameState.running = false;
-        if (gameState.loop) clearInterval(gameState.loop);
-        resetFireEffect();
-        // Return focus to terminal
-        elements.terminalInput.focus();
-    }
-
-    function openExportModal() {
-        // Reclaim game is in separate file
+    function openReclaimGame() {
         if (typeof window.ReclaimGame !== 'undefined') {
             window.ReclaimGame.open();
         } else {
-            addOutputLine('ERROR: RECLAIM.EXE NOT LOADED', 'error');
+            addOutputLine('ERROR: RECLAIM.EXE NOT LOADED', 'warning');
             addOutputLine('Game module missing. Check console.', 'dim');
         }
     }
 
-    function closeExportModal() {
+    function closeReclaimGame() {
         if (typeof window.ReclaimGame !== 'undefined') {
             window.ReclaimGame.close();
         }
@@ -1563,7 +875,10 @@
         closeDonateModal();
         closeWaitlistModal();
         closeContactModal();
-        closeExportModal();
+        closeReclaimGame();
+        if (typeof window.TheShadow !== 'undefined') {
+            window.TheShadow.close();
+        }
     }
 
     // ===========================================
@@ -1650,7 +965,7 @@
         // Terminal input
         elements.terminalInput.addEventListener('keydown', (e) => {
             // Ignore if game modal is open
-            if (elements.gameModal.classList.contains('active')) return;
+            if (elements.gameModal && elements.gameModal.classList.contains('active')) return;
             
             if (e.key === 'Enter') {
                 const command = elements.terminalInput.value.trim().toLowerCase();
@@ -1662,7 +977,7 @@
 
         elements.terminalInput.addEventListener('input', () => {
             // Ignore if game modal is open
-            if (elements.gameModal.classList.contains('active')) return;
+            if (elements.gameModal && elements.gameModal.classList.contains('active')) return;
             
             elements.inputMirror.textContent = elements.terminalInput.value;
         });
@@ -1678,55 +993,25 @@
         });
 
         elements.heroTerminal.addEventListener('click', () => {
-            if (terminalState.introComplete && !elements.gameModal.classList.contains('active')) {
+            if (terminalState.introComplete && !(elements.gameModal && elements.gameModal.classList.contains('active'))) {
                 elements.terminalInput.focus();
             }
         });
 
         elements.inputLine.addEventListener('click', () => {
-            if (!elements.gameModal.classList.contains('active')) {
+            if (!(elements.gameModal && elements.gameModal.classList.contains('active'))) {
                 elements.terminalInput.focus();
             }
         });
 
-        // Game input
-        document.addEventListener('keydown', handleGameInput);
-
-        // Game modal focus management
-        elements.gameModal.addEventListener('click', (e) => {
-            // Don't steal focus if clicking on the name input
-            if (e.target !== elements.playerNameInput) {
-                elements.gameModal.focus();
-            }
-        });
-
-        // Player name input
-        if (elements.playerNameInput) {
-            elements.playerNameInput.addEventListener('input', (e) => {
-                gameState.playerName = e.target.value.toUpperCase() || 'ROX';
-                localStorage.setItem('localghost_player_name', gameState.playerName);
-            });
-            
-            // Tab or Enter exits input and focuses game
-            elements.playerNameInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === 'Tab') {
-                    e.preventDefault();
-                    elements.playerNameInput.blur();
-                    elements.gameModal.focus();
-                }
-            });
-        }
-
-        // Modal overlay clicks
+        // Modal overlay clicks (excluding game modal - handled by TheShadow)
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            if (overlay.id === 'gameModal') return; // TheShadow handles this
+            
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
                     overlay.classList.remove('active');
                     document.body.style.overflow = '';
-                    if (overlay.id === 'gameModal') {
-                        gameState.running = false;
-                        if (gameState.loop) clearInterval(gameState.loop);
-                    }
                 }
             });
         });
@@ -1739,12 +1024,8 @@
                     skipIntro();
                     return;
                 }
-                // Otherwise handle modals
-                if (elements.gameModal.classList.contains('active')) {
-                    closeGameModal();
-                } else {
-                    closeAllModals();
-                }
+                // Close modals
+                closeAllModals();
             }
         });
 
@@ -1775,13 +1056,13 @@
         const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 
         document.addEventListener('keydown', (e) => {
-            if (elements.gameModal.classList.contains('active')) return;
+            if (elements.gameModal && elements.gameModal.classList.contains('active')) return;
 
             konamiCode.push(e.keyCode);
             konamiCode = konamiCode.slice(-10);
 
             if (konamiCode.join(',') === secretCode.join(',')) {
-                triggerEscapeSequance();
+                triggerEscapeSequence();
             }
         });
     }
@@ -1793,7 +1074,6 @@
     function init() {
         cacheElements();
         setupEventListeners();
-        loadHighScores();
 
         document.body.style.opacity = '0';
         setTimeout(() => {
@@ -1808,7 +1088,7 @@
     // ===========================================
     
     window.LocalGhost = {
-        triggerEscapeSequance,
+        triggerEscapeSequence,
         terminalMinimize,
         terminalMaximize,
         openDonateModal,
@@ -1817,14 +1097,10 @@
         closeWaitlistModal,
         openContactModal,
         closeContactModal,
-        openGameModal,
-        closeGameModal,
-        openExportModal,
-        closeExportModal,
         copyAddress,
         copyEmail,
         addCalendarReminder,
-        addOutputLine  // Expose for export game to use
+        addOutputLine
     };
 
     // Start when DOM is ready

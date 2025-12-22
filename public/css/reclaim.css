@@ -1,0 +1,324 @@
+/* ===========================================
+   LOCALGHOST - TERMINAL STYLES
+   Terminal box, cursor, input, output, effects
+   =========================================== */
+
+.terminal-box {
+    background: var(--void);
+    border: 1px solid var(--terminal-dim);
+    max-width: 700px;
+    width: 100%;
+    position: relative;
+    font-family: var(--font-mono);
+    box-shadow: 
+        0 0 0 1px rgba(51, 255, 0, 0.1),
+        0 0 30px rgba(51, 255, 0, 0.1),
+        0 20px 50px rgba(0, 0, 0, 0.5),
+        inset 0 0 100px rgba(51, 255, 0, 0.02);
+    transition: all 0.3s ease;
+    animation: terminalPulse 12s ease-in-out infinite;
+}
+
+@keyframes terminalPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 0 1px rgba(51, 255, 0, 0.1),
+            0 0 30px rgba(51, 255, 0, 0.08),
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            inset 0 0 100px rgba(51, 255, 0, 0.02);
+    }
+    50% { 
+        box-shadow: 
+            0 0 0 1px rgba(51, 255, 0, 0.15),
+            0 0 40px rgba(51, 255, 0, 0.12),
+            0 20px 50px rgba(0, 0, 0, 0.5),
+            inset 0 0 100px rgba(51, 255, 0, 0.03);
+    }
+}
+
+.terminal-box.fullscreen {
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    max-width: none;
+    z-index: 100;
+    animation: none;
+    box-shadow: 
+        0 0 0 1px rgba(51, 255, 0, 0.2),
+        0 0 60px rgba(51, 255, 0, 0.2),
+        0 0 100px rgba(0, 0, 0, 0.8);
+}
+
+.terminal-box.fullscreen .terminal-body {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+}
+
+/* ===========================================
+   TERMINAL HEADER
+   =========================================== */
+
+.terminal-header {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: var(--void-lighter);
+    border-bottom: 1px solid var(--border);
+    gap: 0.5rem;
+}
+
+.terminal-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.1s;
+}
+
+.terminal-btn:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+}
+
+.terminal-btn.close { background: #ff5f56; }
+.terminal-btn.minimize { background: #ffbd2e; }
+.terminal-btn.maximize { background: #27ca40; }
+
+.terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.terminal-title-spacer {
+    width: 44px;
+}
+
+/* ===========================================
+   TERMINAL BODY
+   =========================================== */
+
+.terminal-body {
+    padding: 1.5rem;
+    min-height: 250px;
+    position: relative;
+    background: 
+        radial-gradient(ellipse at center, rgba(51, 255, 0, 0.03) 0%, transparent 70%);
+}
+
+/* CRT scanline effect inside terminal */
+.terminal-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Subtle flicker animation */
+.terminal-body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(51, 255, 0, 0);
+    pointer-events: none;
+    animation: flicker 6s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes flicker {
+    0%, 5%, 11%, 21%, 26%, 38%, 45%, 64%, 70%, 86%, 93%, 100% { 
+        background: rgba(51, 255, 0, 0); 
+    }
+    7%, 9% { 
+        background: rgba(51, 255, 0, 0.06); 
+    }
+    23%, 24% { 
+        background: rgba(255, 255, 255, 0.04); 
+    }
+    41%, 43% { 
+        background: rgba(51, 255, 0, 0.05); 
+    }
+    67%, 68% { 
+        background: rgba(255, 255, 255, 0.03); 
+    }
+    89%, 91% { 
+        background: rgba(51, 255, 0, 0.04); 
+    }
+}
+
+/* ===========================================
+   TERMINAL OUTPUT
+   =========================================== */
+
+.terminal-output {
+    min-height: 180px;
+    position: relative;
+    z-index: 2;
+}
+
+.terminal-line {
+    margin-bottom: 0.5rem;
+    min-height: 1.7em;
+}
+
+.terminal-prompt {
+    color: var(--terminal);
+    text-shadow: 0 0 5px var(--terminal-dim);
+}
+
+.terminal-text {
+    color: var(--text);
+    text-shadow: 0 0 2px rgba(224, 224, 224, 0.3);
+}
+
+.terminal-warning {
+    color: var(--warning);
+    font-weight: 500;
+    text-shadow: 0 0 5px rgba(255, 51, 51, 0.3);
+}
+
+.terminal-success {
+    color: var(--terminal);
+    text-shadow: 0 0 5px var(--terminal-dim);
+}
+
+.terminal-dim {
+    color: var(--text-dim);
+}
+
+.terminal-link {
+    color: var(--terminal);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terminal-dim);
+    transition: all 0.2s;
+    text-shadow: 0 0 5px var(--terminal-dim);
+}
+
+.terminal-link:hover {
+    border-bottom-color: var(--terminal);
+    text-shadow: 0 0 15px var(--terminal);
+}
+
+/* ===========================================
+   CURSOR
+   =========================================== */
+
+.cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    background: var(--terminal);
+    animation: blink 1.2s step-end infinite;
+    vertical-align: middle;
+    margin-left: 0.2em;
+    box-shadow: 0 0 8px var(--terminal), 0 0 2px var(--terminal);
+}
+
+.cursor.typing {
+    animation: none;
+    opacity: 1;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* ===========================================
+   SKIP HINT
+   =========================================== */
+
+.skip-hint {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    opacity: 0.6;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.skip-key {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--terminal);
+    font-size: 0.6rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.6; }
+}
+
+/* ===========================================
+   TERMINAL INPUT
+   =========================================== */
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: text;
+    z-index: 2;
+}
+
+.terminal-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    font-size: inherit;
+}
+
+.terminal-input-mirror {
+    color: var(--text);
+    font-family: var(--font-mono);
+    white-space: pre;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+    .terminal-box {
+        padding: 2rem 1.5rem;
+    }
+}

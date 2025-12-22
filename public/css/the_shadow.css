@@ -1,0 +1,630 @@
+/* ===========================================
+   LOCALGHOST - THE SHADOW STYLES
+   Snake game modal, leaderboard, mobile controls
+   =========================================== */
+
+/* ===========================================
+   GAME MODAL
+   =========================================== */
+
+#gameModal .modal {
+    max-width: 420px;
+    width: 420px;
+    transition: box-shadow 0.5s ease;
+}
+
+#gameModal .modal.game-modal {
+    max-width: 420px;
+    width: 420px;
+    max-height: 95vh;
+    overflow-y: auto;
+}
+
+#gameModal:focus {
+    outline: none;
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    background: var(--void);
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+    border: 1px solid var(--border);
+}
+
+/* ===========================================
+   GAME HEADER & INFO
+   =========================================== */
+
+.game-header {
+    margin-bottom: 1rem;
+}
+
+.game-name-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.game-name-input label {
+    color: var(--text-dim);
+}
+
+.game-name-input input {
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+    width: 80px;
+    text-transform: uppercase;
+}
+
+.game-name-input input:focus {
+    outline: none;
+    border-color: var(--terminal);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+.game-score {
+    font-size: 0.8rem;
+    color: var(--terminal);
+}
+
+.game-knowledge {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+/* ===========================================
+   GAME CANVAS CONTAINER
+   =========================================== */
+
+.game-canvas-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* ===========================================
+   GAME FEEDBACK & STATUS
+   =========================================== */
+
+.game-file-consumed {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.75rem;
+    height: 1.2rem;
+    font-family: var(--font-mono);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.game-feedback {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text);
+    margin-top: 0.25rem;
+    height: 3.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--void-lighter);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.game-controls {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 0.75rem;
+    height: 1.2rem;
+}
+
+.game-over-text {
+    text-align: center;
+    color: var(--warning);
+    font-size: 0.9rem;
+    height: 1.5rem;
+    margin-top: 0.5rem;
+    visibility: hidden;
+    animation: gameOverPulse 1s ease-in-out infinite;
+}
+
+.game-over-text.visible {
+    visibility: visible;
+}
+
+@keyframes gameOverPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ===========================================
+   HIGH SCORE NOTICE
+   =========================================== */
+
+.high-score-notice {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--terminal);
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    height: 1.5rem;
+    border: 1px solid transparent;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    visibility: hidden;
+}
+
+.high-score-notice.visible {
+    visibility: visible;
+    border-color: var(--terminal);
+    animation: pulse 1s ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ===========================================
+   LEADERBOARD OVERLAY
+   =========================================== */
+
+.game-leaderboard-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(17, 17, 17, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    border: 1px solid var(--terminal);
+}
+
+.game-leaderboard-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.leaderboard-content {
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+.leaderboard-title {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--terminal);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 10px var(--terminal);
+}
+
+.high-scores-list {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 2.2;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    text-align: left;
+}
+
+.score-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.score-rank {
+    color: var(--terminal);
+    width: 1.5rem;
+    text-align: right;
+}
+
+.score-name {
+    color: var(--text);
+    width: 6rem;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.score-pts {
+    color: var(--terminal);
+    width: 3rem;
+    text-align: right;
+}
+
+.score-date {
+    color: var(--text-dim);
+    width: 5rem;
+    text-align: right;
+}
+
+.no-scores {
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.leaderboard-hint {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+}
+
+.leaderboard-close-btn {
+    display: block;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 2rem;
+    background: transparent;
+    border: 1px solid var(--terminal);
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.1em;
+}
+
+.leaderboard-close-btn:hover,
+.leaderboard-close-btn:active {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+/* ===========================================
+   MOBILE CONTROLS - CYPHERPUNK BRUTALIST
+   =========================================== */
+
+.mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Buttons container - left side */
+.mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* ===========================================
+   MOBILE BUTTONS - CLEAN BRUTALIST
+   =========================================== */
+
+.mobile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 100px;
+    height: 40px;
+    padding: 0 1rem;
+    border: 1px solid var(--border);
+    background: var(--void);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.15s ease;
+}
+
+.mobile-btn:active {
+    background: var(--void-lighter);
+}
+
+.mobile-btn .btn-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.mobile-btn .btn-label {
+    opacity: 0.9;
+}
+
+/* Pause button */
+.mobile-btn.pause-btn {
+    border-color: var(--terminal-dim);
+    color: var(--terminal);
+}
+
+.mobile-btn.pause-btn:active {
+    background: rgba(51, 255, 0, 0.1);
+    border-color: var(--terminal);
+}
+
+/* Restart button */
+.mobile-btn.restart-btn {
+    border-color: rgba(255, 107, 107, 0.3);
+    color: var(--warning);
+}
+
+.mobile-btn.restart-btn:active {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: var(--warning);
+}
+
+/* ===========================================
+   SWIPE PAD - INTUITIVE GESTURE AREA
+   =========================================== */
+
+.joystick-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.joystick-base {
+    width: 100px;
+    height: 100px;
+    background: var(--void);
+    border: 1px solid var(--border);
+    position: relative;
+    touch-action: none;
+    overflow: hidden;
+}
+
+/* Swipe arrows - shows this is for swiping */
+.joystick-base::before {
+    content: '↑';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--border);
+    font-family: var(--font-mono);
+    opacity: 0.6;
+}
+
+.joystick-base::after {
+    content: '↓';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--border);
+    font-family: var(--font-mono);
+    opacity: 0.6;
+}
+
+/* Crosshair grid lines */
+.joystick-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.joystick-grid::before {
+    content: '←';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--border);
+    font-family: var(--font-mono);
+    opacity: 0.6;
+}
+
+.joystick-grid::after {
+    content: '→';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--border);
+    font-family: var(--font-mono);
+    opacity: 0.6;
+}
+
+/* The nub - small dot indicator */
+.joystick-nub {
+    width: 24px;
+    height: 24px;
+    background: var(--terminal-dim);
+    border: 1px solid var(--terminal);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.05s ease-out;
+    opacity: 0.8;
+}
+
+.joystick-nub::before,
+.joystick-nub::after {
+    display: none;
+}
+
+.joystick-nub.active {
+    background: var(--terminal);
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(51, 255, 0, 0.4);
+}
+
+/* Swipe hint text */
+.swipe-hint {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    opacity: 0.5;
+}
+
+/* ===========================================
+   MOBILE RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .mobile-only {
+        display: flex !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
+    #gameModal .modal.game-modal {
+        max-width: 95vw;
+        width: 95vw;
+        padding: 1rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    #gameModal .modal.game-modal h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .game-header {
+        margin-bottom: 0.5rem;
+    }
+    
+    .game-info {
+        font-size: 0.75rem;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .game-feedback {
+        font-size: 0.7rem;
+        height: 3rem;
+    }
+    
+    .game-file-consumed {
+        font-size: 0.7rem;
+    }
+    
+    /* Responsive canvas sizing */
+    .game-canvas-container {
+        max-width: min(90vw, 50vh);
+    }
+
+    /* Leaderboard mobile adjustments */
+    .leaderboard-content {
+        padding: 1rem;
+    }
+
+    .high-scores-list {
+        font-size: 0.7rem;
+    }
+
+    .score-name {
+        width: 5rem;
+    }
+
+    .score-date {
+        display: none;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .joystick-base {
+        width: 85px;
+        height: 85px;
+    }
+    
+    .joystick-nub {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .mobile-btn {
+        min-width: 85px;
+        height: 36px;
+        padding: 0 0.75rem;
+        font-size: 0.65rem;
+    }
+    
+    .mobile-btn .btn-icon {
+        font-size: 0.8rem;
+    }
+    
+    .swipe-hint {
+        font-size: 0.5rem;
+    }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    #gameModal .modal.game-modal {
+        padding: 0.5rem;
+    }
+    
+    .game-canvas-container {
+        max-width: min(50vw, 80vh);
+    }
+    
+    .mobile-controls {
+        padding: 0.5rem;
+    }
+    
+    .joystick-base {
+        width: 75px;
+        height: 75px;
+    }
+    
+    .joystick-nub {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .mobile-btn {
+        min-width: 75px;
+        height: 32px;
+        font-size: 0.6rem;
+    }
+    
+    .mobile-buttons {
+        gap: 0.25rem;
+    }
+    
+    .swipe-hint {
+        display: none;
+    }
+}
