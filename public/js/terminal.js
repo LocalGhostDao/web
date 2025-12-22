@@ -248,7 +248,7 @@
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  escape    - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
-                addOutputLine('  reclaim   - Play Reclaim (volfied)');
+                addOutputLine('  reclaim   - Play Reclaim (desktop only)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -302,9 +302,16 @@
             case 'export':
             case 'reclaim':
             case 'volfied':
-                addOutputLine('LAUNCHING RECLAIM.EXE...', 'success');
-                addOutputLine('Trap the greedy entities. Reclaim your data.', 'dim');
-                setTimeout(openReclaimGame, 300);
+                // Check if mobile - reclaim requires keyboard
+                const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
+                if (isMobileDevice) {
+                    addOutputLine('RECLAIM.EXE requires keyboard controls.', 'warning');
+                    addOutputLine('Play on desktop for full experience.', 'dim');
+                } else {
+                    addOutputLine('LAUNCHING RECLAIM.EXE...', 'success');
+                    addOutputLine('Trap the greedy entities. Reclaim your data.', 'dim');
+                    setTimeout(openReclaimGame, 300);
+                }
                 break;
 
             case 'scores':

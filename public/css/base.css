@@ -1034,6 +1034,11 @@ footer {
         display: none;
     }
 
+    .hero {
+        padding: 4rem 0.75rem 2rem;
+        min-height: auto;
+    }
+
     .fleet-grid {
         grid-template-columns: 1fr;
     }

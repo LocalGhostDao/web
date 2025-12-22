@@ -353,10 +353,24 @@
 
 @media (max-width: 768px) {
     .terminal-box {
-        padding: 2rem 1.5rem;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .terminal-body {
+        padding: 1rem;
+        min-height: 200px;
     }
     
     .terminal-output {
-        padding-bottom: 3rem; /* More space for larger mobile skip hint */
+        padding-bottom: 2.5rem;
+    }
+    
+    .terminal-header {
+        padding: 0.4rem 0.75rem;
+    }
+    
+    .terminal-title {
+        font-size: 0.6rem;
     }
 }
