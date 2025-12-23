@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Error | LocalGhost.ai</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="theme-color" content="#111111">
+    <style>
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --void: #111111;
+            --void-lighter: #1a1a1a;
+            --text: #E0E0E0;
+            --text-dim: #808080;
+            --terminal: #33FF00;
+            --border: #333;
+            --amber: #FF9F43;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: var(--font-system);
+            font-size: 16px;
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+
+        ::selection {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(17, 17, 17, 0.95);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            font-family: var(--font-mono);
+        }
+
+        .nav-logo {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .nav-logo a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .nav-logo .prompt {
+            color: var(--terminal);
+        }
+
+        .nav-status {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--terminal);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .error-code {
+            font-family: var(--font-mono);
+            font-size: 8rem;
+            font-weight: 500;
+            color: var(--amber);
+            line-height: 1;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255, 159, 67, 0.3);
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { 
+                opacity: 1;
+                transform: translate(0);
+            }
+            92% { 
+                opacity: 1;
+                transform: translate(0);
+            }
+            93% { 
+                opacity: 0.8;
+                transform: translate(-2px, 0);
+            }
+            94% { 
+                opacity: 1;
+                transform: translate(2px, 0);
+            }
+            95% {
+                transform: translate(0);
+            }
+            96% { 
+                opacity: 0.9;
+                transform: translate(1px, 0);
+            }
+            97% { 
+                opacity: 1;
+                transform: translate(0);
+            }
+        }
+
+        .error-message {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        .terminal-block {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            text-align: left;
+            max-width: 500px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .terminal-block .line {
+            margin-bottom: 0.5rem;
+        }
+
+        .terminal-block .line:last-child {
+            margin-bottom: 0;
+        }
+
+        .terminal-block .prompt {
+            color: var(--terminal);
+        }
+
+        .terminal-block .error {
+            color: var(--amber);
+        }
+
+        .terminal-block .dim {
+            color: var(--text-dim);
+        }
+
+        .terminal-block .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background: var(--terminal);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .subtext {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            max-width: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 1px solid var(--terminal);
+            color: var(--terminal);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+
+        footer {
+            font-family: var(--font-mono);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.7rem;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+
+            .error-code {
+                font-size: 5rem;
+            }
+
+            .error-message {
+                font-size: 1rem;
+            }
+
+            .terminal-block {
+                padding: 1rem 1.25rem;
+                font-size: 0.75rem;
+                margin: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo">
+            <a href="/"><span class="prompt">&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/#fleet" class="hide-mobile">SPECS</a>
+            <a href="/#economics">ECONOMICS</a>
+            <a href="/#hardware" class="hide-mobile">HARDWARE</a>
+            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="error-code">5XX</div>
+        <div class="error-message">SYSTEM FAULT</div>
+        
+        <div class="terminal-block">
+            <div class="line"><span class="prompt">$</span> systemctl status localghost</div>
+            <div class="line"><span class="error">ERR:</span> Internal process failure</div>
+            <div class="line"><span class="dim"># Something broke on our end.</span></div>
+            <div class="line"><span class="dim"># Not your fault. Not your data.</span></div>
+            <div class="line"><span class="dim"># We're probably already fixing it.</span></div>
+            <div class="line"><span class="prompt">$</span> retry --in 30s<span class="cursor"></span></div>
+        </div>
+
+        <p class="subtext">
+            Even ghosts have bad days. Your privacy remains uncompromised.
+        </p>
+
+        <a href="/" class="back-link">[ ← RETURN TO THE EXIT ]</a>
+    </main>
+
+    <footer>
+        <p>At least this error doesn't phone home either.</p>
+    </footer>
+</body>
+</html>

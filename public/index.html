@@ -11,14 +11,14 @@
     <meta name="keywords" content="local AI, privacy, self-hosted AI, private server, cypherpunk, decentralized, open source, no cloud, data sovereignty, private computing">
     <meta name="author" content="LocalGhost">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://localghost.ai/">
+    <link rel="canonical" href="https://www.localghost.ai/">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://localghost.ai/">
+    <meta property="og:url" content="https://www.localghost.ai/">
     <meta property="og:title" content="LocalGhost.ai | The Only Cloud is You">
     <meta property="og:description" content="Your AI, your data, your hardware. A private server where AI runs locally—no cloud, no tracking, no subscriptions. Physics, not promises.">
-    <meta property="og:image" content="https://localghost.ai/og-image.png">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LocalGhost.ai">
@@ -26,40 +26,165 @@
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://localghost.ai/">
+    <meta name="twitter:url" content="https://www.localghost.ai/">
     <meta name="twitter:title" content="LocalGhost.ai | The Only Cloud is You">
     <meta name="twitter:description" content="Your AI, your data, your hardware. A private server where AI runs locally—no cloud, no tracking, no subscriptions.">
-    <meta name="twitter:image" content="https://localghost.ai/og-image.png">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-image.png">
     
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#111111">
     <meta name="msapplication-TileColor" content="#111111">
     
-    <!-- JSON-LD Structured Data -->
-    <!-- potentialAction: escape corporate greed -->
+    <!-- Preconnect Hints -->
+    <link rel="preconnect" href="https://github.com" crossorigin>
+    <link rel="preconnect" href="https://etherscan.io" crossorigin>
+    <link rel="dns-prefetch" href="https://github.com">
+    <link rel="dns-prefetch" href="https://etherscan.io">
+    
+    <!-- JSON-LD Structured Data: Organization -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "LocalGhost.ai",
         "url": "https://localghost.ai",
-        "logo": "https://localghost.ai/logo.png",
+        "logo": "https://www.localghost.ai/images/logo.png",
         "description": "Private local AI hardware and software. Your AI, your data, your hardware.",
         "sameAs": [
             "https://github.com/LocalGhostDao"
         ]
     }
     </script>
+    
+    <!-- JSON-LD Structured Data: Product -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "LocalGhost Sovereign Box",
+        "description": "A matte black aluminum cube running local AI. Pre-built with 4TB NVMe storage, NPU-native processor, Wi-Fi 6E, and two FIDO2 hardware security keys. Your AI, your data, your hardware—no cloud, no tracking, no subscriptions.",
+        "brand": {
+            "@type": "Brand",
+            "name": "LocalGhost"
+        },
+        "category": "Electronics > Computers > Servers",
+        "image": "https://www.localghost.ai/og-image.png",
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/PreOrder",
+            "priceCurrency": "GBP",
+            "url": "https://www.localghost.ai/#hardware"
+        }
+    }
+    </script>
+    
+    <!-- JSON-LD Structured Data: FAQPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What is LocalGhost?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "LocalGhost is a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, and insert the two hardware security keys that come with it. Once connected, you access it through a local web interface. No cloud account, no login—just your box, your network, your data. It stores photos, journals, bank exports, health data, and more locally, running AI analysis entirely on your hardware. Think of it as a private server for your life, with an AI that works only for you."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do I get my data onto LocalGhost?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Multiple ways: a mobile app that automatically syncs photos, health data, location history, and notes; a browser extension for bookmarks and reading history; file drop via the web interface; API imports from services that offer data exports; and manual uploads for privacy purists. Everything syncs over your local network first, with optional encrypted tunnel for remote access—never through external servers."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What does the LocalGhost AI actually do?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The AI runs locally on the box's NPU and performs: automatic tagging and organization of photos, documents, and notes; pattern recognition to find correlations like how sleep affects spending; goal tracking with accountability based on actual data; honest reflection answering questions based on evidence; and powerful search to find anything you've saved. The key difference: this AI has zero incentive to manipulate you—it can't sell you anything, show ads, or optimize for engagement."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How does The Mist backup system work?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The Mist is a peer-to-peer backup network. Your data gets encrypted with a key only you hold, then chopped into thousands of meaningless shards. These shards are distributed across other LocalGhost boxes—you store shards for others, they store yours. When you need data back, your box collects shards and reassembles them with your key. Nobody can read each other's shards. If your house burns down or LocalGhost goes bankrupt, your data survives. Uses Reed-Solomon encoding requiring only 50% of shards to reconstruct."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How do LocalGhost boxes find each other without a central server?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Using distributed hash tables (DHT). Your box first contacts a bootstrap node (regular LocalGhost boxes run by volunteers), then never needs us again. Each box maintains a partial address book of other boxes with mathematically 'close' IDs. To find data, you ask known boxes who's closest to the shard's ID, hopping 3-4 times to find anything—even in millions of nodes. No central directory; the network IS the directory. Uses Kademlia-style DHT like BitTorrent and IPFS."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What if I lose my encryption key?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Your data is gone forever—this is the point, not a bug. We cannot recover it because we never had access. Every LocalGhost ships with two FIDO2 hardware security keys. On setup, your master key is split between them using Shamir's Secret Sharing. Keep Key 1 with your box for daily use; store Key 2 somewhere safe and separate (bank vault, trusted friend). Lose Key 1? Use Key 2 to generate a new pair. Lose both? Game over. Sovereignty means responsibility."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I access my LocalGhost box when I'm not home?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. The box includes an encrypted VPN for remote access—your device connects directly to your box through an end-to-end encrypted tunnel, like being on your home network from anywhere. Traffic never touches external servers because we don't have any. Alternatively, enable Air-Gap Mode: disable all remote access so the box only works on your home network. There is no option routing through our servers—we couldn't offer it if we wanted to."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What happens if LocalGhost the company disappears?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Nothing. Your box keeps working. The software is open source, hardware uses standard parts, and The Mist network is decentralized with no license server to phone home to. If we go bankrupt: your box continues running, The Mist network keeps operating, someone else can fork the code, or you can maintain it yourself. We've deliberately designed ourselves out of the critical path—your sovereignty doesn't depend on our survival."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is LocalGhost legal?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Running a private server at home is legal. Encrypting your own data is legal. Storing backups on a peer-to-peer network is legal. We help you exercise your right to privacy—a right that's been quietly eroded by 'free' services monetizing your data. If law enforcement comes with a warrant, compliance looks like: 'We have no data, no logs, don't know who uses our hardware. Here's our open-source code. Good luck.' The architecture is the legal defense."
+                }
+            }
+        ]
+    }
+    </script>
+
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/terminal.css">
     <link rel="stylesheet" href="/css/reclaim.css">
     <link rel="stylesheet" href="/css/the_shadow.css">
+    
+    <!-- Screen Reader Only utility (for semantic h1) -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
     <!-- MATRIX RAIN CANVAS -->
@@ -81,6 +206,9 @@
 
     <!-- HERO -->
     <section class="hero">
+        <!-- Semantic H1 for SEO (visually hidden) -->
+        <h1 class="sr-only">LocalGhost - Private Local AI Server | Your AI, Your Data, Your Hardware</h1>
+        
         <div class="terminal-box" id="heroTerminal">
             <div class="terminal-header">
                 <div class="terminal-buttons">

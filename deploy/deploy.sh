@@ -3,6 +3,7 @@
 SRC_DIR=$(realpath "$(dirname "$0")/../public")
 DEST_DIR="/var/www/localghost.ai/public"
 TEMP_FILE="/tmp/lg_deploy_changes_$$"
+SITE_URL="https://www.localghost.ai"
 
 # Start timer (nanoseconds)
 START_TIME=$(date +%s%N)
@@ -32,7 +33,7 @@ echo "> DIFFERENTIAL ANALYSIS..."
 echo ""
 
 # 1. Sync non-HTML files (assets)
-ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
+ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --exclude='sitemap.xml' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
 
 if [ -n "$ASSET_CHANGES" ]; then
@@ -97,6 +98,19 @@ if grep -qE "^(NEW|MOD|DEL):" "$TEMP_FILE" 2>/dev/null; then
     done
 fi
 
+# Check for nginx config changes
+NGINX_SRC=$(realpath "$(dirname "$0")/nginx.conf")
+NGINX_DEST="/etc/nginx/sites-available/www.localghost.ai"
+NGINX_CHANGED=false
+
+if [ -f "$NGINX_SRC" ]; then
+    if ! cmp -s "$NGINX_SRC" "$NGINX_DEST" 2>/dev/null; then
+        NGINX_CHANGED=true
+        echo "NGINX_CHANGED" >> "$TEMP_FILE"
+        echo "  [↑] SYNC: nginx.conf"
+    fi
+fi
+
 # If no changes, exit early
 if [ ! -f "$TEMP_FILE" ] || [ ! -s "$TEMP_FILE" ]; then
     END_TIME=$(date +%s%N)
@@ -132,12 +146,95 @@ while IFS= read -r -d '' src_file; do
     echo "  [⚡] $rel_path"
 done < <(find "$SRC_DIR" -name "*.html" -type f -print0)
 
+# 4. Generate sitemap.xml
+echo ""
+echo "> SITEMAP GENERATION..."
+
+SITEMAP_FILE="$DEST_DIR/sitemap.xml"
+LASTMOD=$(date +%Y-%m-%d)
+
+# Start sitemap
+cat > "$SITEMAP_FILE" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+EOF
+
+# Collect and sort URLs
+declare -a URLS
+
+while IFS= read -r -d '' html_file; do
+    rel_path="${html_file#$SRC_DIR/}"
+    
+    # Skip error pages
+    [[ "$rel_path" == error/* ]] && continue
+    
+    # Convert to clean URL
+    if [ "$rel_path" = "index.html" ]; then
+        # Root index -> /
+        clean_url="/"
+        priority="1.0"
+    elif [[ "$rel_path" == */index.html ]]; then
+        # Subdirectory index -> /subdir/
+        clean_url="/${rel_path%index.html}"
+        priority="0.8"
+    else
+        # Regular page -> /page (no .html)
+        clean_url="/${rel_path%.html}"
+        priority="0.8"
+    fi
+    
+    URLS+=("$priority|$clean_url")
+done < <(find "$SRC_DIR" -name "*.html" -type f -print0)
+
+# Sort URLs (by priority desc, then alphabetically)
+IFS=$'\n' SORTED_URLS=($(sort -t'|' -k1,1rn -k2,2 <<< "${URLS[*]}")); unset IFS
+
+# Write URLs to sitemap
+for entry in "${SORTED_URLS[@]}"; do
+    priority="${entry%%|*}"
+    url="${entry#*|}"
+    
+    cat >> "$SITEMAP_FILE" << EOF
+  <url>
+    <loc>${SITE_URL}${url}</loc>
+    <lastmod>${LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${priority}</priority>
+  </url>
+EOF
+done
+
+# Close sitemap
+echo "</urlset>" >> "$SITEMAP_FILE"
+
+# Count URLs
+URL_COUNT=${#SORTED_URLS[@]}
+echo "  [📍] sitemap.xml (${URL_COUNT} URLs)"
+
 # Cleanup
 rm -f "$TEMP_FILE"
 
 # Calculate elapsed time
 END_TIME=$(date +%s%N)
 ELAPSED_MS=$(( (END_TIME - START_TIME) / 1000000 ))
+
+# 5. Deploy nginx config if changed
+if [ "$NGINX_CHANGED" = true ]; then
+    echo ""
+    echo "> NGINX CONFIGURATION..."
+    sudo cp "$NGINX_SRC" "$NGINX_DEST"
+    
+    NGINX_TEST=$(sudo nginx -t 2>&1)
+    if echo "$NGINX_TEST" | grep -q "successful"; then
+        sudo systemctl reload nginx
+        echo "  [⚡] nginx.conf deployed & reloaded"
+    else
+        echo "  [✗] nginx config invalid:"
+        echo "$NGINX_TEST" | sed 's/^/      /'
+        # Restore previous config
+        sudo git -C "$(dirname "$NGINX_SRC")" checkout -- nginx.conf 2>/dev/null || true
+    fi
+fi
 
 echo ""
 echo "  ╔════════════════════════════════════════╗"

@@ -1,0 +1,14 @@
+# LocalGhost.ai - Privacy through architecture
+# We don't track you. Neither should bots that don't respect robots.txt.
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.localghost.ai/sitemap.xml
+
+# Block error pages from indexing
+Disallow: /error/
+
+# Block any query strings (we don't use them for content)
+Disallow: /*?*
