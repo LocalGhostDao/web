@@ -14,7 +14,7 @@
         totalHeight: 800,
         borderSpeed: 4,
         cutSpeed: 3.5,
-        winPercentage: 80,
+        winPercentage: 90,
         regionKillPercent: 90,
         targetFPS: 40
     };
@@ -37,12 +37,72 @@
     ];
 
     const GREED_TYPES = [
-        { name: 'THE CLOUD', color: '#DC143C', size: 22, speed: 1.2, behavior: 'patrol', quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE'], desc: 'Circles lazily, pulling data to remote servers.' },
-        { name: 'THE TRACKER', color: '#FF2222', size: 16, speed: 3.5, behavior: 'chase', quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED'], desc: 'Relentlessly hunts you. Always watching.' },
-        { name: 'THE ENSHITTIFIER', color: '#8B4513', size: 26, speed: 1.0, behavior: 'erratic', quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY'], desc: 'Unpredictable. Degrades everything it touches.' },
-        { name: 'THE RENT SEEKER', color: '#B22222', size: 18, speed: 1.8, behavior: 'chase', quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION'], desc: 'Chases you down for recurring payments.' },
-        { name: 'THE LOCK-IN', color: '#CD5C5C', size: 20, speed: 0.8, behavior: 'wander', quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED'], desc: 'Slow but inevitable. Traps your data forever.' },
-        { name: 'THE KILL SWITCH', color: '#8B0000', size: 24, speed: 0.9, behavior: 'predict', quotes: ['BRICKING...', 'REVOKED', 'DISABLED'], desc: 'Anticipates your moves. Can disable anything.' }
+        { 
+            name: 'THE CLOUD', 
+            color: '#DC143C', 
+            size: 22, 
+            speed: 1.2, 
+            behavior: 'patrol',
+            quotes: ['SYNC REQUIRED', 'SERVER DEPENDENCY', 'ALWAYS ONLINE'],
+            tagline: 'Your data. Their servers. Their rules.',
+            description: 'That "free" storage that holds your memories hostage. They promised convenience, delivered dependency. When the servers go dark, so do your photos.',
+            howItHunts: 'Patrols lazily, confident you\'ll come to it eventually.'
+        },
+        { 
+            name: 'THE TRACKER', 
+            color: '#FF2222', 
+            size: 16, 
+            speed: 3.5, 
+            behavior: 'chase',
+            quotes: ['TRACKING...', 'WE SEE YOU', 'PERSONALIZED'],
+            tagline: 'It knows what you want before you do.',
+            description: 'Every click, every scroll, every pause. Sold to the highest bidder. You are the product being optimized.',
+            howItHunts: 'Relentlessly pursues. You cannot hide from what\'s already inside.'
+        },
+        { 
+            name: 'THE ENSHITTIFIER', 
+            color: '#8B4513', 
+            size: 26, 
+            speed: 1.0, 
+            behavior: 'erratic',
+            quotes: ['NEW TOS!', 'FEATURE REMOVED', 'SUBSCRIBE NOW', 'PREMIUM ONLY'],
+            tagline: 'First they hook you. Then the decay begins.',
+            description: 'Remember when it worked? Before ads. Before paywalls. Before they squeezed every drop of value from users to shareholders.',
+            howItHunts: 'Chaotic and unpredictable. You never know what breaks next.'
+        },
+        { 
+            name: 'THE RENT SEEKER', 
+            color: '#B22222', 
+            size: 18, 
+            speed: 1.8, 
+            behavior: 'chase',
+            quotes: ['FEE DUE', 'PAY NOW', 'SUBSCRIPTION'],
+            tagline: 'You will own nothing. They will be happy.',
+            description: 'Software you bought becomes software you rent. Skip a payment and watch your tools evaporate. Digital feudalism.',
+            howItHunts: 'Chases with predatory persistence. The debt always finds you.'
+        },
+        { 
+            name: 'THE LOCK-IN', 
+            color: '#CD5C5C', 
+            size: 20, 
+            speed: 0.8, 
+            behavior: 'wander',
+            quotes: ['NO EXPORT', 'PROPRIETARY', 'LOCKED'],
+            tagline: 'Check in anytime. Never leave.',
+            description: 'Years of your work in their format. No export. No escape. The door was open when you walked in. Now it\'s welded shut.',
+            howItHunts: 'Slow but inevitable. Walls close in while you\'re not looking.'
+        },
+        { 
+            name: 'THE KILL SWITCH', 
+            color: '#8B0000', 
+            size: 24, 
+            speed: 0.9, 
+            behavior: 'predict',
+            quotes: ['BRICKING...', 'REVOKED', 'DISABLED'],
+            tagline: 'They giveth. They taketh. Remotely.',
+            description: 'Your device. Their permission. One update and your tractor stops, your thermostat dies, your car won\'t start. You never owned it.',
+            howItHunts: 'Anticipates your moves. A demon with root access to your life.'
+        }
     ];
 
     // The unclaimed area polygon - player walks on its edges, enemies live inside
@@ -61,6 +121,7 @@
         cutting: false,
         won: false,
         showInfo: false,
+        infoPage: 0,
         player: { x: 0, y: 0 },
         // Border walking state
         edgeIndex: 0,
@@ -768,6 +829,35 @@
         }
     }
 
+    // Helper: Add a point to trail, ensuring axis-alignment
+    function addTrailPoint(x, y) {
+        if (gameState.trail.length === 0) {
+            gameState.trail.push({ x, y });
+            return;
+        }
+        
+        const last = gameState.trail[gameState.trail.length - 1];
+        const dx = Math.abs(x - last.x);
+        const dy = Math.abs(y - last.y);
+        
+        // Skip if too close
+        if (dx < 1 && dy < 1) return;
+        
+        // If both axes differ, we need a corner point
+        if (dx > 1 && dy > 1) {
+            // Use current cut direction to decide corner placement
+            if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
+                // Moving horizontally - go horizontal first
+                gameState.trail.push({ x: x, y: last.y });
+            } else {
+                // Moving vertically - go vertical first
+                gameState.trail.push({ x: last.x, y: y });
+            }
+        }
+        
+        gameState.trail.push({ x, y });
+    }
+
     // FIXED: Correct polygon splitting for Volfied-style cuts
     function completeCut() {
         const trail = gameState.trail;
@@ -778,6 +868,12 @@
         const startT = gameState.cutStart.edgeT;
         const endEdge = endPt.edge;
         const endT = endPt.t;
+
+        // Ensure final trail point is on boundary and axis-aligned
+        const lastTrail = trail[trail.length - 1];
+        if (Math.abs(endPt.x - lastTrail.x) > 1 || Math.abs(endPt.y - lastTrail.y) > 1) {
+            addTrailPoint(endPt.x, endPt.y);
+        }
 
         // Build two candidate polygons
         const polyA = buildSplitPoly(trail, startEdge, startT, endEdge, endT, 1);
@@ -982,7 +1078,32 @@
         gameState.cutDirection = null;
     }
 
+    function resetInputState() {
+        gameState.keys = {};
+        gameState.spaceHeld = false;
+        if (gameState.cutting) {
+            // Return to cut start position
+            if (gameState.cutStart) {
+                gameState.player.x = gameState.cutStart.x;
+                gameState.player.y = gameState.cutStart.y;
+                gameState.edgeIndex = gameState.cutStart.edgeIndex;
+                gameState.edgeT = gameState.cutStart.edgeT;
+            }
+            cancelCut();
+        }
+    }
+
     function startCutting(dx, dy) {
+        // Ensure we're starting with a clean single-axis direction
+        if (dx !== 0 && dy !== 0) {
+            // Should never happen, but safety check - pick one axis
+            if (Math.abs(dx) >= Math.abs(dy)) {
+                dy = 0;
+            } else {
+                dx = 0;
+            }
+        }
+        
         gameState.cutting = true;
         gameState.cutDirection = { dx, dy }; // Lock direction
         gameState.cutStart = {
@@ -993,6 +1114,7 @@
         };
         gameState.trail = [{ x: gameState.player.x, y: gameState.player.y }];
         
+        // Move only on the chosen axis
         gameState.player.x += dx * CONFIG.cutSpeed;
         gameState.player.y += dy * CONFIG.cutSpeed;
         gameState.trail.push({ x: gameState.player.x, y: gameState.player.y });
@@ -1034,133 +1156,99 @@
     function update() {
         if (!gameState.running || gameState.paused) return;
 
+        // Get SINGLE axis input - never allow diagonal
         let dx = 0, dy = 0;
-        if (gameState.keys['ArrowUp'] || gameState.keys['w'] || gameState.keys['W']) dy = -1;
-        else if (gameState.keys['ArrowDown'] || gameState.keys['s'] || gameState.keys['S']) dy = 1;
-        else if (gameState.keys['ArrowLeft'] || gameState.keys['a'] || gameState.keys['A']) dx = -1;
-        else if (gameState.keys['ArrowRight'] || gameState.keys['d'] || gameState.keys['D']) dx = 1;
+        const wantUp = gameState.keys['ArrowUp'] || gameState.keys['w'] || gameState.keys['W'];
+        const wantDown = gameState.keys['ArrowDown'] || gameState.keys['s'] || gameState.keys['S'];
+        const wantLeft = gameState.keys['ArrowLeft'] || gameState.keys['a'] || gameState.keys['A'];
+        const wantRight = gameState.keys['ArrowRight'] || gameState.keys['d'] || gameState.keys['D'];
+        
+        // Priority: vertical over horizontal, but only one axis at a time
+        if (wantUp && !wantDown) dy = -1;
+        else if (wantDown && !wantUp) dy = 1;
+        
+        if (dy === 0) {
+            if (wantLeft && !wantRight) dx = -1;
+            else if (wantRight && !wantLeft) dx = 1;
+        }
 
         updateEnemies();
 
         if (dx === 0 && dy === 0) return;
 
         if (gameState.cutting) {
-            // Strictly one axis at a time - no diagonals ever
+            // Strictly one axis at a time - use current direction's axis preference
             let cdx = 0, cdy = 0;
-            
-            // Priority: use the LAST single key pressed (check each axis separately)
-            // If both axes have input, pick the one that matches current direction, or default to horizontal
-            const wantX = (gameState.keys['ArrowLeft'] || gameState.keys['a'] || gameState.keys['A']) ? -1 :
-                          (gameState.keys['ArrowRight'] || gameState.keys['d'] || gameState.keys['D']) ? 1 : 0;
-            const wantY = (gameState.keys['ArrowUp'] || gameState.keys['w'] || gameState.keys['W']) ? -1 :
-                          (gameState.keys['ArrowDown'] || gameState.keys['s'] || gameState.keys['S']) ? 1 : 0;
-            
             const currentDir = gameState.cutDirection;
             
-            if (wantX !== 0 && wantY !== 0) {
-                // Both axes pressed - continue in current direction axis
-                if (currentDir.dx !== 0) {
-                    cdx = wantX;
-                } else {
-                    cdy = wantY;
-                }
-            } else if (wantX !== 0) {
-                cdx = wantX;
-            } else if (wantY !== 0) {
-                cdy = wantY;
+            if (currentDir.dx !== 0) {
+                // Currently horizontal - prefer horizontal input
+                if (wantLeft) cdx = -1;
+                else if (wantRight) cdx = 1;
+                else if (wantUp) cdy = -1;
+                else if (wantDown) cdy = 1;
             } else {
-                return; // No input
+                // Currently vertical - prefer vertical input
+                if (wantUp) cdy = -1;
+                else if (wantDown) cdy = 1;
+                else if (wantLeft) cdx = -1;
+                else if (wantRight) cdx = 1;
             }
+            
+            if (cdx === 0 && cdy === 0) return;
             
             // Detect direction change and add corner point
             if ((currentDir.dx !== 0 && cdy !== 0) || (currentDir.dy !== 0 && cdx !== 0)) {
                 // Direction changed - add corner at current position
-                const last = gameState.trail[gameState.trail.length - 1];
-                if (last.x !== gameState.player.x || last.y !== gameState.player.y) {
-                    gameState.trail.push({ x: gameState.player.x, y: gameState.player.y });
-                }
+                addTrailPoint(gameState.player.x, gameState.player.y);
                 gameState.cutDirection = { dx: cdx, dy: cdy };
             }
             
+            // Calculate next position - ONLY on one axis
             const nx = gameState.player.x + cdx * CONFIG.cutSpeed;
             const ny = gameState.player.y + cdy * CONFIG.cutSpeed;
-            
-            // SAFEGUARD: Ensure we only moved on one axis (should already be true, but belt and suspenders)
-            // This prevents any edge case diagonal movement
-            const actualDx = nx - gameState.player.x;
-            const actualDy = ny - gameState.player.y;
-            let finalNx = nx, finalNy = ny;
-            if (Math.abs(actualDx) > 0.1 && Math.abs(actualDy) > 0.1) {
-                // Somehow both axes changed - pick the dominant one
-                if (Math.abs(actualDx) >= Math.abs(actualDy)) {
-                    finalNy = gameState.player.y; // Zero out Y movement
-                } else {
-                    finalNx = gameState.player.x; // Zero out X movement
-                }
-            }
 
-            const borderCheck = closestOnBoundary(finalNx, finalNy);
-            const distFromStart = Math.hypot(finalNx - gameState.cutStart.x, finalNy - gameState.cutStart.y);
+            const borderCheck = closestOnBoundary(nx, ny);
+            const distFromStart = Math.hypot(nx - gameState.cutStart.x, ny - gameState.cutStart.y);
             
             // Complete cut if we're close to border and far from start
             if (borderCheck.dist < 6 && distFromStart > 30) {
-                // Add corner point if needed to avoid diagonal to border
-                const last = gameState.trail[gameState.trail.length - 1];
-                const snapX = borderCheck.x;
-                const snapY = borderCheck.y;
-                if (Math.abs(snapX - last.x) > 1 && Math.abs(snapY - last.y) > 1) {
-                    // Need a corner - use current direction to determine which way
-                    if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
-                        gameState.trail.push({ x: snapX, y: last.y });
-                    } else {
-                        gameState.trail.push({ x: last.x, y: snapY });
-                    }
-                }
-                gameState.player.x = snapX;
-                gameState.player.y = snapY;
-                gameState.trail.push({ x: snapX, y: snapY });
+                // Snap to border with proper corner handling
+                addTrailPoint(borderCheck.x, borderCheck.y);
+                gameState.player.x = borderCheck.x;
+                gameState.player.y = borderCheck.y;
                 completeCut();
                 return;
             }
 
             // Check if still inside unclaimed area
-            if (pointInPoly(finalNx, finalNy, unclaimedPoly)) {
+            if (pointInPoly(nx, ny, unclaimedPoly)) {
                 // Check collision with own trail
                 for (let i = 0; i < gameState.trail.length - 2; i++) {
-                    if (Math.hypot(finalNx - gameState.trail[i].x, finalNy - gameState.trail[i].y) < 6) {
+                    if (Math.hypot(nx - gameState.trail[i].x, ny - gameState.trail[i].y) < 6) {
                         loseLife();
                         return;
                     }
                 }
 
-                gameState.player.x = finalNx;
-                gameState.player.y = finalNy;
+                gameState.player.x = nx;
+                gameState.player.y = ny;
 
+                // Add trail point with axis-alignment
                 const last = gameState.trail[gameState.trail.length - 1];
-                if (Math.hypot(finalNx - last.x, finalNy - last.y) > 3) {
-                    gameState.trail.push({ x: finalNx, y: finalNy });
+                if (Math.hypot(nx - last.x, ny - last.y) > 3) {
+                    addTrailPoint(nx, ny);
                 }
             } else {
                 // We've exited the unclaimed area - complete the cut
-                const snapped = closestOnBoundary(finalNx, finalNy);
-                // Add corner point if needed to avoid diagonal to border
-                const last = gameState.trail[gameState.trail.length - 1];
-                if (Math.abs(snapped.x - last.x) > 1 && Math.abs(snapped.y - last.y) > 1) {
-                    if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
-                        gameState.trail.push({ x: snapped.x, y: last.y });
-                    } else {
-                        gameState.trail.push({ x: last.x, y: snapped.y });
-                    }
-                }
+                const snapped = closestOnBoundary(nx, ny);
+                addTrailPoint(snapped.x, snapped.y);
                 gameState.player.x = snapped.x;
                 gameState.player.y = snapped.y;
-                gameState.trail.push({ x: snapped.x, y: snapped.y });
                 completeCut();
             }
         } else {
             // ON BORDER: Move along polygon boundary
-            // Simple approach: project movement onto current edge, handle edge transitions cleanly
-            
             const n = unclaimedPoly.length;
             const speed = CONFIG.borderSpeed;
             
@@ -1318,7 +1406,6 @@
         ctx.translate(0, CONFIG.hudHeight);
 
         // Draw data region backgrounds across FULL canvas (not just game area)
-        // These extend to edges so they're visible outside the wire border
         const rw = CONFIG.canvasWidth / 3;
         const rh = CONFIG.canvasHeight / 2;
         for (let ry = 0; ry < 2; ry++) {
@@ -1340,7 +1427,7 @@
             }
         }
 
-        // Claimed area tint - full canvas (the 10px border is already "yours")
+        // Claimed area tint
         ctx.fillStyle = 'rgba(51,255,0,0.06)';
         ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
 
@@ -1355,7 +1442,7 @@
             ctx.closePath();
             ctx.fill();
 
-            // Region labels - always visible
+            // Region labels
             ctx.font = '16px monospace';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -1367,14 +1454,13 @@
                     const cx = (rx + 0.5) * rw;
                     const cy = (ry + 0.5) * rh;
                     
-                    // Brighter in unclaimed area, dimmer when claimed
                     const inUnclaimed = pointInPoly(cx, cy, unclaimedPoly);
                     ctx.fillStyle = inUnclaimed ? r.color + '60' : r.color + '30';
                     ctx.fillText(r.name, cx, cy);
                 }
             }
 
-            // Wire border of unclaimed area (the green line ghost walks on)
+            // Wire border of unclaimed area
             ctx.strokeStyle = '#33FF00';
             ctx.lineWidth = 3;
             ctx.shadowColor = '#33FF00';
@@ -1389,12 +1475,12 @@
             ctx.shadowBlur = 0;
         }
 
-        // Cut trail
+        // Cut trail - draw strictly axis-aligned segments
         if (gameState.trail.length > 1) {
             ctx.strokeStyle = '#33FF00';
             ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
+            ctx.lineCap = 'square'; // Square caps for crisp corners
+            ctx.lineJoin = 'miter';
             ctx.shadowColor = '#33FF00';
             ctx.shadowBlur = 12;
             ctx.beginPath();
@@ -1402,21 +1488,17 @@
             for (let i = 1; i < gameState.trail.length; i++) {
                 ctx.lineTo(gameState.trail[i].x, gameState.trail[i].y);
             }
-            // Draw line to current player position - ensure no diagonals
+            
+            // Line to current player position - ensure axis-aligned
             const lastTrail = gameState.trail[gameState.trail.length - 1];
             const px = gameState.player.x;
             const py = gameState.player.y;
-            const dxToPlayer = Math.abs(px - lastTrail.x);
-            const dyToPlayer = Math.abs(py - lastTrail.y);
             
-            // If both axes differ, add a corner point for drawing
-            if (dxToPlayer > 1 && dyToPlayer > 1) {
-                // Add visual corner - go horizontal first, then vertical
+            // If both axes differ significantly, draw via corner
+            if (Math.abs(px - lastTrail.x) > 1 && Math.abs(py - lastTrail.y) > 1) {
                 if (gameState.cutDirection && gameState.cutDirection.dx !== 0) {
-                    // Currently moving horizontally - draw horizontal then vertical
                     ctx.lineTo(px, lastTrail.y);
                 } else {
-                    // Currently moving vertically - draw vertical then horizontal
                     ctx.lineTo(lastTrail.x, py);
                 }
             }
@@ -1448,7 +1530,7 @@
             ctx.textAlign = 'center';
 
             if (gameState.won) {
-                // Victory screen with manifesto-inspired text
+                // Victory screen
                 ctx.fillStyle = '#33FF00';
                 ctx.font = 'bold 36px monospace';
                 ctx.fillText('DATA RECLAIMED', CONFIG.canvasWidth / 2, CONFIG.totalHeight / 2 - 120);
@@ -1510,146 +1592,226 @@
         
         // Info screen overlay
         if (gameState.showInfo) {
-            ctx.save();
+            drawInfoScreen();
+        }
+    }
+
+    function drawInfoScreen() {
+        ctx.save();
+        
+        // Full black overlay
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.totalHeight);
+        
+        ctx.textBaseline = 'alphabetic';
+        
+        const t = GREED_TYPES[gameState.infoPage];
+        const cx = CONFIG.canvasWidth / 2;
+        
+        // Header
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#33FF00';
+        ctx.font = 'bold 18px monospace';
+        ctx.fillText('KNOW YOUR ENEMY', cx, 35);
+        
+        // Page indicator
+        ctx.fillStyle = '#555';
+        ctx.font = '12px monospace';
+        ctx.fillText(`${gameState.infoPage + 1} / ${GREED_TYPES.length}`, cx, 55);
+        
+        // Navigation hints
+        ctx.fillStyle = '#666';
+        ctx.font = '11px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('◄ A / ←', 30, CONFIG.totalHeight / 2);
+        ctx.textAlign = 'right';
+        ctx.fillText('D / → ►', CONFIG.canvasWidth - 30, CONFIG.totalHeight / 2);
+        
+        // Save real player position for enemy drawing
+        const realPlayerX = gameState.player.x;
+        const realPlayerY = gameState.player.y;
+        gameState.player.x = cx;
+        gameState.player.y = 300;
+        
+        // Draw the monster - BIG and centered
+        const monsterY = 160;
+        ctx.save();
+        ctx.translate(cx, monsterY);
+        try {
+            const tempEnemy = new Enemy(t, 0, 0);
+            tempEnemy.angle = performance.now() * 0.002;
+            tempEnemy.patrolAngle = performance.now() * 0.001;
+            tempEnemy.size = t.size * 3; // Much bigger
+            tempEnemy.dead = false;
+            tempEnemy.deathTimer = 0;
+            tempEnemy.quoteTimer = 0;
             
-            // Full black overlay
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.totalHeight);
-            
-            // Reset text settings
-            ctx.textBaseline = 'alphabetic';
-            
-            // Title
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#33FF00';
-            ctx.font = 'bold 28px monospace';
-            ctx.fillText('ENTITIES', CONFIG.canvasWidth / 2, 50);
-            
-            ctx.font = '12px monospace';
-            ctx.fillStyle = '#666';
-            ctx.fillText('Press I or ESC to close', CONFIG.canvasWidth / 2, 75);
-            
-            // 2x3 grid
-            const cols = 3;
-            const cellW = CONFIG.canvasWidth / cols;
-            const cellH = 280;
-            const startY = 100;
-            
-            // Save real player position
-            const realPlayerX = gameState.player.x;
-            const realPlayerY = gameState.player.y;
-            
-            for (let i = 0; i < GREED_TYPES.length; i++) {
-                const t = GREED_TYPES[i];
-                const col = i % cols;
-                const row = Math.floor(i / cols);
-                const cx = (col + 0.5) * cellW;
-                const cy = startY + row * cellH + 50;
-                
-                // Make monsters look toward viewer (below them, relative to translated position)
-                gameState.player.x = 0;
-                gameState.player.y = 100;
-                
-                // Draw monster - manually translate since Enemy.draw uses its own translate
-                ctx.save();
-                ctx.translate(cx, cy);
-                try {
-                    const tempEnemy = new Enemy(t, 0, 0); // Position at origin, we already translated
-                    tempEnemy.angle = performance.now() * 0.002;
-                    tempEnemy.patrolAngle = performance.now() * 0.001;
-                    tempEnemy.size = t.size * 2.2;
-                    tempEnemy.dead = false;
-                    tempEnemy.deathTimer = 0;
-                    tempEnemy.quoteTimer = 0; // Don't show quotes
-                    
-                    // Draw the specific monster type directly
-                    const s = tempEnemy.size;
-                    switch (t.name) {
-                        case 'THE TRACKER': tempEnemy.drawEye(ctx, s); break;
-                        case 'THE CLOUD': tempEnemy.drawCloud(ctx, s); break;
-                        case 'THE ENSHITTIFIER': tempEnemy.drawEnshittifier(ctx, s); break;
-                        case 'THE RENT SEEKER': tempEnemy.drawRentSeeker(ctx, s); break;
-                        case 'THE LOCK-IN': tempEnemy.drawLockIn(ctx, s); break;
-                        case 'THE KILL SWITCH': tempEnemy.drawKillSwitch(ctx, s); break;
-                        default:
-                            ctx.fillStyle = t.color;
-                            ctx.beginPath();
-                            ctx.arc(0, 0, s, 0, Math.PI * 2);
-                            ctx.fill();
-                    }
-                } catch(e) {
+            const s = tempEnemy.size;
+            switch (t.name) {
+                case 'THE TRACKER': tempEnemy.drawEye(ctx, s); break;
+                case 'THE CLOUD': tempEnemy.drawCloud(ctx, s); break;
+                case 'THE ENSHITTIFIER': tempEnemy.drawEnshittifier(ctx, s); break;
+                case 'THE RENT SEEKER': tempEnemy.drawRentSeeker(ctx, s); break;
+                case 'THE LOCK-IN': tempEnemy.drawLockIn(ctx, s); break;
+                case 'THE KILL SWITCH': tempEnemy.drawKillSwitch(ctx, s); break;
+                default:
                     ctx.fillStyle = t.color;
                     ctx.beginPath();
-                    ctx.arc(0, 0, t.size * 2, 0, Math.PI * 2);
+                    ctx.arc(0, 0, s, 0, Math.PI * 2);
                     ctx.fill();
-                }
-                ctx.restore();
-                
-                // Reset after monster draw
-                ctx.textBaseline = 'alphabetic';
-                ctx.shadowBlur = 0;
-                ctx.globalAlpha = 1;
-                
-                // Name
-                ctx.fillStyle = t.color;
-                ctx.font = 'bold 15px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText(t.name, cx, cy + 70);
-                
-                // Speed label and bar
-                ctx.fillStyle = '#888';
-                ctx.font = '11px monospace';
-                ctx.fillText('SPEED', cx - 40, cy + 95);
-                
-                const barW = 80;
-                const barX = cx - 10;
-                const barY = cy + 87;
-                ctx.fillStyle = '#333';
-                ctx.fillRect(barX, barY, barW, 10);
-                ctx.fillStyle = t.color;
-                ctx.fillRect(barX, barY, (t.speed / 4.0) * barW, 10);
-                
-                // Behavior
-                const behaviorTags = {
-                    'chase': 'HUNTS YOU',
-                    'patrol': 'PATROLS',
-                    'erratic': 'CHAOTIC',
-                    'wander': 'DRIFTS',
-                    'predict': 'PREDICTS'
-                };
-                ctx.fillStyle = '#AAA';
-                ctx.font = 'bold 11px monospace';
-                ctx.fillText(behaviorTags[t.behavior] || t.behavior.toUpperCase(), cx, cy + 120);
-                
-                // Tagline
-                const taglines = {
-                    'THE CLOUD': 'Always syncing. Never forgetting.',
-                    'THE TRACKER': 'It knows where you are.',
-                    'THE ENSHITTIFIER': 'Features become paywalls.',
-                    'THE RENT SEEKER': 'You will own nothing.',
-                    'THE LOCK-IN': 'Data checks in. Never out.',
-                    'THE KILL SWITCH': 'They giveth and taketh.'
-                };
-                ctx.fillStyle = '#666';
-                ctx.font = 'italic 10px monospace';
-                ctx.fillText(taglines[t.name] || '', cx, cy + 145);
             }
-            
-            // Restore player position
-            gameState.player.x = realPlayerX;
-            gameState.player.y = realPlayerY;
-            
-            // Bottom tips
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#33FF00';
-            ctx.font = '14px monospace';
-            ctx.fillText('Trap them or claim 90% of their region to destroy', CONFIG.canvasWidth / 2, CONFIG.totalHeight - 55);
-            ctx.fillStyle = '#888';
-            ctx.font = '12px monospace';
-            ctx.fillText('Safe on the wire. Vulnerable when cutting.', CONFIG.canvasWidth / 2, CONFIG.totalHeight - 30);
-            
-            ctx.restore();
+        } catch(e) {
+            ctx.fillStyle = t.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, t.size * 2.5, 0, Math.PI * 2);
+            ctx.fill();
         }
+        ctx.restore();
+        
+        // Restore player position
+        gameState.player.x = realPlayerX;
+        gameState.player.y = realPlayerY;
+        
+        // Reset drawing state
+        ctx.textBaseline = 'alphabetic';
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        ctx.textAlign = 'center';
+        
+        // Monster name - big and colored
+        ctx.fillStyle = t.color;
+        ctx.font = 'bold 28px monospace';
+        ctx.fillText(t.name, cx, 280);
+        
+        // Tagline - white italic
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'italic 16px monospace';
+        ctx.fillText('"' + t.tagline + '"', cx, 310);
+        
+        // Divider line
+        ctx.strokeStyle = t.color + '44';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(cx - 250, 330);
+        ctx.lineTo(cx + 250, 330);
+        ctx.stroke();
+        
+        // Description - main text block
+        ctx.fillStyle = '#CCCCCC';
+        ctx.font = '14px monospace';
+        const descLines = wrapText(t.description, 500);
+        descLines.forEach((line, idx) => {
+            ctx.fillText(line, cx, 360 + idx * 22);
+        });
+        
+        // Stats section
+        const statsY = 360 + descLines.length * 22 + 40;
+        
+        // Speed bar
+        ctx.fillStyle = '#888';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText('THREAT LEVEL:', cx - 60, statsY);
+        
+        const barW = 150;
+        const barX = cx - 50;
+        ctx.fillStyle = '#222';
+        ctx.fillRect(barX, statsY - 12, barW, 16);
+        
+        // Speed as threat level (normalized)
+        const threatLevel = t.speed / 4.0;
+        const barColor = threatLevel > 0.7 ? '#FF3333' : threatLevel > 0.4 ? '#FFAA00' : '#33FF00';
+        ctx.fillStyle = barColor;
+        ctx.fillRect(barX, statsY - 12, threatLevel * barW, 16);
+        
+        // Speed label on bar - white with shadow for readability
+        ctx.fillStyle = '#FFFFFF';
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 4;
+        ctx.font = 'bold 10px monospace';
+        ctx.textAlign = 'center';
+        const speedLabels = ['SLOW', 'MODERATE', 'FAST', 'RELENTLESS'];
+        const speedIdx = Math.min(3, Math.floor(t.speed / 1.0));
+        ctx.fillText(speedLabels[speedIdx], barX + barW/2, statsY);
+        ctx.shadowBlur = 0;
+        
+        // Behavior type
+        const behaviorY = statsY + 35;
+        ctx.fillStyle = '#888';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText('BEHAVIOR:', cx - 60, behaviorY);
+        
+        const behaviorNames = {
+            'chase': 'PURSUER',
+            'patrol': 'SENTINEL',
+            'erratic': 'CHAOS AGENT',
+            'wander': 'DRIFTER',
+            'predict': 'INTERCEPTOR'
+        };
+        ctx.fillStyle = t.color;
+        ctx.textAlign = 'left';
+        ctx.fillText(behaviorNames[t.behavior] || t.behavior.toUpperCase(), cx - 50, behaviorY);
+        
+        // How it hunts - the key tactical info
+        const huntY = behaviorY + 50;
+        ctx.fillStyle = '#FF6666';
+        ctx.font = 'bold 14px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('⚠ HUNTING PATTERN', cx, huntY);
+        
+        ctx.fillStyle = '#AAAAAA';
+        ctx.font = '13px monospace';
+        const huntLines = wrapText(t.howItHunts, 450);
+        huntLines.forEach((line, idx) => {
+            ctx.fillText(line, cx, huntY + 25 + idx * 20);
+        });
+        
+        // Bottom instructions
+        ctx.fillStyle = '#33FF00';
+        ctx.font = '12px monospace';
+        ctx.fillText('TRAP IT or RECLAIM 90% OF ITS REGION TO DESTROY', cx, CONFIG.totalHeight - 55);
+        
+        ctx.fillStyle = '#666';
+        ctx.font = '11px monospace';
+        ctx.fillText('← → or A/D to browse  •  I to close', cx, CONFIG.totalHeight - 30);
+        
+        // Page dots
+        const dotY = CONFIG.totalHeight - 85;
+        const dotSpacing = 20;
+        const dotsStartX = cx - ((GREED_TYPES.length - 1) * dotSpacing) / 2;
+        for (let i = 0; i < GREED_TYPES.length; i++) {
+            ctx.fillStyle = i === gameState.infoPage ? '#33FF00' : '#333';
+            ctx.beginPath();
+            ctx.arc(dotsStartX + i * dotSpacing, dotY, i === gameState.infoPage ? 5 : 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        ctx.restore();
+    }
+
+    // Helper to wrap text
+    function wrapText(text, maxWidth) {
+        const words = text.split(' ');
+        const lines = [];
+        let currentLine = '';
+        
+        // Approximate character width for 14px monospace
+        const charWidth = 8.4;
+        const maxChars = Math.floor(maxWidth / charWidth);
+        
+        for (const word of words) {
+            const testLine = currentLine ? currentLine + ' ' + word : word;
+            if (testLine.length > maxChars) {
+                if (currentLine) lines.push(currentLine);
+                currentLine = word;
+            } else {
+                currentLine = testLine;
+            }
+        }
+        if (currentLine) lines.push(currentLine);
+        
+        return lines;
     }
 
     function drawHUD() {
@@ -1659,7 +1821,7 @@
         ctx.lineWidth = 1;
         ctx.strokeRect(0, 0, CONFIG.canvasWidth, CONFIG.hudHeight);
 
-        const barX = 80, barY = 18, barW = CONFIG.canvasWidth - 180, barH = 14;
+        const barX = 90, barY = 18, barW = CONFIG.canvasWidth - 180, barH = 14;
         ctx.fillStyle = '#1a1a1a';
         ctx.fillRect(barX, barY, barW, barH);
         ctx.fillStyle = '#33FF00';
@@ -1712,6 +1874,7 @@
         gameState.cutting = false;
         gameState.trail = [];
         gameState.cutStart = null;
+        gameState.cutDirection = null;
         gameState.lives = 3;
         gameState.score = 0;
         gameState.level = 1;
@@ -1719,7 +1882,9 @@
         gameState.paused = false;
         gameState.won = false;
         gameState.showInfo = false;
+        gameState.infoPage = 0;
         gameState.spaceHeld = false;
+        gameState.keys = {};
         gameState.message = '';
         gameState.messageTimer = 0;
         spawnEnemies();
@@ -1733,16 +1898,54 @@
         if (!modal || !modal.classList.contains('active')) return;
 
         gameState.keys[e.key] = true;
+        
+        // Info screen navigation
+        if (gameState.showInfo) {
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                gameState.infoPage = (gameState.infoPage + 1) % GREED_TYPES.length;
+                e.preventDefault();
+                return;
+            }
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                gameState.infoPage = (gameState.infoPage - 1 + GREED_TYPES.length) % GREED_TYPES.length;
+                e.preventDefault();
+                return;
+            }
+            if (e.key === 'i' || e.key === 'I' || e.key === 'Escape') {
+                gameState.showInfo = false;
+                resetInputState();
+                e.preventDefault();
+                return;
+            }
+            // Block other keys while info is open
+            e.preventDefault();
+            return;
+        }
+        
         if (e.key === ' ') { gameState.spaceHeld = true; e.preventDefault(); }
-        if (e.key === 'p' || e.key === 'P') { if (gameState.running) gameState.paused = !gameState.paused; e.preventDefault(); }
+        if (e.key === 'p' || e.key === 'P') { 
+            if (gameState.running && !gameState.showInfo) {
+                gameState.paused = !gameState.paused;
+            }
+            e.preventDefault(); 
+        }
         if (e.key === 'i' || e.key === 'I') { 
-            gameState.showInfo = !gameState.showInfo; 
+            // Toggle info screen and reset input state
+            gameState.showInfo = !gameState.showInfo;
+            gameState.infoPage = 0;
+            if (!gameState.showInfo) {
+                resetInputState();
+            }
             e.preventDefault(); 
         }
         if (e.key === 'r' || e.key === 'R') { initGame(); e.preventDefault(); }
         if (e.key === 'Escape') { 
-            if (gameState.showInfo) { gameState.showInfo = false; }
-            else { window.ReclaimGame.close(); }
+            if (gameState.showInfo) { 
+                gameState.showInfo = false;
+                resetInputState();
+            } else { 
+                window.ReclaimGame.close(); 
+            }
             e.preventDefault(); 
         }
         if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault();
@@ -1758,6 +1961,17 @@
         if (!modal) return;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Fix close button - override the onclick
+        const closeBtn = modal.querySelector('.modal-close');
+        if (closeBtn) {
+            closeBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.ReclaimGame.close();
+            };
+        }
+        
         canvas = document.getElementById('exportCanvas');
         if (canvas) {
             ctx = canvas.getContext('2d');
@@ -1773,6 +1987,7 @@
         if (modal) modal.classList.remove('active');
         document.body.style.overflow = '';
         gameState.running = false;
+        resetInputState();
         if (gameState.animationId) cancelAnimationFrame(gameState.animationId);
         const ti = document.getElementById('terminalInput');
         if (ti) ti.focus();

@@ -246,9 +246,10 @@
                 addOutputLine('  about     - Learn about LocalGhost');
                 addOutputLine('  manifesto - Read the full manifesto');
                 addOutputLine('  faq       - Jump to FAQ section');
-                addOutputLine('  escape    - ???');
+                addOutputLine('  quit      - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
                 addOutputLine('  reclaim   - Play Reclaim (desktop only)');
+                addOutputLine('  escape    - Play Escape (endless runner)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -276,8 +277,7 @@
                     document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
                 }, 300);
                 break;
-
-            case 'escape':
+            case 'quit':
                 addOutputLine('INITIATING ESCAPE SEQUENCE...', 'warning');
                 setTimeout(() => {
                     addOutputLine('REALITY.EXE HAS STOPPED RESPONDING', 'warning');
@@ -313,6 +313,24 @@
                     setTimeout(openReclaimGame, 300);
                 }
                 break;
+
+            case 'escape':
+            case 'run':
+            case 'flee':
+            case 'temple':
+            case 'dino':
+                addOutputLine('LAUNCHING ESCAPE.EXE...', 'success');
+                addOutputLine('Run from the machine. Jump bureaucracy. Duck privacy banners.', 'dim');
+                setTimeout(() => {
+                    if (typeof window.EscapeGame !== 'undefined') {
+                        window.EscapeGame.open();
+                    } else {
+                        addOutputLine('ERROR: ESCAPE.EXE NOT LOADED', 'warning');
+                        addOutputLine('Game module missing. Check console.', 'dim');
+                    }
+                }, 300);
+                break;
+
 
             case 'scores':
             case 'leaderboard':

@@ -1,0 +1,247 @@
+/* ===========================================
+   LOCALGHOST - ESCAPE.EXE STYLES
+   Temple Run / Dino endless runner game
+   =========================================== */
+
+/* ===========================================
+   GAME MODAL
+   =========================================== */
+
+#escapeModal .modal {
+    max-width: 840px;
+    width: 840px;
+    max-height: 95vh;
+    padding: 20px;
+    background: var(--void);
+    border: 1px solid var(--terminal-dim);
+    overflow: hidden;
+}
+
+#escapeModal:focus {
+    outline: none;
+}
+
+#escapeModal .modal h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--terminal);
+    letter-spacing: 0.15em;
+}
+
+#escapeModal .escape-subtitle {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+/* ===========================================
+   GAME CANVAS
+   =========================================== */
+
+#escapeCanvas {
+    width: 800px;
+    height: 400px;
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+    background: #0a0a0a;
+    border: 1px solid var(--terminal-dim);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* ===========================================
+   GAME INFO & FEEDBACK
+   =========================================== */
+
+.escape-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+.escape-score {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--terminal);
+}
+
+.escape-high-score {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+}
+
+.escape-feedback {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--terminal);
+    margin-top: 15px;
+    min-height: 24px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    background: var(--void-lighter);
+    transition: color 0.2s ease;
+}
+
+.escape-controls {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+}
+
+/* ===========================================
+   MOBILE CONTROLS
+   =========================================== */
+
+.escape-mobile-controls {
+    display: none;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+    padding: 10px;
+}
+
+.escape-mobile-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 70px;
+    background: var(--void);
+    border: 1px solid var(--terminal-dim);
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.15s ease;
+}
+
+.escape-mobile-btn:active {
+    background: rgba(51, 255, 0, 0.15);
+    border-color: var(--terminal);
+}
+
+.escape-mobile-btn .btn-icon {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.escape-touch-hint {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 860px) {
+    #escapeModal .modal {
+        width: 95vw;
+        padding: 15px;
+    }
+    
+    #escapeCanvas {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2 / 1;
+    }
+}
+
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .escape-mobile-controls {
+        display: flex;
+    }
+    
+    .escape-controls.desktop-only {
+        display: none;
+    }
+    
+    #escapeModal .modal {
+        padding: 10px;
+    }
+    
+    #escapeModal .modal h3 {
+        font-size: 1rem;
+    }
+    
+    .escape-feedback {
+        font-size: 0.7rem;
+        padding: 6px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .escape-mobile-btn {
+        width: 70px;
+        height: 60px;
+        font-size: 0.6rem;
+    }
+    
+    .escape-mobile-btn .btn-icon {
+        font-size: 1.2rem;
+    }
+    
+    .escape-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    #escapeModal .modal {
+        padding: 10px;
+    }
+    
+    #escapeCanvas {
+        max-height: 60vh;
+        width: auto;
+    }
+    
+    .escape-mobile-controls {
+        margin-top: 10px;
+    }
+    
+    .escape-mobile-btn {
+        width: 60px;
+        height: 50px;
+    }
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
+@keyframes escapeFlash {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes escapePulse {
+    0%, 100% { 
+        text-shadow: 0 0 5px var(--terminal);
+    }
+    50% { 
+        text-shadow: 0 0 15px var(--terminal), 0 0 25px var(--terminal);
+    }
+}
+
+#escapeModal .modal h3 {
+    animation: escapePulse 2s ease-in-out infinite;
+}

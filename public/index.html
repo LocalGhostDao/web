@@ -63,28 +63,6 @@
     }
     </script>
     
-    <!-- JSON-LD Structured Data: Product -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "LocalGhost Sovereign Box",
-        "description": "A matte black aluminum cube running local AI. Pre-built with 4TB NVMe storage, NPU-native processor, Wi-Fi 6E, and two FIDO2 hardware security keys. Your AI, your data, your hardware—no cloud, no tracking, no subscriptions.",
-        "brand": {
-            "@type": "Brand",
-            "name": "LocalGhost"
-        },
-        "category": "Electronics > Computers > Servers",
-        "image": "https://www.localghost.ai/images/og-image.png",
-        "offers": {
-            "@type": "Offer",
-            "availability": "https://schema.org/PreOrder",
-            "priceCurrency": "GBP",
-            "url": "https://www.localghost.ai/#hardware"
-        }
-    }
-    </script>
-    
     <!-- JSON-LD Structured Data: FAQPage -->
     <script type="application/ld+json">
     {
@@ -172,7 +150,7 @@
     <link rel="stylesheet" href="/css/terminal.css">
     <link rel="stylesheet" href="/css/reclaim.css">
     <link rel="stylesheet" href="/css/the_shadow.css">
-    
+    <link rel="stylesheet" href="/css/escape.css">
     <!-- Screen Reader Only utility (for semantic h1) -->
     <style>
         .sr-only {
@@ -1110,10 +1088,44 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <canvas id="exportCanvas" width="800" height="800"></canvas>
             
             <div class="export-feedback" id="exportFeedback">
-                Move on the wire. Hold SPACE + direction to cut. Reclaim 80% to win.
+                Move on the wire. Hold SPACE + direction to cut. Reclaim 90% to win.
             </div>
             <div class="export-controls">
                 ARROWS/WASD move | SPACE+DIR cut | I info | P pause | R restart | ESC exit
+            </div>
+        </div>
+    </div>
+
+    <!-- ESCAPE GAME MODAL -->
+    <div id="escapeModal" class="modal-overlay" tabindex="-1">
+        <div class="modal">
+            <button class="modal-close" onclick="EscapeGame.close()">&times;</button>
+            <h3>&gt; ESCAPE.EXE</h3>
+            <p class="escape-subtitle">RUN FROM THE MACHINE. STAY FREE.</p>
+            
+            <canvas id="escapeCanvas" width="800" height="400"></canvas>
+            
+            <div class="escape-feedback" id="escapeFeedback">
+                Run. Hide. Stay free.
+            </div>
+            
+            <div class="escape-controls desktop-only">
+                SPACE/UP jump | DOWN duck | P pause | R restart | ESC exit
+            </div>
+            
+            <!-- Mobile controls -->
+            <div class="escape-mobile-controls mobile-only">
+                <button class="escape-mobile-btn" id="escapeJumpBtn" ontouchstart="window.escapeJump && window.escapeJump()">
+                    <span class="btn-icon">↑</span>
+                    <span>JUMP</span>
+                </button>
+                <button class="escape-mobile-btn" id="escapeDuckBtn" ontouchstart="window.escapeDuck && window.escapeDuck(true)" ontouchend="window.escapeDuck && window.escapeDuck(false)">
+                    <span class="btn-icon">↓</span>
+                    <span>DUCK</span>
+                </button>
+            </div>
+            <div class="escape-touch-hint mobile-only">
+                TAP to jump | SWIPE DOWN to duck
             </div>
         </div>
     </div>
@@ -1137,5 +1149,6 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
     <script src="/js/terminal.js"></script>
     <script src="/js/the_shadow.js"></script>
     <script src="/js/reclaim.js"></script>
+    <script src="/js/escape.js"></script>
 </body>
 </html>
