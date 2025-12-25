@@ -164,6 +164,30 @@
             white-space: nowrap;
             border: 0;
         }
+        
+        /* Mobile-friendly waitlist modal */
+        @media (max-width: 768px) {
+            #waitlistModal .modal {
+                max-height: 85vh;
+                max-height: 85dvh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 2rem;
+            }
+            
+            #waitlistModal .reminder-options {
+                max-height: none;
+            }
+            
+            #waitlistModal .reminder-option {
+                margin-bottom: 1rem;
+            }
+            
+            #waitlistModal .reminder-btn {
+                width: 100%;
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body>
@@ -525,7 +549,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 <span class="emphasis">Why?</span> Because we can't.
             </p>
             <p>
-                Once you unplug the ethernet cable or block the port, this box is a sovereign island.
+                Once you unplug the ethernet cable or block the port, this box is an independent island.
                 We have no "backdoor." We have no "remote kill switch." We have no "admin access."
                 Even if we wanted to force an update, the architecture prevents us from reaching you.
             </p>
@@ -774,7 +798,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         Key 2 can restore everything to a new box. But if you lose both keys? Game over.
                     </p>
                     <p style="color: var(--warning);">
-                        Sovereignty means responsibility. Two keys. Two locations. No excuses.
+                        Real ownership means real responsibility. Two keys. Two locations. No excuses.
                     </p>
                     <p class="faq-technical">
                         <strong>Technical note:</strong> The keys are FIDO2-compliant hardware tokens with secure elements. 
@@ -837,7 +861,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                     </ul>
                     <p style="color: var(--terminal);">
                         We have deliberately designed ourselves out of the critical path. 
-                        Your sovereignty does not depend on our survival.
+                        Your independence does not depend on our survival.
                     </p>
                 </div>
             </details>
@@ -877,7 +901,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <h2>THE BLACK BOX</h2>
 
         <p>
-            A matte black aluminum cube. No lights. No logos. Just sovereignty.
+            A matte black aluminum cube. No lights. No logos. Just independence.
         </p>
 
         <div class="specs-list">
@@ -890,14 +914,14 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
         <div class="hardware-options">
             <div class="hardware-option">
-                <h4>OPTION A: THE SOVEREIGN BOX</h4>
+                <h4>OPTION A: THE PHANTOM</h4>
                 <p>Pre-built. Plug & Play. Includes two hardware security keys. 30% margin supports development.</p>
                 <div class="hardware-price">COMING SOON</div>
                 <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
             </div>
             <div class="hardware-option">
                 <h4>OPTION B: THE GHOST BUILD</h4>
-                <p>Source the parts yourself. Flash the OS. BYO security keys. We make £0.</p>
+                <p>Source the parts yourself. Flash the OS. BYO security keys. We make £0 and you still get a high-five from us. We'll do our best to support you on GitHub and in the community.</p>
                 <div class="hardware-price">£0 GBP</div>
                 <a href="https://github.com/orgs/LocalGhostDao/repositories" class="hardware-btn ghost">[ VIEW GITHUB SPEC ]</a>
             </div>

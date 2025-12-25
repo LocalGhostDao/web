@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localghost.ai/schemas/freehold-v1.json",
+  "title": "Freehold Declaration",
+  "description": "A machine-readable declaration that a project is local-first, offline-capable, and architecturally immune to vendor lock-in.",
+  "type": "object",
+  "required": ["version", "project", "freehold"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Reference to this schema for validation."
+    },
+    "version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version. Must be 1.0 for this specification."
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the last update to this declaration."
+    },
+    "project": {
+      "type": "object",
+      "required": ["name", "description", "url", "repository", "license"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Project name."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 280,
+          "description": "Brief description of what the project does."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Project homepage URL."
+        },
+        "logo": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to project logo (SVG or PNG recommended)."
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to source code repository."
+        },
+        "license": {
+          "type": "string",
+          "description": "SPDX license identifier (e.g., MIT, Apache-2.0, AGPL-3.0)."
+        },
+        "created": {
+          "type": "string",
+          "format": "date",
+          "description": "Project creation date (YYYY-MM-DD)."
+        }
+      }
+    },
+    "maintainer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Maintainer name or organization."
+        },
+        "contact": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email address."
+        },
+        "pgp": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to PGP public key (.asc file)."
+        }
+      }
+    },
+    "freehold": {
+      "type": "object",
+      "required": ["local_first", "offline_capable", "no_remote_kill_switch", "no_mandatory_auth_server", "data_export"],
+      "description": "The core pledges that qualify a project as a Freehold.",
+      "properties": {
+        "local_first": {
+          "type": "boolean",
+          "description": "True if the application stores data locally by default and can function without a network connection for core features."
+        },
+        "offline_capable": {
+          "type": "boolean",
+          "description": "True if the application works without any internet connection after initial setup."
+        },
+        "no_remote_kill_switch": {
+          "type": "boolean",
+          "description": "True if no remote server can disable, degrade, or brick the software."
+        },
+        "no_mandatory_auth_server": {
+          "type": "boolean",
+          "description": "True if users are not locked out when the vendor's authentication servers go offline."
+        },
+        "data_export": {
+          "type": "object",
+          "required": ["format", "complete"],
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["json", "csv", "sqlite", "xml", "custom"],
+              "description": "Primary export format."
+            },
+            "complete": {
+              "type": "boolean",
+              "description": "True if export includes ALL user data, not a subset."
+            },
+            "documented": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to export format documentation."
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

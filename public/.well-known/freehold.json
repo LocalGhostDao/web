@@ -1,17 +1,29 @@
 {
+  "$schema": "https://localghost.ai/schemas/freehold-v1.json",
   "version": "1.0",
+  "updated": "2025-12-25T00:00:00Z",
   "project": {
     "name": "LocalGhost.ai",
-    "description": "A private, sovereign server for your digital life that runs AI locally on your own hardware. It features 'The Mist' (a peer-to-peer mesh for encrypted backups) and a suite of 'Local Daemons' to organize data without cloud dependency.",
-    "url": "https://www.localghost.ai/",
-    "logo": "https://www.localghost.ai/images/logo.svg",
-    "repository": "https://github.com/LocalGhostDao/web",
+    "description": "Private hardware for your digital life. Local AI, encrypted mesh backups, zero cloud dependency.",
+    "url": "https://localghost.ai",
+    "logo": "https://localghost.ai/images/logo.svg",
+    "repository": "https://github.com/LocalGhostDao",
+    "license": "MIT",
     "created": "2025-12-18"
   },
-  "code": {
+  "maintainer": {
+    "name": "LocalGhost",
+    "contact": "info@localghost.ai",
+    "pgp": "https://localghost.ai/.well-known/pgp-key.asc"
+  },
+  "freehold": {
     "local_first": true,
     "offline_capable": true,
-    "architecturally_immune": true,
-    "data_export": "json"
+    "no_remote_kill_switch": true,
+    "no_mandatory_auth_server": true,
+    "data_export": {
+      "format": "json",
+      "complete": true
+    }
   }
 }
