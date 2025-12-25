@@ -33,7 +33,7 @@ echo "> DIFFERENTIAL ANALYSIS..."
 echo ""
 
 # 1. Sync non-HTML files (assets)
-ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --exclude='sitemap.xml' --exclude='.well-known/deploy-manifest*' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
+ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --exclude='sitemap.xml' --exclude='ghost/deploy-manifest*' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
 
 if [ -n "$ASSET_CHANGES" ]; then
@@ -233,9 +233,9 @@ fi
 echo ""
 echo "> SIGNING MANIFEST..."
 
-mkdir -p "$DEST_DIR/.well-known"
-MANIFEST_FILE="$DEST_DIR/.well-known/deploy-manifest.txt"
-MANIFEST_SIG="$DEST_DIR/.well-known/deploy-manifest.txt.asc"
+mkdir -p "$DEST_DIR/ghost"
+MANIFEST_FILE="$DEST_DIR/ghost/deploy-manifest.txt"
+MANIFEST_SIG="$DEST_DIR/ghost/deploy-manifest.txt.asc"
 
 # Generate manifest
 {
@@ -243,7 +243,7 @@ MANIFEST_SIG="$DEST_DIR/.well-known/deploy-manifest.txt.asc"
     echo "# Build: ${BUILD_ID}"
     echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo ""
-    find "$DEST_DIR" -type f ! -path "*/.well-known/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
+    find "$DEST_DIR" -type f ! -path "*/ghost/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
 } > "$MANIFEST_FILE"
 
 # Sign it

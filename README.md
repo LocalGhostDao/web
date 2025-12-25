@@ -22,8 +22,8 @@ Trust no one. Verify everything. Every deployment is cryptographically signed.
 TMPKEY=$(mktemp) && \
 curl -s https://www.localghost.ai/.well-known/pgp-key.asc | gpg --dearmor > "$TMPKEY" && \
 gpgv --keyring "$TMPKEY" \
-  <(curl -s https://www.localghost.ai/.well-known/deploy-manifest.txt.asc) \
-  <(curl -s https://www.localghost.ai/.well-known/deploy-manifest.txt) && \
+  <(curl -s https://www.localghost.ai/ghost/deploy-manifest.txt.asc) \
+  <(curl -s https://www.localghost.ai/ghost/deploy-manifest.txt) && \
 rm "$TMPKEY"
 ```
 
