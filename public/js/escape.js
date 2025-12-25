@@ -33,7 +33,7 @@
         // Obstacles - challenging but fair, mix of jump and duck
         obstacleGap: 400,
         minObstacleGap: 300,
-        dataFragmentChance: 0.08,
+        dataFragmentChance: 0.25,  // More frequent data to collect
         targetFPS: 60
     };
 
@@ -131,31 +131,53 @@
             ]
         },
         
-        // === DUCK OBSTACLES - Float overhead, duck under them ===
+        // === DUCK OBSTACLES - Hang from top, bottom near ground - MUST duck ===
         PRIVACY_BANNER: {
             name: 'PRIVACY BANNER',
             width: 130,
-            height: 40,  // 4 lines * 10
+            height: 200,  // Tall barrier
             type: 'duck',
             color: '#DD4444',
             ascii: [
-                '════════▼▼════════',
-                '║ WE VALUE YOUR  ║',
-                '║   PRIVACY™     ║',
-                '══════════════════'
+                '╔═══════════════════╗',
+                '║▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼║',
+                '║                   ║',
+                '║   WE VALUE YOUR   ║',
+                '║     PRIVACY™      ║',
+                '║                   ║',
+                '║   [ACCEPT ALL]    ║',
+                '║                   ║',
+                '║                   ║',
+                '║                   ║',
+                '║                   ║',
+                '║                   ║',
+                '║                   ║',
+                '║▼▼▼ DUCK ▼▼▼▼▼▼▼▼▼║',
+                '╚═══════════════════╝'
             ]
         },
         NOTIFICATION: {
             name: 'NOTIFICATION',
             width: 120,
-            height: 40,  // 4 lines * 10
+            height: 200,  // Tall barrier
             type: 'duck',
             color: '#FF6666',
             ascii: [
-                '═══════▼▼═══════',
-                '║🔔 ALLOW NOTIFS║',
-                '║  [YES] [YES]  ║',
-                '════════════════'
+                '╔═════════════════╗',
+                '║▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼║',
+                '║                 ║',
+                '║   🔔 ALLOW      ║',
+                '║  NOTIFICATIONS  ║',
+                '║                 ║',
+                '║   [YES] [YES]   ║',
+                '║                 ║',
+                '║                 ║',
+                '║                 ║',
+                '║                 ║',
+                '║                 ║',
+                '║                 ║',
+                '║▼▼▼ DUCK ▼▼▼▼▼▼▼║',
+                '╚═════════════════╝'
             ]
         },
         
@@ -332,9 +354,10 @@
     class DataFragment {
         constructor(x, y) {
             this.x = x;
-            this.y = y - 30 - Math.random() * 60;
+            // Position at running height - easy to grab
+            this.y = y - 35;
             this.baseY = this.y;
-            this.size = 15;
+            this.size = 25;  // Bigger hitbox
             this.collected = false;
             this.bobOffset = Math.random() * Math.PI * 2;
             this.type = ['📁', '🔑', '💾', '📊'][Math.floor(Math.random() * 4)];
@@ -342,7 +365,7 @@
         
         update(speed) {
             this.x -= speed;
-            this.y = this.baseY + Math.sin(Date.now() * 0.005 + this.bobOffset) * 5;
+            this.y = this.baseY + Math.sin(Date.now() * 0.004 + this.bobOffset) * 8;
             return this.x > -this.size;
         }
         
@@ -351,7 +374,7 @@
             
             ctx.save();
             ctx.shadowColor = '#33FF00';
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 15;
             ctx.font = `${this.size}px Arial`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -368,9 +391,9 @@
             this.height = type.height;
             
             if (type.type === 'duck') {
-                // Duck obstacles float overhead - player ducks under
-                // Position so bottom of obstacle is above ducking player's head
-                this.y = CONFIG.groundY - 70;  // Float above duck height
+                // Duck obstacles: gap of ~28px (player is 50px standing, 25px ducking)
+                // Bottom at groundY - 28, so only ducking player fits through
+                this.y = CONFIG.groundY - 28 - type.height;
             } else {
                 // Jump obstacles sit on the ground
                 this.y = CONFIG.groundY - type.height;
@@ -835,15 +858,16 @@
             }
         }
         
-        // Check data fragment collection
+        // Check data fragment collection - generous hitbox
         for (const frag of state.dataFragments) {
             if (frag.collected) continue;
             
+            const grabRadius = frag.size * 1.5;  // Generous collection radius
             const fragBounds = {
-                x: frag.x - frag.size / 2,
-                y: frag.y - frag.size / 2,
-                width: frag.size,
-                height: frag.size
+                x: frag.x - grabRadius,
+                y: frag.y - grabRadius,
+                width: grabRadius * 2,
+                height: grabRadius * 2
             };
             
             if (rectsIntersect(playerBounds, fragBounds)) {

@@ -33,7 +33,7 @@ echo "> DIFFERENTIAL ANALYSIS..."
 echo ""
 
 # 1. Sync non-HTML files (assets)
-ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --exclude='sitemap.xml' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
+ASSET_OUTPUT=$(rsync -av --checksum --delete --exclude='*.html' --exclude='sitemap.xml' --exclude='.well-known/deploy-manifest*' --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
 
 if [ -n "$ASSET_CHANGES" ]; then
@@ -211,13 +211,6 @@ echo "</urlset>" >> "$SITEMAP_FILE"
 URL_COUNT=${#SORTED_URLS[@]}
 echo "  [📍] sitemap.xml (${URL_COUNT} URLs)"
 
-# Cleanup
-rm -f "$TEMP_FILE"
-
-# Calculate elapsed time
-END_TIME=$(date +%s%N)
-ELAPSED_MS=$(( (END_TIME - START_TIME) / 1000000 ))
-
 # 5. Deploy nginx config if changed
 if [ "$NGINX_CHANGED" = true ]; then
     echo ""
@@ -235,6 +228,37 @@ if [ "$NGINX_CHANGED" = true ]; then
         sudo git -C "$(dirname "$NGINX_SRC")" checkout -- nginx.conf 2>/dev/null || true
     fi
 fi
+
+# 6. Sign deployment manifest
+echo ""
+echo "> SIGNING MANIFEST..."
+
+mkdir -p "$DEST_DIR/.well-known"
+MANIFEST_FILE="$DEST_DIR/.well-known/deploy-manifest.txt"
+MANIFEST_SIG="$DEST_DIR/.well-known/deploy-manifest.txt.asc"
+
+# Generate manifest
+{
+    echo "# LocalGhost Deployment Manifest"
+    echo "# Build: ${BUILD_ID}"
+    echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo ""
+    find "$DEST_DIR" -type f ! -path "*/.well-known/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
+} > "$MANIFEST_FILE"
+
+# Sign it
+gpg --batch --yes --armor --local-user info@localghost.ai --output "$MANIFEST_SIG" --detach-sign "$MANIFEST_FILE"
+
+FILE_COUNT=$(grep -c "^[a-f0-9]" "$MANIFEST_FILE")
+echo "  [🔏] deploy-manifest.txt (${FILE_COUNT} files)"
+echo "  [🔏] deploy-manifest.txt.asc"
+
+# Cleanup
+rm -f "$TEMP_FILE"
+
+# Calculate elapsed time
+END_TIME=$(date +%s%N)
+ELAPSED_MS=$(( (END_TIME - START_TIME) / 1000000 ))
 
 echo ""
 echo "  ╔════════════════════════════════════════╗"
