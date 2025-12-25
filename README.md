@@ -1,21 +1,23 @@
-### **Web Repository README (`localghostdao/web`)**
-
 # > LOCALGHOST: THE TERMINAL
 
-![Language](https://img.shields.io/badge/language-HTML5-orange?style=flat-square) ![Dependencies](https://img.shields.io/badge/dependencies-NONE-brightgreen?style=flat-square) ![Tracking](https://img.shields.io/badge/tracking-BLOCKED-red?style=flat-square)
+```
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│ HTML/CSS/JS     │ │ DEPENDENCIES: 0 │ │ TRACKING: OFF   │ │ LICENSE: MIT    │
+└─────────────────┘ └─────────────────┘ └─────────────────┘ └─────────────────┘
+```
 
-> **"1993 WAS A WARNING. THIS WEBSITE IS THE EXIT NODE."**
+> **"The Only Cloud Is You."**
 
-This is the public-facing terminal for [LocalGhost](https://github.com/LocalGhostDao/localghost).
-It is a Brutalist, zero-dependency static site designed to recruit operators for the resistance.
+This is the public-facing terminal for [LocalGhost](https://github.com/LocalGhostDao/localghost) — a private AI server that runs locally on your hardware. No cloud. No subscriptions. No surveillance.
 
-**[LIVE TERMINAL](https://www.localghost.ai)**
+**[LIVE TERMINAL](https://www.localghost.ai)** · **[MANIFESTO](https://www.localghost.ai/manifesto)** · **[BRAND GUIDELINES](https://www.localghost.ai/brand-guidelines)**
 
 ---
 
 ## 🔐 VERIFY THE DEPLOYMENT
 
 Trust no one. Verify everything. Every deployment is cryptographically signed.
+
 ```bash
 TMPKEY=$(mktemp) && \
 curl -s https://www.localghost.ai/.well-known/pgp-key.asc | gpg --dearmor > "$TMPKEY" && \
@@ -25,97 +27,181 @@ gpgv --keyring "$TMPKEY" \
 rm "$TMPKEY"
 ```
 
-If the signature is valid, you are seeing what we shipped. If not, someone is lying to you.
+---
+
+## ⚡ THE STACK
+
+We don't use React. We don't use Tailwind. We don't use npm.
+
+| Principle | Implementation |
+|-----------|----------------|
+| **Zero Build** | Raw HTML/CSS/JS. No transpilation. No bundling. |
+| **Zero Dependencies** | No `node_modules`. No CDN imports. Everything vendored. |
+| **Zero Tracking** | No analytics. No cookies. No fonts from Google. |
+
+**Why?** A manifesto about sovereignty should not depend on 200MB of strangers' code.
 
 ---
 
-## ⚡ THE STACK (ZERO-BUILD)
+## 📄 SITE MAP
 
-We do not use React. We do not use Tailwind. We do not use npm.
-We use **Raw HTML/CSS/JS**.
+| Page | Path | Description |
+|------|------|-------------|
+| **Terminal** | `/` | Main interface. Interactive CLI with hidden commands. |
+| **Manifesto** | `/manifesto` | "Why We Build" — the philosophical foundation. |
+| **Cypherpunk** | `/cypherpunk` | The 1993 Cypherpunk's Manifesto (source material). |
+| **Directory** | `/directory` | Index of freehold-compliant projects. |
+| **Brand Guidelines** | `/brand-guidelines` | Logo, colors, typography for contributors. |
+| **404** | `/error/404.html` | Even our errors stay on brand. |
 
-* **Why?** Because a manifesto about sovereignty should not rely on a 200MB `node_modules` folder owned by strangers.
-* **Performance:** Instant load times. No hydration gaps.
-* **Privacy:** No Google Fonts. No Analytics. No Cookies.
+### Hidden Games
 
-### FILE STRUCTURE
-```
-.
-├── deploy/
-│   ├── deploy.sh              # Deployment automation
-│   └── nginx.conf             # Server configuration
-├── public/
-│   ├── index.html             # Main terminal interface
-│   ├── manifesto.html         # The LocalGhost manifesto
-│   ├── cypherpunk.html        # 1993 Cypherpunk source material
-│   ├── directory.html         # Site navigation
-│   ├── brand-guidelines.html  # Visual identity documentation
-│   ├── css/                   # Stylesheets (no frameworks)
-│   ├── js/                    # Scripts (no dependencies)
-│   │   ├── terminal.js        # Terminal interface logic
-│   │   ├── escape.js          # THE SHADOW game engine
-│   │   ├── reclaim.js         # RECLAIM.EXE game engine
-│   │   └── the_shadow.js      # Snake game variant
-│   ├── fonts/                 # JetBrains Mono (self-hosted)
-│   ├── images/                # Logos, favicons, OG images
-│   ├── assets/                # Downloadable resources
-│   │   └── localghost-logo-pack.zip
-│   ├── schemas/
-│   │   └── freehold-v1.json   # Freehold specification
-│   ├── error/                 # Custom error pages
-│   │   ├── 404.html
-│   │   └── 50x.html
-│   ├── robots.txt
-│   └── site.webmanifest
-├── LICENSE
-└── README.md
-```
+The terminal hides three playable games — easter eggs for those who explore:
+
+| Game | Trigger | Description |
+|------|---------|-------------|
+| **THE_SHADOW.EXE** | `shadow` | Snake variant. Feed the AI your data. |
+| **RECLAIM.EXE** | `reclaim` | Territory capture. Take back what's yours. |
+| **ESCAPE.EXE** | Close button (X) | Endless runner. Flee the machine. |
 
 ---
 
-## 🖥️ LOCAL DEPLOYMENT
+## 🎨 DESIGN SYSTEM
 
-You do not need a complex build pipeline to run this. It is just files.
+**Philosophy:** Terminal Brutalism. Hostile to surveillance. Functional for humans.
 
-### OPTION A: THE RAW WAY
-Double-click `public/index.html`. It runs in your browser.
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg` | `#111111` | Void background |
+| `--text` | `#E0E0E0` | Primary text |
+| `--text-dim` | `#888888` | Secondary text |
+| `--terminal` | `#33FF00` | Accent, links, success |
+| `--warning` | `#FF3333` | Errors, alerts |
+| `--border` | `#333333` | Dividers, containers |
 
-### OPTION B: THE PYTHON WAY
+**Typography:** JetBrains Mono — self-hosted, all weights included.
+
+---
+
+## 🖥️ LOCAL DEVELOPMENT
+
+No build step. No dev server required. It's just files.
+
+### Option A: Direct
+
 ```bash
-cd public
-python3 -m http.server 8080
-# Open localhost:8080
+open public/index.html
+```
+
+### Option B: Python
+
+```bash
+cd public && python3 -m http.server 8080
+# → localhost:8080
+```
+
+### Option C: Nginx (production-like)
+
+```bash
+# Use the included config
+nginx -c $(pwd)/deploy/nginx.conf
 ```
 
 ---
 
-## 🎨 DESIGN SYSTEM: "TERMINAL BRUTALISM"
+## 📡 THE FREEHOLD PROTOCOL
 
-The design language is Hostile/Functional.
+Open-source, local-first projects don't have marketing departments. They build and vanish into the noise. The Freehold Protocol is a discoverability layer — a machine-readable way to declare: *"I built the exit."*
 
-| Element    | Value              |
-|------------|--------------------|
-| Background | `#111111` (Void)   |
-| Text       | `#E0E0E0` (Phosphor White) |
-| Accent     | `#33FF00` (Terminal Green) |
-| Error      | `#FF3333` (Alert Red) |
-| Font       | JetBrains Mono (self-hosted) |
+### How It Works
+
+Host this file at `/.well-known/freehold.json`:
+
+```json
+{
+  "$schema": "https://localghost.ai/schemas/freehold-v1.json",
+  "version": "1.0",
+  "updated": "2025-01-15T00:00:00Z",
+  "project": {
+    "name": "Your Project Name",
+    "description": "A short description of what it does.",
+    "url": "https://your-project.com",
+    "logo": "https://your-project.com/logo.svg",
+    "repository": "https://github.com/your-username/your-project",
+    "license": "MIT",
+    "created": "2025-01-01"
+  },
+  "maintainer": {
+    "name": "Your Name or Org",
+    "contact": "hello@your-project.com",
+    "pgp": "https://your-project.com/.well-known/pgp-key.asc"
+  },
+  "freehold": {
+    "local_first": true,
+    "offline_capable": true,
+    "no_remote_kill_switch": true,
+    "no_mandatory_auth_server": true,
+    "data_export": {
+      "format": "json",
+      "complete": true,
+      "documented": "https://your-project.com/docs/export"
+    }
+  }
+}
+```
+
+### The Pledge
+
+By hosting this file, your project commits to:
+
+| Claim | Meaning |
+|-------|---------|
+| `local_first` | Core functionality runs without network access |
+| `offline_capable` | Works fully offline after initial setup |
+| `no_remote_kill_switch` | No server can disable the software remotely |
+| `no_mandatory_auth_server` | Users aren't locked out if your servers die |
+| `data_export.complete` | All user data exportable in documented format |
+
+We crawl for these files. You get indexed in the [directory](https://www.localghost.ai/directory). Users find you.
+
+**Verification:** We don't take your word for it. Before listing, we audit the claims — checking source code, testing offline capability, and confirming export functionality. The badge means something.
+
+**Schema:** [`/schemas/freehold-v1.json`](https://www.localghost.ai/schemas/freehold-v1.json)
 
 ---
 
 ## ⚔️ CONTRIBUTING
 
-We accept pull requests that make the message clearer or the code cleaner.
+We accept PRs that make the message clearer or the code cleaner.
 
 **THE RULES:**
-* **NO TELEMETRY**: Do not add Google Analytics, Facebook Pixels, or Hotjar.
-* **NO EXTERNAL SCRIPTS**: Do not import JS from CDNs. If you need it, vendor it.
-* **NO BLOAT**: Keep the CSS raw. No frameworks.
 
-> "We cannot fix the internet. But we can build a room where it cannot see you."
+| ✓ Do | ✗ Don't |
+|------|---------|
+| Fix typos, improve clarity | Add Google Analytics |
+| Optimize performance | Import scripts from CDNs |
+| Add accessibility features | Introduce build steps |
+| Improve mobile experience | Add tracking pixels |
+
+**Before submitting:** Test on mobile. Test with JS disabled. Test in Firefox.
+
+---
+
+## 🔗 RELATED REPOSITORIES
+
+| Repo | Status |
+|------|--------|
+| `localghost` | Coming soon — hardware/software specification |
+| `the-mist` | Coming soon — P2P backup network protocol |
 
 ---
 
 ## 📄 LICENSE
 
-MIT License. Copy it. Fork it. Host it yourself. We are not gatekeepers. We are blueprint makers.
+MIT. Copy it. Fork it. Host it yourself. We are blueprint makers, not gatekeepers.
+
+---
+
+<p align="center">
+<em>"We cannot fix the internet. But we can build a room where it cannot see you."</em>
+</p>
