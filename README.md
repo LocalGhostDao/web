@@ -16,6 +16,8 @@ This is the public-facing terminal for [LocalGhost](https://github.com/LocalGhos
 
 ## 🔐 VERIFY THE DEPLOYMENT
 
+To deploy, just run ./deploy/deploy.sh assuming you have the same setup of folders as this this repo.
+
 Trust no one. Verify everything. Every deployment is cryptographically signed.
 
 ```bash
@@ -62,7 +64,7 @@ The terminal hides three playable games — easter eggs for those who explore:
 |------|---------|-------------|
 | **THE_SHADOW.EXE** | `shadow` | Snake variant. Feed the AI your data. |
 | **RECLAIM.EXE** | `reclaim` | Territory capture. Take back what's yours. |
-| **ESCAPE.EXE** | Close button (X) | Endless runner. Flee the machine. |
+| **ESCAPE.EXE** | `escape` | Endless runner. Flee the machine. |
 
 ---
 

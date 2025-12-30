@@ -153,7 +153,7 @@
     function finishIntro() {
         terminalState.introComplete = true;
         elements.inputLine.style.display = 'flex';
-        elements.terminalInput.focus();
+        elements.terminalInput.focus({ preventScroll: true });
         // Remove skip hint if present
         const skipHint = document.getElementById('skipHint');
         if (skipHint) skipHint.remove();
@@ -1019,13 +1019,13 @@
 
         elements.heroTerminal.addEventListener('click', () => {
             if (terminalState.introComplete && !(elements.gameModal && elements.gameModal.classList.contains('active'))) {
-                elements.terminalInput.focus();
+                elements.terminalInput.focus({ preventScroll: true });
             }
         });
 
         elements.inputLine.addEventListener('click', () => {
             if (!(elements.gameModal && elements.gameModal.classList.contains('active'))) {
-                elements.terminalInput.focus();
+                elements.terminalInput.focus({ preventScroll: true });
             }
         });
 

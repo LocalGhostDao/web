@@ -3,9 +3,50 @@
 // A Temple Run / Chrome Dino hybrid for LocalGhost.ai
 // Flee from trackers through bureaucratic obstacles
 // ===========================================
+//
+// ===========================================
+// GAME BALANCE SPECIFICATION
+// ===========================================
+//
+// WIN CONDITION: Survive exactly 3 minutes (180 seconds / 10800 frames @ 60fps)
+// LOSE CONDITION: Tracker catches you (distance <= 0)
+//
+// PERFECT PLAY REQUIREMENTS:
+// - Jump over all ground obstacles (red, type: 'jump')
+// - Duck under all overhead obstacles (red, type: 'duck')  
+// - Pass through all freehold apps (green, type: 'boost')
+// - Never collide with red obstacles
+//
+// BALANCE TUNING:
+// - Player starts at speed 5, accelerates to max 13
+// - Tracker starts at speed 4.5, base acceleration 0.0003/frame
+// - DYNAMIC DIFFICULTY:
+//   - Each RED hit: +0.0003 to tracker acceleration (DEVASTATING)
+//   - Each RED hit: -40m distance, -0.8 speed
+//   - Each GREEN boost: -0.00008 to tracker acceleration
+//   - Each GREEN boost: +15m distance, +0.5 speed
+// - Perfect play (0 hits) = tracker ends at ~7.7 speed, you win
+// - ANY hit = nearly fatal, need multiple boosts to recover
+// - Boost spawn rate: ~8% of obstacles
+// - Starting gap: 200m (max 200m), must stay > 0 for 3 minutes
+// - Jump obstacles scale with speed: 1.0x at speed 5, 1.6x at speed 13
+//
+// COLLISION BOXES:
+// - Player: 30x50 standing, 30x25 ducking, with 5px padding
+// - All obstacles: 5px padding on all sides, visual matches hitbox exactly
+// - Duck gap: 35px from ground (player ducking is 25px, so 10px clearance)
+//
+// DEBUG MODE: Set DEBUG_COLLISIONS = true to visualize hitboxes
+//
+// ===========================================
 
 (function() {
     'use strict';
+
+    // ===========================================
+    // DEBUG FLAG
+    // ===========================================
+    const DEBUG_COLLISIONS = false;  // Set to true to visualize hitboxes
 
     // ===========================================
     // CONSTANTS & CONFIG
@@ -18,226 +59,182 @@
         gravity: 0.75,
         jumpForce: -14,
         slideForce: 2,
+        
         // Speed settings
         baseSpeed: 5,
         maxSpeed: 13,
         speedIncrement: 0.0003,
-        // Tracker - accelerates, catches you in 3 min unless perfect play
-        // Tracker - starts at left edge, only kills on touch
-        trackerStartSpeed: 4,
-        trackerAcceleration: 0.0005,
-        trackerStartDistance: 350,     // Starts way back at left edge
-        trackerCatchDistance: 0,       // Only kills when actually touches player
+        
+        // Tracker - base acceleration allows perfect play to win
+        // Hitting reds increases eye acceleration, boosts decrease it
+        trackerStartSpeed: 4.5,
+        trackerAcceleration: 0.0003,  // Base rate - perfect play barely wins
+        trackerStartDistance: 200,    // Start at 200m
+        trackerMaxDistance: 200,      // Can't get further than 200m
+        trackerCatchDistance: 0,
+        
         // 3 minute hard deadline (in frames at 60fps)
         maxGameTime: 180 * 60,  // 10800 frames = 3 minutes
-        // Obstacles - challenging but fair, mix of jump and duck
-        obstacleGap: 400,
-        minObstacleGap: 300,
-        dataFragmentChance: 0.25,  // More frequent data to collect
-        targetFPS: 60
+        
+        // Obstacles
+        obstacleGap: 350,
+        minObstacleGap: 280,
+        dataFragmentChance: 0.25,
+        
+        // Duck clearance - gap between ground and bottom of duck obstacle
+        duckGap: 35  // Player ducking is 25px, so 10px clearance
     };
 
     // ===========================================
     // OBSTACLE TYPES
-    // RED = TRACKING/SURVEILLANCE
+    // RED = TRACKING/SURVEILLANCE (scale with speed)
     // GREEN = FREEHOLD APPS (run through for boost)
     // ===========================================
     
-    // TRACKING OBSTACLES - JUMP types sit on ground, DUCK types float overhead
     const OBSTACLES = {
         // === JUMP OBSTACLES - Touch the ground, jump over them ===
+        // Base sizes scale up with speed (at max speed, 1.6x these values)
         COOKIE_BANNER: {
-            name: 'ðŸª COOKIES',
-            width: 70,
-            height: 40,  // 4 lines * 10
+            name: 'COOKIES',
+            width: 65,
+            height: 45,
             type: 'jump',
             color: '#FF4444',
-            ascii: [
-                'â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”',
-                'â”‚ ðŸª ACCEPTâ”‚',
-                'â”‚  COOKIES â”‚',
-                'â””â”€â”€â”€â”€â–²â–²â”€â”€â”€â”€â”˜'
-            ]
+            ascii: []
         },
         TOS_WALL: {
-            name: 'TERMS OF SERVICE',
-            width: 85,
-            height: 60,  // 6 lines * 10
+            name: 'TERMS',
+            width: 75,
+            height: 55,
             type: 'jump',
             color: '#CC3333',
-            ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘  TERMS OF  â•‘',
-                'â•‘  SERVICE   â•‘',
-                'â•‘ [I AGREE]  â•‘',
-                'â•‘     â–²â–²     â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•'
-            ]
+            ascii: []
         },
         CONSENT_FORM: {
             name: 'CONSENT',
             width: 55,
-            height: 40,  // 4 lines * 10
+            height: 40,
             type: 'jump',
             color: '#FF5555',
-            ascii: [
-                'â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”',
-                'â”‚ â˜ AGREE â”‚',
-                'â”‚   â–²â–²    â”‚',
-                'â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜'
-            ]
+            ascii: []
         },
         CAPTCHA: {
             name: 'CAPTCHA',
-            width: 75,
-            height: 50,  // 5 lines * 10
+            width: 70,
+            height: 50,
             type: 'jump',
             color: '#EE3333',
-            ascii: [
-                'â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”',
-                'â”‚ SELECT ðŸš— â”‚',
-                'â”‚ [â– ][â– ][â–¡] â”‚',
-                'â”‚    â–²â–²     â”‚',
-                'â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜'
-            ]
+            ascii: []
         },
         DATA_WALL: {
             name: 'DATA HARVEST',
-            width: 95,
-            height: 60,  // 6 lines * 10
+            width: 80,
+            height: 60,
             type: 'jump',
             color: '#FF2222',
-            ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘ SHARE YOUR:  â•‘',
-                'â•‘ â˜ Location   â•‘',
-                'â•‘ â˜ Soul       â•‘',
-                'â•‘     â–²â–²       â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
-            ]
+            ascii: []
         },
         PAYWALL: {
             name: 'PAYWALL',
-            width: 80,
-            height: 50,  // 5 lines * 10
+            width: 70,
+            height: 50,
             type: 'jump',
             color: '#BB2222',
-            ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘ $9.99/mo   â•‘',
-                'â•‘ SUBSCRIBE  â•‘',
-                'â•‘    â–²â–²      â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•'
-            ]
+            ascii: []
         },
         
-        // === DUCK OBSTACLES - Hang from top, bottom near ground - MUST duck ===
+        // === DUCK OBSTACLES - Hang from top, must duck under ===
         PRIVACY_BANNER: {
             name: 'PRIVACY BANNER',
-            width: 130,
-            height: 200,  // Tall barrier
+            width: 100,
+            height: 120,
             type: 'duck',
             color: '#DD4444',
-            ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â•‘',
-                'â•‘                   â•‘',
-                'â•‘   WE VALUE YOUR   â•‘',
-                'â•‘     PRIVACYâ„¢      â•‘',
-                'â•‘                   â•‘',
-                'â•‘   [ACCEPT ALL]    â•‘',
-                'â•‘                   â•‘',
-                'â•‘                   â•‘',
-                'â•‘                   â•‘',
-                'â•‘                   â•‘',
-                'â•‘                   â•‘',
-                'â•‘                   â•‘',
-                'â•‘â–¼â–¼â–¼ DUCK â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
-            ]
+            ascii: []
         },
         NOTIFICATION: {
             name: 'NOTIFICATION',
-            width: 120,
-            height: 200,  // Tall barrier
+            width: 90,
+            height: 110,
             type: 'duck',
             color: '#FF6666',
-            ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â–¼â•‘',
-                'â•‘                 â•‘',
-                'â•‘   ðŸ”” ALLOW      â•‘',
-                'â•‘  NOTIFICATIONS  â•‘',
-                'â•‘                 â•‘',
-                'â•‘   [YES] [YES]   â•‘',
-                'â•‘                 â•‘',
-                'â•‘                 â•‘',
-                'â•‘                 â•‘',
-                'â•‘                 â•‘',
-                'â•‘                 â•‘',
-                'â•‘                 â•‘',
-                'â•‘â–¼â–¼â–¼ DUCK â–¼â–¼â–¼â–¼â–¼â–¼â–¼â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
-            ]
+            ascii: []
+        },
+        AD_OVERLAY: {
+            name: 'AD OVERLAY',
+            width: 85,
+            height: 100,
+            type: 'duck',
+            color: '#EE5555',
+            ascii: []
         },
         
         // ===========================================
-        // FREEHOLD APPS - Rare green portals
-        // These represent apps with freehold.json
-        // Local-first, open-source, no kill switch
+        // FREEHOLD APPS - Green portals (more frequent)
         // ===========================================
         
         FREEHOLD_APP: {
-            name: 'FREEHOLD APP',
-            width: 85,
-            height: 70,
+            name: 'FREEHOLD',
+            width: 60,
+            height: 50,
             type: 'boost',
             color: '#33FF00',
             ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘  âœ“ FREEHOLD âœ“ â•‘',
-                'â•‘  LOCAL-FIRST  â•‘',
-                'â•‘  OPEN SOURCE  â•‘',
-                'â•‘    [ PASS ]   â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
+                '╔══════════╗',
+                '║✔ FREEHOLD║',
+                '║LOCAL-FIRST║',
+                '║ [ PASS ] ║',
+                '╚══════════╝'
             ]
         },
         SOVEREIGN_NODE: {
-            name: 'SOVEREIGN NODE',
-            width: 85,
-            height: 70,
+            name: 'SOVEREIGN',
+            width: 60,
+            height: 50,
             type: 'boost',
             color: '#00FF44',
             ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘  âœ“ SOVEREIGN âœ“â•‘',
-                'â•‘  NO KILL SW   â•‘',
-                'â•‘  YOUR DATA    â•‘',
-                'â•‘    [ SAFE ]   â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
+                '╔══════════╗',
+                '║✔SOVEREIGN║',
+                '║ YOUR DATA║',
+                '║ [ SAFE ] ║',
+                '╚══════════╝'
             ]
         },
         EXIT_RAMP: {
             name: 'EXIT RAMP',
-            width: 85,
-            height: 70,
+            width: 60,
+            height: 50,
             type: 'boost',
             color: '#44FF44',
             ascii: [
-                'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—',
-                'â•‘  â˜… EXIT RAMP â˜…â•‘',
-                'â•‘  SELF-HOSTED  â•‘',
-                'â•‘  AUDITABLE    â•‘',
-                'â•‘    [ FREE ]   â•‘',
-                'â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•'
+                '╔══════════╗',
+                '║★EXIT RAMP║',
+                '║SELF-HOST ║',
+                '║ [ FREE ] ║',
+                '╚══════════╝'
+            ]
+        },
+        OPEN_SOURCE: {
+            name: 'OPEN SOURCE',
+            width: 60,
+            height: 50,
+            type: 'boost',
+            color: '#22FF22',
+            ascii: [
+                '╔══════════╗',
+                '║✔OPEN SRC ║',
+                '║AUDITABLE ║',
+                '║ [ TRUST ]║',
+                '╚══════════╝'
             ]
         }
     };
     
     // Separate arrays for spawning
-    const HAZARD_OBSTACLES = ['COOKIE_BANNER', 'TOS_WALL', 'CONSENT_FORM', 'PRIVACY_BANNER', 'CAPTCHA', 'DATA_WALL', 'NOTIFICATION', 'PAYWALL'];
-    const BOOST_OBSTACLES = ['FREEHOLD_APP', 'SOVEREIGN_NODE', 'EXIT_RAMP'];
-    const BOOST_CHANCE = 0.015; // ~1.5% - rare but crucial
+    const HAZARD_OBSTACLES = ['COOKIE_BANNER', 'TOS_WALL', 'CONSENT_FORM', 'PRIVACY_BANNER', 'CAPTCHA', 'DATA_WALL', 'NOTIFICATION', 'PAYWALL', 'AD_OVERLAY'];
+    const BOOST_OBSTACLES = ['FREEHOLD_APP', 'SOVEREIGN_NODE', 'EXIT_RAMP', 'OPEN_SOURCE'];
+    const BOOST_CHANCE = 0.08; // ~8% - required for survival
 
     const TRACKER_QUOTES = [
         'TRACKING...',
@@ -259,6 +256,7 @@
     let canvas, ctx;
     let animationId = null;
     let lastFrameTime = 0;
+    const targetFrameTime = 1000 / 60;  // 60 FPS
 
     const state = {
         running: false,
@@ -281,10 +279,9 @@
             duckHeight: 25
         },
         
-        // Tracker (the eye chasing you) - always visible, slowly accelerating
-        // Beatable with perfect play in ~3 minutes
+        // Tracker (the eye chasing you)
         tracker: {
-            distance: CONFIG.trackerStartDistance,  // Distance behind player (visible position)
+            distance: CONFIG.trackerStartDistance,
             speed: CONFIG.trackerStartSpeed,
             quoteTimer: 0,
             currentQuote: ''
@@ -292,7 +289,9 @@
         
         // Win condition
         escaped: false,
-        gameTime: 0,  // Frames elapsed - 3 min deadline
+        gameTime: 0,
+        endScreenTimer: 0,  // Delay before restart allowed
+        showExitConfirm: false,  // Exit confirmation dialog
         
         // Game objects
         obstacles: [],
@@ -306,8 +305,17 @@
         boostFlash: 0,
         warningPulse: 0,
         
+        // Stats for debugging
+        boostHits: 0,
+        hazardHits: 0,
+        
+        // Input - reset jump key state
+        jumpKeyHeld: false,
+        
         // Input
         keys: {},
+        jumpKeyHeld: false,  // Prevents multiple jumps on long press
+        duckQueued: false,   // Queue duck if pressed during jump
         touchStartY: 0
     };
 
@@ -354,13 +362,12 @@
     class DataFragment {
         constructor(x, y) {
             this.x = x;
-            // Position at running height - easy to grab
             this.y = y - 35;
             this.baseY = this.y;
-            this.size = 25;  // Bigger hitbox
+            this.size = 25;
             this.collected = false;
             this.bobOffset = Math.random() * Math.PI * 2;
-            this.type = ['ðŸ“', 'ðŸ”‘', 'ðŸ’¾', 'ðŸ“Š'][Math.floor(Math.random() * 4)];
+            this.type = ['🔐', '🔒', '💾', '📊'][Math.floor(Math.random() * 4)];
         }
         
         update(speed) {
@@ -384,19 +391,27 @@
     }
 
     class Obstacle {
-        constructor(x, type) {
+        constructor(x, type, currentSpeed) {
             this.type = type;
             this.x = x;
-            this.width = type.width;
-            this.height = type.height;
+            
+            // Scale jump obstacles with speed (more inertia = bigger obstacles)
+            // At speed 5: scale = 1.0, at speed 13: scale = 1.6
+            const speedScale = type.type === 'jump' 
+                ? 1.0 + ((currentSpeed - CONFIG.baseSpeed) / (CONFIG.maxSpeed - CONFIG.baseSpeed)) * 0.6
+                : 1.0;
+            
+            this.width = Math.floor(type.width * speedScale);
+            this.height = Math.floor(type.height * speedScale);
+            this.scale = speedScale;  // Store for drawing
             
             if (type.type === 'duck') {
-                // Duck obstacles: gap of ~28px (player is 50px standing, 25px ducking)
-                // Bottom at groundY - 28, so only ducking player fits through
-                this.y = CONFIG.groundY - 28 - type.height;
+                // Duck obstacles: bottom edge at (groundY - duckGap)
+                // Player ducking is 25px, gap is 35px, so 10px clearance
+                this.y = CONFIG.groundY - CONFIG.duckGap - this.height;
             } else {
                 // Jump obstacles sit on the ground
-                this.y = CONFIG.groundY - type.height;
+                this.y = CONFIG.groundY - this.height;
             }
             this.hit = false;
         }
@@ -410,48 +425,121 @@
             ctx.save();
             
             const isBoost = this.type.type === 'boost';
+            const isDuck = this.type.type === 'duck';
+            const bounds = this.getBounds();
             
             if (isBoost && !this.hit) {
-                // === FREEHOLD APPS: Clean green glow ===
+                // === BOOST: Green glow with ASCII ===
                 const pulse = 0.6 + Math.sin(Date.now() * 0.005) * 0.4;
-                
-                // Soft outer glow
                 ctx.shadowColor = '#33FF00';
                 ctx.shadowBlur = 20 + pulse * 10;
-                
-                // Subtle background
                 ctx.fillStyle = `rgba(51, 255, 0, ${0.08 + pulse * 0.05})`;
                 ctx.fillRect(this.x - 5, this.y - 5, this.width + 10, this.height + 10);
                 
-            } else if (!isBoost) {
-                // === HAZARD BLOCKS: Subtle red tint ===
-                ctx.shadowColor = this.hit ? '#FF0000' : this.type.color;
-                ctx.shadowBlur = this.hit ? 20 : 6;
-            }
-            
-            // Draw ASCII art
-            ctx.font = '10px monospace';
-            
-            if (this.hit) {
-                ctx.fillStyle = isBoost ? '#88FF88' : '#FF4444';
-            } else {
+                // Draw ASCII art for boost
+                ctx.font = '10px monospace';
                 ctx.fillStyle = this.type.color;
-            }
-            
-            ctx.textBaseline = 'top';
-            
-            const lineHeight = 10;
-            this.type.ascii.forEach((line, i) => {
-                ctx.fillText(line, this.x, this.y + i * lineHeight);
-            });
-            
-            // === BOOST BLOCK INDICATOR - Simple and clean ===
-            if (isBoost && !this.hit) {
+                ctx.textBaseline = 'top';
+                const lineHeight = 10;
+                this.type.ascii.forEach((line, i) => {
+                    ctx.fillText(line, this.x, this.y + i * lineHeight);
+                });
+                
                 ctx.shadowBlur = 0;
                 ctx.font = '9px monospace';
                 ctx.fillStyle = '#33FF0099';
                 ctx.textAlign = 'center';
                 ctx.fillText('[ PASS THROUGH ]', this.x + this.width / 2, this.y - 12);
+                
+            } else if (isBoost && this.hit) {
+                // === BOOST COLLECTED: Stay green, just less glowy ===
+                ctx.shadowColor = '#33FF00';
+                ctx.shadowBlur = 5;
+                
+                // Draw ASCII art - stays green
+                ctx.font = '10px monospace';
+                ctx.fillStyle = '#33FF0088';  // Slightly faded green
+                ctx.textBaseline = 'top';
+                const lineHeight = 10;
+                this.type.ascii.forEach((line, i) => {
+                    ctx.fillText(line, this.x, this.y + i * lineHeight);
+                });
+                
+            } else if (isDuck) {
+                // === DUCK OBSTACLES: Draw box exactly matching hitbox ===
+                ctx.shadowColor = this.hit ? '#FF0000' : this.type.color;
+                ctx.shadowBlur = this.hit ? 20 : 8;
+                
+                // Fill the box
+                ctx.fillStyle = this.hit ? 'rgba(255, 68, 68, 0.3)' : 'rgba(255, 68, 68, 0.15)';
+                ctx.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                
+                // Border
+                ctx.strokeStyle = this.hit ? '#FF4444' : this.type.color;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                
+                // Draw warning stripes inside
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = this.hit ? '#FF666666' : '#FF444444';
+                ctx.lineWidth = 1;
+                const stripeGap = 15;
+                for (let i = 0; i < bounds.width + bounds.height; i += stripeGap) {
+                    ctx.beginPath();
+                    ctx.moveTo(bounds.x + i, bounds.y);
+                    ctx.lineTo(bounds.x, bounds.y + i);
+                    ctx.stroke();
+                }
+                
+                // Label at top
+                ctx.font = 'bold 10px monospace';
+                ctx.fillStyle = this.type.color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                ctx.fillText(this.type.name, bounds.x + bounds.width / 2, bounds.y + 5);
+                
+                // DUCK indicator at bottom
+                ctx.font = '9px monospace';
+                ctx.fillStyle = '#FF6666';
+                ctx.fillText('▼▼ DUCK ▼▼', bounds.x + bounds.width / 2, bounds.y + bounds.height - 15);
+                
+            } else {
+                // === JUMP OBSTACLES: Draw box matching hitbox, scaled with speed ===
+                ctx.shadowColor = this.hit ? '#FF0000' : this.type.color;
+                ctx.shadowBlur = this.hit ? 20 : 8;
+                
+                // Fill the box
+                ctx.fillStyle = this.hit ? 'rgba(255, 68, 68, 0.3)' : 'rgba(255, 68, 68, 0.12)';
+                ctx.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                
+                // Border
+                ctx.strokeStyle = this.hit ? '#FF4444' : this.type.color;
+                ctx.lineWidth = 2;
+                ctx.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+                
+                // Warning pattern inside
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = this.hit ? '#FF666644' : '#FF444433';
+                ctx.lineWidth = 1;
+                const stripeGap = 12;
+                for (let i = 0; i < bounds.width + bounds.height; i += stripeGap) {
+                    ctx.beginPath();
+                    ctx.moveTo(bounds.x + i, bounds.y + bounds.height);
+                    ctx.lineTo(bounds.x, bounds.y + bounds.height - i);
+                    ctx.stroke();
+                }
+                
+                // Label
+                ctx.font = 'bold 9px monospace';
+                ctx.fillStyle = this.hit ? '#FF666688' : this.type.color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.type.name, bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 - 5);
+                
+                // Jump indicator
+                ctx.font = '8px monospace';
+                ctx.fillStyle = this.hit ? '#FF444466' : '#FF666699';
+                ctx.fillText('▲ JUMP ▲', bounds.x + bounds.width / 2, bounds.y + bounds.height / 2 + 8);
             }
             
             ctx.restore();
@@ -480,14 +568,12 @@
         canvas.width = CONFIG.canvasWidth;
         canvas.height = CONFIG.canvasHeight;
         
-        // Load high score
         try {
             state.highScore = parseInt(localStorage.getItem('localghost_escape_highscore') || '0');
         } catch (e) {
             state.highScore = 0;
         }
         
-        // Initialize ground tiles
         for (let i = 0; i < Math.ceil(CONFIG.canvasWidth / 20) + 2; i++) {
             state.groundTiles.push({ x: i * 20, char: getGroundChar() });
         }
@@ -496,7 +582,7 @@
     }
     
     function getGroundChar() {
-        const chars = ['â”€', 'â•', 'â”', 'â”€', 'â”€', 'â”„', 'â”ˆ'];
+        const chars = ['─', '═', '━', '─', '─', '┄', '┈'];
         return chars[Math.floor(Math.random() * chars.length)];
     }
 
@@ -505,10 +591,15 @@
         state.paused = false;
         state.gameOver = false;
         state.escaped = false;
+        state.showExitConfirm = false;
         state.score = 0;
         state.distance = 0;
         state.speed = CONFIG.baseSpeed;
         state.gameTime = 0;
+        state.endScreenTimer = 0;
+        state.boostHits = 0;
+        state.hazardHits = 0;
+        state.duckQueued = false;
         
         state.player = {
             x: 100,
@@ -536,7 +627,6 @@
         state.boostFlash = 0;
         state.warningPulse = 0;
         
-        // Spawn initial obstacles with good spacing
         for (let i = 1; i <= 2; i++) {
             spawnObstacle(CONFIG.canvasWidth + i * CONFIG.obstacleGap);
         }
@@ -550,7 +640,6 @@
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
         
-        // Touch controls
         canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
         canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
     }
@@ -559,28 +648,52 @@
         const modal = document.getElementById('escapeModal');
         if (!modal || !modal.classList.contains('active')) return;
         
-        state.keys[e.key] = true;
+        // Handle exit confirmation dialog
+        if (state.showExitConfirm) {
+            if (e.key === 'y' || e.key === 'Y' || e.key === 'Enter') {
+                e.preventDefault();
+                state.showExitConfirm = false;
+                close();
+            } else if (e.key === 'n' || e.key === 'N' || e.key === 'Escape') {
+                e.preventDefault();
+                state.showExitConfirm = false;
+            }
+            return;
+        }
         
+        const isJumpKey = e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W';
+        const isDuckKey = e.key === 'ArrowDown' || e.key === 's' || e.key === 'S';
+        
+        // Handle jump keys - only trigger on fresh press, not held
+        if (isJumpKey) {
+            e.preventDefault();
+            
+            // On end screens, jump key does nothing - must use R to restart
+            if (state.gameOver || state.escaped) {
+                return;
+            }
+            
+            if (!state.running) {
+                // Start screen - space starts the game
+                resetGame();
+                state.jumpKeyHeld = true;
+            } else if (!state.jumpKeyHeld) {
+                // Only jump if this is a fresh key press
+                jump();
+                state.jumpKeyHeld = true;
+            }
+            return;
+        }
+        
+        // Handle duck keys - duck while held
+        if (isDuckKey) {
+            e.preventDefault();
+            duck(true);
+            return;
+        }
+        
+        // Other keys
         switch (e.key) {
-            case ' ':
-            case 'ArrowUp':
-            case 'w':
-            case 'W':
-                e.preventDefault();
-                if (state.gameOver || state.escaped) {
-                    resetGame();
-                } else if (!state.running) {
-                    resetGame();
-                } else {
-                    jump();
-                }
-                break;
-            case 'ArrowDown':
-            case 's':
-            case 'S':
-                e.preventDefault();
-                duck(true);
-                break;
             case 'p':
             case 'P':
                 e.preventDefault();
@@ -591,19 +704,31 @@
             case 'r':
             case 'R':
                 e.preventDefault();
-                resetGame();
+                if (state.endScreenTimer <= 0) {
+                    resetGame();
+                }
                 break;
             case 'Escape':
                 e.preventDefault();
-                close();
+                state.showExitConfirm = true;
+                if (state.running && !state.gameOver && !state.escaped) {
+                    state.paused = true;
+                }
                 break;
         }
     }
     
     function handleKeyUp(e) {
-        state.keys[e.key] = false;
+        const isJumpKey = e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W';
+        const isDuckKey = e.key === 'ArrowDown' || e.key === 's' || e.key === 'S';
         
-        if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+        // Release jump key hold - allows next press to trigger jump
+        if (isJumpKey) {
+            state.jumpKeyHeld = false;
+        }
+        
+        // Release duck on key up
+        if (isDuckKey) {
             duck(false);
         }
     }
@@ -624,14 +749,11 @@
         const deltaY = touch.clientY - state.touchStartY;
         
         if (deltaY < -30) {
-            // Swipe up - jump
             jump();
         } else if (deltaY > 30) {
-            // Swipe down - duck (momentary)
             duck(true);
             setTimeout(() => duck(false), 300);
         } else {
-            // Tap - jump
             jump();
         }
     }
@@ -647,7 +769,6 @@
             state.player.vy = CONFIG.jumpForce;
             state.player.isJumping = true;
             
-            // Jump particles
             for (let i = 0; i < 5; i++) {
                 state.particles.push(new Particle(
                     state.player.x + state.player.width / 2,
@@ -661,8 +782,12 @@
     function duck(isDucking) {
         if (state.paused || state.gameOver) return;
         
-        if (!state.player.isJumping) {
+        if (state.player.isJumping) {
+            // Queue duck to apply when landing
+            state.duckQueued = isDucking;
+        } else {
             state.player.isDucking = isDucking;
+            state.duckQueued = false;
         }
     }
 
@@ -673,7 +798,6 @@
     function spawnObstacle(x) {
         let typeKey;
         
-        // Decide if this is a boost or hazard
         if (Math.random() < BOOST_CHANCE) {
             typeKey = BOOST_OBSTACLES[Math.floor(Math.random() * BOOST_OBSTACLES.length)];
         } else {
@@ -681,9 +805,8 @@
         }
         
         const type = OBSTACLES[typeKey];
-        state.obstacles.push(new Obstacle(x, type));
+        state.obstacles.push(new Obstacle(x, type, state.speed));
         
-        // Maybe spawn data fragment (not near boost blocks)
         if (type.type !== 'boost' && Math.random() < CONFIG.dataFragmentChance) {
             state.dataFragments.push(new DataFragment(x + 40, CONFIG.groundY));
         }
@@ -696,12 +819,10 @@
     function update() {
         if (!state.running || state.paused || state.gameOver) return;
         
-        // Increase speed over time
         state.speed = Math.min(CONFIG.maxSpeed, state.speed + CONFIG.speedIncrement);
         state.distance += state.speed;
         state.score = Math.floor(state.distance / 10);
         
-        // Update tracker anger
         state.tracker.anger = Math.min(1, state.distance / 10000);
         
         updatePlayer();
@@ -718,7 +839,6 @@
     function updatePlayer() {
         const player = state.player;
         
-        // Apply gravity
         if (player.isJumping) {
             player.vy += CONFIG.gravity;
             player.y += player.vy;
@@ -728,10 +848,15 @@
                 player.y = CONFIG.groundY;
                 player.vy = 0;
                 player.isJumping = false;
+                
+                // Apply queued duck from during jump
+                if (state.duckQueued) {
+                    player.isDucking = true;
+                    state.duckQueued = false;
+                }
             }
         }
         
-        // Trail particles while running
         if (Math.random() < 0.3) {
             state.particles.push(new Particle(
                 player.x,
@@ -745,23 +870,23 @@
     function updateTracker() {
         const tracker = state.tracker;
         
-        // Increment game time
         state.gameTime++;
         
-        // Tracker accelerates linearly - inevitable doom builds
-        tracker.speed += CONFIG.trackerAcceleration;
+        // Base tracker acceleration - tuned so perfect play (0 hits) wins
+        // Each RED hit MASSIVELY increases tracker acceleration (nearly fatal)
+        // Each BOOST helps recover
+        const hitPenalty = state.hazardHits * 0.0003;   // Each hit = devastating
+        const boostBonus = state.boostHits * 0.00008;   // Boosts help recover
+        const effectiveAccel = Math.max(0.0001, CONFIG.trackerAcceleration + hitPenalty - boostBonus);
+        tracker.speed += effectiveAccel;
         
-        // Distance changes based on speed difference
-        // Player faster = distance increases (pulling ahead)
-        // Tracker faster = distance decreases (catching up)
         const speedDiff = state.speed - tracker.speed;
         tracker.distance += speedDiff * 0.15;
         
-        // Clamp distance - can pull ahead but has a limit
+        // Clamp distance - can't exceed max
         tracker.distance = Math.max(tracker.distance, 0);
-        tracker.distance = Math.min(tracker.distance, 400);  // Can get quite far ahead
+        tracker.distance = Math.min(tracker.distance, CONFIG.trackerMaxDistance);
         
-        // Occasional quotes
         tracker.quoteTimer--;
         if (tracker.quoteTimer <= 0 && Math.random() < 0.01) {
             const timeLeft = (CONFIG.maxGameTime - state.gameTime) / 60;
@@ -775,25 +900,21 @@
             tracker.quoteTimer = 120;
         }
         
-        // Check if caught - game over
         if (tracker.distance <= CONFIG.trackerCatchDistance) {
             gameOver();
             return;
         }
         
-        // Check 3 minute deadline
         if (state.gameTime >= CONFIG.maxGameTime && !state.escaped) {
-            // Survived 3 minutes without being caught = ESCAPED!
             state.escaped = true;
             state.running = false;
+            state.endScreenTimer = 90;
         }
     }
     
     function updateObstacles() {
-        // Update existing obstacles
         state.obstacles = state.obstacles.filter(obs => obs.update(state.speed));
         
-        // Spawn new obstacles with consistent spacing - all avoidable
         const lastObstacle = state.obstacles[state.obstacles.length - 1];
         const minGap = CONFIG.minObstacleGap;
         if (!lastObstacle || lastObstacle.x < CONFIG.canvasWidth - minGap) {
@@ -840,7 +961,6 @@
             height: playerHeight - 10
         };
         
-        // Check obstacle collisions
         for (const obs of state.obstacles) {
             if (obs.hit) continue;
             
@@ -849,7 +969,6 @@
             if (rectsIntersect(playerBounds, obsBounds)) {
                 obs.hit = true;
                 
-                // Check if it's a boost or hazard
                 if (obs.type.type === 'boost') {
                     onBoostHit(obs);
                 } else {
@@ -858,11 +977,10 @@
             }
         }
         
-        // Check data fragment collection - generous hitbox
         for (const frag of state.dataFragments) {
             if (frag.collected) continue;
             
-            const grabRadius = frag.size * 1.5;  // Generous collection radius
+            const grabRadius = frag.size * 1.5;
             const fragBounds = {
                 x: frag.x - grabRadius,
                 y: frag.y - grabRadius,
@@ -885,19 +1003,13 @@
     }
     
     function onBoostHit(obstacle) {
-        // Speed boost - crucial for staying ahead, rare so valuable
-        state.speed = Math.min(CONFIG.maxSpeed, state.speed + 1.0);
-        
-        // Also gain some distance directly
-        state.tracker.distance = Math.min(400, state.tracker.distance + 25);
-        
-        // Score bonus
-        state.score += 100;
-        
-        // Visual feedback - subtle green glow
+        // Boost helps recover - but can't fully undo a hit
+        state.speed = Math.min(CONFIG.maxSpeed, state.speed + 0.5);
+        state.tracker.distance = Math.min(CONFIG.trackerMaxDistance, state.tracker.distance + 15);
+        state.score += 50;
         state.boostFlash = 0.5;
+        state.boostHits++;
         
-        // Minimal particles
         for (let i = 0; i < 6; i++) {
             state.particles.push(new Particle(
                 obstacle.x + obstacle.width / 2,
@@ -911,18 +1023,14 @@
     }
     
     function onObstacleHit(obstacle) {
-        // Slowdown - tracker gains ground
-        state.speed = Math.max(CONFIG.baseSpeed * 0.85, state.speed - 0.4);
+        // DEVASTATING penalty - each hit should nearly cost you the game
+        state.speed = Math.max(CONFIG.baseSpeed * 0.7, state.speed - 0.8);
+        state.tracker.distance = Math.max(0, state.tracker.distance - 40);  // Lose 40m!
+        state.screenShake = 4;
+        state.flashIntensity = 0.25;
+        state.hazardHits++;
         
-        // Lose some distance
-        state.tracker.distance = Math.max(20, state.tracker.distance - 12);
-        
-        // Visual feedback - subtle
-        state.screenShake = 2;
-        state.flashIntensity = 0.15;
-        
-        // Minimal particles
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 6; i++) {
             state.particles.push(new Particle(
                 obstacle.x + obstacle.width / 2,
                 obstacle.y + obstacle.height / 2,
@@ -930,13 +1038,12 @@
             ));
         }
         
-        updateFeedback(obstacle.type.name, '#AA3333');
+        updateFeedback(obstacle.type.name, '#FF3333');
     }
     
     function onDataCollected(fragment) {
         state.score += 25;
         
-        // Minimal particles
         for (let i = 0; i < 3; i++) {
             state.particles.push(new Particle(
                 fragment.x,
@@ -962,8 +1069,8 @@
     function gameOver() {
         state.gameOver = true;
         state.running = false;
+        state.endScreenTimer = 90;  // 1.5 sec delay before restart allowed
         
-        // Update high score
         if (state.score > state.highScore) {
             state.highScore = state.score;
             try {
@@ -971,7 +1078,6 @@
             } catch (e) {}
         }
         
-        // Minimal particles - calm end
         for (let i = 0; i < 10; i++) {
             state.particles.push(new Particle(
                 state.player.x + state.player.width / 2,
@@ -983,7 +1089,6 @@
         state.screenShake = 8;
         state.flashIntensity = 0.5;
         
-        // Decay screen shake after game over
         const shakeDecay = setInterval(() => {
             state.screenShake *= 0.8;
             state.flashIntensity *= 0.85;
@@ -1002,7 +1107,11 @@
     function draw() {
         if (!ctx) return;
         
-        // Clear with screen shake
+        // Decrement end screen timer
+        if (state.endScreenTimer > 0) {
+            state.endScreenTimer--;
+        }
+        
         ctx.save();
         if (state.screenShake > 0.5) {
             ctx.translate(
@@ -1015,52 +1124,46 @@
         ctx.fillStyle = '#0a0a0a';
         ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
         
-        // Subtle scanlines
+        // Scanlines
         ctx.fillStyle = 'rgba(0,0,0,0.08)';
         for (let y = 0; y < CONFIG.canvasHeight; y += 4) {
             ctx.fillRect(0, y, CONFIG.canvasWidth, 2);
         }
         
-        // Draw ground
         drawGround();
-        
-        // Draw tracker (behind everything)
         drawTracker();
         
-        // Draw obstacles
         for (const obs of state.obstacles) {
             obs.draw(ctx);
         }
         
-        // Draw data fragments
         for (const frag of state.dataFragments) {
             frag.draw(ctx);
         }
         
-        // Draw particles
         for (const p of state.particles) {
             p.draw(ctx);
         }
         
-        // Draw player
         drawPlayer();
         
-        // Draw HUD
+        // DEBUG: Draw collision boxes
+        if (DEBUG_COLLISIONS && state.running && !state.paused) {
+            drawDebugCollisions();
+        }
+        
         drawHUD();
         
-        // Flash overlay - subtle red for damage
         if (state.flashIntensity > 0.05) {
             ctx.fillStyle = `rgba(255, 50, 50, ${state.flashIntensity * 0.2})`;
             ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
         }
         
-        // Boost flash overlay - subtle green
         if (state.boostFlash > 0.05) {
             ctx.fillStyle = `rgba(51, 255, 0, ${state.boostFlash * 0.15})`;
             ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
         }
         
-        // Overlays
         if (state.escaped) {
             drawEscaped();
         } else if (state.gameOver) {
@@ -1071,6 +1174,87 @@
             drawStartScreen();
         }
         
+        // Exit confirmation overlay (draws on top of everything)
+        if (state.showExitConfirm) {
+            drawExitConfirm();
+        }
+        
+        ctx.restore();
+    }
+    
+    function drawDebugCollisions() {
+        ctx.save();
+        ctx.lineWidth = 2;
+        
+        // Player collision box
+        const player = state.player;
+        const playerHeight = player.isDucking ? player.duckHeight : player.height;
+        const playerBounds = {
+            x: player.x + 5,
+            y: player.y - playerHeight + 5,
+            width: player.width - 10,
+            height: playerHeight - 10
+        };
+        
+        ctx.strokeStyle = '#00FFFF';
+        ctx.strokeRect(playerBounds.x, playerBounds.y, playerBounds.width, playerBounds.height);
+        
+        // Duck clearance line (where bottom of duck obstacles are)
+        ctx.strokeStyle = '#FFFF00';
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(0, CONFIG.groundY - CONFIG.duckGap);
+        ctx.lineTo(CONFIG.canvasWidth, CONFIG.groundY - CONFIG.duckGap);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Obstacle collision boxes
+        for (const obs of state.obstacles) {
+            if (obs.hit) continue;
+            
+            const bounds = obs.getBounds();
+            
+            if (obs.type.type === 'boost') {
+                ctx.strokeStyle = '#00FF00';
+            } else if (obs.type.type === 'duck') {
+                ctx.strokeStyle = '#FF00FF';
+            } else {
+                ctx.strokeStyle = '#FF0000';
+            }
+            
+            ctx.strokeRect(bounds.x, bounds.y, bounds.width, bounds.height);
+            
+            // Label
+            ctx.font = '8px monospace';
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.fillText(obs.type.type.toUpperCase(), bounds.x, bounds.y - 3);
+        }
+        
+        // Debug info panel
+        ctx.fillStyle = 'rgba(0,0,0,0.8)';
+        ctx.fillRect(CONFIG.canvasWidth - 150, 50, 145, 100);
+        ctx.strokeStyle = '#33FF00';
+        ctx.strokeRect(CONFIG.canvasWidth - 150, 50, 145, 100);
+        
+        ctx.font = '9px monospace';
+        ctx.fillStyle = '#33FF00';
+        ctx.textAlign = 'left';
+        
+        const debugLines = [
+            `Player Y: ${player.y.toFixed(0)}`,
+            `Height: ${playerHeight}`,
+            `Ducking: ${player.isDucking}`,
+            `Duck gap: ${CONFIG.duckGap}`,
+            `Boosts: ${state.boostHits}`,
+            `Hits: ${state.hazardHits}`,
+            `Speed: ${state.speed.toFixed(2)}`,
+            `Tracker: ${state.tracker.speed.toFixed(2)}`
+        ];
+        
+        debugLines.forEach((line, i) => {
+            ctx.fillText(line, CONFIG.canvasWidth - 145, 63 + i * 12);
+        });
+        
         ctx.restore();
     }
     
@@ -1078,7 +1262,6 @@
         ctx.fillStyle = '#1a1a1a';
         ctx.fillRect(0, CONFIG.groundY, CONFIG.canvasWidth, CONFIG.canvasHeight - CONFIG.groundY);
         
-        // Ground line
         ctx.strokeStyle = '#33FF00';
         ctx.lineWidth = 2;
         ctx.shadowColor = '#33FF00';
@@ -1089,7 +1272,6 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
         
-        // Grid tiles
         ctx.font = '12px monospace';
         ctx.fillStyle = '#1a3a1a';
         state.groundTiles.forEach(tile => {
@@ -1100,14 +1282,11 @@
     function drawTracker() {
         const tracker = state.tracker;
         
-        // Calculate position - tracker is always visible on left side
-        // distance 0 = touching player (x ~90), distance 400 = far left (x ~20)
         const playerX = 100;
-        const minX = 15;   // Far left edge when distance is max
-        const distanceRatio = Math.min(1, tracker.distance / 400);
+        const minX = 15;
+        const distanceRatio = Math.min(1, tracker.distance / CONFIG.trackerMaxDistance);
         const x = playerX - 10 - (distanceRatio * (playerX - 10 - minX));
         
-        // Size based on distance (closer = bigger, scarier)
         const proximity = 1 - distanceRatio;
         const size = 35 + proximity * 30;
         
@@ -1116,12 +1295,10 @@
         ctx.save();
         ctx.translate(x, y);
         
-        // Glow - subtle pulse
         const pulse = 1 + Math.sin(Date.now() * 0.003) * 0.1;
         ctx.shadowColor = '#FF0000';
         ctx.shadowBlur = 15 + proximity * 15 * pulse;
         
-        // Eye sclera
         const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, size * 0.5);
         grad.addColorStop(0, '#FFFFEE');
         grad.addColorStop(0.7, '#FFEECC');
@@ -1131,7 +1308,6 @@
         ctx.ellipse(0, 0, size * 0.5, size * 0.3, 0, 0, Math.PI * 2);
         ctx.fill();
         
-        // Bloodshot veins - subtle
         ctx.shadowBlur = 0;
         const veinCount = 5 + Math.floor(proximity * 3);
         for (let i = 0; i < veinCount; i++) {
@@ -1144,7 +1320,6 @@
             ctx.stroke();
         }
         
-        // Iris - looks at player
         const lookAngle = Math.atan2(
             CONFIG.groundY - y - state.player.height / 2,
             state.player.x - x
@@ -1161,13 +1336,11 @@
         ctx.arc(irisOffsetX, irisOffsetY, size * 0.17, 0, Math.PI * 2);
         ctx.fill();
         
-        // Pupil - slit
         ctx.fillStyle = '#000000';
         ctx.beginPath();
         ctx.ellipse(irisOffsetX, irisOffsetY, size * 0.04, size * 0.11, 0, 0, Math.PI * 2);
         ctx.fill();
         
-        // Glint
         ctx.fillStyle = 'rgba(255,255,255,0.5)';
         ctx.beginPath();
         ctx.arc(irisOffsetX - size * 0.04, irisOffsetY - size * 0.04, size * 0.025, 0, Math.PI * 2);
@@ -1175,7 +1348,6 @@
         
         ctx.restore();
         
-        // Quote bubble - less frequent
         if (tracker.quoteTimer > 50 && tracker.currentQuote) {
             ctx.save();
             ctx.globalAlpha = Math.min(1, (tracker.quoteTimer - 50) / 50);
@@ -1195,32 +1367,26 @@
         ctx.save();
         ctx.translate(player.x, y);
         
-        // Glow
         ctx.shadowColor = '#33FF00';
         ctx.shadowBlur = 15;
         
-        // Ghost body
         ctx.fillStyle = '#33FF00';
         ctx.strokeStyle = '#33FF00';
         ctx.lineWidth = 2;
         
         if (player.isDucking) {
-            // Ducking - compressed ghost
             ctx.beginPath();
             ctx.ellipse(player.width / 2, height * 0.4, player.width * 0.6, height * 0.4, 0, 0, Math.PI * 2);
             ctx.fill();
             
-            // Eyes - squinting
             ctx.fillStyle = '#111';
             ctx.fillRect(player.width * 0.25, height * 0.3, 6, 2);
             ctx.fillRect(player.width * 0.55, height * 0.3, 6, 2);
         } else {
-            // Normal ghost shape
             ctx.beginPath();
             ctx.arc(player.width / 2, height * 0.35, player.width * 0.45, Math.PI, 0);
             ctx.lineTo(player.width * 0.95, height * 0.7);
             
-            // Wavy bottom
             const wave = Math.sin(Date.now() * 0.02) * 2;
             ctx.lineTo(player.width * 0.8, height + wave);
             ctx.lineTo(player.width * 0.6, height * 0.85 + wave);
@@ -1231,7 +1397,6 @@
             ctx.closePath();
             ctx.fill();
             
-            // Eyes
             ctx.fillStyle = '#111';
             const eyeY = player.isJumping ? height * 0.3 : height * 0.35;
             ctx.beginPath();
@@ -1247,20 +1412,17 @@
     function drawHUD() {
         const tracker = state.tracker;
         
-        // === TOP LEFT - Distance traveled ===
         ctx.font = '14px monospace';
         ctx.fillStyle = '#33FF00';
         ctx.textAlign = 'left';
         ctx.fillText(`${state.score}m`, 20, 25);
         
-        // Best distance
         if (state.highScore > 0) {
             ctx.fillStyle = '#444';
             ctx.font = '10px monospace';
             ctx.fillText(`best: ${state.highScore}m`, 20, 40);
         }
         
-        // === TOP CENTER - Time remaining ===
         const timeLeft = Math.max(0, CONFIG.maxGameTime - state.gameTime);
         const seconds = Math.ceil(timeLeft / 60);
         const mins = Math.floor(seconds / 60);
@@ -1278,7 +1440,6 @@
         }
         ctx.fillText(timeStr, CONFIG.canvasWidth / 2, 25);
         
-        // === TOP RIGHT - Tracker gap ===
         ctx.textAlign = 'right';
         ctx.font = '11px monospace';
         
@@ -1291,6 +1452,13 @@
             ctx.fillStyle = '#555';
         }
         ctx.fillText(`gap: ${gap}m`, CONFIG.canvasWidth - 20, 25);
+    }
+    
+    function formatTime(frames) {
+        const totalSeconds = Math.floor(frames / 60);
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
     
     function drawGameOver() {
@@ -1310,21 +1478,30 @@
         
         ctx.fillStyle = '#33FF00';
         ctx.font = 'bold 22px monospace';
-        ctx.fillText(`${state.score}m`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 30);
+        ctx.fillText(`${state.score}m`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 20);
+        
+        ctx.fillStyle = '#888';
+        ctx.font = '12px monospace';
+        ctx.fillText(`Time: ${formatTime(state.gameTime)}`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 45);
         
         ctx.fillStyle = '#555';
         ctx.font = '11px monospace';
-        ctx.fillText('distance before capture', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 50);
+        ctx.fillText(`Boosts: ${state.boostHits} | Hits: ${state.hazardHits}`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 65);
         
         if (state.score === state.highScore && state.score > 0) {
             ctx.fillStyle = '#FFE66D';
             ctx.font = 'bold 12px monospace';
-            ctx.fillText('â˜… LONGEST RUN â˜…', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 80);
+            ctx.fillText('★ LONGEST RUN ★', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 90);
         }
         
         ctx.fillStyle = '#444';
         ctx.font = '11px monospace';
-        ctx.fillText('SPACE = Run again  |  ESC = Exit', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 115);
+        if (state.endScreenTimer > 0) {
+            ctx.fillStyle = '#333';
+            ctx.fillText('...', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 120);
+        } else {
+            ctx.fillText('R = Run again  |  ESC = Exit', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 120);
+        }
     }
     
     function drawEscaped() {
@@ -1333,7 +1510,6 @@
         
         ctx.textAlign = 'center';
         
-        // Victory glow
         ctx.shadowColor = '#33FF00';
         ctx.shadowBlur = 30;
         
@@ -1350,15 +1526,28 @@
         
         ctx.fillStyle = '#33FF00';
         ctx.font = 'bold 24px monospace';
-        ctx.fillText(`${state.score}m`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 30);
+        ctx.fillText(`${state.score}m`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 20);
+        
+        ctx.fillStyle = '#888';
+        ctx.font = '12px monospace';
+        ctx.fillText(`Time: ${formatTime(state.gameTime)}`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 45);
+        
+        ctx.fillStyle = '#555';
+        ctx.font = '11px monospace';
+        ctx.fillText(`Boosts: ${state.boostHits} | Hits: ${state.hazardHits}`, CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 65);
         
         ctx.fillStyle = '#666';
         ctx.font = '11px monospace';
-        ctx.fillText('"The cage is unlocked."', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 60);
+        ctx.fillText('"The cage is unlocked."', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 90);
         
         ctx.fillStyle = '#444';
         ctx.font = '11px monospace';
-        ctx.fillText('SPACE = Run again  |  ESC = Exit', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 100);
+        if (state.endScreenTimer > 0) {
+            ctx.fillStyle = '#333';
+            ctx.fillText('...', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 120);
+        } else {
+            ctx.fillText('R = Run again  |  ESC = Exit', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 120);
+        }
     }
     
     function drawPaused() {
@@ -1375,23 +1564,77 @@
         ctx.fillText('Press P to continue', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 40);
     }
     
+    function drawExitConfirm() {
+        // Dark overlay
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+        ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
+        
+        // Dialog box
+        const boxW = 320;
+        const boxH = 140;
+        const boxX = (CONFIG.canvasWidth - boxW) / 2;
+        const boxY = (CONFIG.canvasHeight - boxH) / 2;
+        
+        // Box background
+        ctx.fillStyle = '#111';
+        ctx.fillRect(boxX, boxY, boxW, boxH);
+        
+        // Box border
+        ctx.strokeStyle = '#33FF00';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(boxX, boxY, boxW, boxH);
+        
+        // Title
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FF6666';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('EXIT GAME?', CONFIG.canvasWidth / 2, boxY + 35);
+        
+        // Message
+        ctx.fillStyle = '#888';
+        ctx.font = '12px monospace';
+        ctx.fillText('Your progress will be lost.', CONFIG.canvasWidth / 2, boxY + 60);
+        
+        // Buttons
+        const btnY = boxY + 95;
+        const btnW = 100;
+        const btnH = 30;
+        const gap = 30;
+        
+        // Yes button
+        const yesX = CONFIG.canvasWidth / 2 - btnW - gap / 2;
+        ctx.fillStyle = '#331111';
+        ctx.fillRect(yesX, btnY, btnW, btnH);
+        ctx.strokeStyle = '#FF4444';
+        ctx.strokeRect(yesX, btnY, btnW, btnH);
+        ctx.fillStyle = '#FF4444';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText('[Y] YES', yesX + btnW / 2, btnY + 20);
+        
+        // No button
+        const noX = CONFIG.canvasWidth / 2 + gap / 2;
+        ctx.fillStyle = '#113311';
+        ctx.fillRect(noX, btnY, btnW, btnH);
+        ctx.strokeStyle = '#33FF00';
+        ctx.strokeRect(noX, btnY, btnW, btnH);
+        ctx.fillStyle = '#33FF00';
+        ctx.fillText('[N] NO', noX + btnW / 2, btnY + 20);
+    }
+    
     function drawStartScreen() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.92)';
         ctx.fillRect(0, 0, CONFIG.canvasWidth, CONFIG.canvasHeight);
         
         ctx.textAlign = 'center';
         
-        // Title
         ctx.fillStyle = '#33FF00';
         ctx.font = 'bold 32px monospace';
         ctx.fillText('ESCAPE.EXE', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 - 120);
         
-        // Subtitle
         ctx.fillStyle = '#555';
         ctx.font = '11px monospace';
         ctx.fillText('"The cage is unlocked."', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 - 92);
         
-        // Core concept - 3 minute survival
         ctx.fillStyle = '#888';
         ctx.font = '12px monospace';
         ctx.fillText('Survive 3 minutes to escape.', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 - 60);
@@ -1399,7 +1642,6 @@
         ctx.font = '11px monospace';
         ctx.fillText('The tracker accelerates. Perfect play required.', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 - 42);
         
-        // Color coding - two columns
         ctx.fillStyle = '#FF4444';
         ctx.font = 'bold 10px monospace';
         ctx.fillText('RED: SURVEILLANCE', CONFIG.canvasWidth / 2 - 115, CONFIG.canvasHeight / 2 - 5);
@@ -1414,18 +1656,15 @@
         ctx.font = '9px monospace';
         ctx.fillText('Pass through for speed', CONFIG.canvasWidth / 2 + 115, CONFIG.canvasHeight / 2 + 10);
         
-        // Controls
         ctx.fillStyle = '#444';
         ctx.font = '10px monospace';
         ctx.fillText('SPACE/UP = Jump   |   DOWN = Duck', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 50);
         
-        // Start prompt
         const pulse = Math.sin(Date.now() * 0.003) > 0;
         ctx.fillStyle = pulse ? '#33FF00' : '#227700';
         ctx.font = 'bold 14px monospace';
         ctx.fillText('[ PRESS SPACE ]', CONFIG.canvasWidth / 2, CONFIG.canvasHeight / 2 + 95);
         
-        // High score
         if (state.highScore > 0) {
             ctx.fillStyle = '#333';
             ctx.font = '10px monospace';
@@ -1440,8 +1679,8 @@
     function gameLoop(timestamp) {
         const elapsed = timestamp - lastFrameTime;
         
-        if (elapsed >= 1000 / CONFIG.targetFPS) {
-            lastFrameTime = timestamp - (elapsed % (1000 / CONFIG.targetFPS));
+        if (elapsed >= targetFrameTime) {
+            lastFrameTime = timestamp - (elapsed % targetFrameTime);
             update();
             draw();
         }
@@ -1462,7 +1701,7 @@
         
         init();
         resetGame();
-        state.running = false;  // Wait for player input
+        state.running = false;
         
         if (animationId) cancelAnimationFrame(animationId);
         lastFrameTime = 0;
@@ -1486,15 +1725,14 @@
         }
         
         state.running = false;
+        state.showExitConfirm = false;
         
         const ti = document.getElementById('terminalInput');
         if (ti) ti.focus();
     }
 
-    // Expose to window
     window.EscapeGame = { open, close };
 
-    // Also add to LocalGhost namespace for terminal command
     if (typeof window.LocalGhost === 'undefined') {
         window.LocalGhost = {};
     }

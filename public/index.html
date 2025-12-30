@@ -513,7 +513,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         </p>
 
         <div class="economics-point">
-            <h4>1. WE MAKE MONEY WHEN WE SELL YOU ATOMS (HARDWARE)</h4>
+            <h4>1. WE MAKE MONEY WHEN WE SELL YOU HARDWARE</h4>
             <p>
                 If you choose to buy a pre-built LocalGhost box from us, we charge you a 30% margin
                 on the parts and assembly. That is our profit. It pays for our engineers, our electricity, and our coffee.
@@ -906,29 +906,63 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <h2>THE BLACK BOX</h2>
 
         <p>
-            A matte black aluminum cube. No lights. No logos. Just independence.
+            We do not manufacture silicon. We do not print circuit boards in a secret facility.
+            We source the best off-the-shelf components we can find, verify them for backdoors,
+            flash our OS, and bolt them into a case.
         </p>
 
         <div class="specs-list">
-            <div>&gt; Processor: NPU-Native Custom Board (or Bring Your Own)</div>
-            <div>&gt; Storage: 4TB NVMe (Silent)</div>
-            <div>&gt; Connectivity: Ethernet / Wi-Fi 6E (Air-Gap Capable)</div>
-            <div>&gt; Security: 2× FIDO2 Hardware Keys (Your Encryption. Your Keys.)</div>
-            <div>&gt; OS: LocalGhost OS (Linux Kernel)</div>
+            <div>
+                <span class="spec-label">&gt; COMPUTE:</span>
+                <span class="spec-value">ARM64 SBC w/ NPU</span>
+            </div>
+            <div>
+                <span class="spec-label">&gt; STORAGE:</span>
+                <span class="spec-value">M.2 NVMe (Standard 2280 Form Factor)</span>
+            </div>
+            <div>
+                <span class="spec-label">&gt; MEMORY:</span>
+                <span class="spec-value">16GB+ LPDDR4x</span>
+            </div>
+            <div>
+                <span class="spec-label">&gt; SECURITY:</span>
+                <span class="spec-value">2× FIDO2 Hardware Keys</span>
+            </div>
+            <div>
+                <span class="spec-label">&gt; CHASSIS:</span>
+                <span class="spec-value">Aluminum (Passive Cooling / Fanless)</span>
+            </div>
+        </div>
+
+        <div class="supply-chain-note">
+            <strong>SUPPLY CHAIN TRANSPARENCY:</strong><br>
+            This is a "Bill of Materials" product. We use standard parts you could buy yourself.
+            The value we add is the integration, the thermal engineering, the OS configuration,
+            and the guarantee that the components work together flawlessly.
+            Final specs will be published before launch.
         </div>
 
         <div class="hardware-options">
             <div class="hardware-option">
-                <h4>OPTION A: THE PHANTOM</h4>
-                <p>Pre-built. Plug & Play. Includes two hardware security keys. 30% margin supports development.</p>
-                <div class="hardware-price">COMING SOON</div>
+                <h4>OPTION A: THE INTEGRATOR</h4>
+                <p>
+                    We buy the parts. We assemble the unit. We flash the OS. We ship it to you.
+                    Your markup funds the labor, the testing, the software development,
+                    and a future where privacy isn't a premium feature.
+                </p>
+                <div class="hardware-price">PRICE TBD</div>
                 <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
             </div>
             <div class="hardware-option">
-                <h4>OPTION B: THE GHOST BUILD</h4>
-                <p>Source the parts yourself. Flash the OS. BYO security keys. We make £0 and you still get a high-five from us. We'll do our best to support you on GitHub and in the community.</p>
-                <div class="hardware-price">£0 GBP</div>
-                <a href="https://github.com/orgs/LocalGhostDao/repositories" class="hardware-btn ghost">[ VIEW GITHUB SPEC ]</a>
+                <h4>OPTION B: THE SCAVENGER</h4>
+                <p>
+                    We haven't published a part list yet—we're still testing configurations.
+                    But if you're the type who doesn't wait for instructions, the OS will be open source.
+                    Grab any ARM64 board with an NPU, flash the image, and figure it out.
+                    We love hackers. We love engineers. Show us what you build.
+                </p>
+                <div class="hardware-price">COST: YOUR TIME + PARTS</div>
+                <a href="https://github.com/LocalGhostDao" class="hardware-btn ghost">[ WATCH THE REPO ]</a>
             </div>
         </div>
     </section>
@@ -947,7 +981,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <button class="modal-close" onclick="LocalGhost.closeDonateModal()">&times;</button>
             <h3>&gt; SUPPORT THE ESCAPE</h3>
             <p style="color: var(--text-dim);">
-                Your donation directly funds development. No middlemen. No VC strings. Just atoms and code.
+                Your donation directly funds development. No middlemen. No VC strings. Just hardware and code.
             </p>
             <div class="eth-address-label">ETHEREUM / EVM COMPATIBLE</div>
             <div class="eth-address" id="ethAddress">

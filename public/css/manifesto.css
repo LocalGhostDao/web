@@ -7,27 +7,6 @@
 /* Use: <main class="narrow"> */
 
 /* ===========================================
-   SIGNAL BANNER
-   =========================================== */
-
-.signal-banner {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--warning);
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--warning);
-    display: inline-block;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
-
-/* ===========================================
    MANIFESTO TEXT
    =========================================== */
 
@@ -45,20 +24,11 @@
     font-weight: 500;
 }
 
-.manifesto-text .warning-text {
-    color: var(--warning);
-    font-weight: 500;
-}
-
 .manifesto-text .emphasis {
     border-left: 2px solid var(--terminal);
     padding-left: 1.5rem;
     margin: 2rem 0;
     font-style: italic;
-}
-
-.manifesto-text .emphasis.warning {
-    border-left-color: var(--warning);
 }
 
 /* ===========================================
@@ -74,7 +44,6 @@
     background: linear-gradient(180deg, rgba(255, 51, 51, 0.03) 0%, transparent 100%);
 }
 
-/* Scanline overlay */
 .dystopia-box::before {
     content: '';
     position: absolute;
@@ -92,7 +61,6 @@
     pointer-events: none;
 }
 
-/* Corner accents */
 .dystopia-box::after {
     content: '[ CRITICAL ]';
     position: absolute;
@@ -257,6 +225,35 @@
     font-weight: 500;
 }
 
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: rgba(0, 255, 65, 0.02);
+}
+
+.benefit-item {
+    padding: 1rem;
+    border-left: 2px solid var(--terminal);
+}
+
+.benefit-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--terminal);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.benefit-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
 /* ===========================================
    CODE BLOCK
    =========================================== */
@@ -416,11 +413,6 @@
 }
 
 /* Syntax highlighting */
-.code-block .comment {
-    color: #5c6370;
-    font-style: italic;
-}
-
 .code-block .key {
     color: var(--terminal);
     text-shadow: 0 0 8px var(--terminal-dim);
@@ -567,7 +559,6 @@ main > .back-link {
 /* ===========================================
    RESPONSIVE
    =========================================== */
-
 @media (max-width: 768px) {
     .code-container {
         margin-left: -0.5rem;
@@ -626,5 +617,9 @@ main > .back-link {
 
     .dystopia-box .verdict {
         font-size: 0.95rem;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
     }
 }

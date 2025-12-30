@@ -496,6 +496,30 @@
     margin-bottom: 0.3rem;
 }
 
+.specs-list .spec-label {
+    color: var(--terminal);
+    font-weight: 500;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.specs-list .spec-value {
+    color: var(--text);
+}
+
+/* Supply chain transparency note */
+.supply-chain-note {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px dashed var(--text-dim);
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.supply-chain-note strong {
+    color: var(--text);
+}
+
 /* ===========================================
    DONATE SECTION
    =========================================== */
