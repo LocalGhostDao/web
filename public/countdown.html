@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to Midnight | LocalGhost.ai</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --void: #111111;
+            --terminal: #33FF00;
+            --terminal-dim: #1a8000;
+            --text: #E0E0E0;
+            --text-dim: #a0a0a0;
+            --warning: #FF8A8A;
+            --border: #444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--void);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* Scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            z-index: 9999;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .label {
+            font-size: 0.9rem;
+            color: var(--terminal);
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown {
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 700;
+            color: var(--terminal);
+            text-shadow: 0 0 20px var(--terminal), 0 0 40px var(--terminal-dim);
+            line-height: 1;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .countdown.warning {
+            color: var(--warning);
+            text-shadow: 0 0 20px var(--warning), 0 0 40px #ff4444;
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+        
+        .countdown.final {
+            color: #FFFFFF;
+            text-shadow: 0 0 30px #FFFFFF, 0 0 60px var(--terminal);
+            animation: pulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .status {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+            min-height: 2rem;
+        }
+        
+        .status.alert {
+            color: var(--warning);
+            font-weight: 700;
+        }
+        
+        .status.speaking {
+            color: var(--terminal);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+        
+        .target-time {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 2rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+        
+        .start-btn {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--terminal);
+            color: var(--terminal);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .start-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+        
+        .start-btn.test-btn {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+        
+        .start-btn.test-btn:hover {
+            background: var(--warning);
+            color: var(--void);
+        }
+        
+        .start-btn.hidden {
+            display: none;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .volume-note {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+        
+        /* New Year explosion effect */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+        
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="label">&gt; COUNTDOWN_TO_MIDNIGHT</div>
+        <div class="countdown" id="countdown">--:--:--</div>
+        <div class="status" id="status">Waiting to start...</div>
+        <div class="target-time" id="target">Target: --:--:--</div>
+        <div class="button-row">
+            <button class="start-btn" id="startBtn">[ INITIALIZE COUNTDOWN ]</button>
+            <button class="start-btn test-btn" id="testBtn">[ TEST MODE - 35 SEC ]</button>
+        </div>
+        <div class="volume-note">⚠ Turn up your volume. This will be loud.</div>
+    </div>
+    
+    <div class="celebration" id="celebration"></div>
+    
+    <!-- Audio element for Happy New Year -->
+    <audio id="happyNewYearAudio" preload="auto">
+        <source src="/assets/happy-new-year.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let audioContext;
+        let isRunning = false;
+        let hasPlayedWarning = false;
+        let spokenNumbers = new Set();
+        let testMode = false;
+        let testTarget = null;
+        
+        const countdown = document.getElementById('countdown');
+        const status = document.getElementById('status');
+        const target = document.getElementById('target');
+        const startBtn = document.getElementById('startBtn');
+        const testBtn = document.getElementById('testBtn');
+        const celebration = document.getElementById('celebration');
+        const happyNewYearAudio = document.getElementById('happyNewYearAudio');
+        
+        // Play ABBA - Happy New Year (from local file)
+        function playHappyNewYear() {
+            if (happyNewYearAudio) {
+                happyNewYearAudio.volume = 1.0; // MAX VOLUME
+                happyNewYearAudio.currentTime = 44; // Start at 00:44
+                happyNewYearAudio.play().catch(e => {
+                    console.log('Audio file not found at /assets/happy-new-year.mp3');
+                });
+            }
+        }
+        
+        // Get next 12:00:00 (midnight or noon, whichever is next)
+        // Or in test mode, return the test target
+        function getNextTwelve() {
+            if (testMode && testTarget) {
+                return testTarget;
+            }
+            
+            const now = new Date();
+            const next = new Date(now);
+            
+            // Check if we should target midnight (00:00) or noon (12:00)
+            // For New Year's, let's default to midnight
+            if (now.getHours() < 12) {
+                // Before noon - target noon today
+                next.setHours(12, 0, 0, 0);
+            } else {
+                // After noon - target midnight tonight
+                next.setHours(24, 0, 0, 0);
+            }
+            
+            return next;
+        }
+        
+        // Initialize audio context (must be triggered by user interaction)
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+        
+        // Play a loud alert tone
+        function playAlertSound() {
+            const ctx = initAudio();
+            const duration = 1.5;
+            
+            // Create multiple oscillators for a richer, louder sound
+            const frequencies = [440, 880, 1320]; // A4, A5, E6 - alarm chord
+            
+            frequencies.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'square';
+                osc.frequency.value = freq;
+                
+                gain.gain.value = 0.8; // LOUD
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + duration);
+            });
+            
+            // Add a second burst
+            setTimeout(() => {
+                frequencies.forEach((freq) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.type = 'square';
+                    osc.frequency.value = freq * 1.5;
+                    
+                    gain.gain.value = 0.8;
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 1);
+                });
+            }, 500);
+        }
+        
+        // Play celebration sound
+        function playCelebration() {
+            const ctx = initAudio();
+            
+            // Rising triumphant tones
+            const notes = [261, 329, 392, 523, 659, 784, 1046];
+            notes.forEach((freq, i) => {
+                setTimeout(() => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    
+                    gain.gain.value = 0.6;
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(ctx.currentTime);
+                    osc.stop(ctx.currentTime + 0.5);
+                }, i * 100);
+            });
+        }
+        
+        // Speak a number LOUDLY
+        function speakNumber(num) {
+            if (spokenNumbers.has(num)) return;
+            spokenNumbers.add(num);
+            
+            const words = ['', 'one', 'two', 'three', 'four', 'five', 'six', 
+                          'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+            
+            const text = num === 0 ? 'HAPPY NEW YEAR!' : words[num].toUpperCase();
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.8;  // Slightly slower for drama
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0; // MAX VOLUME
+            
+            // Try to get a booming voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => 
+                v.name.includes('Male') || 
+                v.name.includes('Daniel') || 
+                v.name.includes('Alex') ||
+                v.lang.startsWith('en')
+            );
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+            
+            window.speechSynthesis.speak(utterance);
+            
+            // Also play a tick sound for each number
+            playTick(num);
+        }
+        
+        // Play a tick/chime for each second
+        function playTick(num) {
+            const ctx = initAudio();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            
+            // Higher pitch as we get closer to zero
+            const baseFreq = 200 + ((12 - num) * 50);
+            
+            osc.type = num <= 3 ? 'square' : 'sine';
+            osc.frequency.value = baseFreq;
+            
+            gain.gain.value = num <= 3 ? 0.9 : 0.6;
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+        }
+        
+        // Create visual fireworks
+        function createFireworks() {
+            const colors = ['#33FF00', '#FF8A8A', '#FFFFFF', '#FFD700', '#00FFFF'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * 100 + '%';
+                    firework.style.top = Math.random() * 100 + '%';
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    celebration.appendChild(firework);
+                    
+                    setTimeout(() => firework.remove(), 1000);
+                }, i * 200);
+            }
+        }
+        
+        // Format time as HH:MM:SS
+        function formatTime(ms) {
+            if (ms <= 0) return '00:00:00';
+            
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            return [hours, minutes, seconds]
+                .map(v => v.toString().padStart(2, '0'))
+                .join(':');
+        }
+        
+        // Main update loop
+        function update() {
+            if (!isRunning) return;
+            
+            const now = new Date();
+            const targetTime = getNextTwelve();
+            const diff = targetTime - now;
+            const secondsRemaining = Math.floor(diff / 1000);
+            
+            // Update display
+            countdown.textContent = formatTime(diff);
+            target.textContent = testMode 
+                ? `TEST TARGET: ${targetTime.toLocaleTimeString()}`
+                : `Target: ${targetTime.toLocaleTimeString()}`;
+            
+            // Warning at 30 seconds
+            if (secondsRemaining <= 30 && secondsRemaining > 12) {
+                countdown.classList.add('warning');
+                countdown.classList.remove('final');
+                
+                if (!hasPlayedWarning) {
+                    hasPlayedWarning = true;
+                    status.textContent = '⚠ 30 SECONDS WARNING ⚠';
+                    status.className = 'status alert';
+                    playAlertSound();
+                }
+            }
+            
+            // Final countdown - speak number N about 200ms BEFORE display changes to N
+            // Display shows N when diff is in [N*1000, (N+1)*1000 - 1]
+            // So display changes TO N when diff drops below (N+1)*1000
+            // We want to speak N when diff is around (N+1)*1000 + 200
+            
+            const currentDisplay = Math.floor(diff / 1000);
+            const msIntoThisSecond = diff % 1000;
+            
+            // If we're in the first 300ms of showing currentDisplay, 
+            // speak (currentDisplay - 1) which is about to appear in ~700-1000ms... no wait
+            
+            // Actually: speak currentDisplay when we're in first 300ms of showing (currentDisplay + 1)
+            // i.e., speak N when floor(diff/1000) = N+1 and diff%1000 <= 300
+            const numberToSpeak = currentDisplay - 1;
+            
+            if (msIntoThisSecond <= 300 && numberToSpeak <= 12 && numberToSpeak >= 0) {
+                speakNumber(numberToSpeak);
+            }
+            
+            if (secondsRemaining <= 12 && secondsRemaining > 0) {
+                countdown.classList.remove('warning');
+                countdown.classList.add('final');
+                status.textContent = secondsRemaining.toString();
+                status.className = 'status speaking';
+            }
+            
+            // MIDNIGHT (or test target reached)!
+            if (secondsRemaining <= 0) {
+                countdown.textContent = '00:00:00';
+                countdown.classList.remove('warning');
+                countdown.classList.add('final');
+                status.textContent = testMode ? '🎉 TEST COMPLETE! 🎉' : '🎉 HAPPY NEW YEAR! 🎉';
+                status.className = 'status speaking';
+                
+                if (!spokenNumbers.has(0)) {
+                    speakNumber(0);
+                    playCelebration();
+                    createFireworks();
+                    playHappyNewYear(); // 🎵 ABBA - Happy New Year
+                    
+                    // Reset for next cycle after 10 seconds
+                    setTimeout(() => {
+                        hasPlayedWarning = false;
+                        spokenNumbers.clear();
+                        countdown.classList.remove('final');
+                        status.className = 'status';
+                        status.textContent = 'Ready for next countdown';
+                        
+                        // Stop audio
+                        if (happyNewYearAudio) {
+                            happyNewYearAudio.pause();
+                            happyNewYearAudio.currentTime = 44;
+                        }
+                        
+                        // Show buttons again
+                        startBtn.classList.remove('hidden');
+                        testBtn.classList.remove('hidden');
+                        
+                        // Reset test mode
+                        testMode = false;
+                        testTarget = null;
+                        isRunning = false;
+                    }, 10000);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // Start button handler
+        startBtn.addEventListener('click', () => {
+            initAudio();
+            
+            // Load voices
+            window.speechSynthesis.getVoices();
+            
+            testMode = false;
+            testTarget = null;
+            isRunning = true;
+            startBtn.classList.add('hidden');
+            testBtn.classList.add('hidden');
+            status.textContent = 'Countdown active...';
+            status.className = 'status';
+            
+            update();
+        });
+        
+        // Test mode button handler - 35 second countdown
+        testBtn.addEventListener('click', () => {
+            initAudio();
+            
+            // Load voices
+            window.speechSynthesis.getVoices();
+            
+            // Set target to 35 seconds from now
+            const now = new Date();
+            testTarget = new Date(now.getTime() + 35000);
+            
+            testMode = true;
+            hasPlayedWarning = false;
+            spokenNumbers.clear();
+            isRunning = true;
+            startBtn.classList.add('hidden');
+            testBtn.classList.add('hidden');
+            status.textContent = 'TEST MODE - 35 second countdown...';
+            status.className = 'status alert';
+            
+            update();
+        });
+        
+        // Preload voices
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+    </script>
+</body>
+</html>
