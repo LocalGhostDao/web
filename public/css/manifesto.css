@@ -473,7 +473,7 @@
     margin: 2rem 0;
 }
 
-.pledge-box h3 {
+.pledge-box h2 {
     font-family: var(--font-mono);
     font-size: 0.9rem;
     color: var(--terminal);

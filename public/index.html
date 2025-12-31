@@ -207,243 +207,245 @@
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <!-- Semantic H1 for SEO (visually hidden) -->
-        <h1 class="sr-only">LocalGhost - Private Local AI Server | Your AI, Your Data, Your Hardware</h1>
-        
-        <div class="terminal-box" id="heroTerminal">
-            <div class="terminal-header">
-                <div class="terminal-buttons">
-                    <span class="terminal-btn close" onclick="LocalGhost.triggerEscapeSequence()" title="exit"></span>
-                    <span class="terminal-btn minimize" onclick="LocalGhost.terminalMinimize()" title="minimize"></span>
-                    <span class="terminal-btn maximize" onclick="LocalGhost.terminalMaximize()" title="maximize"></span>
+    <!-- MAIN CONTENT LANDMARK -->
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <!-- Semantic H1 for SEO (visually hidden) -->
+            <h1 class="sr-only">LocalGhost - Private Local AI Server | Your AI, Your Data, Your Hardware</h1>
+            
+            <div class="terminal-box" id="heroTerminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="terminal-btn close" onclick="LocalGhost.triggerEscapeSequence()" title="exit"></span>
+                        <span class="terminal-btn minimize" onclick="LocalGhost.terminalMinimize()" title="minimize"></span>
+                        <span class="terminal-btn maximize" onclick="LocalGhost.terminalMaximize()" title="maximize"></span>
+                    </div>
+                    <div class="terminal-title">ghost@localghost: ~</div>
+                    <div class="terminal-title-spacer"></div>
                 </div>
-                <div class="terminal-title">ghost@localghost: ~</div>
-                <div class="terminal-title-spacer"></div>
-            </div>
-            <div class="terminal-body">
-                <div class="terminal-output" id="terminalOutput"></div>
-                <div class="terminal-line terminal-input-line" id="inputLine" style="display: none;">
-                    <span class="terminal-prompt">&gt;</span>&nbsp;<span class="terminal-input-mirror" id="inputMirror"></span><span class="cursor" id="inputCursor"></span>
-                    <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
-                </div>
-            </div>
-        </div>
-        <a href="#manifesto" class="cta-button">
-            [ ENTER THE ESCAPE PATH ]
-            <span class="cta-tooltip">&gt; PRIVACY THROUGH CODE, NOT PROMISES.</span>
-        </a>
-    </section>
-
-<!-- MANIFESTO -->
-    <section id="manifesto">
-        <div class="section-header">&gt; SECTION_01</div>
-        <h2>THE MANIFESTO</h2>
-
-        <div class="manifesto">
-            <p class="manifesto-quote">
-                <a href="/cypherpunk" style="color: inherit; text-decoration: none;">
-                    "Privacy is the power to selectively reveal oneself to the world."<br>
-                    — <span style="border-bottom: 1px solid var(--terminal);">A Cypherpunk's Manifesto, 1993</span>
-                </a>
-            </p>
-
-            <p>
-                The Cypherpunks told us to write code. We didn't write enough. Today, your phone is a tracker,
-                your cloud is an informant, and your AI is a spy. Every click is logged. Every query is sold.
-                Every interaction trains a model you will never own.
-            </p>
-
-            <p>
-                LocalGhost inverts this. We move everything you need—your AI, your data, your digital self—from
-                their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
-            </p>
-
-            <p style="color: var(--terminal); font-weight: 500; font-size: 1.1rem; margin: 2rem 0;">
-                We do not ask you to trust us. We ask you to verify that you don't have to.
-            </p>
-        </div>
-
-        <h3 style="margin-top: 3rem;">WHAT YOU CAN DO</h3>
-
-        <div class="commitment-list">
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Audit every line of code.</strong><br>
-                    <span class="commit-desc">Everything is open source. No black boxes except the one on your desk.</span>
+                <div class="terminal-body">
+                    <div class="terminal-output" id="terminalOutput"></div>
+                    <div class="terminal-line terminal-input-line" id="inputLine" style="display: none;">
+                        <span class="terminal-prompt">&gt;</span>&nbsp;<span class="terminal-input-mirror" id="inputMirror"></span><span class="cursor" id="inputCursor"></span>
+                        <input type="text" class="terminal-input" id="terminalInput" autocomplete="off" spellcheck="false">
+                    </div>
                 </div>
             </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Fork, modify, or replace us entirely.</strong><br>
-                    <span class="commit-desc">We are not gatekeepers. We are blueprint makers. The mission is bigger than the company.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Build it yourself and pay us nothing.</strong><br>
-                    <span class="commit-desc">Buy the parts. Flash the OS. We'll still high-five and support you.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon yes">[✓]</span>
-                <div>
-                    <strong>Walk away whenever you want.</strong><br>
-                    <span class="commit-desc">If we go bankrupt, you lose nothing. Your box keeps running. Someone else can pick up where we left off.</span>
-                </div>
-            </div>
-        </div>
-
-        <h3 style="margin-top: 3rem;">WHAT WE CANNOT DO</h3>
-
-        <div class="commitment-list">
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Sell your data.</strong><br>
-                    <span class="commit-desc">We do not have it. Your data lives on your hardware. We are architecturally blind.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Charge you a subscription.</strong><br>
-                    <span class="commit-desc">We cannot charge a subscription. There is no server to cut you off from. What you buy, you keep.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Force an update.</strong><br>
-                    <span class="commit-desc">Unplug the ethernet and we cannot reach you. No backdoor. No kill switch.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Train AI on your life.</strong><br>
-                    <span class="commit-desc">Your journals, photos, biometrics, secrets—they exist only on your desk.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Track you.</strong><br>
-                    <span class="commit-desc">No analytics. No telemetry. The box does not phone home. We don't know who you are.</span>
-                </div>
-            </div>
-            <div class="commitment-item">
-                <span class="commit-icon no">[✗]</span>
-                <div>
-                    <strong>Comply with surveillance requests.</strong><br>
-                    <span class="commit-desc">When the subpoena comes, we have nothing. The architecture is our legal defense.</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="guarantee-box" style="margin-top: 3rem;">
-            <p style="margin-bottom: 1rem;">
-                This is not a promise backed by goodwill. This is not a privacy policy written by lawyers.
-                This is code. This is math. This is <a href="https://github.com/orgs/LocalGhostDao/repositories" style="color: var(--terminal);">code you can read</a>.
-            </p>
-            <p style="color: var(--terminal); font-weight: 500; margin-bottom: 0;">
-                You do not choose us because you trust us.<br>
-                You choose us because you can verify that trust is unnecessary.
-            </p>
-        </div>
-
-        <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
-            Zero remote dependencies. Zero server-side computation.<br>
-            <span style="color: var(--terminal);">Zero ways to betray you.</span>
-        </p>
-
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="/manifesto" class="cta-button ghost" style="display: inline-block;">
-                [ READ: WHY WE BUILD ]
+            <a href="#manifesto" class="cta-button">
+                [ ENTER THE ESCAPE PATH ]
+                <span class="cta-tooltip">&gt; PRIVACY THROUGH CODE, NOT PROMISES.</span>
             </a>
-        </div>
-    </section>
+        </section>
 
-    <hr class="divider">
+        <!-- MANIFESTO -->
+        <section id="manifesto">
+            <div class="section-header">&gt; SECTION_01</div>
+            <h2>THE MANIFESTO</h2>
 
-    <!-- THE FLEET -->
-    <section id="fleet">
-        <div class="section-header">&gt; SECTION_02</div>
-        <h2>THE FLEET: LOCAL_DAEMONS</h2>
+            <div class="manifesto">
+                <p class="manifesto-quote">
+                    <a href="/cypherpunk" style="color: inherit; text-decoration: none;">
+                        "Privacy is the power to selectively reveal oneself to the world."<br>
+                        — <span style="border-bottom: 1px solid var(--terminal);">A Cypherpunk's Manifesto, 1993</span>
+                    </a>
+                </p>
 
-        <p>
-            We built a fleet of agents—Daemons—that run locally on the hardware.
-            They are not "smart assistants." They are specialized scripts designed to ingest
-            the chaos of your life and organize it into a coherent truth, without a single byte leaving the box.
-        </p>
+                <p>
+                    The Cypherpunks told us to write code. We didn't write enough. Today, your phone is a tracker,
+                    your cloud is an informant, and your AI is a spy. Every click is logged. Every query is sold.
+                    Every interaction trains a model you will never own.
+                </p>
 
-        <div class="fleet-grid">
-            <div class="daemon-card">
-                <div class="daemon-name">THE SCRIBE</div>
-                <div class="daemon-type">INPUT: TEXT & CONTEXT</div>
-                <div class="daemon-desc">
-                    Reads your journals. Maps your syntax. Preserves the raw thoughts you self-censor.
-                    The memory of who you were when no one was watching.
+                <p>
+                    LocalGhost inverts this. We move everything you need—your AI, your data, your digital self—from
+                    their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
+                </p>
+
+                <p style="color: var(--terminal); font-weight: 500; font-size: 1.1rem; margin: 2rem 0;">
+                    We do not ask you to trust us. We ask you to verify that you don't have to.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 3rem;">WHAT YOU CAN DO</h3>
+
+            <div class="commitment-list">
+                <div class="commitment-item">
+                    <span class="commit-icon yes">[✓]</span>
+                    <div>
+                        <strong>Audit every line of code.</strong><br>
+                        <span class="commit-desc">Everything is open source. No black boxes except the one on your desk.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon yes">[✓]</span>
+                    <div>
+                        <strong>Fork, modify, or replace us entirely.</strong><br>
+                        <span class="commit-desc">We are not gatekeepers. We are blueprint makers. The mission is bigger than the company.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon yes">[✓]</span>
+                    <div>
+                        <strong>Build it yourself and pay us nothing.</strong><br>
+                        <span class="commit-desc">Buy the parts. Flash the OS. We'll still high-five and support you.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon yes">[✓]</span>
+                    <div>
+                        <strong>Walk away whenever you want.</strong><br>
+                        <span class="commit-desc">If we go bankrupt, you lose nothing. Your box keeps running. Someone else can pick up where we left off.</span>
+                    </div>
                 </div>
             </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE OBSERVER</div>
-                <div class="daemon-type">INPUT: VISION</div>
-                <div class="daemon-desc">
-                    Sees the bags under your eyes. Tracks the clutter. Rejects the Instagram filter.
-                    The only camera that works for you.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE AUDITOR</div>
-                <div class="daemon-type">INPUT: HARD METRICS</div>
-                <div class="daemon-desc">
-                    Trust the math. Bank logs. Screen time. Commit history.
-                    The undeniable baseline of where your time and energy actually went.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE WEAVER</div>
-                <div class="daemon-type">SYNTHESIS: THE BRAIN</div>
-                <div class="daemon-desc">
-                    Connects spending to sadness. Connects code to sleep. Finds the pattern.
-                    Builds a model of your psyche—not to sell you things, but to help you understand you.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE SENTINEL</div>
-                <div class="daemon-type">SECURITY: THE MIST</div>
-                <div class="daemon-desc">
-                    Encrypts & shards your data. Distributes to the P2P mesh.
-                    The deadman switch. If we disappear, your data survives.
-                </div>
-            </div>
-            <div class="daemon-card">
-                <div class="daemon-name">THE SHADOW</div>
-                <div class="daemon-type">INTERFACE: THE OUTPUT</div>
-                <div class="daemon-desc">
-                    Brutally honest. Not a polite chatbot. If you lie to the Shadow,
-                    it will cite the Auditor's data to correct you. Zero incentive to manipulate.
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <hr class="divider">
+            <h3 style="margin-top: 3rem;">WHAT WE CANNOT DO</h3>
 
-    <!-- THE MIST -->
-    <section id="mist">
-        <div class="section-header">&gt; SECTION_03</div>
-        <h2>SURVIVAL PROTOCOL: "THE MIST"</h2>
+            <div class="commitment-list">
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Sell your data.</strong><br>
+                        <span class="commit-desc">We do not have it. Your data lives on your hardware. We are architecturally blind.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Charge you a subscription.</strong><br>
+                        <span class="commit-desc">We cannot charge a subscription. There is no server to cut you off from. What you buy, you keep.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Force an update.</strong><br>
+                        <span class="commit-desc">Unplug the ethernet and we cannot reach you. No backdoor. No kill switch.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Train AI on your life.</strong><br>
+                        <span class="commit-desc">Your journals, photos, biometrics, secrets—they exist only on your desk.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Track you.</strong><br>
+                        <span class="commit-desc">No analytics. No telemetry. The box does not phone home. We don't know who you are.</span>
+                    </div>
+                </div>
+                <div class="commitment-item">
+                    <span class="commit-icon no">[✗]</span>
+                    <div>
+                        <strong>Comply with surveillance requests.</strong><br>
+                        <span class="commit-desc">When the subpoena comes, we have nothing. The architecture is our legal defense.</span>
+                    </div>
+                </div>
+            </div>
 
-        <p>
-            We do not have a server. If we go bankrupt tomorrow, your data survives.
-            LocalGhost relies on a Distributed Hash Table (DHT).
-        </p>
+            <div class="guarantee-box" style="margin-top: 3rem;">
+                <p style="margin-bottom: 1rem;">
+                    This is not a promise backed by goodwill. This is not a privacy policy written by lawyers.
+                    This is code. This is math. This is <a href="https://github.com/orgs/LocalGhostDao/repositories" style="color: var(--terminal);">code you can read</a>.
+                </p>
+                <p style="color: var(--terminal); font-weight: 500; margin-bottom: 0;">
+                    You do not choose us because you trust us.<br>
+                    You choose us because you can verify that trust is unnecessary.
+                </p>
+            </div>
+
+            <p style="text-align: center; margin-top: 3rem; font-size: 1.1rem; color: var(--text-dim);">
+                Zero remote dependencies. Zero server-side computation.<br>
+                <span style="color: var(--terminal);">Zero ways to betray you.</span>
+            </p>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/manifesto" class="cta-button ghost" style="display: inline-block;">
+                    [ READ: WHY WE BUILD ]
+                </a>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- THE FLEET -->
+        <section id="fleet">
+            <div class="section-header">&gt; SECTION_02</div>
+            <h2>THE FLEET: LOCAL_DAEMONS</h2>
+
+            <p>
+                We built a fleet of agents—Daemons—that run locally on the hardware.
+                They are not "smart assistants." They are specialized scripts designed to ingest
+                the chaos of your life and organize it into a coherent truth, without a single byte leaving the box.
+            </p>
+
+            <div class="fleet-grid">
+                <div class="daemon-card">
+                    <div class="daemon-name">THE SCRIBE</div>
+                    <div class="daemon-type">INPUT: TEXT & CONTEXT</div>
+                    <div class="daemon-desc">
+                        Reads your journals. Maps your syntax. Preserves the raw thoughts you self-censor.
+                        The memory of who you were when no one was watching.
+                    </div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name">THE OBSERVER</div>
+                    <div class="daemon-type">INPUT: VISION</div>
+                    <div class="daemon-desc">
+                        Sees the bags under your eyes. Tracks the clutter. Rejects the Instagram filter.
+                        The only camera that works for you.
+                    </div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name">THE AUDITOR</div>
+                    <div class="daemon-type">INPUT: HARD METRICS</div>
+                    <div class="daemon-desc">
+                        Trust the math. Bank logs. Screen time. Commit history.
+                        The undeniable baseline of where your time and energy actually went.
+                    </div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name">THE WEAVER</div>
+                    <div class="daemon-type">SYNTHESIS: THE BRAIN</div>
+                    <div class="daemon-desc">
+                        Connects spending to sadness. Connects code to sleep. Finds the pattern.
+                        Builds a model of your psyche—not to sell you things, but to help you understand you.
+                    </div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name">THE SENTINEL</div>
+                    <div class="daemon-type">SECURITY: THE MIST</div>
+                    <div class="daemon-desc">
+                        Encrypts & shards your data. Distributes to the P2P mesh.
+                        The deadman switch. If we disappear, your data survives.
+                    </div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name">THE SHADOW</div>
+                    <div class="daemon-type">INTERFACE: THE OUTPUT</div>
+                    <div class="daemon-desc">
+                        Brutally honest. Not a polite chatbot. If you lie to the Shadow,
+                        it will cite the Auditor's data to correct you. Zero incentive to manipulate.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- THE MIST -->
+        <section id="mist">
+            <div class="section-header">&gt; SECTION_03</div>
+            <h2>SURVIVAL PROTOCOL: "THE MIST"</h2>
+
+            <p>
+                We do not have a server. If we go bankrupt tomorrow, your data survives.
+                LocalGhost relies on a Distributed Hash Table (DHT).
+            </p>
 
 <pre class="mist-visual">┌──────┐     ┌──────┐     ┌──────┐
 │ NODE │────▶│ NODE │────▶│ NODE │
@@ -456,524 +458,528 @@
 
 NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
-        <div class="mist-points">
-            <div class="mist-point">
-                <span class="mist-point-icon">[1]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">SHARDING</div>
-                    <div class="mist-point-desc">Your encrypted soul is broken into thousands of shards.</div>
+            <div class="mist-points">
+                <div class="mist-point">
+                    <span class="mist-point-icon">[1]</span>
+                    <div class="mist-point-text">
+                        <div class="mist-point-title">SHARDING</div>
+                        <div class="mist-point-desc">Your encrypted soul is broken into thousands of shards.</div>
+                    </div>
+                </div>
+                <div class="mist-point">
+                    <span class="mist-point-icon">[2]</span>
+                    <div class="mist-point-text">
+                        <div class="mist-point-title">DISTRIBUTION</div>
+                        <div class="mist-point-desc">You store shards for others; they store shards for you.</div>
+                    </div>
+                </div>
+                <div class="mist-point">
+                    <span class="mist-point-icon">[3]</span>
+                    <div class="mist-point-text">
+                        <div class="mist-point-title">ZERO-KNOWLEDGE</div>
+                        <div class="mist-point-desc">They cannot read yours. You cannot read theirs.</div>
+                    </div>
                 </div>
             </div>
-            <div class="mist-point">
-                <span class="mist-point-icon">[2]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">DISTRIBUTION</div>
-                    <div class="mist-point-desc">You store shards for others; they store shards for you.</div>
-                </div>
-            </div>
-            <div class="mist-point">
-                <span class="mist-point-icon">[3]</span>
-                <div class="mist-point-text">
-                    <div class="mist-point-title">ZERO-KNOWLEDGE</div>
-                    <div class="mist-point-desc">They cannot read yours. You cannot read theirs.</div>
-                </div>
-            </div>
-        </div>
 
-        <p style="color: var(--terminal); font-weight: 500;">
-            THE PACT: Dedicate 20% of your drive to the network. Gain immortality for your data.
-        </p>
-    </section>
+            <p style="color: var(--terminal); font-weight: 500;">
+                THE PACT: Dedicate 20% of your drive to the network. Gain immortality for your data.
+            </p>
+        </section>
 
-    <hr class="divider">
+        <hr class="divider">
 
-    <!-- ECONOMICS -->
-    <section id="economics">
-        <div class="section-header">&gt; SECTION_04</div>
-        <h2>THE ECONOMICS OF INDEPENDENCE</h2>
-        <h3>Why we will never ask for a subscription.</h3>
+        <!-- ECONOMICS -->
+        <section id="economics">
+            <div class="section-header">&gt; SECTION_04</div>
+            <h2>THE ECONOMICS OF INDEPENDENCE</h2>
+            <h3>Why we will never ask for a subscription.</h3>
 
-        <p>
-            The modern technology industry is built on a single, toxic premise: <strong>Rent-seeking.</strong>
-        </p>
-
-        <p>
-            They don't want to sell you a product; they want to trap you in a monthly payment.
-            They want you to be a tenant in your own digital life. If you stop paying, the lights go out.
-            If you stop paying, they lock the doors to your memories.
-        </p>
-
-        <p style="color: var(--terminal); font-size: 1.1rem; margin: 2rem 0;">
-            We reject this. Not everything needs to be a subscription.
-        </p>
-
-        <p>
-            At LocalGhost, our business model is boring, archaic, and honest:
-        </p>
-
-        <div class="economics-point">
-            <h4>1. WE MAKE MONEY WHEN WE SELL YOU HARDWARE</h4>
             <p>
-                If you choose to buy a pre-built LocalGhost box from us, we charge you a 30% margin
-                on the parts and assembly. That is our profit. It pays for our engineers, our electricity, and our coffee.
+                The modern technology industry is built on a single, toxic premise: <strong>Rent-seeking.</strong>
             </p>
-            <div class="choice">
-                <strong>The Choice:</strong> If you don't want to pay us, you don't have to.
-                The hardware specs are open. The code is open. You can buy the parts on Newegg,
-                download our repo, and build it yourself. We will not earn a cent, and we will still high-five you for doing it.
-            </div>
-        </div>
 
-        <div class="economics-point">
-            <h4>2. WE MAKE MONEY WHEN WE SELL YOU UPGRADES (SOFTWARE)</h4>
             <p>
-                We treat software like a tool, not a service. If we develop a breakthrough new Agent—say,
-                a "Shadow v2.0" with better reasoning, or a "Medical Auditor" module—we will put it in a package
-                and put a price tag on it.
+                They don't want to sell you a product; they want to trap you in a monthly payment.
+                They want you to be a tenant in your own digital life. If you stop paying, the lights go out.
+                If you stop paying, they lock the doors to your memories.
             </p>
-            <div class="choice">
-                <strong>The Choice:</strong> You can buy it, or you can ignore it.
-            </div>
-        </div>
 
-        <div class="economics-point">
-            <h4>3. WE NEVER MONETIZE YOU</h4>
-            <p>We cannot sell your data because we do not have it.</p>
-            <p>We cannot train AI on your life because we cannot see it.</p>
-            <p>We cannot show you ads because the box has no ad server.</p>
-        </div>
+            <p style="color: var(--terminal); font-size: 1.1rem; margin: 2rem 0;">
+                We reject this. Not everything needs to be a subscription.
+            </p>
 
-        <div class="guarantee-box">
-            <h4>⚡ CODE, NOT PROMISES</h4>
             <p>
-                <span class="emphasis">The Guarantee:</span> If you don't buy an upgrade, your current version
-                will keep working forever. We will never throttle, brick, or degrade your existing system to force an upgrade.
+                At LocalGhost, our business model is boring, archaic, and honest:
             </p>
-            <p style="margin-top: 1rem;">
-                <span class="emphasis">Why?</span> Because we can't.
-            </p>
-            <p>
-                Once you unplug the ethernet cable or block the port, this box is an independent island.
-                We have no "backdoor." We have no "remote kill switch." We have no "admin access."
-                Even if we wanted to force an update, the architecture prevents us from reaching you.
-            </p>
-            <p style="color: var(--terminal); margin-bottom: 0;">
-                We have designed ourselves out of the loop. You are not relying on our goodwill;
-                you are relying on the fact that we are technically powerless to stop you.
-            </p>
-        </div>
 
-        <h3 style="margin-top: 3rem;">THE COMPARISON</h3>
-
-        <table class="economics-table">
-            <thead>
-                <tr>
-                    <th>FEATURE</th>
-                    <th class="old-way">THE "BIG TECH" WAY</th>
-                    <th class="our-way">THE LOCALGHOST WAY</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Payment Structure</td>
-                    <td class="old-way">Infinite Monthly Rent</td>
-                    <td class="our-way">One-Time Purchase</td>
-                </tr>
-                <tr>
-                    <td>If You Stop Paying</td>
-                    <td class="old-way">You lose access to your data</td>
-                    <td class="our-way">Nothing happens. It keeps working.</td>
-                </tr>
-                <tr>
-                    <td>Data Privacy</td>
-                    <td class="old-way">They scan it for ads/training</td>
-                    <td class="our-way">We physically cannot see it</td>
-                </tr>
-                <tr>
-                    <td>Upgrades</td>
-                    <td class="old-way">Forced UI changes you hate</td>
-                    <td class="our-way">Optional packages you choose</td>
-                </tr>
-                <tr>
-                    <td>Hardware</td>
-                    <td class="old-way">A locked black box you can't open</td>
-                    <td class="our-way">Standard parts. Repairable. Upgradeable.</td>
-                </tr>
-                <tr>
-                    <td>Relationship</td>
-                    <td class="old-way">User / Product</td>
-                    <td class="our-way">Owner / Tool</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p style="text-align: center; margin-top: 2rem; font-size: 1rem; color: var(--terminal);">
-            When you pay for something once, you own it.<br>
-            When you pay for it monthly, it owns you.
-        </p>
-    </section>
-
-    <hr class="divider">
-
-    <!-- FAQ -->
-    <section id="faq">
-        <div class="section-header">&gt; SECTION_05</div>
-        <h2>FREQUENTLY ASKED QUESTIONS</h2>
-
-        <div class="faq-list">
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>Okay, but what actually IS it?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, 
-                        and insert the two hardware security keys that come with it. That's the setup.
-                    </p>
-                    <p>
-                        Once connected, you access it through a local web interface (like <code>http://ghost.local</code>) when you're home, 
-                        or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data.
-                    </p>
-                    <p>
-                        From there, you can sync anything to it: photos from your phone, journals, bank exports, health data, browser history, 
-                        notes, voice memos—whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis 
-                        entirely on your hardware.
-                    </p>
-                    <p style="color: var(--terminal);">
-                        Think of it as a private server for your life, with an AI that actually works for you because it literally cannot work for anyone else.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>How do I get my data onto it?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>Multiple ways, depending on what you're syncing:</p>
-                    <ul class="faq-list-items">
-                        <li><strong>Mobile app:</strong> Automatically syncs photos, health data, location history, and notes in the background</li>
-                        <li><strong>Browser extension:</strong> Captures bookmarks, reading history, and saved articles</li>
-                        <li><strong>File drop:</strong> Drag and drop anything into the web interface—PDFs, exports, backups</li>
-                        <li><strong>API imports:</strong> Connect to services that offer data exports (banks, fitness trackers, etc.)</li>
-                        <li><strong>Manual uploads:</strong> For the privacy purists who want to move files by hand</li>
-                    </ul>
-                    <p>
-                        Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel 
-                        directly to your box—never through our servers, because we don't have servers.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>What does the AI actually do?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        The AI runs locally on the box's NPU (Neural Processing Unit). It does several things:
-                    </p>
-                    <ul class="faq-list-items">
-                        <li><strong>Tagging & Organization:</strong> Automatically categorizes your photos, documents, and notes without you lifting a finger</li>
-                        <li><strong>Pattern Recognition:</strong> Finds correlations you'd never spot—like how your sleep affects your spending, or how your mood tracks with your exercise</li>
-                        <li><strong>Goal Tracking:</strong> You tell it what you're working toward, and it holds you accountable with actual data, not vibes</li>
-                        <li><strong>Honest Reflection:</strong> Ask it questions about your life and it answers based on evidence, not what you want to hear</li>
-                        <li><strong>Search:</strong> Find anything you've ever saved, even if you forgot what you called it</li>
-                    </ul>
-                    <p style="color: var(--terminal);">
-                        The key difference: this AI has zero incentive to manipulate you. It can't sell you anything. It can't show you ads. 
-                        It can't optimize for "engagement." It just tells you the truth.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>How does "The Mist" backup system work?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        The Mist is a peer-to-peer backup network. Here's the simple version:
-                    </p>
-                    <p>
-                        <strong>Step 1: Shred.</strong> Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called "shards." 
-                        Each shard is meaningless on its own—like confetti from a shredded document.
-                    </p>
-                    <p>
-                        <strong>Step 2: Scatter.</strong> Those shards get distributed across other LocalGhost boxes in the network. 
-                        Your shards live on dozens of strangers' drives. Their shards live on yours.
-                    </p>
-                    <p>
-                        <strong>Step 3: Rebuild.</strong> When you need your data back, your box collects the shards from the network and reassembles them. 
-                        Only your encryption key can make sense of them.
-                    </p>
-                    <p>
-                        <strong>The beauty:</strong> The people storing your shards can't read them—they're encrypted and incomplete. 
-                        You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist.
-                    </p>
-                    <p style="color: var(--terminal);">
-                        If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. 
-                        The network has no central point of failure.
-                    </p>
-                    <p class="faq-technical">
-                        <strong>Technical note:</strong> This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. 
-                        We use Reed-Solomon encoding so you only need ~50% of shards to reconstruct your data, 
-                        making the system resilient even if half the network goes offline.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>How do the boxes find each other without a central server?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        This is the magic of distributed hash tables (DHT). Here's how it works in plain English:
-                    </p>
-                    <p>
-                        <strong>The Bootstrap Problem:</strong> When your box first connects to the network, it needs to know at least one other box. 
-                        We publish a small list of "bootstrap nodes"—these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. 
-                        Your box contacts one of these to get introduced to the network. After that, it never needs us again.
-                    </p>
-                    <p>
-                        <strong>The Address Book:</strong> Every box on the network has a unique ID (a long random number). 
-                        Each box maintains a partial "address book" of other boxes it knows about. But here's the clever bit: 
-                        you don't need to know everyone. You just need to know boxes whose IDs are "close" to yours in the mathematical sense.
-                    </p>
-                    <p>
-                        <strong>The Hop Game:</strong> When you need to find a specific shard, you ask the boxes you know: "Who's closest to this shard's ID?" 
-                        They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for—even in a network of millions.
-                    </p>
-                    <p>
-                        <strong>No Phone Book Server:</strong> There's no central directory. The network IS the directory. 
-                        If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets.
-                    </p>
-                    <p style="color: var(--terminal);">
-                        Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, 
-                        and within a few asks you're at your destination. No map company required.
-                    </p>
-                    <p class="faq-technical">
-                        <strong>Technical note:</strong> We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. 
-                        Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, 
-                        giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>What if I lose my encryption key?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        Then your data is gone. Forever. This is not a bug—it's the point.
-                    </p>
-                    <p>
-                        We cannot recover your data because we never had access to it. There is no "forgot password" flow. 
-                        There is no customer support ticket that can help you. The math doesn't care about your feelings.
-                    </p>
-                    <p>
-                        <strong>The good news:</strong> Every LocalGhost box ships with <strong>two hardware security keys</strong>. 
-                        When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key 
-                        and splits it between the two keys using Shamir's Secret Sharing—neither key alone can decrypt anything.
-                    </p>
-                    <p>
-                        <strong>How to use them:</strong>
-                    </p>
-                    <ul class="faq-list-items">
-                        <li><strong>Key 1:</strong> Keep this one with your box for daily use. Plug it in to unlock your data.</li>
-                        <li><strong>Key 2:</strong> Store this somewhere safe and separate—a bank vault, a trusted friend's house, your parents' place. This is your recovery key.</li>
-                    </ul>
-                    <p>
-                        If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, 
-                        Key 2 can restore everything to a new box. But if you lose both keys? Game over.
-                    </p>
-                    <p style="color: var(--warning);">
-                        Real ownership means real responsibility. Two keys. Two locations. No excuses.
-                    </p>
-                    <p class="faq-technical">
-                        <strong>Technical note:</strong> The keys are FIDO2-compliant hardware tokens with secure elements. 
-                        The master key never leaves the secure enclave—only the derived decryption keys are used at runtime. 
-                        We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>Can I access my box when I'm not home?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        Yes. The box comes with an encrypted VPN that you can choose to enable for remote access.
-                    </p>
-                    <p>
-                        <strong>Option A: Encrypted VPN (included)</strong><br>
-                        Every LocalGhost box ships with a built-in encrypted VPN. When enabled, your phone or laptop connects directly to your box 
-                        over the internet through an end-to-end encrypted tunnel. It's like being on your home network, but from anywhere. 
-                        Your traffic never touches our servers—because we don't have any.
-                    </p>
-                    <p>
-                        <strong>Option B: Air-Gap Mode</strong><br>
-                        For the truly paranoid: disable all remote access. The box only works when you're physically on your home network. 
-                        When you leave, it's a black hole. When you return, it's there waiting.
-                    </p>
-                    <p style="color: var(--text-dim);">
-                        There is no Option C where your data goes through our servers. We don't have servers. 
-                        We couldn't offer that option even if we wanted to.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>What happens if LocalGhost (the company) disappears?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        Nothing. Your box keeps working.
-                    </p>
-                    <p>
-                        The software is open source. The hardware is standard parts. The Mist network is decentralized. 
-                        There is no license server to phone home to. There is no authentication service to validate your purchase.
-                    </p>
-                    <p>
-                        If we go bankrupt tomorrow:
-                    </p>
-                    <ul class="faq-list-items">
-                        <li>Your box continues running the last version you installed</li>
-                        <li>The Mist network continues operating (it doesn't need us)</li>
-                        <li>Someone else can fork the code and continue development</li>
-                        <li>You can maintain it yourself if you're technical</li>
-                    </ul>
-                    <p style="color: var(--terminal);">
-                        We have deliberately designed ourselves out of the critical path. 
-                        Your independence does not depend on our survival.
-                    </p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-question">
-                    <span class="faq-icon">[?]</span>
-                    <span>Is this legal?</span>
-                    <span class="faq-toggle">+</span>
-                </summary>
-                <div class="faq-answer">
-                    <p>
-                        Yes. Running a private server in your home is completely legal. Encrypting your own data is legal. 
-                        Storing backups on a peer-to-peer network is legal.
-                    </p>
-                    <p>
-                        We're not helping you hide anything from the law. We're helping you exercise your right to privacy—a right that exists 
-                        in most democracies but has been quietly eroded by decades of "free" services that monetize your attention and data.
-                    </p>
-                    <p>
-                        If law enforcement comes to us with a warrant, we'll comply. But compliance looks like this: 
-                        "We have no data. We have no logs. We don't know who uses our hardware. Here's our open-source code. Good luck."
-                    </p>
-                    <p style="color: var(--terminal);">
-                        The architecture is the legal defense.
-                    </p>
-                </div>
-            </details>
-        </div>
-    </section>
-
-    <hr class="divider">
-
-    <!-- HARDWARE -->
-    <section id="hardware">
-        <div class="section-header">&gt; SECTION_06</div>
-        <h2>THE BLACK BOX</h2>
-
-        <p>
-            We do not manufacture silicon. We do not print circuit boards in a secret facility.
-            We source the best off-the-shelf components we can find, verify them for backdoors,
-            flash our OS, and bolt them into a case.
-        </p>
-
-        <div class="specs-list">
-            <div>
-                <span class="spec-label">&gt; COMPUTE:</span>
-                <span class="spec-value">ARM64 SBC w/ NPU</span>
-            </div>
-            <div>
-                <span class="spec-label">&gt; STORAGE:</span>
-                <span class="spec-value">M.2 NVMe (Standard 2280 Form Factor)</span>
-            </div>
-            <div>
-                <span class="spec-label">&gt; MEMORY:</span>
-                <span class="spec-value">16GB+ LPDDR4x</span>
-            </div>
-            <div>
-                <span class="spec-label">&gt; SECURITY:</span>
-                <span class="spec-value">2× FIDO2 Hardware Keys</span>
-            </div>
-            <div>
-                <span class="spec-label">&gt; CHASSIS:</span>
-                <span class="spec-value">Aluminum (Passive Cooling / Fanless)</span>
-            </div>
-        </div>
-
-        <div class="supply-chain-note">
-            <strong>SUPPLY CHAIN TRANSPARENCY:</strong><br>
-            This is a "Bill of Materials" product. We use standard parts you could buy yourself.
-            The value we add is the integration, the thermal engineering, the OS configuration,
-            and the guarantee that the components work together flawlessly.
-            Final specs will be published before launch.
-        </div>
-
-        <div class="hardware-options">
-            <div class="hardware-option">
-                <h4>OPTION A: THE INTEGRATOR</h4>
+            <div class="economics-point">
+                <h3>1. WE MAKE MONEY WHEN WE SELL YOU HARDWARE</h3>
                 <p>
-                    We buy the parts. We assemble the unit. We flash the OS. We ship it to you.
-                    Your markup funds the labor, the testing, the software development,
-                    and a future where privacy isn't a premium feature.
+                    If you choose to buy a pre-built LocalGhost box from us, we charge you a 30% margin
+                    on the parts and assembly. That is our profit. It pays for our engineers, our electricity, and our coffee.
                 </p>
-                <div class="hardware-price">PRICE TBD</div>
-                <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
+                <div class="choice">
+                    <strong>The Choice:</strong> If you don't want to pay us, you don't have to.
+                    The hardware specs are open. The code is open. You can buy the parts on Newegg,
+                    download our repo, and build it yourself. We will not earn a cent, and we will still high-five you for doing it.
+                </div>
             </div>
-            <div class="hardware-option">
-                <h4>OPTION B: THE SCAVENGER</h4>
+
+            <div class="economics-point">
+                <h3>2. WE MAKE MONEY WHEN WE SELL YOU UPGRADES (SOFTWARE)</h3>
                 <p>
-                    We haven't published a part list yet—we're still testing configurations.
-                    But if you're the type who doesn't wait for instructions, the OS will be open source.
-                    Grab any ARM64 board with an NPU, flash the image, and figure it out.
-                    We love hackers. We love engineers. Show us what you build.
+                    We treat software like a tool, not a service. If we develop a breakthrough new Agent—say,
+                    a "Shadow v2.0" with better reasoning, or a "Medical Auditor" module—we will put it in a package
+                    and put a price tag on it.
                 </p>
-                <div class="hardware-price">COST: YOUR TIME + PARTS</div>
-                <a href="https://github.com/LocalGhostDao" class="hardware-btn ghost">[ WATCH THE REPO ]</a>
+                <div class="choice">
+                    <strong>The Choice:</strong> You can buy it, or you can ignore it.
+                </div>
             </div>
+
+            <div class="economics-point">
+                <h3>3. WE NEVER MONETIZE YOU</h3>
+                <p>We cannot sell your data because we do not have it.</p>
+                <p>We cannot train AI on your life because we cannot see it.</p>
+                <p>We cannot show you ads because the box has no ad server.</p>
+            </div>
+
+            <div class="guarantee-box">
+                <h3>⚡ CODE, NOT PROMISES</h3>
+                <p>
+                    <span class="emphasis">The Guarantee:</span> If you don't buy an upgrade, your current version
+                    will keep working forever. We will never throttle, brick, or degrade your existing system to force an upgrade.
+                </p>
+                <p style="margin-top: 1rem;">
+                    <span class="emphasis">Why?</span> Because we can't.
+                </p>
+                <p>
+                    Once you unplug the ethernet cable or block the port, this box is an independent island.
+                    We have no "backdoor." We have no "remote kill switch." We have no "admin access."
+                    Even if we wanted to force an update, the architecture prevents us from reaching you.
+                </p>
+                <p style="color: var(--terminal); margin-bottom: 0;">
+                    We have designed ourselves out of the loop. You are not relying on our goodwill;
+                    you are relying on the fact that we are technically powerless to stop you.
+                </p>
+            </div>
+
+            <h3 style="margin-top: 3rem;">THE COMPARISON</h3>
+
+            <table class="economics-table">
+                <thead>
+                    <tr>
+                        <th>FEATURE</th>
+                        <th class="old-way">THE "BIG TECH" WAY</th>
+                        <th class="our-way">THE LOCALGHOST WAY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Payment Structure</td>
+                        <td class="old-way">Infinite Monthly Rent</td>
+                        <td class="our-way">One-Time Purchase</td>
+                    </tr>
+                    <tr>
+                        <td>If You Stop Paying</td>
+                        <td class="old-way">You lose access to your data</td>
+                        <td class="our-way">Nothing happens. It keeps working.</td>
+                    </tr>
+                    <tr>
+                        <td>Data Privacy</td>
+                        <td class="old-way">They scan it for ads/training</td>
+                        <td class="our-way">We physically cannot see it</td>
+                    </tr>
+                    <tr>
+                        <td>Upgrades</td>
+                        <td class="old-way">Forced UI changes you hate</td>
+                        <td class="our-way">Optional packages you choose</td>
+                    </tr>
+                    <tr>
+                        <td>Hardware</td>
+                        <td class="old-way">A locked black box you can't open</td>
+                        <td class="our-way">Standard parts. Repairable. Upgradeable.</td>
+                    </tr>
+                    <tr>
+                        <td>Relationship</td>
+                        <td class="old-way">User / Product</td>
+                        <td class="our-way">Owner / Tool</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="text-align: center; margin-top: 2rem; font-size: 1rem; color: var(--terminal);">
+                When you pay for something once, you own it.<br>
+                When you pay for it monthly, it owns you.
+            </p>
+        </section>
+
+        <hr class="divider">
+
+        <!-- FAQ -->
+        <section id="faq">
+            <div class="section-header">&gt; SECTION_05</div>
+            <h2>FREQUENTLY ASKED QUESTIONS</h2>
+
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>Okay, but what actually IS it?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, 
+                            and insert the two hardware security keys that come with it. That's the setup.
+                        </p>
+                        <p>
+                            Once connected, you access it through a local web interface (like <code>http://ghost.local</code>) when you're home, 
+                            or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data.
+                        </p>
+                        <p>
+                            From there, you can sync anything to it: photos from your phone, journals, bank exports, health data, browser history, 
+                            notes, voice memos—whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis 
+                            entirely on your hardware.
+                        </p>
+                        <p style="color: var(--terminal);">
+                            Think of it as a private server for your life, with an AI that actually works for you because it literally cannot work for anyone else.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>How do I get my data onto it?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Multiple ways, depending on what you're syncing:</p>
+                        <ul class="faq-list-items">
+                            <li><strong>Mobile app:</strong> Automatically syncs photos, health data, location history, and notes in the background</li>
+                            <li><strong>Browser extension:</strong> Captures bookmarks, reading history, and saved articles</li>
+                            <li><strong>File drop:</strong> Drag and drop anything into the web interface—PDFs, exports, backups</li>
+                            <li><strong>API imports:</strong> Connect to services that offer data exports (banks, fitness trackers, etc.)</li>
+                            <li><strong>Manual uploads:</strong> For the privacy purists who want to move files by hand</li>
+                        </ul>
+                        <p>
+                            Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel 
+                            directly to your box—never through our servers, because we don't have servers.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>What does the AI actually do?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            The AI runs locally on the box's NPU (Neural Processing Unit). It does several things:
+                        </p>
+                        <ul class="faq-list-items">
+                            <li><strong>Tagging & Organization:</strong> Automatically categorizes your photos, documents, and notes without you lifting a finger</li>
+                            <li><strong>Pattern Recognition:</strong> Finds correlations you'd never spot—like how your sleep affects your spending, or how your mood tracks with your exercise</li>
+                            <li><strong>Goal Tracking:</strong> You tell it what you're working toward, and it holds you accountable with actual data, not vibes</li>
+                            <li><strong>Honest Reflection:</strong> Ask it questions about your life and it answers based on evidence, not what you want to hear</li>
+                            <li><strong>Search:</strong> Find anything you've ever saved, even if you forgot what you called it</li>
+                        </ul>
+                        <p style="color: var(--terminal);">
+                            The key difference: this AI has zero incentive to manipulate you. It can't sell you anything. It can't show you ads. 
+                            It can't optimize for "engagement." It just tells you the truth.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>How does "The Mist" backup system work?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            The Mist is a peer-to-peer backup network. Here's the simple version:
+                        </p>
+                        <p>
+                            <strong>Step 1: Shred.</strong> Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called "shards." 
+                            Each shard is meaningless on its own—like confetti from a shredded document.
+                        </p>
+                        <p>
+                            <strong>Step 2: Scatter.</strong> Those shards get distributed across other LocalGhost boxes in the network. 
+                            Your shards live on dozens of strangers' drives. Their shards live on yours.
+                        </p>
+                        <p>
+                            <strong>Step 3: Rebuild.</strong> When you need your data back, your box collects the shards from the network and reassembles them. 
+                            Only your encryption key can make sense of them.
+                        </p>
+                        <p>
+                            <strong>The beauty:</strong> The people storing your shards can't read them—they're encrypted and incomplete. 
+                            You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist.
+                        </p>
+                        <p style="color: var(--terminal);">
+                            If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. 
+                            The network has no central point of failure.
+                        </p>
+                        <p class="faq-technical">
+                            <strong>Technical note:</strong> This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. 
+                            We use Reed-Solomon encoding so you only need ~50% of shards to reconstruct your data, 
+                            making the system resilient even if half the network goes offline.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>How do the boxes find each other without a central server?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            This is the magic of distributed hash tables (DHT). Here's how it works in plain English:
+                        </p>
+                        <p>
+                            <strong>The Bootstrap Problem:</strong> When your box first connects to the network, it needs to know at least one other box. 
+                            We publish a small list of "bootstrap nodes"—these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. 
+                            Your box contacts one of these to get introduced to the network. After that, it never needs us again.
+                        </p>
+                        <p>
+                            <strong>The Address Book:</strong> Every box on the network has a unique ID (a long random number). 
+                            Each box maintains a partial "address book" of other boxes it knows about. But here's the clever bit: 
+                            you don't need to know everyone. You just need to know boxes whose IDs are "close" to yours in the mathematical sense.
+                        </p>
+                        <p>
+                            <strong>The Hop Game:</strong> When you need to find a specific shard, you ask the boxes you know: "Who's closest to this shard's ID?" 
+                            They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for—even in a network of millions.
+                        </p>
+                        <p>
+                            <strong>No Phone Book Server:</strong> There's no central directory. The network IS the directory. 
+                            If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets.
+                        </p>
+                        <p style="color: var(--terminal);">
+                            Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, 
+                            and within a few asks you're at your destination. No map company required.
+                        </p>
+                        <p class="faq-technical">
+                            <strong>Technical note:</strong> We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. 
+                            Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, 
+                            giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>What if I lose my encryption key?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            Then your data is gone. Forever. This is not a bug—it's the point.
+                        </p>
+                        <p>
+                            We cannot recover your data because we never had access to it. There is no "forgot password" flow. 
+                            There is no customer support ticket that can help you. The math doesn't care about your feelings.
+                        </p>
+                        <p>
+                            <strong>The good news:</strong> Every LocalGhost box ships with <strong>two hardware security keys</strong>. 
+                            When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key 
+                            and splits it between the two keys using Shamir's Secret Sharing—neither key alone can decrypt anything.
+                        </p>
+                        <p>
+                            <strong>How to use them:</strong>
+                        </p>
+                        <ul class="faq-list-items">
+                            <li><strong>Key 1:</strong> Keep this one with your box for daily use. Plug it in to unlock your data.</li>
+                            <li><strong>Key 2:</strong> Store this somewhere safe and separate—a bank vault, a trusted friend's house, your parents' place. This is your recovery key.</li>
+                        </ul>
+                        <p>
+                            If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, 
+                            Key 2 can restore everything to a new box. But if you lose both keys? Game over.
+                        </p>
+                        <p style="color: var(--warning);">
+                            Real ownership means real responsibility. Two keys. Two locations. No excuses.
+                        </p>
+                        <p class="faq-technical">
+                            <strong>Technical note:</strong> The keys are FIDO2-compliant hardware tokens with secure elements. 
+                            The master key never leaves the secure enclave—only the derived decryption keys are used at runtime. 
+                            We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>Can I access my box when I'm not home?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            Yes. The box comes with an encrypted VPN that you can choose to enable for remote access.
+                        </p>
+                        <p>
+                            <strong>Option A: Encrypted VPN (included)</strong><br>
+                            Every LocalGhost box ships with a built-in encrypted VPN. When enabled, your phone or laptop connects directly to your box 
+                            over the internet through an end-to-end encrypted tunnel. It's like being on your home network, but from anywhere. 
+                            Your traffic never touches our servers—because we don't have any.
+                        </p>
+                        <p>
+                            <strong>Option B: Air-Gap Mode</strong><br>
+                            For the truly paranoid: disable all remote access. The box only works when you're physically on your home network. 
+                            When you leave, it's a black hole. When you return, it's there waiting.
+                        </p>
+                        <p style="color: var(--text-dim);">
+                            There is no Option C where your data goes through our servers. We don't have servers. 
+                            We couldn't offer that option even if we wanted to.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>What happens if LocalGhost (the company) disappears?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            Nothing. Your box keeps working.
+                        </p>
+                        <p>
+                            The software is open source. The hardware is standard parts. The Mist network is decentralized. 
+                            There is no license server to phone home to. There is no authentication service to validate your purchase.
+                        </p>
+                        <p>
+                            If we go bankrupt tomorrow:
+                        </p>
+                        <ul class="faq-list-items">
+                            <li>Your box continues running the last version you installed</li>
+                            <li>The Mist network continues operating (it doesn't need us)</li>
+                            <li>Someone else can fork the code and continue development</li>
+                            <li>You can maintain it yourself if you're technical</li>
+                        </ul>
+                        <p style="color: var(--terminal);">
+                            We have deliberately designed ourselves out of the critical path. 
+                            Your independence does not depend on our survival.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">
+                        <span class="faq-icon">[?]</span>
+                        <span>Is this legal?</span>
+                        <span class="faq-toggle">+</span>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>
+                            Yes. Running a private server in your home is completely legal. Encrypting your own data is legal. 
+                            Storing backups on a peer-to-peer network is legal.
+                        </p>
+                        <p>
+                            We're not helping you hide anything from the law. We're helping you exercise your right to privacy—a right that exists 
+                            in most democracies but has been quietly eroded by decades of "free" services that monetize your attention and data.
+                        </p>
+                        <p>
+                            If law enforcement comes to us with a warrant, we'll comply. But compliance looks like this: 
+                            "We have no data. We have no logs. We don't know who uses our hardware. Here's our open-source code. Good luck."
+                        </p>
+                        <p style="color: var(--terminal);">
+                            The architecture is the legal defense.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- HARDWARE -->
+        <section id="hardware">
+            <div class="section-header">&gt; SECTION_06</div>
+            <h2>THE BLACK BOX</h2>
+
+            <p>
+                We do not manufacture silicon. We do not print circuit boards in a secret facility.
+                We source the best off-the-shelf components we can find, verify them for backdoors,
+                flash our OS, and bolt them into a case.
+            </p>
+
+            <div class="specs-list">
+                <div>
+                    <span class="spec-label">&gt; COMPUTE:</span>
+                    <span class="spec-value">ARM64 SBC w/ NPU</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; STORAGE:</span>
+                    <span class="spec-value">M.2 NVMe (Standard 2280 Form Factor)</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; MEMORY:</span>
+                    <span class="spec-value">16GB+ LPDDR4x</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; SECURITY:</span>
+                    <span class="spec-value">2× FIDO2 Hardware Keys</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; CHASSIS:</span>
+                    <span class="spec-value">Aluminum (Passive Cooling / Fanless)</span>
+                </div>
+            </div>
+
+            <div class="supply-chain-note">
+                <strong>SUPPLY CHAIN TRANSPARENCY:</strong><br>
+                This is a "Bill of Materials" product. We use standard parts you could buy yourself.
+                The value we add is the integration, the thermal engineering, the OS configuration,
+                and the guarantee that the components work together flawlessly.
+                Final specs will be published before launch.
+            </div>
+
+            <div class="hardware-options">
+                <div class="hardware-option">
+                    <h3>OPTION A: THE INTEGRATOR</h3>
+                    <p>
+                        We buy the parts. We assemble the unit. We flash the OS. We ship it to you.
+                        Your markup funds the labor, the testing, the software development,
+                        and a future where privacy isn't a premium feature.
+                    </p>
+                    <div class="hardware-price">PRICE TBD</div>
+                    <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
+                </div>
+                <div class="hardware-option">
+                    <h3>OPTION B: THE SCAVENGER</h3>
+                    <p>
+                        We haven't published a part list yet—we're still testing configurations.
+                        But if you're the type who doesn't wait for instructions, the OS will be open source.
+                        Grab any ARM64 board with an NPU, flash the image, and figure it out.
+                        We love hackers. We love engineers. Show us what you build.
+                    </p>
+                    <div class="hardware-price">COST: YOUR TIME + PARTS</div>
+                    <a href="https://github.com/LocalGhostDao" class="hardware-btn ghost">[ WATCH THE REPO ]</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- DONATE -->
+        <div class="donate-section">
+            <p>
+                Believe in the mission? You can always support development directly.
+            </p>
+            <button class="donate-btn" onclick="LocalGhost.openDonateModal()">[ SUPPORT THE ESCAPE ]</button>
         </div>
-    </section>
+    </main>
+    <!-- END MAIN CONTENT -->
 
-    <!-- DONATE -->
-    <div class="donate-section">
-        <p>
-            Believe in the mission? You can always support development directly.
-        </p>
-        <button class="donate-btn" onclick="LocalGhost.openDonateModal()">[ SUPPORT THE ESCAPE ]</button>
-    </div>
-
+    <!-- MODALS (outside main) -->
+    
     <!-- DONATE MODAL -->
     <div id="donateModal" class="modal-overlay">
         <div class="modal">
@@ -1210,8 +1216,8 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
     <!-- External JavaScript -->
     <script src="/js/terminal.js"></script>
-    <script src="/js/the_shadow.js"></script>
-    <script src="/js/reclaim.js"></script>
-    <script src="/js/escape.js"></script>
+    <script src="/js/the_shadow.js" defer></script>
+    <script src="/js/reclaim.js" defer></script>
+    <script src="/js/escape.js" defer></script>
 </body>
 </html>

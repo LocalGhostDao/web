@@ -351,9 +351,9 @@
     color: var(--text-dim);
 }
 
+/* Improved contrast - removed opacity, using direct color */
 .economics-table .old-way {
     color: var(--warning);
-    opacity: 0.7;
 }
 
 .economics-table .our-way {
@@ -366,7 +366,8 @@
     border: 1px solid var(--border);
 }
 
-.economics-point h4 {
+/* Changed from h4 to h3 for proper heading hierarchy */
+.economics-point h3 {
     font-family: var(--font-mono);
     color: var(--terminal);
     font-size: 0.9rem;
@@ -397,7 +398,8 @@
     margin: 2rem 0;
 }
 
-.guarantee-box h4 {
+/* Changed from h4 to h3 for proper heading hierarchy */
+.guarantee-box h3 {
     font-family: var(--font-mono);
     color: var(--terminal);
     font-size: 0.8rem;
@@ -436,7 +438,8 @@
     text-align: center;
 }
 
-.hardware-option h4 {
+/* Changed from h4 to h3 for proper heading hierarchy */
+.hardware-option h3 {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--terminal);

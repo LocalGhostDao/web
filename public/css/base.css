@@ -47,11 +47,11 @@
     --void: #111111;
     --void-lighter: #1a1a1a;
     --text: #E0E0E0;
-    --text-dim: #808080;
+    --text-dim: #a0a0a0;  /* Improved contrast from #808080 */
     --terminal: #33FF00;
     --terminal-dim: #1a8000;
-    --border: #333;
-    --warning: #FF6B6B;
+    --border: #444;  /* Improved contrast from #333 */
+    --warning: #FF8A8A;  /* Improved contrast from #FF6B6B */
     --font-mono: 'JetBrains Mono', monospace;
     --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
@@ -75,13 +75,6 @@ html {
     scroll-margin-top: 80px;
 }
 
-section h1,
-article h1,
-aside h1,
-nav h1 {
-    font-size: 2rem;
-}
-
 body {
     background: var(--void);
     color: var(--text);
@@ -94,6 +87,81 @@ body {
 ::selection {
     background: var(--terminal);
     color: var(--void);
+}
+
+/* ===========================================
+   LINKS
+   =========================================== */
+
+/* ===========================================
+   LINKS
+   =========================================== */
+
+a {
+    color: var(--terminal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+a:visited {
+    color: var(--terminal);
+}
+
+a:hover {
+    color: var(--text);
+}
+
+/* Navigation links - no underline */
+nav a,
+.nav-links a,
+.footer-links a,
+.back-link,
+.cta-button,
+.hardware-btn,
+.donate-btn,
+.directory-link {
+    text-decoration: none;
+}
+
+nav a:hover,
+.nav-links a:hover,
+.footer-links a:hover {
+    text-decoration: none;
+    color: var(--terminal);
+}
+
+/* ===========================================
+   HEADINGS - Explicit sizing to prevent browser quirks
+   =========================================== */
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+h2 {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: var(--text);
+}
+
+h3 {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: var(--terminal);
+}
+
+/* Ensure consistent h1 sizing regardless of nesting */
+section h1,
+article h1,
+aside h1,
+nav h1,
+main h1 {
+    font-size: 2rem;
 }
 
 /* ===========================================
@@ -179,6 +247,13 @@ nav {
     border-bottom: 1px solid var(--terminal);
 }
 
+/* ===========================================
+   MAIN LANDMARK
+   =========================================== */
+
+main {
+    display: block;
+}
 
 /* ===========================================
    SECTIONS & TYPOGRAPHY
@@ -196,22 +271,6 @@ section {
     color: var(--terminal);
     letter-spacing: 0.2em;
     margin-bottom: 0.5rem;
-}
-
-h2 {
-    font-family: var(--font-mono);
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    color: var(--text);
-}
-
-h3 {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    color: var(--terminal);
 }
 
 p {
@@ -246,7 +305,10 @@ footer {
 .footer-links a {
     color: var(--text-dim);
     text-decoration: none;
+    position: relative;
     margin: 0 1rem;
+    padding: 0.75rem 0.25rem;
+    display: inline-block;
     transition: color 0.2s;
 }
 
@@ -260,6 +322,7 @@ footer {
     margin: 0 auto;
     line-height: 1.6;
 }
+
 
 /* ===========================================
    UTILITY CLASSES
