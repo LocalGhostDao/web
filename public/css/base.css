@@ -75,6 +75,13 @@ html {
     scroll-margin-top: 80px;
 }
 
+section h1,
+article h1,
+aside h1,
+nav h1 {
+    font-size: 2rem;
+}
+
 body {
     background: var(--void);
     color: var(--text);
