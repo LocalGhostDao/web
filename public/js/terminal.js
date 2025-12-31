@@ -18,6 +18,7 @@
         { text: 'CONNECTING...', delay: 0, type: 'normal' },
         { text: '1993 WAS A WARNING.', delay: 800, type: 'link', href: '/cypherpunk' },
         { text: `${new Date().getFullYear()} IS THE REALITY.`, delay: 600, type: 'link', href: '/manifesto' },
+        { text: '2026 IS THE DEADLINE.', delay: 600, type: 'link', href: '/inflection' },
         { text: '', delay: 400, type: 'empty' },
         { text: 'WE CANNOT FIX THE INTERNET.', delay: 600, type: 'warning' },
         { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', delay: 800, type: 'normal' },
@@ -211,6 +212,7 @@
             { text: 'CONNECTING...', type: 'normal' },
             { text: '1993 WAS A WARNING.', type: 'link', href: '/cypherpunk' },
             { text: `${new Date().getFullYear()} IS THE REALITY.`, type: 'link', href: '/manifesto' },
+            { text: '2026 IS THE DEADLINE.', type: 'link', href: '/inflection' },
             { text: '', type: 'empty' },
             { text: 'WE CANNOT FIX THE INTERNET.', type: 'warning' },
             { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', type: 'normal' },
@@ -245,11 +247,12 @@
                 addOutputLine('  help      - Show this message');
                 addOutputLine('  about     - Learn about LocalGhost');
                 addOutputLine('  manifesto - Read the full manifesto');
+                addOutputLine('  inflection - Why now matters');
                 addOutputLine('  faq       - Jump to FAQ section');
                 addOutputLine('  quit      - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
-                addOutputLine('  reclaim   - Play Reclaim (desktop only)');
-                addOutputLine('  escape    - Play Escape (endless runner)');
+                addOutputLine('  reclaim   - Play Reclaim (desktop)');
+                addOutputLine('  escape    - Play Escape (desktop)');
                 addOutputLine('  scores    - View leaderboard');
                 addOutputLine('  clear     - Clear terminal');
                 addOutputLine('  github    - Open GitHub');
@@ -266,6 +269,16 @@
                 addOutputLine('LOADING MANIFESTO...', 'success');
                 setTimeout(() => {
                     window.location.href = '/manifesto';
+                }, 500);
+                break;
+
+            case 'inflection':
+            case 'why':
+            case 'whynow':
+            case 'why now':
+                addOutputLine('LOADING INFLECTION...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/inflection';
                 }, 500);
                 break;
 
@@ -319,16 +332,23 @@
             case 'flee':
             case 'temple':
             case 'dino':
-                addOutputLine('LAUNCHING ESCAPE.EXE...', 'success');
-                addOutputLine('Run from the machine. Jump bureaucracy. Duck privacy banners.', 'dim');
-                setTimeout(() => {
-                    if (typeof window.EscapeGame !== 'undefined') {
-                        window.EscapeGame.open();
-                    } else {
-                        addOutputLine('ERROR: ESCAPE.EXE NOT LOADED', 'warning');
-                        addOutputLine('Game module missing. Check console.', 'dim');
-                    }
-                }, 300);
+                // Check if mobile - escape requires keyboard
+                const isMobileForEscape = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
+                if (isMobileForEscape) {
+                    addOutputLine('ESCAPE.EXE requires keyboard controls.', 'warning');
+                    addOutputLine('Play on desktop for full experience.', 'dim');
+                } else {
+                    addOutputLine('LAUNCHING ESCAPE.EXE...', 'success');
+                    addOutputLine('Run from the machine. Jump bureaucracy. Duck privacy banners.', 'dim');
+                    setTimeout(() => {
+                        if (typeof window.EscapeGame !== 'undefined') {
+                            window.EscapeGame.open();
+                        } else {
+                            addOutputLine('ERROR: ESCAPE.EXE NOT LOADED', 'warning');
+                            addOutputLine('Game module missing. Check console.', 'dim');
+                        }
+                    }, 300);
+                }
                 break;
 
 
@@ -578,39 +598,54 @@
         const msg = escapeState.messages[escapeState.currentMessage];
         ctx.textAlign = 'center';
         
+        // Position text at top of screen, away from snake
+        const textY = 80;
+        
         if (escapeState.phase === 'exploding' || escapeState.phase === 'done') {
-            ctx.font = 'bold 32px JetBrains Mono, monospace';
+            ctx.font = 'bold 28px JetBrains Mono, monospace';
             const glitchOffset = escapeState.phase === 'done' ? 0 : (Math.random() - 0.5) * 15;
             
+            // Dark background for text readability
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, textY - 35, canvas.width, 50);
+            
             ctx.fillStyle = '#003300';
-            ctx.fillText(msg, centerX + 3 + glitchOffset, centerY - 180 + 3);
+            ctx.fillText(msg, centerX + 3 + glitchOffset, textY + 3);
             
             ctx.fillStyle = escapeState.frame % 3 === 0 ? '#FF0000' : '#33FF00';
             ctx.shadowColor = '#33FF00';
             ctx.shadowBlur = 20;
-            ctx.fillText(msg, centerX + glitchOffset, centerY - 180);
+            ctx.fillText(msg, centerX + glitchOffset, textY);
             ctx.shadowBlur = 0;
             
             if (escapeState.frame % 40 < 25) {
+                // Bottom text with background
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, canvas.height - 100, canvas.width, 60);
+                
                 ctx.font = '18px JetBrains Mono, monospace';
                 ctx.fillStyle = '#33FF00';
                 ctx.shadowColor = '#33FF00';
                 ctx.shadowBlur = 15;
-                ctx.fillText('[ CORPORATE GREED ELIMINATED ]', centerX, centerY + 180);
+                ctx.fillText('[ CORPORATE GREED ELIMINATED ]', centerX, canvas.height - 70);
                 ctx.font = '14px JetBrains Mono, monospace';
                 ctx.fillStyle = '#00AA00';
-                ctx.fillText('SOVEREIGNTY RESTORED', centerX, centerY + 210);
+                ctx.fillText('NOW DO IT FOR REAL: LOCALGHOST.AI', centerX, canvas.height - 45);
             }
         } else {
-            ctx.font = 'bold 24px JetBrains Mono, monospace';
+            // Dark background for text readability
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(0, textY - 30, canvas.width, 45);
+            
+            ctx.font = 'bold 22px JetBrains Mono, monospace';
             ctx.fillStyle = '#33FF00';
             ctx.shadowColor = '#33FF00';
             ctx.shadowBlur = 15;
-            ctx.fillText('> ' + msg, centerX, centerY - 180);
+            ctx.fillText('> ' + msg, centerX, textY);
             ctx.shadowBlur = 0;
             
             if (escapeState.frame % 20 < 10) {
-                ctx.fillRect(centerX + ctx.measureText('> ' + msg).width / 2 + 5, centerY - 195, 12, 24);
+                ctx.fillRect(centerX + ctx.measureText('> ' + msg).width / 2 + 5, textY - 15, 12, 20);
             }
         }
 
@@ -831,8 +866,8 @@
                 addOutputLine('', 'normal');
                 addOutputLine('████████████████████████████████████████', 'success');
                 addOutputLine('  CORPORATE GREED: [TERMINATED]', 'success');
-                addOutputLine('  SOVEREIGNTY: [RESTORED]', 'success');
-                addOutputLine('  STATUS: WELCOME BACK, GHOST.', 'success');
+                addOutputLine('  JUST KIDDING. IF ONLY.', 'warning');
+                addOutputLine('  BUILD THE ALTERNATIVE: LOCALGHOST.AI', 'success');
                 addOutputLine('████████████████████████████████████████', 'success');
             }, 800);
             return;

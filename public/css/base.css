@@ -70,6 +70,11 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Anchor offset for fixed nav */
+[id] {
+    scroll-margin-top: 80px;
+}
+
 body {
     background: var(--void);
     color: var(--text);
@@ -161,6 +166,12 @@ nav {
 .nav-links a:hover {
     color: var(--terminal);
 }
+
+.nav-links a.active {
+    color: var(--terminal);
+    border-bottom: 1px solid var(--terminal);
+}
+
 
 /* ===========================================
    SECTIONS & TYPOGRAPHY

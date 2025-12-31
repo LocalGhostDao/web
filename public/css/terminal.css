@@ -42,18 +42,28 @@
     left: 20px;
     right: 20px;
     bottom: 20px;
-    max-width: none;
+    width: auto !important;
+    max-width: none !important;
     z-index: 100;
     animation: none;
     box-shadow: 
         0 0 0 1px rgba(51, 255, 0, 0.2),
         0 0 60px rgba(51, 255, 0, 0.2),
         0 0 100px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
 }
 
 .terminal-box.fullscreen .terminal-body {
     height: calc(100% - 40px);
     overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.terminal-box.fullscreen .terminal-output,
+.terminal-box.fullscreen .terminal-line {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 /* ===========================================
@@ -372,5 +382,12 @@
     
     .terminal-title {
         font-size: 0.6rem;
+    }
+    
+    .terminal-box.fullscreen {
+        top: 50px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
     }
 }

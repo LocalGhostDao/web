@@ -1,0 +1,57 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Scanline pattern -->
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="4" height="4">
+      <rect width="4" height="2" fill="rgba(0,0,0,0.12)"/>
+    </pattern>
+    
+    <!-- Subtle grid -->
+    <pattern id="grid" patternUnits="userSpaceOnUse" width="50" height="50">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(51,255,0,0.04)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+  
+  <!-- Grid -->
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Scanlines -->
+  <rect width="1200" height="630" fill="url(#scanlines)"/>
+  
+  <!-- Ghost logo - left side -->
+  <g transform="translate(80, 165)">
+    <!-- Ghost body outline -->
+    <path d="M100,0 C155,0 200,45 200,100 L200,220 C200,230 190,240 180,230 C170,220 160,230 150,240 C140,250 130,240 120,230 C110,220 100,230 90,240 C80,250 70,240 60,230 C50,220 40,230 30,240 C20,250 10,240 0,230 L0,100 C0,45 45,0 100,0 Z" 
+          fill="none" 
+          stroke="#33FF00" 
+          stroke-width="3"/>
+    <!-- Left eye -->
+    <ellipse cx="65" cy="110" rx="18" ry="22" fill="none" stroke="#33FF00" stroke-width="3"/>
+    <!-- Right eye -->
+    <ellipse cx="135" cy="110" rx="18" ry="22" fill="none" stroke="#33FF00" stroke-width="3"/>
+    <!-- Smile -->
+    <path d="M60,160 Q100,195 140,160" fill="none" stroke="#33FF00" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Main content box border -->
+  <rect x="340" y="120" width="780" height="340" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+  
+  <!-- Main text -->
+  <!-- "THE WINDOW" in dim text -->
+  <text x="730" y="210" font-family="'Courier New', monospace" font-size="52" font-weight="bold" fill="#606060" text-anchor="middle" letter-spacing="8">THE WINDOW</text>
+  
+  <!-- "IS CLOSING" in red -->
+  <text x="730" y="285" font-family="'Courier New', monospace" font-size="52" font-weight="bold" fill="#FF6B6B" text-anchor="middle" letter-spacing="8">IS CLOSING</text>
+  
+  <!-- Subtext in green -->
+  <text x="730" y="360" font-family="'Courier New', monospace" font-size="26" fill="#33FF00" text-anchor="middle">Build now, or lose forever.</text>
+  
+  <!-- Secondary text in dim -->
+  <text x="730" y="410" font-family="'Courier New', monospace" font-size="20" fill="#606060" text-anchor="middle">Hardware is ready. Software is the battleground.</text>
+  
+  <!-- Bottom URL -->
+  <text x="600" y="560" font-family="'Courier New', monospace" font-size="22" fill="#33FF00" text-anchor="middle" letter-spacing="2">&gt; LOCALGHOST.AI/INFLECTION</text>
+  
+</svg>
