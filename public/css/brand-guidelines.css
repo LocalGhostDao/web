@@ -482,12 +482,18 @@
     margin: 2rem 0;
 }
 
-.principles-box h4 {
+/* Box title styling - used for h3.box-title inside special containers */
+.principles-box h3.box-title,
+.logo-download-info h3.box-title {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--terminal);
     letter-spacing: 0.1em;
     margin-bottom: 1.5rem;
+}
+
+.logo-download-info h3.box-title {
+    margin-bottom: 0.25rem;
 }
 
 .principle-item {
@@ -571,13 +577,6 @@
 
 .logo-download-info {
     flex: 1;
-}
-
-.logo-download-info h4 {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--terminal);
-    margin-bottom: 0.25rem;
 }
 
 .logo-download-info p {
