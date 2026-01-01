@@ -4,11 +4,13 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
-Sitemap: https://www.localghost.ai/sitemap.xml
+# Allow static assets with query strings (cache busters)
+Allow: /js/*
+Allow: /css/*
+Allow: /images/*
 
 # Block error pages from indexing
 Disallow: /error/
 
-# Block any query strings (we don't use them for content)
-Disallow: /*?*
+# Sitemap location
+Sitemap: https://www.localghost.ai/sitemap.xml
