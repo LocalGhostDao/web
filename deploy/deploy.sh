@@ -40,6 +40,14 @@ minify_css() {
         -e 's/ $//'
 }
 
+# Check if HTML file has noindex directive
+has_noindex() {
+    local file="$1"
+    # Match <meta name="robots" content="...noindex..."> in either attribute order
+    grep -qE '<meta[^>]*name="robots"[^>]*content="[^"]*noindex' "$file" 2>/dev/null || \
+    grep -qE '<meta[^>]*content="[^"]*noindex[^"]*"[^>]*name="robots"' "$file" 2>/dev/null
+}
+
 # Ensure directories exist
 mkdir -p "$DEST_DIR"
 mkdir -p "$WORK_DIR/css"
@@ -248,10 +256,20 @@ cat > "$SITEMAP_FILE" << EOF
 EOF
 
 declare -a URLS
+NOINDEX_COUNT=0
 
 while IFS= read -r -d '' html_file; do
     rel_path="${html_file#$SRC_DIR/}"
+    
+    # Skip error pages
     [[ "$rel_path" == error/* ]] && continue
+    
+    # Skip files with noindex meta tag
+    if has_noindex "$html_file"; then
+        echo "  [—] NOINDEX: $rel_path"
+        ((NOINDEX_COUNT++))
+        continue
+    fi
     
     if [ "$rel_path" = "index.html" ]; then
         clean_url="/"; priority="1.0"
@@ -279,7 +297,7 @@ EOF
 done
 
 echo "</urlset>" >> "$SITEMAP_FILE"
-echo "  [📍] sitemap.xml (${#SORTED_URLS[@]} URLs)"
+echo "  [📍] sitemap.xml (${#SORTED_URLS[@]} URLs, ${NOINDEX_COUNT} excluded)"
 
 # 6. Deploy nginx config if changed
 if [ "$NGINX_CHANGED" = true ]; then

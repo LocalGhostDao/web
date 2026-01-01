@@ -1,19 +1,17 @@
 <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Ghost body - filled with dark, stroked with green -->
-  <path d="M32 4C16 4 4 16 4 32V60L12 54L20 60L28 54L36 60L44 54L52 60L60 54V32C60 16 48 4 32 4Z" 
-        fill="#0d0d0d"
-        stroke="#33ff00" 
-        stroke-width="2.5" 
-        stroke-linejoin="round"/>
-  
-  <!-- Eyes -->
-  <circle cx="22" cy="28" r="4" fill="#33ff00"/>
-  <circle cx="42" cy="28" r="4" fill="#33ff00"/>
-  
-  <!-- Smile -->
-  <path d="M22 42 Q 32 50 42 42" 
-        stroke="#33ff00" 
-        stroke-width="2.5" 
-        fill="none" 
-        stroke-linecap="round"/>
+  <!-- Ghost body - same design as og-image, scaled to 64x64 -->
+  <g transform="translate(7, 2) scale(0.2)">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" 
+          fill="#0d0d0d"
+          stroke="#33ff00" 
+          stroke-width="12" 
+          stroke-linejoin="round"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" 
+          stroke="#33ff00" 
+          stroke-width="12" 
+          fill="none" 
+          stroke-linecap="round"/>
+  </g>
 </svg>

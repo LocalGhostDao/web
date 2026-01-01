@@ -1,11 +1,14 @@
 <svg width="550" height="250" viewBox="0 0 550 250" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="550" height="250" fill="#000000"/>
   
-  <path d="M275 40C235 40 205 70 205 110V160L220 145L240 160L260 145L275 160L290 145L310 160L330 145L345 160V110C345 70 315 40 275 40Z" stroke="#33ff00" stroke-width="2"/>
+  <!-- Ghost - same design as og-image, scaled to fit -->
+  <g transform="translate(225, 25) scale(0.4)">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="6"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="6"/>
+  </g>
   
-  <circle cx="255" cy="90" r="3" fill="#33ff00"/>
-  <circle cx="295" cy="90" r="3" fill="#33ff00"/>
-
   <text x="275" y="200" text-anchor="middle" font-family="monospace" font-size="32" font-weight="bold" fill="#33ff00" style="letter-spacing: 2px;">
     LOCALGHOST.AI
   </text>
@@ -14,5 +17,5 @@
     THE ONLY CLOUD IS YOU
   </text>
   
-  <text x="110" y="200" font-family="monospace" font-size="32" fill="#33ff00">></text>
+  <text x="110" y="200" font-family="monospace" font-size="32" fill="#33ff00">&gt;</text>
 </svg>
