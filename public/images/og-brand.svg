@@ -1,0 +1,42 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#333" stroke-width="1"/>
+  <line x1="420" y1="80" x2="420" y2="550" stroke="#444" stroke-width="1"/>
+  
+  <rect x="80" y="100" width="100" height="80" fill="#111111" stroke="#444" stroke-width="1"/>
+  <text x="200" y="130" fill="#a0a0a0" font-family="monospace" font-size="16">#111111</text>
+  <text x="200" y="155" fill="#E0E0E0" font-family="monospace" font-size="18" font-weight="bold">VOID</text>
+  
+  <rect x="80" y="200" width="100" height="80" fill="#33FF00"/>
+  <text x="200" y="230" fill="#a0a0a0" font-family="monospace" font-size="16">#33FF00</text>
+  <text x="200" y="255" fill="#E0E0E0" font-family="monospace" font-size="18" font-weight="bold">TERMINAL</text>
+  
+  <rect x="80" y="300" width="100" height="80" fill="#E0E0E0"/>
+  <text x="200" y="330" fill="#a0a0a0" font-family="monospace" font-size="16">#E0E0E0</text>
+  <text x="200" y="355" fill="#E0E0E0" font-family="monospace" font-size="18" font-weight="bold">TEXT</text>
+  
+  <rect x="80" y="400" width="100" height="80" fill="#FF8A8A"/>
+  <text x="200" y="430" fill="#a0a0a0" font-family="monospace" font-size="16">#FF8A8A</text>
+  <text x="200" y="455" fill="#E0E0E0" font-family="monospace" font-size="18" font-weight="bold">WARNING</text>
+  
+  <text x="480" y="140" fill="#a0a0a0" font-family="monospace" font-size="48" font-weight="bold" letter-spacing="2">BRAND</text>
+  <text x="480" y="195" fill="#33FF00" font-family="monospace" font-size="48" font-weight="bold" letter-spacing="2">GUIDELINES</text>
+  <text x="480" y="255" fill="#a0a0a0" font-family="monospace" font-size="20">Cypherpunk Terminal Brutalism</text>
+  
+  <text x="480" y="310" fill="#33FF00" font-family="monospace" font-size="18">&gt; Colors</text>
+  <text x="480" y="340" fill="#808080" font-family="monospace" font-size="18">&gt; Typography</text>
+  <text x="480" y="370" fill="#808080" font-family="monospace" font-size="18">&gt; Visual Effects</text>
+  <text x="480" y="400" fill="#808080" font-family="monospace" font-size="18">&gt; Voice &amp; Tone</text>
+  <text x="480" y="430" fill="#808080" font-family="monospace" font-size="18">&gt; Components</text>
+  
+  <text x="480" y="500" fill="#33FF00" font-family="monospace" font-size="20" font-style="italic">The visual identity of sovereignty.</text>
+  <text x="600" y="560" text-anchor="middle" fill="#33FF00" font-family="monospace" font-size="18" letter-spacing="2">&gt; LOCALGHOST.AI/BRAND-GUIDELINES</text>
+</svg>

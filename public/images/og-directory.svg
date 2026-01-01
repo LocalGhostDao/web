@@ -1,0 +1,86 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Connecting lines -->
+  <g stroke="#33ff00" stroke-width="1" opacity="0.3">
+    <line x1="100" y1="120" x2="200" y2="200"/>
+    <line x1="200" y1="200" x2="150" y2="380"/>
+    <line x1="150" y1="380" x2="100" y2="500"/>
+    <line x1="1000" y1="100" x2="1100" y2="180"/>
+    <line x1="1100" y1="180" x2="1080" y2="350"/>
+    <line x1="1080" y1="350" x2="1100" y2="500"/>
+  </g>
+  
+  <!-- Ghost top-left -->
+  <g transform="translate(30, 50) scale(0.32)" opacity="0.5">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Ghost mid-left -->
+  <g transform="translate(60, 320) scale(0.24)" opacity="0.4">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Ghost top-right 1 -->
+  <g transform="translate(970, 30) scale(0.28)" opacity="0.5">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Ghost top-right 2 -->
+  <g transform="translate(1060, 120) scale(0.22)" opacity="0.4">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Ghost mid-right -->
+  <g transform="translate(1030, 290) scale(0.26)" opacity="0.5">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Ghost bottom-right -->
+  <g transform="translate(1070, 450) scale(0.22)" opacity="0.4">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Window bar -->
+  <rect x="150" y="60" width="900" height="32" fill="#2a2a2a" rx="4"/>
+  <circle cx="172" cy="76" r="6" fill="#ff5f56"/>
+  <circle cx="192" cy="76" r="6" fill="#ffbd2e"/>
+  <circle cx="212" cy="76" r="6" fill="#27ca3f"/>
+  <text x="350" y="82" fill="#808080" font-family="monospace" font-size="16">/.well-known/freehold.json</text>
+  
+  <!-- Main box -->
+  <rect x="250" y="130" width="700" height="350" fill="none" stroke="#33ff00" stroke-width="3"/>
+  <rect x="260" y="140" width="680" height="330" fill="#111111" fill-opacity="0.95"/>
+  
+  <text x="600" y="210" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="52" font-weight="bold" letter-spacing="3">LOCAL-FIRST</text>
+  <text x="600" y="275" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="48" font-weight="bold" letter-spacing="4">DIRECTORY</text>
+  <text x="600" y="340" text-anchor="middle" fill="#a0a0a0" font-family="monospace" font-size="22">Projects that run local,</text>
+  <text x="600" y="370" text-anchor="middle" fill="#a0a0a0" font-family="monospace" font-size="22">export clean, and don't betray.</text>
+  <text x="600" y="435" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="18" letter-spacing="2">&gt; INDEXING THE SOVEREIGN WEB</text>
+  <text x="600" y="570" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="22" letter-spacing="2">&gt; LOCALGHOST.AI/DIRECTORY</text>
+</svg>

@@ -3,70 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown to Midnight | LocalGhost.ai</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Countdown | LocalGhost.ai</title>
+    <meta name="title" content="Countdown | LocalGhost.ai">
+    <meta name="description" content="Countdown timer with fireworks or apocalypse. Your choice. Share custom countdowns with friends.">
+    <meta name="keywords" content="countdown, new year, timer, celebration, LocalGhost">
+    <meta name="author" content="LocalGhost">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://www.localghost.ai/countdown">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.localghost.ai/countdown">
+    <meta property="og:title" content="Countdown | LocalGhost.ai">
+    <meta property="og:description" content="Countdown timer with fireworks or apocalypse. Your choice.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-countdown.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.localghost.ai/countdown">
+    <meta name="twitter:title" content="Countdown | LocalGhost.ai">
+    <meta name="twitter:description" content="Countdown timer with fireworks or apocalypse. Your choice.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-countdown.png">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <meta name="msapplication-TileColor" content="#111111">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "LocalGhost Countdown",
+        "description": "Shareable countdown timer with celebration effects",
+        "url": "https://www.localghost.ai/countdown",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "author": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai"
+        }
+    }
+    </script>
+    
+    <link rel="stylesheet" href="/css/base.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        :root {
-            --void: #111111;
-            --terminal: #33FF00;
-            --terminal-dim: #1a8000;
-            --text: #E0E0E0;
-            --text-dim: #a0a0a0;
-            --warning: #FF8A8A;
-            --border: #444;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        /* Layout */
         body {
-            background: var(--void);
-            color: var(--text);
-            font-family: 'JetBrains Mono', monospace;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            transition: background 0.5s;
         }
         
-        /* Scanlines */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.1) 2px,
-                rgba(0, 0, 0, 0.1) 4px
-            );
-            z-index: 9999;
+        body.doom {
+            background: linear-gradient(180deg, #1a0000 0%, #111 100%);
         }
         
         .container {
             text-align: center;
             padding: 2rem;
+            position: relative;
+            z-index: 10;
         }
         
+        /* Typography */
         .label {
+            font-family: var(--font-mono);
             font-size: 0.9rem;
             color: var(--terminal);
             letter-spacing: 0.3em;
             margin-bottom: 1rem;
+            transition: color 0.5s;
+        }
+        
+        body.doom .label {
+            color: #ff4444;
         }
         
         .countdown {
+            font-family: var(--font-mono);
             font-size: clamp(4rem, 15vw, 12rem);
             font-weight: 700;
             color: var(--terminal);
@@ -76,16 +107,33 @@
             transition: all 0.3s;
         }
         
+        body.doom .countdown {
+            color: #ff6600;
+            text-shadow: 0 0 20px #ff6600, 0 0 40px #ff0000;
+        }
+        
         .countdown.warning {
             color: var(--warning);
             text-shadow: 0 0 20px var(--warning), 0 0 40px #ff4444;
             animation: pulse 0.5s ease-in-out infinite;
         }
         
+        body.doom .countdown.warning {
+            color: #ff0000;
+            text-shadow: 0 0 30px #ff0000, 0 0 60px #990000;
+            animation: doom-pulse 0.3s ease-in-out infinite;
+        }
+        
         .countdown.final {
-            color: #FFFFFF;
-            text-shadow: 0 0 30px #FFFFFF, 0 0 60px var(--terminal);
+            color: #fff;
+            text-shadow: 0 0 30px #fff, 0 0 60px var(--terminal);
             animation: pulse 1s ease-in-out infinite;
+        }
+        
+        body.doom .countdown.final {
+            color: #ff0000;
+            text-shadow: 0 0 40px #ff0000, 0 0 80px #ff6600, 0 0 120px #ffff00;
+            animation: doom-pulse 0.2s ease-in-out infinite;
         }
         
         @keyframes pulse {
@@ -93,7 +141,13 @@
             50% { transform: scale(1.05); }
         }
         
+        @keyframes doom-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        
         .status {
+            font-family: var(--font-mono);
             font-size: 1.2rem;
             color: var(--text-dim);
             margin-top: 1rem;
@@ -105,14 +159,23 @@
             font-weight: 700;
         }
         
-        .status.speaking {
+        body.doom .status.alert {
+            color: #ff0000;
+        }
+        
+        .status.complete {
             color: var(--terminal);
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.2em;
         }
         
+        body.doom .status.complete {
+            color: #ff4444;
+        }
+        
         .target-time {
+            font-family: var(--font-mono);
             font-size: 0.8rem;
             color: var(--text-dim);
             margin-top: 2rem;
@@ -120,147 +183,534 @@
             padding-top: 1rem;
         }
         
-        .start-btn {
-            margin-top: 2rem;
+        /* Buttons */
+        .btn {
+            font-family: var(--font-mono);
             padding: 1rem 2rem;
             background: transparent;
             border: 2px solid var(--terminal);
             color: var(--terminal);
-            font-family: 'JetBrains Mono', monospace;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
         }
         
-        .start-btn:hover {
+        .btn:hover {
             background: var(--terminal);
             color: var(--void);
         }
         
-        .start-btn.test-btn {
-            border-color: var(--warning);
-            color: var(--warning);
+        .btn.secondary {
+            border-color: var(--text-dim);
+            color: var(--text-dim);
         }
         
-        .start-btn.test-btn:hover {
-            background: var(--warning);
+        .btn.secondary:hover {
+            background: var(--text-dim);
             color: var(--void);
         }
         
-        .start-btn.hidden {
-            display: none;
+        .btn.small {
+            font-size: 0.7rem;
+            padding: 0.5rem 1rem;
         }
+        
+        .btn.hidden { display: none; }
         
         .button-row {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
         }
         
-        .volume-note {
-            font-size: 0.7rem;
+        /* Form elements */
+        .picker {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            background: rgba(26, 26, 26, 0.8);
+        }
+        
+        .picker.hidden { display: none; }
+        
+        .picker-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        body.doom .picker-label {
+            color: #ff4444;
+        }
+        
+        .picker-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .input {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            padding: 0.5rem;
+            background: var(--void);
+            border: 1px solid var(--border);
+            color: var(--text);
+            outline: none;
+        }
+        
+        .input:focus {
+            border-color: var(--terminal);
+        }
+        
+        body.doom .input:focus {
+            border-color: #ff4444;
+        }
+        
+        input[type="date"],
+        input[type="time"] {
+            color-scheme: dark;
+        }
+        
+        /* Mode toggle */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+        
+        .mode-toggle input[type="checkbox"] {
+            display: none;
+        }
+        
+        .toggle-track {
+            width: 50px;
+            height: 26px;
+            background: var(--terminal);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle-track::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--void);
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+        
+        .mode-toggle input:checked + .toggle-track {
+            background: #ff4444;
+        }
+        
+        .mode-toggle input:checked + .toggle-track::after {
+            transform: translateX(24px);
+        }
+        
+        .mode-label {
+            color: var(--text-dim);
+            transition: color 0.3s;
+        }
+        
+        .mode-label.active {
+            color: var(--terminal);
+        }
+        
+        body.doom .mode-label.active {
+            color: #ff4444;
+        }
+        
+        /* Share link */
+        .share-link {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+            word-break: break-all;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .share-link.hidden { display: none; }
+        
+        .copy-btn {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            padding: 0.25rem 0.5rem;
+            background: transparent;
+            border: 1px solid var(--terminal);
+            color: var(--terminal);
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            background: var(--terminal);
+            color: var(--void);
+        }
+        
+        .note {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
             color: var(--text-dim);
             margin-top: 1rem;
         }
         
-        /* New Year explosion effect */
-        .celebration {
+        /* Effects container */
+        .effects {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Happy mode particles */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: particle-fly 1.5s ease-out forwards;
+        }
+        
+        @keyframes particle-fly {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.5); }
+        }
+        
+        .mega-burst {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #FFD700;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: mega-explode 2s ease-out forwards;
+            box-shadow: 0 0 60px 30px #FFD700, 0 0 100px 60px #FF6B6B, 0 0 140px 90px #33FF00;
             z-index: 100;
         }
         
-        .firework {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: explode 1s ease-out forwards;
+        @keyframes mega-explode {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(50); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(100); opacity: 0; }
         }
         
-        @keyframes explode {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(20); opacity: 0; }
+        /* Doom mode effects */
+        .doom-burst {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: doom-explode 3s ease-out forwards;
+            box-shadow: 0 0 60px 30px #ff0000, 0 0 100px 60px #ff6600, 0 0 200px 100px #000;
+            z-index: 100;
+        }
+        
+        @keyframes doom-explode {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            30% { transform: translate(-50%, -50%) scale(80); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(150); opacity: 0; }
+        }
+        
+        .shockwave {
+            position: fixed;
+            border: 4px solid #ff6600;
+            border-radius: 50%;
+            animation: shockwave 1.5s ease-out forwards;
+        }
+        
+        @keyframes shockwave {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 200vmax; height: 200vmax; opacity: 0; }
+        }
+        
+        .ember {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6600;
+            border-radius: 50%;
+            animation: ember-fall linear forwards;
+            box-shadow: 0 0 6px 2px #ff4400;
+        }
+        
+        @keyframes ember-fall {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+        }
+        
+        .crack {
+            position: fixed;
+            background: linear-gradient(90deg, transparent, #ff4400, transparent);
+            height: 3px;
+            animation: crack-spread 0.5s ease-out forwards;
+            transform-origin: center;
+        }
+        
+        @keyframes crack-spread {
+            0% { width: 0; opacity: 1; }
+            100% { width: 100vw; opacity: 0.3; }
+        }
+        
+        /* Screen shake */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-10px, -5px); }
+            20% { transform: translate(10px, 5px); }
+            30% { transform: translate(-5px, 10px); }
+            40% { transform: translate(5px, -10px); }
+            50% { transform: translate(-10px, 5px); }
+            60% { transform: translate(10px, -5px); }
+            70% { transform: translate(-5px, -10px); }
+            80% { transform: translate(5px, 10px); }
+            90% { transform: translate(-10px, -5px); }
+        }
+        
+        body.shaking {
+            animation: shake 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="label">&gt; COUNTDOWN_TO_MIDNIGHT</div>
+        <div class="label" id="eventLabel">&gt; COUNTDOWN</div>
         <div class="countdown" id="countdown">--:--:--</div>
-        <div class="status" id="status">Waiting to start...</div>
-        <div class="target-time" id="target">Target: --:--:--</div>
-        <div class="button-row">
-            <button class="start-btn" id="startBtn">[ INITIALIZE COUNTDOWN ]</button>
-            <button class="start-btn test-btn" id="testBtn">[ TEST MODE - 35 SEC ]</button>
+        <div class="status" id="status">Set your target</div>
+        <div class="target-time" id="target">Target: --</div>
+        
+        <div class="picker" id="picker">
+            <span class="picker-label">&gt; CONFIGURE</span>
+            
+            <div class="picker-row">
+                <input type="date" class="input" id="targetDate">
+                <input type="time" class="input" id="targetTime" value="00:00">
+            </div>
+            
+            <div class="picker-row">
+                <input type="text" class="input" id="eventName" placeholder="Event name" style="width: 200px;">
+            </div>
+            
+            <div class="picker-row">
+                <div class="mode-toggle">
+                    <span class="mode-label active" id="happyLabel">HAPPY</span>
+                    <input type="checkbox" id="doomMode">
+                    <label class="toggle-track" for="doomMode"></label>
+                    <span class="mode-label" id="doomLabel">DOOM</span>
+                </div>
+            </div>
+            
+            <div class="share-link hidden" id="shareLink">
+                <span id="shareLinkText"></span>
+                <button class="copy-btn" id="copyBtn">COPY</button>
+            </div>
         </div>
-        <div class="volume-note">⚠ Turn up your volume. This will be loud.</div>
+        
+        <div class="button-row">
+            <button class="btn" id="startBtn">[ START ]</button>
+            <button class="btn secondary hidden" id="resetBtn">[ RESET ]</button>
+        </div>
+        
+        <div class="button-row">
+            <button class="btn small secondary" id="testBtn">[ TEST 35s ]</button>
+            <button class="btn small secondary" id="testAudioBtn">[ TEST AUDIO ]</button>
+            <button class="btn small secondary" id="testEffectsBtn">[ TEST EFFECTS ]</button>
+        </div>
+        
+        <div class="note">⚠ Audio requires interaction. Turn up volume.</div>
     </div>
     
-    <div class="celebration" id="celebration"></div>
+    <div class="effects" id="effects"></div>
     
-    <!-- Audio element for Happy New Year -->
-    <audio id="happyNewYearAudio" preload="auto">
-        <source src="/assets/happy-new-year.mp3" type="audio/mpeg">
+    <audio id="happyAudio" preload="auto">
+        <source src="/assets/mp3/happy-new-year.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="doomAudio" preload="auto">
+        <source src="/assets/mp3/o-fortuna.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        let audioContext;
+        // State
         let isRunning = false;
         let hasPlayedWarning = false;
-        let spokenNumbers = new Set();
-        let testMode = false;
+        let hasTriggeredFinale = false;
         let testTarget = null;
+        let doomMode = false;
+        let customTarget = null;
+        let eventName = '';
+        let musicTimeout = null;
+        let audioContext = null;
         
-        const countdown = document.getElementById('countdown');
-        const status = document.getElementById('status');
-        const target = document.getElementById('target');
-        const startBtn = document.getElementById('startBtn');
-        const testBtn = document.getElementById('testBtn');
-        const celebration = document.getElementById('celebration');
-        const happyNewYearAudio = document.getElementById('happyNewYearAudio');
+        const MUSIC_DURATION = 180000;
         
-        // Play ABBA - Happy New Year (from local file)
-        function playHappyNewYear() {
-            if (happyNewYearAudio) {
-                happyNewYearAudio.volume = 1.0; // MAX VOLUME
-                happyNewYearAudio.currentTime = 44; // Start at 00:44
-                happyNewYearAudio.play().catch(e => {
-                    console.log('Audio file not found at /assets/happy-new-year.mp3');
-                });
+        // Elements
+        const $ = id => document.getElementById(id);
+        const body = document.body;
+        const countdownEl = $('countdown');
+        const statusEl = $('status');
+        const targetEl = $('target');
+        const eventLabelEl = $('eventLabel');
+        const pickerEl = $('picker');
+        const startBtn = $('startBtn');
+        const resetBtn = $('resetBtn');
+        const testBtn = $('testBtn');
+        const effectsEl = $('effects');
+        const dateInput = $('targetDate');
+        const timeInput = $('targetTime');
+        const nameInput = $('eventName');
+        const doomToggle = $('doomMode');
+        const happyLabel = $('happyLabel');
+        const doomLabel = $('doomLabel');
+        const shareLinkEl = $('shareLink');
+        const shareLinkText = $('shareLinkText');
+        const happyAudio = $('happyAudio');
+        const doomAudio = $('doomAudio');
+        
+        // URL params
+        function parseURL() {
+            const params = new URLSearchParams(location.search);
+            
+            if (params.get('target')) {
+                const d = new Date(params.get('target'));
+                if (!isNaN(d)) {
+                    customTarget = d;
+                    const [date, time] = params.get('target').split('T');
+                    dateInput.value = date;
+                    if (time) timeInput.value = time.substring(0, 5);
+                }
             }
+            
+            if (params.get('name')) {
+                eventName = decodeURIComponent(params.get('name'));
+                nameInput.value = eventName;
+                eventLabelEl.textContent = `> ${eventName.toUpperCase()}`;
+                document.title = `${eventName} | LocalGhost.ai`;
+            }
+            
+            if (params.get('doom') === '1') {
+                doomMode = true;
+                doomToggle.checked = true;
+                updateModeUI();
+            }
+            
+            return !!params.get('target');
         }
         
-        // Get next 12:00:00 (midnight or noon, whichever is next)
-        // Or in test mode, return the test target
-        function getNextTwelve() {
-            if (testMode && testTarget) {
-                return testTarget;
-            }
+        function generateShareURL() {
+            if (!dateInput.value) return null;
             
-            const now = new Date();
-            const next = new Date(now);
+            const base = location.origin + location.pathname;
+            let url = `${base}?target=${dateInput.value}T${timeInput.value || '00:00'}`;
+            if (nameInput.value) url += `&name=${encodeURIComponent(nameInput.value)}`;
+            if (doomToggle.checked) url += '&doom=1';
             
-            // Check if we should target midnight (00:00) or noon (12:00)
-            // For New Year's, let's default to midnight
-            if (now.getHours() < 12) {
-                // Before noon - target noon today
-                next.setHours(12, 0, 0, 0);
+            return url;
+        }
+        
+        function updateShareLink() {
+            const url = generateShareURL();
+            if (url) {
+                shareLinkText.textContent = url;
+                shareLinkEl.classList.remove('hidden');
             } else {
-                // After noon - target midnight tonight
-                next.setHours(24, 0, 0, 0);
+                shareLinkEl.classList.add('hidden');
             }
-            
-            return next;
         }
         
-        // Initialize audio context (must be triggered by user interaction)
+        const HAPPY_DEFAULT = 'Happy New Year';
+        const DOOM_DEFAULT = 'End of Days';
+        
+        // Mode toggle
+        function updateModeUI() {
+            doomMode = doomToggle.checked;
+            body.classList.toggle('doom', doomMode);
+            happyLabel.classList.toggle('active', !doomMode);
+            doomLabel.classList.toggle('active', doomMode);
+            
+            // Swap default names if user hasn't customized
+            if (doomMode && nameInput.value === HAPPY_DEFAULT) {
+                nameInput.value = DOOM_DEFAULT;
+                eventLabelEl.textContent = `> ${DOOM_DEFAULT.toUpperCase()}`;
+                document.title = `${DOOM_DEFAULT} | LocalGhost.ai`;
+            } else if (!doomMode && nameInput.value === DOOM_DEFAULT) {
+                nameInput.value = HAPPY_DEFAULT;
+                eventLabelEl.textContent = `> ${HAPPY_DEFAULT.toUpperCase()}`;
+                document.title = `${HAPPY_DEFAULT} | LocalGhost.ai`;
+            }
+            
+            updateShareLink();
+        }
+        
+        doomToggle.addEventListener('change', updateModeUI);
+        
+        // Set defaults
+        function setDefaults() {
+            const now = new Date();
+            let year = now.getFullYear();
+            
+            // If we're past Jan 1 midnight, target next year
+            const thisNYE = new Date(year + 1, 0, 1, 0, 0, 0);
+            if (now >= thisNYE) year++;
+            
+            // Target Jan 1 00:00 (midnight)
+            dateInput.value = `${year + 1}-01-01`;
+            timeInput.value = '00:00';
+            nameInput.value = HAPPY_DEFAULT;
+            document.title = `${HAPPY_DEFAULT} | LocalGhost.ai`;
+        }
+        
+        // Format helpers
+        function formatTime(ms) {
+            if (ms <= 0) return '00:00:00';
+            
+            const s = Math.floor(ms / 1000);
+            const days = Math.floor(s / 86400);
+            const hrs = Math.floor((s % 86400) / 3600);
+            const mins = Math.floor((s % 3600) / 60);
+            const secs = s % 60;
+            
+            const pad = n => n.toString().padStart(2, '0');
+            
+            if (days > 0) return `${days}d ${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+            return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`;
+        }
+        
+        function formatTarget(d) {
+            return d.toLocaleDateString('en-US', {
+                weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+        
+        // Audio
         function initAudio() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -268,310 +718,347 @@
             return audioContext;
         }
         
-        // Play a loud alert tone
-        function playAlertSound() {
-            const ctx = initAudio();
-            const duration = 1.5;
-            
-            // Create multiple oscillators for a richer, louder sound
-            const frequencies = [440, 880, 1320]; // A4, A5, E6 - alarm chord
-            
-            frequencies.forEach((freq, i) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.type = 'square';
-                osc.frequency.value = freq;
-                
-                gain.gain.value = 0.8; // LOUD
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + duration);
-            });
-            
-            // Add a second burst
-            setTimeout(() => {
-                frequencies.forEach((freq) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    
-                    osc.type = 'square';
-                    osc.frequency.value = freq * 1.5;
-                    
-                    gain.gain.value = 0.8;
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
-                    
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 1);
-                });
-            }, 500);
-        }
-        
-        // Play celebration sound
-        function playCelebration() {
-            const ctx = initAudio();
-            
-            // Rising triumphant tones
-            const notes = [261, 329, 392, 523, 659, 784, 1046];
-            notes.forEach((freq, i) => {
-                setTimeout(() => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    
-                    osc.type = 'sine';
-                    osc.frequency.value = freq;
-                    
-                    gain.gain.value = 0.6;
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-                    
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 0.5);
-                }, i * 100);
-            });
-        }
-        
-        // Speak a number LOUDLY
-        function speakNumber(num) {
-            if (spokenNumbers.has(num)) return;
-            spokenNumbers.add(num);
-            
-            const words = ['', 'one', 'two', 'three', 'four', 'five', 'six', 
-                          'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
-            
-            const text = num === 0 ? 'HAPPY NEW YEAR!' : words[num].toUpperCase();
-            
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.8;  // Slightly slower for drama
-            utterance.pitch = 1.0;
-            utterance.volume = 1.0; // MAX VOLUME
-            
-            // Try to get a booming voice
-            const voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v => 
-                v.name.includes('Male') || 
-                v.name.includes('Daniel') || 
-                v.name.includes('Alex') ||
-                v.lang.startsWith('en')
-            );
-            if (preferredVoice) {
-                utterance.voice = preferredVoice;
-            }
-            
-            window.speechSynthesis.speak(utterance);
-            
-            // Also play a tick sound for each number
-            playTick(num);
-        }
-        
-        // Play a tick/chime for each second
-        function playTick(num) {
+        function playTone(freq, duration, type = 'sine') {
             const ctx = initAudio();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             
-            // Higher pitch as we get closer to zero
-            const baseFreq = 200 + ((12 - num) * 50);
+            osc.type = type;
+            osc.frequency.value = freq;
             
-            osc.type = num <= 3 ? 'square' : 'sine';
-            osc.frequency.value = baseFreq;
-            
-            gain.gain.value = num <= 3 ? 0.9 : 0.6;
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            const now = ctx.currentTime;
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.4, now + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
             
             osc.connect(gain);
             gain.connect(ctx.destination);
-            
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + 0.3);
+            osc.start(now);
+            osc.stop(now + duration);
         }
         
-        // Create visual fireworks
-        function createFireworks() {
-            const colors = ['#33FF00', '#FF8A8A', '#FFFFFF', '#FFD700', '#00FFFF'];
-            
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = Math.random() * 100 + '%';
-                    firework.style.top = Math.random() * 100 + '%';
-                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    celebration.appendChild(firework);
-                    
-                    setTimeout(() => firework.remove(), 1000);
-                }, i * 200);
+        function playWarning() {
+            if (doomMode) {
+                // Ominous low rumble
+                [65.41, 82.41, 98.00].forEach((f, i) => {
+                    setTimeout(() => playTone(f, 1.5, 'sawtooth'), i * 200);
+                });
+            } else {
+                // Bright fanfare
+                const notes = [392, 494, 587, 523, 659, 784];
+                notes.forEach((f, i) => {
+                    setTimeout(() => playTone(f, 0.3, 'triangle'), i * 100);
+                });
             }
         }
         
-        // Format time as HH:MM:SS
-        function formatTime(ms) {
-            if (ms <= 0) return '00:00:00';
+        function playFinale() {
+            const audio = doomMode ? doomAudio : happyAudio;
+            audio.volume = 1.0;
+            audio.currentTime = doomMode ? 0 : 44;
             
-            const totalSeconds = Math.floor(ms / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
+            audio.play().catch(() => {});
             
-            return [hours, minutes, seconds]
-                .map(v => v.toString().padStart(2, '0'))
-                .join(':');
+            if (musicTimeout) clearTimeout(musicTimeout);
+            musicTimeout = setTimeout(() => audio.pause(), MUSIC_DURATION);
         }
         
-        // Main update loop
+        function playTick() {
+            const freq = doomMode ? 100 : 800;
+            playTone(freq, 0.1, doomMode ? 'sawtooth' : 'sine');
+        }
+        
+        // Effects
+        function createHappyEffects() {
+            const colors = ['#33FF00', '#FF8A8A', '#FFFFFF', '#FFD700', '#00FFFF', '#FF00FF', '#FFA500'];
+            
+            // Center burst
+            const burst = document.createElement('div');
+            burst.className = 'mega-burst';
+            effectsEl.appendChild(burst);
+            setTimeout(() => burst.remove(), 2000);
+            
+            // Fireworks
+            for (let b = 0; b < 25; b++) {
+                setTimeout(() => {
+                    const x = 10 + Math.random() * 80;
+                    const y = 10 + Math.random() * 80;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    for (let i = 0; i < 30; i++) {
+                        const p = document.createElement('div');
+                        p.className = 'particle';
+                        p.style.cssText = `left:${x}%;top:${y}%;background:${color};box-shadow:0 0 6px ${color}`;
+                        
+                        const angle = (Math.PI * 2 * i) / 30 + Math.random() * 0.5;
+                        const dist = 80 + Math.random() * 100;
+                        p.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                        p.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+                        
+                        effectsEl.appendChild(p);
+                        setTimeout(() => p.remove(), 1500);
+                    }
+                }, b * 400);
+            }
+            
+            // Sparkles for 20s
+            const sparkle = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const s = document.createElement('div');
+                    s.className = 'particle';
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;background:${color}`;
+                    s.style.setProperty('--tx', `${(Math.random()-0.5)*80}px`);
+                    s.style.setProperty('--ty', `${(Math.random()-0.5)*80}px`);
+                    effectsEl.appendChild(s);
+                    setTimeout(() => s.remove(), 1500);
+                }
+            }, 150);
+            setTimeout(() => clearInterval(sparkle), 20000);
+        }
+        
+        function createDoomEffects() {
+            // Screen shake
+            body.classList.add('shaking');
+            setTimeout(() => body.classList.remove('shaking'), 500);
+            
+            // Red burst
+            const burst = document.createElement('div');
+            burst.className = 'doom-burst';
+            effectsEl.appendChild(burst);
+            setTimeout(() => burst.remove(), 3000);
+            
+            // Shockwaves
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const sw = document.createElement('div');
+                    sw.className = 'shockwave';
+                    sw.style.cssText = `left:50%;top:50%;transform:translate(-50%,-50%)`;
+                    effectsEl.appendChild(sw);
+                    setTimeout(() => sw.remove(), 1500);
+                    
+                    // More shake
+                    body.classList.add('shaking');
+                    setTimeout(() => body.classList.remove('shaking'), 500);
+                }, i * 800);
+            }
+            
+            // Cracks
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const crack = document.createElement('div');
+                    crack.className = 'crack';
+                    crack.style.cssText = `top:${Math.random()*100}%;left:0;transform:rotate(${Math.random()*20-10}deg)`;
+                    effectsEl.appendChild(crack);
+                    setTimeout(() => crack.remove(), 3000);
+                }, i * 200);
+            }
+            
+            // Falling embers for 30s
+            const embers = setInterval(() => {
+                for (let i = 0; i < 5; i++) {
+                    const e = document.createElement('div');
+                    e.className = 'ember';
+                    e.style.cssText = `left:${Math.random()*100}%;top:-10px;animation-duration:${2+Math.random()*3}s`;
+                    effectsEl.appendChild(e);
+                    setTimeout(() => e.remove(), 5000);
+                }
+            }, 100);
+            setTimeout(() => clearInterval(embers), 30000);
+        }
+        
+        // Main loop
+        function getTarget() {
+            if (testTarget) return testTarget;
+            if (customTarget) return customTarget;
+            
+            // Default: next NYE midnight
+            const now = new Date();
+            const thisNYE = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0);
+            return thisNYE;
+        }
+        
         function update() {
             if (!isRunning) return;
             
-            const now = new Date();
-            const targetTime = getNextTwelve();
-            const diff = targetTime - now;
-            const secondsRemaining = Math.floor(diff / 1000);
+            const now = Date.now();
+            const target = getTarget().getTime();
+            const diff = target - now;
+            const secs = Math.floor(diff / 1000);
             
-            // Update display
-            countdown.textContent = formatTime(diff);
-            target.textContent = testMode 
-                ? `TEST TARGET: ${targetTime.toLocaleTimeString()}`
-                : `Target: ${targetTime.toLocaleTimeString()}`;
+            countdownEl.textContent = formatTime(diff);
+            targetEl.textContent = testTarget ? 'TEST MODE' : `Target: ${formatTarget(getTarget())}`;
             
-            // Warning at 30 seconds
-            if (secondsRemaining <= 30 && secondsRemaining > 12) {
-                countdown.classList.add('warning');
-                countdown.classList.remove('final');
+            // Warning at 30s
+            if (secs <= 30 && secs > 10) {
+                countdownEl.classList.add('warning');
+                countdownEl.classList.remove('final');
                 
                 if (!hasPlayedWarning) {
                     hasPlayedWarning = true;
-                    status.textContent = '⚠ 30 SECONDS WARNING ⚠';
-                    status.className = 'status alert';
-                    playAlertSound();
+                    statusEl.textContent = doomMode ? '⚠ THE END APPROACHES ⚠' : '⚠ 30 SECONDS ⚠';
+                    statusEl.className = 'status alert';
+                    playWarning();
                 }
             }
             
-            // Final countdown - speak number N about 200ms BEFORE display changes to N
-            // Display shows N when diff is in [N*1000, (N+1)*1000 - 1]
-            // So display changes TO N when diff drops below (N+1)*1000
-            // We want to speak N when diff is around (N+1)*1000 + 200
-            
-            const currentDisplay = Math.floor(diff / 1000);
-            const msIntoThisSecond = diff % 1000;
-            
-            // If we're in the first 300ms of showing currentDisplay, 
-            // speak (currentDisplay - 1) which is about to appear in ~700-1000ms... no wait
-            
-            // Actually: speak currentDisplay when we're in first 300ms of showing (currentDisplay + 1)
-            // i.e., speak N when floor(diff/1000) = N+1 and diff%1000 <= 300
-            const numberToSpeak = currentDisplay - 1;
-            
-            if (msIntoThisSecond <= 300 && numberToSpeak <= 12 && numberToSpeak >= 0) {
-                speakNumber(numberToSpeak);
-            }
-            
-            if (secondsRemaining <= 12 && secondsRemaining > 0) {
-                countdown.classList.remove('warning');
-                countdown.classList.add('final');
-                status.textContent = secondsRemaining.toString();
-                status.className = 'status speaking';
-            }
-            
-            // MIDNIGHT (or test target reached)!
-            if (secondsRemaining <= 0) {
-                countdown.textContent = '00:00:00';
-                countdown.classList.remove('warning');
-                countdown.classList.add('final');
-                status.textContent = testMode ? '🎉 TEST COMPLETE! 🎉' : '🎉 HAPPY NEW YEAR! 🎉';
-                status.className = 'status speaking';
+            // Final 10s - tick each second
+            if (secs <= 10 && secs > 0) {
+                countdownEl.classList.remove('warning');
+                countdownEl.classList.add('final');
+                statusEl.textContent = secs.toString();
+                statusEl.className = 'status alert';
                 
-                if (!spokenNumbers.has(0)) {
-                    speakNumber(0);
-                    playCelebration();
-                    createFireworks();
-                    playHappyNewYear(); // 🎵 ABBA - Happy New Year
-                    
-                    // Reset for next cycle after 10 seconds
-                    setTimeout(() => {
-                        hasPlayedWarning = false;
-                        spokenNumbers.clear();
-                        countdown.classList.remove('final');
-                        status.className = 'status';
-                        status.textContent = 'Ready for next countdown';
-                        
-                        // Stop audio
-                        if (happyNewYearAudio) {
-                            happyNewYearAudio.pause();
-                            happyNewYearAudio.currentTime = 44;
-                        }
-                        
-                        // Show buttons again
-                        startBtn.classList.remove('hidden');
-                        testBtn.classList.remove('hidden');
-                        
-                        // Reset test mode
-                        testMode = false;
-                        testTarget = null;
-                        isRunning = false;
-                    }, 10000);
-                }
+                // Tick on each new second
+                const msInSec = diff % 1000;
+                if (msInSec > 900) playTick();
+            }
+            
+            // Finale!
+            if (secs <= 0 && !hasTriggeredFinale) {
+                hasTriggeredFinale = true;
+                countdownEl.textContent = '00:00:00';
+                countdownEl.classList.add('final');
+                
+                const msg = eventName 
+                    ? (doomMode ? `💀 ${eventName.toUpperCase()} 💀` : `🎉 ${eventName.toUpperCase()}! 🎉`)
+                    : (doomMode ? '💀 IT IS DONE 💀' : '🎉 TIME! 🎉');
+                statusEl.textContent = msg;
+                statusEl.className = 'status complete';
+                
+                playFinale();
+                doomMode ? createDoomEffects() : createHappyEffects();
+                
+                // Reset after celebration
+                setTimeout(reset, MUSIC_DURATION + 2000);
             }
             
             requestAnimationFrame(update);
         }
         
-        // Start button handler
-        startBtn.addEventListener('click', () => {
+        function start() {
+            // Read inputs
+            if (dateInput.value) {
+                customTarget = new Date(`${dateInput.value}T${timeInput.value || '00:00'}`);
+            }
+            eventName = nameInput.value;
+            if (eventName) {
+                eventLabelEl.textContent = `> ${eventName.toUpperCase()}`;
+                document.title = `${eventName} | LocalGhost.ai`;
+            }
+            
             initAudio();
             
-            // Load voices
-            window.speechSynthesis.getVoices();
-            
-            testMode = false;
-            testTarget = null;
             isRunning = true;
+            hasPlayedWarning = false;
+            hasTriggeredFinale = false;
+            
+            pickerEl.classList.add('hidden');
             startBtn.classList.add('hidden');
             testBtn.classList.add('hidden');
-            status.textContent = 'Countdown active...';
-            status.className = 'status';
+            resetBtn.classList.remove('hidden');
+            statusEl.textContent = 'Running...';
+            statusEl.className = 'status';
+            countdownEl.classList.remove('warning', 'final');
             
             update();
-        });
+        }
         
-        // Test mode button handler - 35 second countdown
+        function reset() {
+            isRunning = false;
+            hasPlayedWarning = false;
+            hasTriggeredFinale = false;
+            testTarget = null;
+            
+            if (musicTimeout) clearTimeout(musicTimeout);
+            happyAudio.pause();
+            doomAudio.pause();
+            
+            effectsEl.innerHTML = '';
+            body.classList.remove('shaking');
+            
+            countdownEl.textContent = '--:--:--';
+            countdownEl.classList.remove('warning', 'final');
+            statusEl.textContent = 'Ready';
+            statusEl.className = 'status';
+            
+            pickerEl.classList.remove('hidden');
+            startBtn.classList.remove('hidden');
+            testBtn.classList.remove('hidden');
+            resetBtn.classList.add('hidden');
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', start);
+        resetBtn.addEventListener('click', reset);
+        
         testBtn.addEventListener('click', () => {
             initAudio();
+            testTarget = new Date(Date.now() + 35000);
+            customTarget = null;
             
-            // Load voices
-            window.speechSynthesis.getVoices();
-            
-            // Set target to 35 seconds from now
-            const now = new Date();
-            testTarget = new Date(now.getTime() + 35000);
-            
-            testMode = true;
-            hasPlayedWarning = false;
-            spokenNumbers.clear();
             isRunning = true;
+            hasPlayedWarning = false;
+            hasTriggeredFinale = false;
+            
+            pickerEl.classList.add('hidden');
             startBtn.classList.add('hidden');
             testBtn.classList.add('hidden');
-            status.textContent = 'TEST MODE - 35 second countdown...';
-            status.className = 'status alert';
+            resetBtn.classList.remove('hidden');
+            statusEl.textContent = 'TEST MODE - 35s';
+            statusEl.className = 'status alert';
+            countdownEl.classList.remove('warning', 'final');
             
             update();
         });
         
-        // Preload voices
-        window.speechSynthesis.onvoiceschanged = () => {
-            window.speechSynthesis.getVoices();
-        };
+        $('testAudioBtn').addEventListener('click', () => {
+            initAudio();
+            playFinale();
+        });
+        
+        $('testEffectsBtn').addEventListener('click', () => {
+            effectsEl.innerHTML = '';
+            doomMode ? createDoomEffects() : createHappyEffects();
+        });
+        
+        $('copyBtn').addEventListener('click', () => {
+            const url = generateShareURL();
+            if (url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    $('copyBtn').textContent = 'COPIED!';
+                    setTimeout(() => $('copyBtn').textContent = 'COPY', 2000);
+                });
+            }
+        });
+        
+        dateInput.addEventListener('change', updateShareLink);
+        timeInput.addEventListener('change', updateShareLink);
+        nameInput.addEventListener('input', () => {
+            updateShareLink();
+            // Update label and title as user types
+            const name = nameInput.value || (doomMode ? DOOM_DEFAULT : HAPPY_DEFAULT);
+            eventLabelEl.textContent = `> ${name.toUpperCase()}`;
+            document.title = `${name} | LocalGhost.ai`;
+        });
+        
+        // Init
+        const hasURLTarget = parseURL();
+        if (!hasURLTarget) {
+            setDefaults();
+            eventLabelEl.textContent = `> ${HAPPY_DEFAULT.toUpperCase()}`;
+        }
+        // If URL had doom=1 but no custom name, set doom default
+        if (doomMode && !eventName) {
+            nameInput.value = DOOM_DEFAULT;
+            eventLabelEl.textContent = `> ${DOOM_DEFAULT.toUpperCase()}`;
+            document.title = `${DOOM_DEFAULT} | LocalGhost.ai`;
+        }
+        updateShareLink();
+        
+        if (hasURLTarget) {
+            statusEl.textContent = 'Click START to begin';
+        }
     </script>
 </body>
 </html>

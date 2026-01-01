@@ -1,0 +1,28 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+  </defs>
+  
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Ghost on left - clean, no background overlay -->
+  <g transform="translate(70, 150)">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="4"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="4"/>
+  </g>
+  
+  <!-- Main content box -->
+  <rect x="400" y="110" width="720" height="370" fill="none" stroke="#ff8a8a" stroke-width="3"/>
+  <rect x="395" y="105" width="720" height="370" fill="none" stroke="#ff8a8a" stroke-width="1" opacity="0.3"/>
+  
+  <text x="760" y="200" text-anchor="middle" fill="#a0a0a0" font-family="monospace" font-size="52" font-weight="bold" letter-spacing="4">THIS DYSTOPIA</text>
+  <text x="760" y="275" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="56" font-weight="bold" letter-spacing="4">IS BORING</text>
+  <text x="760" y="355" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="28">The exit is open.</text>
+  <text x="760" y="405" text-anchor="middle" fill="#808080" font-family="monospace" font-size="22">Code, not promises.</text>
+  <text x="600" y="560" text-anchor="middle" fill="#33ff00" font-family="monospace" font-size="22" letter-spacing="2">&gt; LOCALGHOST.AI/MANIFESTO</text>
+</svg>
