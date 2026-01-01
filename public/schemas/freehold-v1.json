@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://localghost.ai/schemas/freehold-v1.json",
+  "$id": "https://www.localghost.ai/schemas/freehold-v1.json",
   "title": "Freehold Declaration",
   "description": "A machine-readable declaration that a project is local-first, offline-capable, and architecturally immune to vendor lock-in.",
   "type": "object",
