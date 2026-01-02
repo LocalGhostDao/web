@@ -1,0 +1,108 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+    
+    <!-- Scanline pattern -->
+    <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="rgba(0,0,0,0.1)"/>
+    </pattern>
+    
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Strong glow -->
+    <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Warning glow -->
+    <filter id="warningGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  
+  <!-- Grid overlay -->
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.5"/>
+  
+  <!-- Gradient overlay -->
+  <rect width="1200" height="630" fill="url(#scanlines)" opacity="0.3"/>
+  
+  <!-- Corner accents -->
+  <path d="M 0 0 L 80 0 L 80 3 L 3 3 L 3 80 L 0 80 Z" fill="#00ff41" opacity="0.6"/>
+  <path d="M 1200 0 L 1120 0 L 1120 3 L 1197 3 L 1197 80 L 1200 80 Z" fill="#00ff41" opacity="0.6"/>
+  <path d="M 0 630 L 80 630 L 80 627 L 3 627 L 3 550 L 0 550 Z" fill="#00ff41" opacity="0.6"/>
+  <path d="M 1200 630 L 1120 630 L 1120 627 L 1197 627 L 1197 550 L 1200 550 Z" fill="#00ff41" opacity="0.6"/>
+  
+  <!-- Question mark watermark -->
+  <text x="950" y="450" font-family="monospace" font-size="400" font-weight="700" fill="#ff6b6b" opacity="0.04">?</text>
+  
+  <!-- Warning stripe top -->
+  <rect x="0" y="0" width="1200" height="4" fill="#ff6b6b" opacity="0.8"/>
+  
+  <!-- Section label -->
+  <text x="80" y="120" font-family="monospace" font-size="18" fill="#666" letter-spacing="3">&gt; HARD_TRUTHS</text>
+  
+  <!-- Main title -->
+  <text x="80" y="220" font-family="monospace" font-size="90" font-weight="700" fill="#ffffff" filter="url(#glow)">THE</text>
+  <text x="80" y="320" font-family="monospace" font-size="90" font-weight="700" fill="#ff6b6b" filter="url(#warningGlow)">RECKONING</text>
+  
+  <!-- Subtitle / Questions -->
+  <text x="80" y="400" font-family="monospace" font-size="22" fill="#888">Is the rot inevitable? How do ethical builders survive?</text>
+  <text x="80" y="435" font-family="monospace" font-size="22" fill="#888">What happens when a generation never knew privacy?</text>
+  
+  <!-- Decorative line -->
+  <line x1="80" y1="470" x2="600" y2="470" stroke="#333" stroke-width="1"/>
+  
+  <!-- Traffic lights visual -->
+  <circle cx="880" cy="200" r="20" fill="#ff6b6b" filter="url(#warningGlow)"/>
+  <circle cx="880" cy="260" r="20" fill="#f0ad4e" opacity="0.3"/>
+  <circle cx="880" cy="320" r="20" fill="#00ff41" opacity="0.3"/>
+  
+  <circle cx="960" cy="200" r="20" fill="#ff6b6b" opacity="0.3"/>
+  <circle cx="960" cy="260" r="20" fill="#f0ad4e" filter="url(#warningGlow)"/>
+  <circle cx="960" cy="320" r="20" fill="#00ff41" opacity="0.3"/>
+  
+  <circle cx="1040" cy="200" r="20" fill="#ff6b6b" opacity="0.3"/>
+  <circle cx="1040" cy="260" r="20" fill="#f0ad4e" opacity="0.3"/>
+  <circle cx="1040" cy="320" r="20" fill="#00ff41" filter="url(#strongGlow)"/>
+  
+  <!-- Labels under lights -->
+  <text x="880" y="370" font-family="monospace" font-size="11" fill="#666" text-anchor="middle">BROKEN</text>
+  <text x="960" y="370" font-family="monospace" font-size="11" fill="#666" text-anchor="middle">UNCERTAIN</text>
+  <text x="1040" y="370" font-family="monospace" font-size="11" fill="#666" text-anchor="middle">POSSIBLE</text>
+  
+  <!-- Footer area -->
+  <rect x="0" y="530" width="1200" height="100" fill="rgba(0,0,0,0.5)"/>
+  
+  <!-- Logo/Brand -->
+  <text x="80" y="580" font-family="monospace" font-size="24" fill="#00ff41" filter="url(#glow)">&gt; LOCALGHOST.AI</text>
+  
+  <!-- Tagline -->
+  <text x="400" y="580" font-family="monospace" font-size="18" fill="#444">THE ONLY CLOUD IS YOU</text>
+  
+  <!-- URL -->
+  <text x="1120" y="580" font-family="monospace" font-size="16" fill="#555" text-anchor="end">localghost.ai/reckoning</text>
+  
+  <!-- Bottom accent line -->
+  <rect x="0" y="626" width="1200" height="4" fill="#00ff41" opacity="0.6"/>
+</svg>

@@ -1,0 +1,598 @@
+/* reckoning.css - Only unique components, base.css handles the rest */
+
+/* ===========================================
+   SECTION HEADERS (match manifesto.css)
+   =========================================== */
+
+.section-header {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--terminal);
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+}
+
+/* ===========================================
+   MANIFESTO TEXT (match manifesto.css)
+   =========================================== */
+
+.manifesto-text .highlight {
+    color: var(--terminal);
+    font-weight: 500;
+}
+
+/* ============================================
+   QUESTION BOX - Opening (centered, impactful)
+   ============================================ */
+
+.question-box {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 138, 138, 0.05) 0%, rgba(17, 17, 17, 0.9) 100%);
+    border: 1px solid var(--warning);
+    padding: 3rem 2rem;
+    margin: 2rem 0 3rem 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.question-box::before {
+    content: '?';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 280px;
+    font-weight: 700;
+    color: rgba(255, 138, 138, 0.03);
+    font-family: var(--font-mono);
+    line-height: 1;
+    pointer-events: none;
+}
+
+.question-box p {
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.question-box .question-lead {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+}
+
+.question-box .question-lead a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.question-box .question-lead a:hover {
+    color: var(--terminal);
+}
+
+.question-box .question-main {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--warning);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+}
+
+.question-box .question-sub {
+    font-size: 1.1rem;
+    color: var(--text);
+    font-style: italic;
+}
+
+/* ============================================
+   LIFECYCLE VISUAL
+   ============================================ */
+
+.lifecycle-visual {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: var(--void-lighter);
+    border: 1px solid var(--border);
+}
+
+.lifecycle-stages {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.lifecycle-stages::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--terminal), #f0ad4e, var(--warning));
+    z-index: 0;
+}
+
+.lifecycle-stage {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.stage-dot {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.lifecycle-stage:nth-child(1) .stage-dot {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+.lifecycle-stage:nth-child(2) .stage-dot {
+    background: #f0ad4e;
+    color: var(--void);
+}
+
+.lifecycle-stage:nth-child(3) .stage-dot {
+    background: var(--warning);
+    color: var(--void);
+}
+
+.stage-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+}
+
+.stage-title {
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+@media (max-width: 600px) {
+    .lifecycle-stages {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .lifecycle-stages::before {
+        top: 15%;
+        bottom: 15%;
+        left: 50%;
+        right: auto;
+        width: 2px;
+        height: 70%;
+        background: linear-gradient(180deg, var(--terminal), #f0ad4e, var(--warning));
+    }
+}
+
+/* ============================================
+   VERDICT BOX
+   ============================================ */
+
+.verdict-box {
+    background: rgba(51, 255, 0, 0.02);
+    border: 1px solid var(--terminal);
+    border-left: 3px solid var(--terminal);
+    padding: 1.5rem;
+    margin: 2rem 0;
+}
+
+.verdict-box p {
+    margin: 0;
+}
+
+.verdict-box .verdict-main {
+    color: var(--terminal);
+    font-weight: 500;
+}
+
+/* ============================================
+   ECONOMICS TRAFFIC LIGHTS
+   ============================================ */
+
+.economics-traffic {
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+}
+
+.traffic-item {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    border-bottom: 1px solid var(--border);
+}
+
+.traffic-item:last-child {
+    border-bottom: none;
+}
+
+.traffic-light {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.traffic-light::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.traffic-item.red .traffic-light {
+    background: rgba(255, 138, 138, 0.1);
+}
+
+.traffic-item.red .traffic-light::after {
+    background: var(--warning);
+    box-shadow: 0 0 10px var(--warning);
+}
+
+.traffic-item.yellow .traffic-light {
+    background: rgba(240, 173, 78, 0.1);
+}
+
+.traffic-item.yellow .traffic-light::after {
+    background: #f0ad4e;
+    box-shadow: 0 0 10px #f0ad4e;
+}
+
+.traffic-item.green .traffic-light {
+    background: rgba(51, 255, 0, 0.1);
+}
+
+.traffic-item.green .traffic-light::after {
+    background: var(--terminal);
+    box-shadow: 0 0 10px var(--terminal);
+}
+
+.traffic-content {
+    padding: 1.25rem;
+    background: var(--void-lighter);
+}
+
+.traffic-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+}
+
+.traffic-item.red .traffic-label { color: var(--warning); }
+.traffic-item.yellow .traffic-label { color: #f0ad4e; }
+.traffic-item.green .traffic-label { color: var(--terminal); }
+
+.traffic-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   INSIGHT BOX
+   ============================================ */
+
+.insight-box {
+    background: rgba(51, 255, 0, 0.02);
+    border: 1px solid var(--terminal);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.insight-box p {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.insight-box .dim {
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   GENERATION SPLIT
+   ============================================ */
+
+.generation-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+    .generation-split {
+        grid-template-columns: 1fr;
+    }
+}
+
+.gen-panel {
+    padding: 1.5rem;
+}
+
+.gen-panel.past {
+    background: rgba(51, 255, 0, 0.02);
+    border-right: 1px solid var(--border);
+}
+
+.gen-panel.present {
+    background: rgba(255, 138, 138, 0.02);
+}
+
+@media (max-width: 600px) {
+    .gen-panel.past {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}
+
+.gen-year {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.gen-panel.past .gen-year {
+    color: var(--terminal);
+}
+
+.gen-panel.present .gen-year {
+    color: var(--warning);
+}
+
+.gen-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+}
+
+.gen-panel p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   DANGER BOX
+   ============================================ */
+
+.danger-box {
+    background: rgba(255, 138, 138, 0.05);
+    border: 1px solid var(--warning);
+    border-left: 3px solid var(--warning);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+}
+
+.danger-box .danger-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--warning);
+    margin-bottom: 0.5rem;
+}
+
+.danger-box p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   CHAT COMPARISON
+   ============================================ */
+
+.chat-comparison {
+    margin: 2rem 0;
+    border: 1px solid var(--border);
+}
+
+.chat-panel {
+    border-bottom: 1px solid var(--border);
+}
+
+.chat-panel:last-child {
+    border-bottom: none;
+}
+
+.chat-header {
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+}
+
+.chat-panel.human .chat-header {
+    background: rgba(51, 255, 0, 0.1);
+    color: var(--terminal);
+}
+
+.chat-panel.ai .chat-header {
+    background: rgba(255, 138, 138, 0.1);
+    color: var(--warning);
+}
+
+.chat-bubble {
+    padding: 1.25rem;
+    background: var(--void-lighter);
+}
+
+.chat-bubble p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   ROADMAP
+   ============================================ */
+
+.roadmap-container {
+    margin: 2rem 0;
+}
+
+.roadmap-item {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+}
+
+.roadmap-item.critical {
+    border-left: 3px solid var(--warning);
+}
+
+.roadmap-item.needed {
+    border-left: 3px solid #f0ad4e;
+}
+
+.roadmap-item.helpful {
+    border-left: 3px solid var(--terminal);
+}
+
+.roadmap-status-bar {
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--border);
+}
+
+.roadmap-item.critical .roadmap-status-bar {
+    background: rgba(255, 138, 138, 0.1);
+    color: var(--warning);
+}
+
+.roadmap-item.needed .roadmap-status-bar {
+    background: rgba(240, 173, 78, 0.1);
+    color: #f0ad4e;
+}
+
+.roadmap-item.helpful .roadmap-status-bar {
+    background: rgba(51, 255, 0, 0.1);
+    color: var(--terminal);
+}
+
+.roadmap-content {
+    padding: 1.25rem;
+    background: var(--void-lighter);
+}
+
+.roadmap-content h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.roadmap-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   CONCLUSION BOX
+   ============================================ */
+
+.conclusion-box {
+    background: rgba(51, 255, 0, 0.02);
+    border: 2px solid var(--terminal);
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.conclusion-box p {
+    margin: 0;
+}
+
+.conclusion-box .conclusion-lead {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.conclusion-box .conclusion-main {
+    font-size: 1.3rem;
+    color: var(--terminal);
+    font-weight: 500;
+    margin: 1rem 0;
+}
+
+.conclusion-box .conclusion-sub {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* ============================================
+   FINAL WORDS
+   ============================================ */
+
+.final-words {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--text-dim);
+}
+
+.final-words .highlight {
+    color: var(--terminal);
+    font-weight: 500;
+    display: block;
+    font-size: 1.25rem;
+    margin-top: 0.75rem;
+}
+
+.final-words .small {
+    display: block;
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+}
+
+/* ============================================
+   LINK ROW
+   ============================================ */
+
+.link-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+}
+
+@media (max-width: 500px) {
+    .link-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

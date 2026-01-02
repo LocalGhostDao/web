@@ -547,13 +547,30 @@
 }
 
 /* ===========================================
+   LINK ROW
+   =========================================== */
+
+.link-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+}
+
+.link-row .back-link {
+    margin-top: 0;
+    flex: 1;
+    text-align: center;
+}
+
+/* ===========================================
    BACK LINK ALIGNMENT
    =========================================== */
 
 main > .back-link {
     display: block;
     text-align: center;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 /* ===========================================
@@ -621,5 +638,13 @@ main > .back-link {
     
     .benefits-grid {
         grid-template-columns: 1fr;
+    }
+
+    .link-row {
+        flex-direction: column;
+    }
+
+    .link-row .back-link {
+        width: 100%;
     }
 }
