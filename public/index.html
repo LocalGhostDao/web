@@ -197,15 +197,17 @@
     <canvas id="matrixCanvas"></canvas>
 
     <!-- NAVIGATION -->
-    <nav>
+     <nav>
         <div class="nav-logo">
-            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
         </div>
         <div class="nav-links">
             <a href="/manifesto">MANIFESTO</a>
-            <a href="/inflection">WHY NOW</a>
+            <a href="/inflection" class="hide-mobile">WHY NOW</a>
             <a href="/reckoning">HARD TRUTHS</a>
-            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+            <a href="/build">BUILD</a>
+            <a href="/directory" class="hide-mobile">DIRECTORY</a>
+            <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
         </div>
     </nav>
 
@@ -377,61 +379,61 @@
         <!-- THE FLEET -->
         <section id="fleet">
             <div class="section-header">&gt; SECTION_02</div>
-            <h2>THE FLEET: LOCAL_DAEMONS</h2>
+            <h2>THE FLEET: LOCAL DAEMONS</h2>
 
             <p>
-                We built a fleet of agents—Daemons—that run locally on the hardware.
-                They are not "smart assistants." They are specialized scripts designed to ingest
-                the chaos of your life and organize it into a coherent truth, without a single byte leaving the box.
+                Six daemons run locally on the hardware. Each handles a specific job—ingesting data,
+                finding patterns, keeping backups alive. No cloud callbacks. No external dependencies.
+                Just processes on your box, working for you.
             </p>
 
             <div class="fleet-grid">
                 <div class="daemon-card">
-                    <div class="daemon-name">THE SCRIBE</div>
-                    <div class="daemon-type">INPUT: TEXT & CONTEXT</div>
+                    <div class="daemon-name">ghost.noted</div>
+                    <div class="daemon-type">TEXT INGESTION</div>
                     <div class="daemon-desc">
-                        Reads your journals. Maps your syntax. Preserves the raw thoughts you self-censor.
-                        The memory of who you were when no one was watching.
+                        Indexes journals, notes, and text exports. Builds a searchable archive
+                        of everything you've written. Full-text search across your entire history.
                     </div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">THE OBSERVER</div>
-                    <div class="daemon-type">INPUT: VISION</div>
+                    <div class="daemon-name">ghost.framed</div>
+                    <div class="daemon-type">IMAGE PROCESSING</div>
                     <div class="daemon-desc">
-                        Sees the bags under your eyes. Tracks the clutter. Rejects the Instagram filter.
-                        The only camera that works for you.
+                        Processes photos and screenshots. Runs local vision models for tagging,
+                        face clustering, OCR extraction. No thumbnails sent anywhere.
                     </div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">THE AUDITOR</div>
-                    <div class="daemon-type">INPUT: HARD METRICS</div>
+                    <div class="daemon-name">ghost.tallyd</div>
+                    <div class="daemon-type">METRICS AGGREGATION</div>
                     <div class="daemon-desc">
-                        Trust the math. Bank logs. Screen time. Commit history.
-                        The undeniable baseline of where your time and energy actually went.
+                        Imports structured data—bank exports, health logs, screen time, git commits.
+                        Normalizes formats. Builds time-series you can query.
                     </div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">THE WEAVER</div>
-                    <div class="daemon-type">SYNTHESIS: THE BRAIN</div>
+                    <div class="daemon-name">ghost.synthd</div>
+                    <div class="daemon-type">PATTERN ENGINE</div>
                     <div class="daemon-desc">
-                        Connects spending to sadness. Connects code to sleep. Finds the pattern.
-                        Builds a model of your psyche—not to sell you things, but to help you understand you.
+                        Correlates across data sources. Finds connections between sleep and spending,
+                        mood and output. Surfaces patterns you'd never spot manually.
                     </div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">THE SENTINEL</div>
-                    <div class="daemon-type">SECURITY: THE MIST</div>
+                    <div class="daemon-name">ghost.mistd</div>
+                    <div class="daemon-type">BACKUP &amp; ENCRYPTION</div>
                     <div class="daemon-desc">
-                        Encrypts & shards your data. Distributes to the P2P mesh.
-                        The deadman switch. If we disappear, your data survives.
+                        Handles encryption, sharding, and P2P distribution to The Mist network.
+                        Manages key derivation. Coordinates shard recovery on restore.
                     </div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">THE SHADOW</div>
-                    <div class="daemon-type">INTERFACE: THE OUTPUT</div>
+                    <div class="daemon-name">ghost.voiced</div>
+                    <div class="daemon-type">QUERY INTERFACE</div>
                     <div class="daemon-desc">
-                        Brutally honest. Not a polite chatbot. If you lie to the Shadow,
-                        it will cite the Auditor's data to correct you. Zero incentive to manipulate.
+                        The conversational layer. Routes your questions to the right daemon,
+                        synthesizes answers from local data. Will cite sources when it disagrees with you.
                     </div>
                 </div>
             </div>
@@ -532,7 +534,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 <h3>2. WE MAKE MONEY WHEN WE SELL YOU UPGRADES (SOFTWARE)</h3>
                 <p>
                     We treat software like a tool, not a service. If we develop a breakthrough new Agent—say,
-                    a "Shadow v2.0" with better reasoning, or a "Medical Auditor" module—we will put it in a package
+                    a "ghost.voiced v2" with better reasoning, or a "ghost.medicald" module—we will put it in a package
                     and put a price tag on it.
                 </p>
                 <div class="choice">

@@ -84,13 +84,15 @@
     <!-- NAVIGATION -->
     <nav>
         <div class="nav-logo">
-            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
         </div>
         <div class="nav-links">
             <a href="/manifesto">MANIFESTO</a>
-            <a href="/inflection">WHY NOW</a>
+            <a href="/inflection" class="hide-mobile">WHY NOW</a>
             <a href="/reckoning" class="active">HARD TRUTHS</a>
-            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+            <a href="/build">BUILD</a>
+            <a href="/directory" class="hide-mobile">DIRECTORY</a>
+            <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
         </div>
     </nav>
 
@@ -106,7 +108,7 @@
         <div class="manifesto-text">
 
             <div class="question-box">
-                <p class="question-lead"><a href="/manifesto">The manifesto</a> is inspiring. <a href="/inflection">The timeline</a> is urgent.</p>
+                <p class="question-lead">Writing <a href="/manifesto">manifestos</a> is easy. Drawing <a href="/inflection">timelines</a> is easier.</p>
                 <p class="question-main">But manifestos don't answer the hard questions.</p>
                 <p class="question-sub">This page tries to.</p>
             </div>
@@ -336,76 +338,8 @@
                 And it's about to get weirder. <span class="highlight">Within a few years, most influencers won't be real people.</span> AI-generated personalities, optimised purely for engagement, with no real experience behind anything they're promoting. No human conscience getting in the way of the manipulation.
             </p>
 
-            <!-- 6. THE ROADMAP -->
-            <div class="section-header">&gt; 6. WHAT ACTUALLY NEEDS TO BE BUILT</div>
-
-            <p>
-                Fair question. If someone reads this and wants to help, where should they start?
-            </p>
-
-            <p>
-                Honest answer: nobody has built a complete alternative yet. Here's what's missing:
-            </p>
-
-            <div class="roadmap-container">
-                <div class="roadmap-item critical">
-                    <div class="roadmap-status-bar">CRITICAL GAP</div>
-                    <div class="roadmap-content">
-                        <h4>AI That Runs On Your Computer</h4>
-                        <p>A complete AI assistant that works entirely on hardware you own, handles your personal data, and doesn't need an internet connection. Some pieces exist (like Ollama for running models), but nobody has built the full experience for regular people yet.</p>
-                    </div>
-                </div>
-                <div class="roadmap-item critical">
-                    <div class="roadmap-status-bar">CRITICAL GAP</div>
-                    <div class="roadmap-content">
-                        <h4>Get Your Data Out</h4>
-                        <p>Tools to export everything you've given to Google, Apple, Facebook, your bank, and your health apps—and import it somewhere you control. The "download your data" options these companies offer are deliberately hard to use.</p>
-                    </div>
-                </div>
-                <div class="roadmap-item needed">
-                    <div class="roadmap-status-bar">NEEDED</div>
-                    <div class="roadmap-content">
-                        <h4>Backup Without a Company</h4>
-                        <p>A way to back up your data across multiple places without trusting any single company. Something like how BitTorrent works, but for keeping your stuff safe. The technology exists; making it easy doesn't yet.</p>
-                    </div>
-                </div>
-                <div class="roadmap-item needed">
-                    <div class="roadmap-status-bar">NEEDED</div>
-                    <div class="roadmap-content">
-                        <h4>Sync Your Own Devices</h4>
-                        <p>Keep your phone, laptop, and tablet in sync without going through someone else's servers. Syncthing does this and it's great—but it needs to be easier and work better on phones.</p>
-                    </div>
-                </div>
-                <div class="roadmap-item helpful">
-                    <div class="roadmap-status-bar">HELPFUL</div>
-                    <div class="roadmap-content">
-                        <h4>Photo Library You Own</h4>
-                        <p>Google Photos and Apple Photos are genuinely good. A local version needs to match their search and organization features without sending everything to the cloud. Hard problem, worth solving.</p>
-                    </div>
-                </div>
-                <div class="roadmap-item helpful">
-                    <div class="roadmap-status-bar">HELPFUL</div>
-                    <div class="roadmap-content">
-                        <h4>Your Second Brain</h4>
-                        <p>A system that collects everything you save—notes, emails, documents, bookmarks—and lets you search and ask questions about it. Obsidian is close. Making it work with AI locally would be transformative.</p>
-                    </div>
-                </div>
-            </div>
-
-            <p>
-                The <a href="/directory">Freehold Directory</a> tracks projects working on these problems. If you're building something that fits, add yourself.
-            </p>
-
-            <p>
-                My friend asked: "But isn't the box just a new dependency?" Fair point. The difference is: the box is yours. I can't see what's on it. I can't cut you off. Everything is open source, and it has export buttons built in. If you want to leave, you take your data with you. <span class="highlight">The goal isn't to replace one dependency with another—it's to build something you actually own.</span>
-            </p>
-
-            <p>
-                If you want to help but don't know where to start: pick the thing about cloud services that annoys you most and build a local version. Even a partial solution is better than nothing.
-            </p>
-
-            <!-- 7. THE UNCOMFORTABLE TRUTH -->
-            <div class="section-header">&gt; 7. THIS MIGHT NOT WORK</div>
+            <!-- 6. THIS MIGHT NOT WORK -->
+            <div class="section-header">&gt; 6. THIS MIGHT NOT WORK</div>
 
             <p>
                 Manifestos are optimistic by nature. Nobody rallies behind "this probably won't matter."
@@ -446,15 +380,15 @@
         </div>
 
         <div class="link-row">
-            <a href="/manifesto" class="back-link">[ ← READ THE MANIFESTO ]</a>
-            <a href="/inflection" class="back-link">[ READ WHY NOW → ]</a>
+            <a href="/manifesto" class="back-link">[ ← THE MANIFESTO ]</a>
+            <a href="/build" class="back-link">[ WHAT TO BUILD → ]</a>
         </div>
     </main>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/orgs/LocalGhostDao/repositories">SOURCE CODE</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
             <a href="mailto:info@localghost.ai">CONTACT</a>

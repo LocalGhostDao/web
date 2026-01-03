@@ -73,13 +73,15 @@
     <!-- NAVIGATION -->
     <nav>
         <div class="nav-logo">
-            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status">| THE ONLY CLOUD IS YOU</span></a>
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
         </div>
         <div class="nav-links">
             <a href="/manifesto">MANIFESTO</a>
-            <a href="/inflection">WHY NOW</a>
-            <a href="/reckoning">HARD TRUTHS</a>
-            <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank">GITHUB</a>
+            <a href="/inflection" class="hide-mobile">WHY NOW</a>
+            <a href="/reckoning" class="hide-mobile">HARD TRUTHS</a>
+            <a href="/build">BUILD</a>
+            <a href="/directory" class="active hide-mobile">DIRECTORY</a>
+            <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
         </div>
     </nav>
 
@@ -120,13 +122,25 @@
             </ul>
         </div>
 
-        <a href="/manifesto" class="back-link">[ ← READ THE MANIFESTO ]</a>
+        <!-- LINK TO BUILD -->
+        <div class="expect-section">
+            <h2>&gt; WHAT STILL NEEDS TO BE BUILT</h2>
+            <p style="color: var(--text-dim); margin-bottom: 1rem;">
+                See something missing from the ecosystem? We've mapped the gaps — the critical infrastructure, the tools that don't exist yet, and where help is needed most.
+            </p>
+            <a href="/build" class="back-link" style="display: block; text-align: center; margin-top: 1rem;">[ VIEW THE ROADMAP → ]</a>
+        </div>
+
+        <div class="link-row">
+            <a href="/manifesto" class="back-link">[ ← THE MANIFESTO ]</a>
+            <a href="/reckoning" class="back-link">[ HARD TRUTHS → ]</a>
+        </div>
     </main>
 
     <!-- FOOTER -->
     <footer>
         <div class="footer-links">
-            <a href="https://github.com/orgs/LocalGhostDao/repositories">SOURCE CODE</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
             <a href="mailto:info@localghost.ai">CONTACT</a>

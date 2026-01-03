@@ -125,6 +125,23 @@ main > .back-link {
 }
 
 /* ===========================================
+   LINK ROW - Match manifesto style
+   =========================================== */
+
+.link-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+}
+
+.link-row .back-link {
+    margin-top: 0;
+    flex: 1;
+    text-align: center;
+}
+
+/* ===========================================
    RESPONSIVE
    =========================================== */
 
@@ -135,5 +152,13 @@ main > .back-link {
 
     .construction-icon {
         font-size: 2.5rem;
+    }
+    
+    .link-row {
+        flex-direction: column;
+    }
+    
+    .link-row .back-link {
+        width: 100%;
     }
 }
