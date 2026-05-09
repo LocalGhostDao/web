@@ -445,8 +445,29 @@
         }
     });
 
+    /* ---- render tracklist from tracks[] ---- */
+
+    function renderTracklist() {
+        tracklist.innerHTML = '';
+        for (var i = 0; i < tracks.length; i++) {
+            var t = tracks[i];
+            var div = document.createElement('div');
+            div.className = 'track-item' + (i === 0 ? ' is-active' : '');
+            div.setAttribute('data-index', i);
+            div.innerHTML =
+                '<span class="track-num">' + t.num + '</span>' +
+                '<span class="track-title">' + t.title + '</span>' +
+                '<span class="track-playing-indicator">PLAYING</span>' +
+                '<a class="track-post-link" target="_blank" rel="noopener" href="' + t.post + '" onclick="event.stopPropagation()">POST</a>' +
+                '<span class="track-duration" data-for="' + i + '">--:--</span>' +
+                '<span class="track-play-hint">&#9654;</span>';
+            tracklist.appendChild(div);
+        }
+    }
+
     /* ---- init ---- */
 
+    renderTracklist();
     loadTrack(0, false);
     probeDurations();
     refreshCacheIndicators();
