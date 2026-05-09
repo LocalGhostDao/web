@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axo Neurotech — Next Generation Neural Interfaces</title>
+<meta name="description" content="Axo Neurotech is building next-generation neural interfaces using a biology-first biohybrid approach — placing living cells as the interface between electronics and the nervous system.">
+<meta name="author" content="Axo Neurotech">
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="theme-color" content="#0c0b09">
+<link rel="canonical" href="https://www.localghost.ai/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.localghost.ai/">
+<meta property="og:title" content="Axo Neurotech — Next Generation Neural Interfaces">
+<meta property="og:description" content="Building a seamless natural interface between the human nervous system and technology. A biology-first approach at the frontiers of materials science and engineering.">
+<meta property="og:image" content="https://www.localghost.ai/images/axo/v2/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Axo Neurotech">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.localghost.ai/images/axo/v2/og-image.png">
+<link rel="icon" type="image/svg+xml" href="/images/axo/v2/favicon.svg">
+<link rel="alternate icon" type="image/png" href="/images/axo/v2/favicon-32.png">
+<link rel="apple-touch-icon" href="/images/axo/v2/favicon-180.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:     #0c0b09;
+  --bg2:    #111009;
+  --bg3:    #161410;
+  --ink:    #f0ebe2;
+  --ink2:   rgba(240,235,226,0.55);
+  --ink3:   rgba(240,235,226,0.25);
+  --ink4:   rgba(240,235,226,0.07);
+  --ink5:   rgba(240,235,226,0.03);
+  --gold:   #b8924a;
+  --gold2:  rgba(184,146,74,0.15);
+  --gold3:  rgba(184,146,74,0.07);
+  --teal:   #4a8c7a;
+  --teal2:  rgba(74,140,122,0.12);
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --body:   'Lora', Georgia, serif;
+  --mono:   'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); overflow-x: hidden; }
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 999; pointer-events: none;
+  opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 28px 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all .5s;
+}
+nav.s {
+  background: rgba(12,11,9,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ink4);
+  padding: 20px 56px;
+}
+.nlogo {
+  font-family: var(--serif); font-size: 17px; font-weight: 500;
+  letter-spacing: .12em; color: var(--ink); text-decoration: none;
+  display: flex; align-items: center; gap: 14px;
+}
+.nmark {
+  width: 26px; height: 26px; position: relative;
+  flex-shrink: 0;
+}
+.nmark svg { width: 100%; height: 100%; }
+.nlinks { display: flex; gap: 40px; list-style: none; }
+.nlinks a {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  color: var(--ink2); text-decoration: none; transition: color .3s;
+}
+.nlinks a:hover { color: var(--gold); }
+.ncta {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+  color: var(--ink); text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 2px;
+  transition: color .3s, border-color .3s;
+}
+.ncta:hover { color: var(--gold); }
+
+/* ── HERO ── */
+#hero {
+  position: relative; height: 100vh; min-height: 680px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; overflow: hidden;
+}
+#c {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: .45;
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  max-width: 840px; padding: 0 40px;
+}
+.h-rule {
+  display: flex; align-items: center; justify-content: center;
+  gap: 20px; margin-bottom: 36px;
+  opacity: 0; animation: fadeUp 1s .35s cubic-bezier(.16,1,.3,1) forwards;
+}
+.h-rule::before, .h-rule::after {
+  content: ''; display: block; width: 48px; height: 1px;
+  background: var(--gold); opacity: .5;
+}
+.h-rule span {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .25em;
+  color: var(--gold); text-transform: uppercase;
+}
+.h-title {
+  font-family: var(--serif); font-size: clamp(54px, 8.5vw, 116px);
+  font-weight: 300; line-height: .95; letter-spacing: -.01em;
+  margin-bottom: 32px;
+  opacity: 0; animation: fadeUp 1.1s .55s cubic-bezier(.16,1,.3,1) forwards;
+}
+.h-title em {
+  font-style: italic; color: var(--gold);
+  display: block;
+}
+.h-title strong {
+  font-weight: 400; display: block;
+}
+.h-sub {
+  font-family: var(--body); font-size: 17px; font-weight: 400;
+  font-style: italic; line-height: 1.75;
+  color: var(--ink2); max-width: 520px; margin: 0 auto 52px;
+  opacity: 0; animation: fadeUp 1s .75s cubic-bezier(.16,1,.3,1) forwards;
+}
+.h-actions {
+  display: flex; gap: 32px; justify-content: center; align-items: center;
+  opacity: 0; animation: fadeUp 1s .95s cubic-bezier(.16,1,.3,1) forwards;
+}
+.btn-primary {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--bg);
+  background: var(--gold); padding: 14px 40px;
+  text-decoration: none; transition: all .3s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--ink); }
+.btn-text {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink2);
+  text-decoration: none; border-bottom: 1px solid var(--ink3);
+  padding-bottom: 2px; transition: all .3s;
+}
+.btn-text:hover { color: var(--gold); border-color: var(--gold); }
+.h-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.h-scroll span {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--ink3);
+}
+.scroll-line {
+  width: 1px; height: 44px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 3s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:.4} 50%{transform:scaleY(.6);opacity:.75} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── SHARED ── */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, transparent, var(--ink4), transparent);
+}
+section { padding: 120px 56px; position: relative; }
+.section-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 24px;
+}
+.section-title {
+  font-family: var(--serif); font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 300; line-height: 1.0; letter-spacing: -.01em;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-title strong { font-weight: 400; }
+.body-text {
+  font-size: 16px; font-weight: 400; line-height: 1.9;
+  color: var(--ink2);
+}
+.body-text + .body-text { margin-top: 20px; }
+
+/* ── MISSION ── */
+#mission { background: var(--bg2); }
+.mission-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start;
+}
+.mission-text .section-title { margin-bottom: 40px; }
+.mission-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--ink4); border: 1px solid var(--ink4);
+}
+.mstat {
+  background: var(--bg2); padding: 32px 28px;
+  transition: background .3s;
+  position: relative; overflow: hidden;
+}
+.mstat::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--gold); transform: scaleX(0); transition: transform .4s;
+  transform-origin: left;
+}
+.mstat:hover { background: var(--bg3); }
+.mstat:hover::after { transform: scaleX(1); }
+.mstat-num {
+  font-family: var(--serif); font-size: 52px; font-weight: 300;
+  color: var(--gold); line-height: .9; letter-spacing: -.02em; margin-bottom: 12px;
+}
+.mstat-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink2); line-height: 1.6;
+}
+
+/* ── WHY ── */
+#why { background: var(--bg); overflow: hidden; }
+#why::after {
+  content: ''; position: absolute; right: -200px; top: 50%;
+  transform: translateY(-50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,146,74,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.why-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 5fr 7fr; gap: 100px; align-items: start;
+}
+.why-left .section-title { margin-bottom: 44px; }
+.why-left .body-text { margin-bottom: 20px; }
+.why-pillars { margin-top: 56px; display: flex; flex-direction: column; gap: 0; }
+.wp {
+  padding: 24px 0; border-bottom: 1px solid var(--ink4);
+  display: grid; grid-template-columns: 24px 1fr; gap: 20px;
+  transition: border-color .3s;
+}
+.wp:first-child { border-top: 1px solid var(--ink4); }
+.wp:hover { border-color: var(--gold2); }
+.wp-num {
+  font-family: var(--serif); font-size: 14px; font-style: italic;
+  color: var(--gold); padding-top: 3px;
+}
+.wp h4 {
+  font-family: var(--serif); font-size: 20px; font-weight: 500;
+  margin-bottom: 8px; letter-spacing: .01em;
+}
+.wp p { font-size: 14px; line-height: 1.8; color: var(--ink2); }
+.why-right { padding-top: 4px; }
+.why-quote {
+  border-left: 1px solid var(--gold);
+  padding: 36px 44px; background: var(--gold3);
+  margin-bottom: 1px;
+}
+.wq-text {
+  font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 300; font-style: italic; line-height: 1.45;
+  color: var(--ink); margin-bottom: 24px;
+}
+.wq-text em { font-style: normal; color: var(--gold); }
+.wq-attr {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink2);
+}
+.why-principles {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--ink4);
+}
+.prin {
+  background: var(--bg); padding: 28px;
+  transition: background .3s;
+}
+.prin:hover { background: var(--bg2); }
+.prin-n {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  color: var(--gold); opacity: .7; margin-bottom: 10px;
+}
+.prin h5 {
+  font-family: var(--serif); font-size: 19px; font-weight: 500;
+  margin-bottom: 10px; letter-spacing: .01em;
+}
+.prin p { font-size: 13px; line-height: 1.75; color: var(--ink2); }
+
+/* ── SCIENCE ── */
+#science { background: var(--bg2); }
+.science-inner { max-width: 1160px; margin: 0 auto; }
+.sci-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+  margin-bottom: 72px; align-items: end;
+}
+.sci-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--ink4);
+}
+.sci-card {
+  background: var(--bg2); padding: 44px 36px;
+  position: relative; overflow: hidden; transition: background .3s;
+}
+.sci-card:hover { background: var(--bg3); }
+.sci-card::before {
+  content: ''; position: absolute; bottom: 0; left: 36px; right: 36px; height: 1px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  transform: scaleX(0); transition: transform .5s; transform-origin: left;
+}
+.sci-card:hover::before { transform: scaleX(1); }
+.sci-n {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .25em;
+  color: var(--gold); opacity: .5; margin-bottom: 28px;
+}
+.sci-icon { height: 48px; display: flex; align-items: center; margin-bottom: 28px; }
+.sci-card h3 {
+  font-family: var(--serif); font-size: 24px; font-weight: 500;
+  margin-bottom: 16px; line-height: 1.2; letter-spacing: .01em;
+}
+.sci-card p { font-size: 14px; line-height: 1.85; color: var(--ink2); }
+
+/* ── TECHNOLOGY ── */
+#technology { background: var(--bg); }
+.tech-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+}
+.tech-vis { position: relative; height: 520px; }
+.tech-vis svg { width: 100%; height: 100%; }
+.tech-list { margin-top: 52px; }
+.ti {
+  padding: 28px 0; border-bottom: 1px solid var(--ink4);
+  display: grid; grid-template-columns: 40px 1fr; gap: 16px;
+  transition: border-color .3s;
+}
+.ti:hover { border-color: rgba(184,146,74,.25); }
+.ti:first-child { border-top: 1px solid var(--ink4); }
+.ti-n {
+  font-family: var(--serif); font-size: 14px; font-style: italic;
+  color: var(--gold); padding-top: 4px;
+}
+.ti h4 {
+  font-family: var(--serif); font-size: 22px; font-weight: 500;
+  margin-bottom: 10px; letter-spacing: .01em;
+}
+.ti p { font-size: 14px; line-height: 1.8; color: var(--ink2); }
+
+/* ── APPLICATIONS ── */
+#applications { background: var(--bg2); }
+.app-inner { max-width: 1160px; margin: 0 auto; }
+.app-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
+  margin-bottom: 72px; align-items: end;
+}
+.app-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1px; background: var(--ink4);
+}
+.app-card {
+  background: var(--bg2); padding: 52px 44px;
+  position: relative; transition: background .3s;
+  overflow: hidden;
+}
+.app-card:hover { background: var(--bg3); }
+.app-card::before {
+  content: ''; position: absolute; left: 0; top: 44px; bottom: 44px; width: 1px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  transform: scaleY(0); transition: transform .4s; transform-origin: top;
+}
+.app-card:hover::before { transform: scaleY(1); }
+.app-icon { height: 40px; margin-bottom: 28px; display: flex; align-items: center; }
+.app-card h3 {
+  font-family: var(--serif); font-size: 28px; font-weight: 500;
+  margin-bottom: 16px; line-height: 1.15; letter-spacing: .01em;
+}
+.app-card p { font-size: 14px; line-height: 1.85; color: var(--ink2); }
+.app-tag {
+  display: inline-block; margin-top: 28px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold);
+  border: 1px solid var(--gold2); padding: 5px 14px;
+}
+
+/* ── TEAM ── */
+#team { background: var(--bg); }
+.team-inner { max-width: 960px; margin: 0 auto; }
+.team-header { margin-bottom: 72px; }
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--ink4); }
+.tcard {
+  background: var(--bg); padding: 52px 44px;
+  position: relative; transition: background .3s; overflow: hidden;
+}
+.tcard:hover { background: var(--bg2); }
+.tcard::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, var(--gold), transparent);
+  transform: scaleX(0); transition: transform .5s; transform-origin: left;
+}
+.tcard:hover::after { transform: scaleX(1); }
+.tav {
+  width: 56px; height: 56px; border: 1px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 18px; font-style: italic;
+  color: var(--gold); margin-bottom: 32px; border-radius: 50%;
+}
+.tcard h3 {
+  font-family: var(--serif); font-size: 32px; font-weight: 400;
+  margin-bottom: 4px; letter-spacing: .01em;
+}
+.trole {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+}
+.tcard p { font-size: 14px; line-height: 1.85; color: var(--ink2); }
+.tcreds { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+.tcred {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .07em;
+  color: var(--ink2); display: flex; gap: 12px; align-items: flex-start; line-height: 1.6;
+}
+.tcred::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+
+/* ── CAREERS ── */
+#careers { background: var(--bg2); }
+.careers-inner { max-width: 960px; margin: 0 auto; }
+.careers-header { margin-bottom: 60px; }
+.careers-intro { font-size: 16px; font-style: italic; line-height: 1.85; color: var(--ink2); margin-top: 20px; max-width: 560px; }
+.jlist { display: flex; flex-direction: column; gap: 0; }
+.ji {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 28px 0; border-bottom: 1px solid var(--ink4);
+  color: var(--ink); cursor: pointer; transition: border-color .3s;
+}
+.ji:first-child { border-top: 1px solid var(--ink4); }
+.ji:hover { border-color: rgba(184,146,74,.3); }
+.jlft { display: flex; flex-direction: column; gap: 8px; }
+.jname {
+  font-family: var(--serif); font-size: 26px; font-weight: 400;
+  letter-spacing: .01em;
+}
+.jmeta { display: flex; gap: 20px; flex-wrap: wrap; }
+.jtag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink2);
+}
+.jarr {
+  font-family: var(--serif); font-size: 28px; font-style: italic;
+  color: var(--gold); transition: transform .3s; line-height: 1;
+}
+.ji:hover .jarr { transform: translateX(8px); }
+
+/* ── MODAL ── */
+.jmodal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(12,11,9,0.97); backdrop-filter: blur(12px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s cubic-bezier(.16,1,.3,1);
+  overflow-y: auto;
+}
+.jmodal-overlay.open { opacity: 1; pointer-events: all; }
+.jmodal { max-width: 800px; margin: 80px auto; padding: 0 40px 120px; }
+.jmodal-close {
+  position: fixed; top: 28px; right: 44px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink2); background: none;
+  border: 1px solid var(--ink4); padding: 10px 22px; cursor: pointer;
+  transition: all .2s; z-index: 10;
+}
+.jmodal-close:hover { color: var(--gold); border-color: var(--gold2); }
+.jmod-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+  display: flex; align-items: center; gap: 16px; padding-top: 20px;
+}
+.jmod-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--ink4); }
+.jmod-title {
+  font-family: var(--serif); font-size: clamp(48px, 6.5vw, 80px);
+  font-weight: 300; line-height: .95; letter-spacing: -.01em;
+  margin-bottom: 44px;
+}
+.jmod-title em { font-style: italic; color: var(--gold); display: block; }
+.jmod-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 60px; }
+.jmod-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .15em;
+  text-transform: uppercase; padding: 8px 16px;
+  background: var(--ink5); border: 1px solid var(--ink4); color: var(--ink2);
+}
+.jmod-tag.hi { background: var(--gold3); border-color: var(--gold2); color: var(--gold); }
+.jmod-section { margin-bottom: 52px; }
+.jmod-section-title {
+  font-family: var(--serif); font-size: 13px; font-style: italic; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.jmod-section-title::after { content: ''; flex: 1; height: 1px; background: var(--ink4); }
+.jmod-intro {
+  font-size: 17px; font-style: italic; font-weight: 400; line-height: 1.85;
+  color: var(--ink); border-left: 1px solid var(--gold);
+  padding-left: 28px;
+}
+.jmod-list { display: flex; flex-direction: column; gap: 0; }
+.jmod-item {
+  display: grid; grid-template-columns: 20px 1fr; gap: 16px;
+  padding: 14px 0; border-bottom: 1px solid var(--ink4);
+  transition: border-color .2s;
+}
+.jmod-item:first-child { border-top: 1px solid var(--ink4); }
+.jmod-item:hover { border-color: rgba(184,146,74,.2); }
+.jmod-item::before {
+  content: '—'; font-family: var(--serif); font-style: italic;
+  color: var(--gold); padding-top: 1px; font-size: 14px;
+}
+.jmod-item p { font-size: 14px; line-height: 1.8; color: var(--ink2); }
+.jmod-item p strong { color: var(--ink); font-weight: 500; }
+.jmod-nice {
+  border: 1px solid var(--ink4); padding: 32px 36px;
+  background: var(--ink5);
+}
+.jmod-nice-title {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+}
+.jmod-nice-list { display: flex; flex-direction: column; gap: 12px; }
+.jmod-nice-item {
+  display: grid; grid-template-columns: 20px 1fr; gap: 12px;
+  font-size: 14px; color: var(--ink2); line-height: 1.7;
+}
+.jmod-nice-item::before { content: '—'; color: var(--gold); font-family: var(--serif); font-style: italic; }
+.jmod-benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--ink4); }
+.jmod-benefit { background: var(--bg2); padding: 16px 20px; display: flex; gap: 12px; }
+.jmod-benefit-dot { width: 4px; height: 4px; background: var(--gold); flex-shrink: 0; margin-top: 7px; border-radius: 50%; }
+.jmod-benefit p { font-size: 13px; color: var(--ink2); line-height: 1.6; }
+.jmod-why {
+  border: 1px solid var(--gold2); padding: 40px 44px;
+  background: var(--gold3); margin-top: 52px;
+}
+.jmod-why p { font-size: 16px; font-style: italic; line-height: 1.9; color: var(--ink2); }
+.jmod-why p strong { color: var(--ink); font-style: normal; font-weight: 500; }
+.jmod-apply {
+  display: inline-block; margin-top: 52px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--bg); background: var(--gold);
+  padding: 16px 48px; text-decoration: none; transition: all .3s;
+}
+.jmod-apply:hover { background: var(--ink); }
+@media(max-width:700px){ .jmodal{padding:0 20px 80px} .jmod-benefits{grid-template-columns:1fr} .jmod-meta{flex-wrap:wrap} }
+
+/* ── CONTACT ── */
+#contact { background: var(--bg); text-align: center; }
+.contact-inner { max-width: 580px; margin: 0 auto; }
+.contact-inner .section-title { margin-bottom: 24px; }
+.contact-inner > p { font-size: 16px; font-style: italic; color: var(--ink2); line-height: 1.8; margin-bottom: 52px; }
+.eform {
+  display: flex; max-width: 440px; margin: 0 auto 28px;
+  border-bottom: 1px solid var(--ink3); transition: border-color .3s;
+}
+.eform:focus-within { border-color: var(--gold); }
+.eform input {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 0; font-family: var(--body); font-size: 15px;
+  font-style: italic; color: var(--ink);
+}
+.eform input::placeholder { color: var(--ink3); }
+.eform button {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); padding: 14px 0 14px 24px;
+  transition: color .2s;
+}
+.eform button:hover { color: var(--ink); }
+.clinks { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+.clinks a {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--ink2); text-decoration: none;
+  border-bottom: 1px solid transparent; transition: all .3s;
+}
+.clinks a:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 32px 56px; border-top: 1px solid var(--ink4);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.flogo { font-family: var(--serif); font-size: 15px; font-style: italic; color: var(--ink2); letter-spacing: .08em; }
+.flinks { display: flex; gap: 32px; }
+.flinks a { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--ink2); text-decoration: none; transition: color .2s; }
+.flinks a:hover { color: var(--gold); }
+.fcopy { font-family: var(--mono); font-size: 9px; color: var(--ink3); }
+
+/* ── FADE IN ── */
+.fi { opacity: 0; transform: translateY(20px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
+.fi.v { opacity: 1; transform: translateY(0); }
+.fi.d1 { transition-delay: .1s; } .fi.d2 { transition-delay: .2s; }
+.fi.d3 { transition-delay: .3s; } .fi.d4 { transition-delay: .4s; }
+
+@media(max-width:900px){
+  nav { padding: 18px 24px; } .nlinks { display: none; }
+  section { padding: 80px 24px; }
+  .mission-inner, .why-inner, .tech-inner, .team-grid, .app-grid,
+  .app-header, .sci-grid, .sci-header { grid-template-columns: 1fr; gap: 48px; }
+  footer { flex-direction: column; gap: 16px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nlogo">
+    <div class="nmark">
+      <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="13,1 24,7.5 24,18.5 13,25 2,18.5 2,7.5" stroke="#b8924a" stroke-width="1" fill="none"/>
+        <circle cx="13" cy="13" r="3.5" fill="#b8924a" opacity=".8">
+          <animate attributeName="opacity" values=".75;.45;.75" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="13" cy="13" r="6" stroke="#b8924a" stroke-width=".5" opacity=".3"/>
+      </svg>
+    </div>
+    Axo Neurotech
+  </a>
+  <ul class="nlinks">
+    <li><a href="#why">Why</a></li>
+    <li><a href="#science">Science</a></li>
+    <li><a href="#technology">Technology</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#careers">Careers</a></li>
+  </ul>
+  <a href="mailto:nathan@axoneurotech.com?subject=Partnership" class="ncta">Partner With Us</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="c"></canvas>
+  <div class="hero-inner">
+    <div class="h-rule"><span>San Francisco &middot; Cambridge &middot; Est. 2025</span></div>
+    <h1 class="h-title">
+      <strong>Next Generation</strong>
+      <em>Neural Interfaces</em>
+    </h1>
+    <p class="h-sub">Building a seamless natural interface between the human nervous system and technology &mdash; using a biology-first approach at the frontiers of materials science and engineering.</p>
+    <div class="h-actions">
+      <a href="#science" class="btn-primary">Explore the Science</a>
+      <a href="#careers" class="btn-text">Join the Mission</a>
+    </div>
+  </div>
+  <div class="h-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MISSION -->
+<section id="mission">
+  <div class="mission-inner">
+    <div class="fi">
+      <span class="section-label">001 &mdash; Mission</span>
+      <h2 class="section-title">A Seamless<br><em>Natural</em><br>Interface</h2>
+      <p class="body-text" style="margin-top:36px">Today's neural interfaces fail because the body rejects them. Rigid electrodes in soft tissue create scarring, inflammation, and signal decay within months. The fundamental problem has never been the electronics &mdash; it's the boundary.</p>
+      <p class="body-text">We dissolve that boundary. Using living cells as the interface layer itself, Axo's biohybrid approach creates connections the nervous system recognises as self &mdash; stable, high-resolution, and lasting.</p>
+      <p class="body-text">Near-term: restoring function for people with neurological disorders. Long-term: transforming how every human interacts with technology.</p>
+    </div>
+    <div class="mission-stats fi d2">
+      <div class="mstat">
+        <div class="mstat-num">28</div>
+        <div class="mstat-label">Days of stable<br>in vivo recording</div>
+      </div>
+      <div class="mstat">
+        <div class="mstat-num">iPSC</div>
+        <div class="mstat-label">Pluripotent stem<br>cell foundation</div>
+      </div>
+      <div class="mstat">
+        <div class="mstat-num">100%</div>
+        <div class="mstat-label">Biohybrid devices<br>showed nerve response</div>
+      </div>
+      <div class="mstat">
+        <div class="mstat-num">Sci.</div>
+        <div class="mstat-label">Published in<br>Science Advances, 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY -->
+<section id="why">
+  <div class="why-inner">
+    <div class="fi">
+      <span class="section-label">002 &mdash; Why We Exist</span>
+      <h2 class="section-title">The Science<br>Was Ready.<br><em>The System<br>Wasn't.</em></h2>
+      <p class="body-text" style="margin-top:36px">The research exists. The biological principles are understood. The tools to build next-generation neural interfaces are within reach. What has consistently slowed this work down isn't a scientific barrier &mdash; it's an institutional one.</p>
+      <p class="body-text">Amy and Nathan didn't leave their previous roles because the work wasn't meaningful. They left because the work was too meaningful to let it move at the pace organisations move when they're balancing revenue lines, internal politics, and the competing priorities of people who aren't building the thing.</p>
+      <p class="body-text">Axo exists to remove that friction. Not recklessly, but deliberately. A small team, one focus, no noise. The science still has to be right. The safety still has to be rigorous. But none of that requires a committee.</p>
+      <div class="why-pillars">
+        <div class="wp">
+          <div class="wp-num">i.</div>
+          <div>
+            <h4>Speed Without Shortcuts</h4>
+            <p>Moving fast and doing it right aren't opposites. Bureaucracy doesn't make science safer &mdash; it makes it slower. We cut the former, not the latter.</p>
+          </div>
+        </div>
+        <div class="wp">
+          <div class="wp-num">ii.</div>
+          <div>
+            <h4>One Focus</h4>
+            <p>No revenue lines pulling the roadmap sideways. No internal politics deciding what gets prioritised. Every decision points in one direction: does this move the science forward?</p>
+          </div>
+        </div>
+        <div class="wp">
+          <div class="wp-num">iii.</div>
+          <div>
+            <h4>The Reward Is the Outcome</h4>
+            <p>This isn't about an exit. The founders left comfortable positions to build something that outlasts them. The long-term goal is to see this technology reach patients, and then reach further.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fi d2">
+      <div class="why-quote">
+        <div class="wq-text">&ldquo;The near-term goal is to help people living with neurological disorders. The long-term ambition is to <em>transform how every human</em> interacts with technology.&rdquo;</div>
+        <div class="wq-attr">&mdash; Amy Rochford, Co-Founder &amp; CEO</div>
+      </div>
+      <div class="why-principles">
+        <div class="prin"><div class="prin-n">Principle i</div><h5>Rigour First</h5><p>The science has to be right. Safety is non-negotiable. We move fast by removing unnecessary process &mdash; not necessary process.</p></div>
+        <div class="prin"><div class="prin-n">Principle ii</div><h5>Small by Design</h5><p>A small team with shared conviction moves faster than a large team navigating internal consensus.</p></div>
+        <div class="prin"><div class="prin-n">Principle iii</div><h5>Patient-First</h5><p>The decision-making framework isn't a revenue model. It's a question: does this get us closer to helping people?</p></div>
+        <div class="prin"><div class="prin-n">Principle iv</div><h5>Build to Last</h5><p>The ambition isn't an event. We're building infrastructure for the next century of human-machine interaction.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCIENCE -->
+<section id="science">
+  <div class="science-inner">
+    <div class="sci-header">
+      <div class="fi">
+        <span class="section-label">003 &mdash; The Science</span>
+        <h2 class="section-title">Biology<br><em>as the</em><br>Interface</h2>
+      </div>
+      <p class="body-text fi d1">The standard approach puts metal in tissue and hopes the body tolerates it &mdash; it doesn't, not indefinitely. Axo's biohybrid architecture places engineered living cells between the electrode and the nerve. The body doesn't reject them. It connects to them.</p>
+    </div>
+    <div class="sci-grid fi d2">
+      <div class="sci-card">
+        <div class="sci-n">01 / 03</div>
+        <div class="sci-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="7" stroke="#b8924a" stroke-width="1"/>
+            <circle cx="20" cy="20" r="13" stroke="#b8924a" stroke-width=".6" opacity=".4" stroke-dasharray="3 4"/>
+            <circle cx="20" cy="20" r="18" stroke="#b8924a" stroke-width=".4" opacity=".2" stroke-dasharray="2 5"/>
+            <circle cx="20" cy="20" r="2.5" fill="#b8924a" opacity=".55"><animate attributeName="opacity" values=".55;.25;.55" dur="5s" repeatCount="indefinite"/></circle>
+          </svg>
+        </div>
+        <h3>iPSC-Derived Cells</h3>
+        <p>Induced pluripotent stem cells reprogrammed into myocytes &mdash; human cells that act as biological signal receptors. The body recognises them as self. No immune cascade. No foreign body response. Just integration.</p>
+      </div>
+      <div class="sci-card">
+        <div class="sci-n">02 / 03</div>
+        <div class="sci-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M2 20 Q8 9 14 20 Q20 31 26 20 Q32 9 38 20" stroke="#b8924a" stroke-width="1" fill="none"/>
+            <path d="M2 26 Q8 15 14 26 Q20 37 26 26 Q32 15 38 26" stroke="#b8924a" stroke-width=".5" opacity=".35" fill="none"/>
+            <circle cx="14" cy="20" r="3" fill="#b8924a" opacity=".5"><animate attributeName="opacity" values=".5;.2;.5" dur="4s" repeatCount="indefinite"/></circle>
+            <circle cx="26" cy="20" r="3" fill="#4a8c7a" opacity=".45"><animate attributeName="opacity" values=".45;.15;.45" dur="4s" begin="1.5s" repeatCount="indefinite"/></circle>
+          </svg>
+        </div>
+        <h3>Flexible Electrode Arrays</h3>
+        <p>Custom multi-electrode arrays on substrates engineered to match the elastic modulus of neural tissue. Mechanical mismatch drives chronic inflammation &mdash; our devices bend and move with the body they're inside.</p>
+      </div>
+      <div class="sci-card">
+        <div class="sci-n">03 / 03</div>
+        <div class="sci-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <rect x="8" y="17" width="24" height="8" stroke="#4a8c7a" stroke-width="1" rx="1"/>
+            <path d="M13 17 L13 9 M18 17 L18 7 M23 17 L23 9 M28 17 L28 7" stroke="#b8924a" stroke-width=".8" opacity=".6"/>
+            <path d="M13 25 L13 33 M18 25 L18 35 M23 25 L23 33 M28 25 L28 33" stroke="#b8924a" stroke-width=".8" opacity=".5"/>
+            <circle cx="13" cy="9" r="2" fill="#b8924a" opacity=".45"/>
+            <circle cx="18" cy="7" r="2" fill="#b8924a" opacity=".45"/>
+            <circle cx="23" cy="9" r="2" fill="#b8924a" opacity=".45"/>
+            <circle cx="28" cy="7" r="2" fill="#b8924a" opacity=".45"/>
+          </svg>
+        </div>
+        <h3>Biohybrid Integration</h3>
+        <p>The cell layer forms synaptic connections with host nerve fibres on one side and couples electrically to the electrode array on the other &mdash; a living bridge between biology and machine, bidirectional and high-resolution.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TECHNOLOGY -->
+<section id="technology">
+  <div class="tech-inner">
+    <div class="fi">
+      <span class="section-label">004 &mdash; Technology</span>
+      <h2 class="section-title">Engineered<br><em>at Every</em><br>Layer</h2>
+      <div class="tech-list">
+        <div class="ti"><div class="ti-n">i.</div><div><h4>Materials Science</h4><p>Novel substrates engineered for ultra-low mechanical stiffness &mdash; matching the elastic modulus of neural tissue to eliminate immune response and maximise implant longevity.</p></div></div>
+        <div class="ti"><div class="ti-n">ii.</div><div><h4>Genome Engineering</h4><p>CRISPR-Cas9 editing of iPSC lines to optimise electrophysiological properties &mdash; tuning how cells receive and relay electrical signals with high fidelity.</p></div></div>
+        <div class="ti"><div class="ti-n">iii.</div><div><h4>ASIC Design</h4><p>Custom silicon for high-density recording and stimulation in implantable form factors. Power-constrained, miniaturised, validated against IEC 60601 medical device standards.</p></div></div>
+        <div class="ti"><div class="ti-n">iv.</div><div><h4>In Vivo Validation</h4><p>Long-duration animal studies demonstrating stable nerve integration and functional signal restoration. All biohybrid devices in our 28-day study showed nerve response. Controls showed none.</p></div></div>
+      </div>
+    </div>
+    <div class="tech-vis fi d2">
+      <!-- Elegant scientific illustration -->
+      <svg viewBox="0 0 380 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="cellGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b8924a" stop-opacity=".06"/>
+            <stop offset="100%" stop-color="#b8924a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- MEA platform -->
+        <rect x="82" y="250" width="216" height="32" rx="2" fill="rgba(74,140,122,0.05)" stroke="#4a8c7a" stroke-width=".8" opacity=".6"/>
+        <text x="298" y="269" font-family="'DM Mono', monospace" font-size="7" fill="#4a8c7a" opacity=".5" letter-spacing="1.5">MEA</text>
+
+        <!-- Electrode leads -->
+        <line x1="114" y1="250" x2="114" y2="214" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+        <line x1="146" y1="250" x2="146" y2="208" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+        <line x1="178" y1="250" x2="178" y2="214" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+        <line x1="210" y1="250" x2="210" y2="208" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+        <line x1="242" y1="250" x2="242" y2="214" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+        <line x1="268" y1="250" x2="268" y2="208" stroke="#4a8c7a" stroke-width=".7" opacity=".55"/>
+
+        <!-- Electrode tips (open circles — scientific style) -->
+        <circle cx="114" cy="212" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+        <circle cx="146" cy="206" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+        <circle cx="178" cy="212" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+        <circle cx="210" cy="206" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+        <circle cx="242" cy="212" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+        <circle cx="268" cy="206" r="2.5" stroke="#4a8c7a" stroke-width="1" opacity=".7"/>
+
+        <!-- Cell body glow -->
+        <ellipse cx="190" cy="168" rx="64" ry="60" fill="url(#cellGlow)"/>
+
+        <!-- Cell membrane (outer) — delicate double line -->
+        <ellipse cx="190" cy="168" rx="52" ry="48" stroke="#b8924a" stroke-width=".9" opacity=".65"/>
+        <ellipse cx="190" cy="168" rx="55" ry="51" stroke="#b8924a" stroke-width=".4" opacity=".2"/>
+
+        <!-- Cytoplasm texture (subtle dashes) -->
+        <ellipse cx="190" cy="168" rx="38" ry="35" stroke="#b8924a" stroke-width=".4" stroke-dasharray="2 6" opacity=".25"/>
+
+        <!-- Nucleus -->
+        <ellipse cx="190" cy="165" rx="16" ry="14" stroke="#b8924a" stroke-width=".9" opacity=".75"/>
+        <ellipse cx="190" cy="165" rx="7" ry="6" fill="#b8924a" opacity=".12"/>
+
+        <!-- Nucleolus -->
+        <circle cx="192" cy="163" r="3" fill="#b8924a" opacity=".3"/>
+
+        <!-- Cell glow pulse -->
+        <ellipse cx="190" cy="168" rx="52" ry="48" fill="#b8924a" opacity=".02">
+          <animate attributeName="opacity" values=".02;.07;.02" dur="5s" repeatCount="indefinite"/>
+        </ellipse>
+
+        <!-- Axon (main) -->
+        <path d="M190 216 Q196 278 190 338 Q184 390 190 456" stroke="#b8924a" stroke-width="1.2" opacity=".7"/>
+
+        <!-- Myelin sheaths — oval outlines, rotated -->
+        <ellipse cx="191" cy="300" rx="9" ry="6" stroke="#b8924a" stroke-width=".7" opacity=".45" transform="rotate(4,191,300)"/>
+        <ellipse cx="190" cy="338" rx="9" ry="6" stroke="#b8924a" stroke-width=".7" opacity=".45" transform="rotate(-3,190,338)"/>
+        <ellipse cx="191" cy="378" rx="9" ry="6" stroke="#b8924a" stroke-width=".7" opacity=".45" transform="rotate(5,191,378)"/>
+        <ellipse cx="190" cy="416" rx="9" ry="6" stroke="#b8924a" stroke-width=".7" opacity=".45" transform="rotate(-2,190,416)"/>
+
+        <!-- Axon terminal boutons -->
+        <circle cx="190" cy="458" r="4.5" stroke="#b8924a" stroke-width=".9" opacity=".7"/>
+        <circle cx="178" cy="467" r="2.5" fill="#b8924a" opacity=".35"/>
+        <circle cx="190" cy="471" r="2.5" fill="#b8924a" opacity=".35"/>
+        <circle cx="202" cy="467" r="2.5" fill="#b8924a" opacity=".35"/>
+
+        <!-- Dendrites — tapering, natural curves -->
+        <path d="M190 120 Q172 92 150 66 Q140 50 129 36" stroke="#b8924a" stroke-width=".9" opacity=".6"/>
+        <path d="M190 120 Q208 92 228 68 Q240 52 251 38" stroke="#b8924a" stroke-width=".9" opacity=".6"/>
+        <path d="M190 120 Q165 100 140 90 Q118 82 98 76" stroke="#b8924a" stroke-width=".7" opacity=".45"/>
+        <path d="M190 120 Q212 100 236 92 Q258 84 278 78" stroke="#b8924a" stroke-width=".7" opacity=".45"/>
+        <path d="M190 120 Q188 94 180 72 Q174 56 167 40" stroke="#b8924a" stroke-width=".6" opacity=".35"/>
+        <path d="M190 120 Q192 96 200 74 Q206 58 212 44" stroke="#b8924a" stroke-width=".6" opacity=".35"/>
+
+        <!-- Dendritic spines (small) -->
+        <circle cx="129" cy="36" r="3" fill="#b8924a" opacity=".5"/>
+        <circle cx="251" cy="38" r="3" fill="#b8924a" opacity=".5"/>
+        <circle cx="98" cy="76" r="2.5" fill="#b8924a" opacity=".4"/>
+        <circle cx="278" cy="78" r="2.5" fill="#b8924a" opacity=".4"/>
+        <circle cx="167" cy="40" r="2" fill="#b8924a" opacity=".35"/>
+        <circle cx="212" cy="44" r="2" fill="#b8924a" opacity=".35"/>
+
+        <!-- Animated signal down axon -->
+        <circle r="2.5" fill="#b8924a" opacity="0">
+          <animateMotion dur="4.5s" repeatCount="indefinite" path="M190,216 Q196,278 190,338 Q184,390 190,456"/>
+          <animate attributeName="opacity" values="0;.55;.55;0" dur="4.5s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Animated signals up dendrites -->
+
+
+
+
+        <!-- Annotation labels — fine italic style -->
+        <text x="28" y="171" font-family="'DM Mono', monospace" font-size="7.5" fill="#b8924a" opacity=".4" letter-spacing="1.2">CELL</text>
+        <text x="28" y="183" font-family="'DM Mono', monospace" font-size="7.5" fill="#b8924a" opacity=".25" letter-spacing="1.2">BODY</text>
+        <text x="28" y="268" font-family="'DM Mono', monospace" font-size="7.5" fill="#4a8c7a" opacity=".4" letter-spacing="1.2">INTER</text>
+        <text x="28" y="280" font-family="'DM Mono', monospace" font-size="7.5" fill="#4a8c7a" opacity=".25" letter-spacing="1.2">FACE</text>
+        <text x="22" y="460" font-family="'DM Mono', monospace" font-size="7.5" fill="#b8924a" opacity=".35" letter-spacing="1.2">SYNAP</text>
+        <text x="22" y="472" font-family="'DM Mono', monospace" font-size="7.5" fill="#b8924a" opacity=".2" letter-spacing="1.2">-TIC</text>
+        <line x1="54" y1="171" x2="82" y2="171" stroke="#b8924a" stroke-width=".4" opacity=".25"/>
+        <line x1="54" y1="274" x2="82" y2="266" stroke="#4a8c7a" stroke-width=".4" opacity=".25"/>
+        <line x1="52" y1="460" x2="82" y2="458" stroke="#b8924a" stroke-width=".4" opacity=".2"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- APPLICATIONS -->
+<section id="applications">
+  <div class="app-inner">
+    <div class="app-header">
+      <div class="fi">
+        <span class="section-label">005 &mdash; Applications</span>
+        <h2 class="section-title">Restoring<br><em>Function.</em><br>Expanding<br>Possibility.</h2>
+      </div>
+      <p class="body-text fi d1">Every application starts from the same premise: give the nervous system a partner it can trust. Near-term that means medicine. Long-term that means reimagining what the human body can do.</p>
+    </div>
+    <div class="app-grid fi d2">
+      <div class="app-card">
+        <div class="app-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M4 18 Q8 7 12 18 Q16 29 20 18 Q24 7 28 18" stroke="#b8924a" stroke-width="1" fill="none"/><circle cx="12" cy="18" r="3" fill="#b8924a" opacity=".7"/><circle cx="20" cy="18" r="3" fill="#4a8c7a" opacity=".6"/><line x1="28" y1="18" x2="34" y2="18" stroke="#b8924a" stroke-width="1" opacity=".5"/><circle cx="35" cy="18" r="1.5" fill="#b8924a" opacity=".5"/></svg></div>
+        <h3>Peripheral Nerve Restoration</h3>
+        <p>Reconnecting severed peripheral nerves after amputation or injury &mdash; restoring sensory and motor function with a fidelity that rigid electrode arrays cannot sustain long-term.</p>
+        <span class="app-tag">Near-term Clinical</span>
+      </div>
+      <div class="app-card">
+        <div class="app-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="13" stroke="#b8924a" stroke-width="1" stroke-dasharray="4 3"/><circle cx="18" cy="18" r="7" stroke="#b8924a" stroke-width=".8"/><path d="M12 18 Q15 12 18 18 Q21 24 24 18" stroke="#4a8c7a" stroke-width="1" fill="none"/></svg></div>
+        <h3>Neurological Disorders</h3>
+        <p>Targeted neuromodulation for Parkinson's, epilepsy, and spinal cord injury &mdash; through interfaces stable enough for the chronic, long-duration implantation that treatment actually requires.</p>
+        <span class="app-tag">Clinical Development</span>
+      </div>
+      <div class="app-card">
+        <div class="app-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="2" y="14" width="32" height="10" rx="5" stroke="#b8924a" stroke-width="1"/><circle cx="11" cy="19" r="2.5" fill="#b8924a" opacity=".7"/><circle cx="18" cy="19" r="2.5" fill="#b8924a" opacity=".4"/><circle cx="25" cy="19" r="2.5" fill="#4a8c7a" opacity=".6"/><path d="M11 9 L11 14 M18 7 L18 14 M25 9 L25 14" stroke="#b8924a" stroke-width=".8" opacity=".5"/></svg></div>
+        <h3>Brain-Computer Interfaces</h3>
+        <p>High-channel-count cortical recording with chronic stability. The bandwidth possible through biohybrid interfaces &mdash; with billions of synaptic connections &mdash; dwarfs what traditional electrode arrays can achieve.</p>
+        <span class="app-tag">Research Stage</span>
+      </div>
+      <div class="app-card">
+        <div class="app-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="10" r="5" stroke="#b8924a" stroke-width="1"/><circle cx="7" cy="28" r="4" stroke="#4a8c7a" stroke-width="1"/><circle cx="29" cy="28" r="4" stroke="#4a8c7a" stroke-width="1"/><line x1="18" y1="15" x2="9" y2="24" stroke="#b8924a" stroke-width=".8" opacity=".6"/><line x1="18" y1="15" x2="27" y2="24" stroke="#b8924a" stroke-width=".8" opacity=".6"/><line x1="11" y1="28" x2="25" y2="28" stroke="#4a8c7a" stroke-width=".8" opacity=".4" stroke-dasharray="2 2"/></svg></div>
+        <h3>Human Augmentation</h3>
+        <p>The long horizon: seamless bidirectional communication between the nervous system and technology. The same biology that makes medicine possible makes this inevitable. We're building the foundation now.</p>
+        <span class="app-tag">Long-term Vision</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="team-inner">
+    <div class="team-header fi">
+      <span class="section-label">006 &mdash; Team</span>
+      <h2 class="section-title">Built by Scientists<br><em>Who Left to Move Faster</em></h2>
+    </div>
+    <div class="team-grid fi d1">
+      <div class="tcard">
+        <div class="tav">A.R.</div>
+        <h3>Dr Amy Rochford</h3>
+        <div class="trole">Co-Founder &amp; CEO</div>
+        <p>Amy's PhD research at Cambridge's Bioelectronics Laboratory produced the biohybrid neural interface work that Axo is built upon. She combines deep materials science expertise with hands-on electrophysiology and surgical validation &mdash; from CRISPR cell engineering through to chronic in vivo implantation.</p>
+        <div class="tcreds">
+          <div class="tcred">PhD, Bioelectronics &amp; Clinical Neuroscience &middot; University of Cambridge</div>
+          <div class="tcred">Published in Science Advances &middot; Advanced Materials</div>
+          <div class="tcred">King's College 2025 Entrepreneurship Prize &middot; &pound;20,000</div>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="tav">N.J.</div>
+        <h3>Nathan Jackrazi</h3>
+        <div class="trole">Co-Founder &amp; CTO</div>
+        <p>Nathan builds the hardware that makes Amy's science legible to machines. Deep expertise across ASIC design, high-speed digital interfaces, power-constrained embedded firmware, and medical device engineering &mdash; the electronics layer that makes biohybrid interfaces readable and writable at scale.</p>
+        <div class="tcreds">
+          <div class="tcred">MEng, Industrial Systems, Manufacture &amp; Management &middot; Cambridge IfM</div>
+          <div class="tcred">ASIC &middot; embedded firmware (C/C++, Verilog) &middot; medical devices</div>
+          <div class="tcred">Background in robotics and assistive technology</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CAREERS -->
+<section id="careers">
+  <div class="careers-inner">
+    <div class="careers-header fi">
+      <span class="section-label">007 &mdash; Careers</span>
+      <h2 class="section-title">Build at<br><em>the Frontier</em></h2>
+      <p class="careers-intro">Small team, fast pace, real science. We're looking for people who want to work on problems that actually matter &mdash; and who understand that moving fast here means the science has to be right.</p>
+    </div>
+    <div class="jlist fi d1">
+      <div class="ji" onclick="openJob('ee')">
+        <div class="jlft">
+          <div class="jname">Electrical Engineer</div>
+          <div class="jmeta"><span class="jtag">Engineering</span><span class="jtag">San Francisco, CA</span><span class="jtag">Full-time</span></div>
+        </div>
+        <div class="jarr">&rarr;</div>
+      </div>
+      <div class="ji" onclick="openJob('ce')">
+        <div class="jlft">
+          <div class="jname">Cell Engineer</div>
+          <div class="jmeta"><span class="jtag">Biology</span><span class="jtag">San Francisco, CA</span><span class="jtag">Full-time</span></div>
+        </div>
+        <div class="jarr">&rarr;</div>
+      </div>
+      <div class="ji" onclick="openJob('intern')">
+        <div class="jlft">
+          <div class="jname">Internship</div>
+          <div class="jmeta"><span class="jtag">San Francisco, CA</span><span class="jtag">12-week minimum</span></div>
+        </div>
+        <div class="jarr">&rarr;</div>
+      </div>
+      <div class="ji" onclick="openJob('dream')">
+        <div class="jlft">
+          <div class="jname">Dream Job</div>
+          <div class="jmeta"><span class="jtag">Didn't find your role?</span><span class="jtag">Tell us what you'd build</span></div>
+        </div>
+        <div class="jarr">&rarr;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="jmodal-overlay" id="joverlay">
+  <button class="jmodal-close" onclick="closeJob()">&#10005; &nbsp;Close</button>
+  <div class="jmodal" id="jmodal-content"></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <span class="section-label">008 &mdash; Get in Touch</span>
+    <h2 class="section-title fi">Stay at<br><em>the Edge</em></h2>
+    <p class="fi d1">Follow our progress as we build the next generation of neural interfaces &mdash; from lab bench to clinic to whatever comes after.</p>
+    <div class="eform fi d2"><input type="email" placeholder="your@email.com"><button type="button">Subscribe</button></div>
+    <div class="clinks fi d3">
+      <a href="mailto:nathan@axoneurotech.com?subject=Partnership">Partner with us</a>
+      <a href="https://www.linkedin.com/company/axo-neurotech" target="_blank">LinkedIn</a>
+      <a href="mailto:nathan@axoneurotech.com?subject=Press">Press</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">Axo Neurotech</div>
+  <div class="flinks">
+    <a href="#science">Science</a>
+    <a href="#team">Team</a>
+    <a href="#careers">Careers</a>
+    <a href="mailto:nathan@axoneurotech.com">Contact</a>
+  </div>
+  <div class="fcopy">&copy; Axo Neurotech 2025</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+// ── NAV ─────────────────────────────────────────────────
+window.addEventListener('scroll', () =>
+  document.getElementById('nav').classList.toggle('s', scrollY > 60));
+
+// ── HERO CANVAS — neural network, neurons + synaptic firing ─
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+// Seeded random for stable layout on resize
+let _seed = 42;
+function srnd() {
+  _seed = (_seed * 1664525 + 1013904223) & 0xffffffff;
+  return ((_seed >>> 0) / 0xffffffff);
+}
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); buildNetwork(); });
+
+// ── Neuron definition ─────────────────────────────────────
+// Each neuron: soma position, dendrite branches, one axon path,
+// resting phase, refractory period, connected outputs
+let neurons = [], signals = [];
+
+function makeDendriteBranch(ox, oy, angle, len, depth) {
+  // Returns array of {x1,y1,x2,y2} segments
+  const segs = [];
+  const wobble = (srnd() - .5) * 0.45;
+  const a = angle + wobble;
+  const x2 = ox + Math.cos(a) * len;
+  const y2 = oy + Math.sin(a) * len;
+  segs.push({ x1:ox, y1:oy, x2, y2 });
+  if (depth > 0 && len > 14) {
+    const spread = 0.4 + srnd() * 0.3;
+    segs.push(...makeDendriteBranch(x2, y2, a - spread, len * (.55 + srnd()*.15), depth - 1));
+    if (srnd() > .35)
+      segs.push(...makeDendriteBranch(x2, y2, a + spread, len * (.5 + srnd()*.15), depth - 1));
+  }
+  return segs;
+}
+
+function buildNetwork() {
+  _seed = 42;
+  neurons = [];
+  signals = [];
+
+  // Neuron count scales with viewport
+  const count = Math.max(6, Math.min(14, Math.floor(W * H / 85000)));
+
+  for (let i = 0; i < count; i++) {
+    const x = srnd() * W;
+    const y = srnd() * H;
+    const somaR = 4 + srnd() * 3;
+    const type  = srnd() < .75 ? 'gold' : 'teal';
+
+    // Dendrites: 3-5 primary branches
+    const dCount = 3 + Math.floor(srnd() * 3);
+    const dendrites = [];
+    for (let d = 0; d < dCount; d++) {
+      const baseAngle = (d / dCount) * Math.PI * 2 + srnd() * .5;
+      const len = 28 + srnd() * 38;
+      dendrites.push(...makeDendriteBranch(x, y, baseAngle, len, 2));
+    }
+
+    // Axon: one longer curved path to a target direction
+    const axonAngle = srnd() * Math.PI * 2;
+    const axonLen   = 60 + srnd() * 90;
+    const axonMid   = {
+      x: x + Math.cos(axonAngle) * axonLen * .5 + (srnd()-.5)*40,
+      y: y + Math.sin(axonAngle) * axonLen * .5 + (srnd()-.5)*40,
+    };
+    const axonEnd = {
+      x: x + Math.cos(axonAngle) * axonLen,
+      y: y + Math.sin(axonAngle) * axonLen,
+    };
+
+    // Firing rhythm — stagger so they don't all fire at once
+    const nextFire = srnd() * 280;   // frames until next fire
+    const restTime = 180 + srnd() * 240;  // frames between fires
+
+    neurons.push({ x, y, somaR, type, dendrites, axonAngle, axonMid, axonEnd, nextFire, restTime, phase: srnd() * Math.PI * 2 });
+  }
+
+  // Connect neurons: each neuron can receive signals from others
+  // (signals travel axon-end → nearest neuron soma within range)
+}
+buildNetwork();
+
+// ── Signal along a quadratic bezier ──────────────────────
+function bezierPoint(t, x0,y0, x1,y1, x2,y2) {
+  const mt = 1 - t;
+  return {
+    x: mt*mt*x0 + 2*mt*t*x1 + t*t*x2,
+    y: mt*mt*y0 + 2*mt*t*y1 + t*t*y2,
+  };
+}
+
+// ── Draw a dendrite segment tree ─────────────────────────
+function drawDendrites(segs, baseAlpha, col) {
+  segs.forEach((s, i) => {
+    // Taper opacity with depth (longer chains = more distant)
+    const a = baseAlpha * (1 - i / (segs.length + 8));
+    ctx.beginPath();
+    ctx.moveTo(s.x1, s.y1);
+    ctx.lineTo(s.x2, s.y2);
+    ctx.strokeStyle = col.replace('A', a.toFixed(2));
+    ctx.lineWidth = .7;
+    ctx.stroke();
+  });
+}
+
+let frame = 0;
+
+function drawFrame() {
+  ctx.clearRect(0, 0, W, H);
+  frame++;
+
+  neurons.forEach(n => {
+    const glow = (Math.sin(n.phase + frame * .012) + 1) / 2;
+    n.phase; // just read
+
+    const goldBase  = `rgba(184,146,74,A)`;
+    const tealBase  = `rgba(74,140,122,A)`;
+    const col = n.type === 'gold' ? goldBase : tealBase;
+
+    // ── Dendrites ──
+    const dAlpha = .06 + glow * .05;
+    drawDendrites(n.dendrites, dAlpha, col);
+
+    // ── Axon ──
+    ctx.beginPath();
+    ctx.moveTo(n.x, n.y);
+    ctx.quadraticCurveTo(n.axonMid.x, n.axonMid.y, n.axonEnd.x, n.axonEnd.y);
+    const axAlpha = (.05 + glow * .04).toFixed(2);
+    ctx.strokeStyle = col.replace('A', axAlpha);
+    ctx.lineWidth = .6;
+    ctx.stroke();
+
+    // Axon terminal boutons — two tiny dots
+    const termAlpha = (.1 + glow * .1).toFixed(2);
+    ctx.beginPath();
+    ctx.arc(n.axonEnd.x, n.axonEnd.y, 1.8, 0, Math.PI * 2);
+    ctx.fillStyle = col.replace('A', termAlpha);
+    ctx.fill();
+
+    // ── Soma ──
+    const somaAlpha = (.12 + glow * .12).toFixed(2);
+    // outer membrane ring
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.somaR + 1.5, 0, Math.PI * 2);
+    ctx.strokeStyle = col.replace('A', somaAlpha);
+    ctx.lineWidth = .8;
+    ctx.stroke();
+    // inner fill
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.somaR, 0, Math.PI * 2);
+    ctx.fillStyle = col.replace('A', (.04 + glow * .06).toFixed(2));
+    ctx.fill();
+
+    // ── Firing logic ──
+    n.nextFire--;
+    if (n.nextFire <= 0) {
+      // Spawn action potential signal
+      signals.push({
+        neuron: n,
+        t: 0,
+        speed: .004 + Math.random() * .003,
+        col: n.type === 'gold' ? 'rgba(184,146,74,A)' : 'rgba(74,140,122,A)',
+      });
+      n.nextFire = n.restTime + Math.random() * 60;
+    }
+  });
+
+  // ── Signals (action potentials) ──────────────────────────
+  for (let i = signals.length - 1; i >= 0; i--) {
+    const s = signals[i];
+    s.t += s.speed;
+    if (s.t >= 1) { signals.splice(i, 1); continue; }
+
+    const n = s.neuron;
+    const pos = bezierPoint(s.t, n.x, n.y, n.axonMid.x, n.axonMid.y, n.axonEnd.x, n.axonEnd.y);
+
+    // Fade envelope: ramp up, hold, ramp down
+    const env = s.t < .15 ? s.t/.15 : s.t > .8 ? (1-s.t)/.2 : 1;
+    const alpha = (.55 * env).toFixed(2);
+
+    // Trail
+    const trailPos = bezierPoint(Math.max(0, s.t - .08), n.x, n.y, n.axonMid.x, n.axonMid.y, n.axonEnd.x, n.axonEnd.y);
+    ctx.beginPath();
+    ctx.moveTo(trailPos.x, trailPos.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.strokeStyle = s.col.replace('A', (.18 * env).toFixed(2));
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Signal dot
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = s.col.replace('A', alpha);
+    ctx.fill();
+
+    // Subtle glow halo
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = s.col.replace('A', (.06 * env).toFixed(2));
+    ctx.fill();
+
+    // When signal reaches terminal, briefly illuminate receiving neuron if nearby
+    if (s.t > .9) {
+      neurons.forEach(other => {
+        if (other === n) return;
+        const d = Math.hypot(other.x - n.axonEnd.x, other.y - n.axonEnd.y);
+        if (d < 80) {
+          const flash = (1 - s.t) / .1 * .15;
+          ctx.beginPath();
+          ctx.arc(other.x, other.y, other.somaR + 3, 0, Math.PI * 2);
+          ctx.strokeStyle = s.col.replace('A', flash.toFixed(2));
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      });
+    }
+  }
+
+  requestAnimationFrame(drawFrame);
+}
+drawFrame();
+
+// ── SCROLL REVEAL ────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+// ── JOB MODALS ───────────────────────────────────────────
+const JOBS = {
+  ee: {
+    dept: 'Engineering',
+    title: 'Electrical',
+    titleAccent: 'Engineer',
+    tags: ['Engineering', 'San Francisco, CA', 'Full-time'],
+    applyEmail: 'nathan@axoneurotech.com?subject=Application%20%E2%80%94%20Electrical%20Engineer',
+    intro: `We're seeking a mission-driven Electrical Engineer to lead the design, prototyping, and testing of electronics for our neural interface systems. You will own the development of neural recording and stimulation electronics, wireless data transfer, and power delivery for implantable devices &mdash; working closely with biologists, microfabrication engineers, and embedded systems designers.`,
+    doList: [
+      'Design and rapidly prototype <strong>low-noise analog front ends (AFEs)</strong> and digital systems for low-latency neural recording and stimulation',
+      'Build and optimise <strong>wireless data and power transfer systems</strong>',
+      'Lead PCB schematic, layout, fabrication, assembly and bring-up of custom boards',
+      'Architect unit and system-level testing and debugging across electronics and biointerfaces',
+      'Collaborate cross-functionally with biology and engineering teams',
+      'Document and communicate your designs clearly and concisely',
+    ],
+    lookingFor: [
+      '5+ years experience developing <strong>implantable medical electronics</strong>',
+      'Proficiency in PCB design tools (e.g., Altium, OrCAD)',
+      'Experience with wireless power/data (e.g., inductive coupling, BLE, RF design)',
+      'Experience developing hardware for <strong>microcontrollers and FPGAs</strong>',
+      'Experience with firmware (C/C++) and HDL ([System]Verilog)',
+      'Strong understanding of EE fundamentals, signal integrity, EMI mitigation',
+      'Familiarity with embedded comms protocols (SPI, I2C, UART)',
+      'Experience with testing automation and power/size-constrained production products',
+      'Comfortable leading the charge in a hands-on, fast-paced startup environment',
+    ],
+    niceToHave: [
+      'Background in neurotechnology, bioinstrumentation, or medical device design',
+      'Familiarity with IEC 60601 and related medical device standards',
+      'Experience with electrophysiology recordings',
+      'Experience with ASIC validation and bring-up',
+      'MS or PhD in Electrical Engineering or a related field',
+    ],
+    benefits: ['Competitive salary and equity','Medical, dental, vision and life insurance','Flexible vacation and company-paid holidays','Healthy meals and snacks (non-remote)','Paid parental, bereavement, family care and medical leave','401(k)'],
+  },
+  ce: {
+    dept: 'Biology',
+    title: 'Cell',
+    titleAccent: 'Engineer',
+    tags: ['Biology', 'San Francisco, CA', 'Full-time'],
+    applyEmail: 'nathan@axoneurotech.com?subject=Application%20%E2%80%94%20Cell%20Engineer',
+    intro: `We're hiring a Cell Engineer to develop engineered cell systems that can seamlessly interface with our bioelectronic platforms. You will lead the design and implementation of custom cell lines that enable biological sensing, signalling, or modulation &mdash; a foundational biology role at the frontier of synthetic biology and neurotechnology.`,
+    doList: [
+      'Design and build <strong>genetically engineered cell lines</strong> optimised for integration with neural interface hardware',
+      'Perform <strong>genome editing (CRISPR/Cas9)</strong> and molecular cloning to validate engineered constructs',
+      'Characterise cellular electrophysiological activity in vitro',
+      'Collaborate cross-functionally across device and fabrication teams to optimise interface performance',
+      'Maintain rigorous documentation, protocol development, and experimental reproducibility',
+    ],
+    lookingFor: [
+      'Expertise in <strong>CRISPR/Cas9 genome engineering</strong>',
+      'Strong background in molecular biology, synthetic biology, or cell engineering',
+      'Experience with electrophysiology',
+      'Familiarity with cell culture, microscopy, and in vitro assay development',
+      'Ability to lead projects independently while working in a highly collaborative environment',
+      '<strong>PhD in Bioengineering, Molecular Biology, Neuroscience</strong>, or related field &mdash; or equivalent industry experience',
+    ],
+    niceToHave: [
+      'Knowledge of neural cell types, iPSCs, or tissue engineering',
+      'Familiarity with microfluidics, hydrogel substrates, or implantable systems',
+      'Previous work in startup or interdisciplinary R&D environments',
+    ],
+    benefits: ['Competitive salary and equity','Medical, dental, vision and life insurance','Flexible vacation and company-paid holidays','Healthy meals and snacks (non-remote)','Paid parental, bereavement, family care and medical leave','401(k)'],
+  },
+  intern: {
+    dept: 'Internship',
+    title: 'Internship',
+    titleAccent: 'Programme',
+    tags: ['San Francisco, CA', '12-week minimum', 'Full-time'],
+    applyEmail: 'nathan@axoneurotech.com?subject=Internship%20Application',
+    intro: `We're always looking for exceptional students and early-career researchers who want to push the boundaries of neuroscience, biology, and engineering. If you're excited to work at the intersection of living systems and advanced technology, we want to hear from you.`,
+    doList: [
+      'Hands-on experience with <strong>cutting-edge research and development</strong>',
+      'Mentorship from experienced engineers and scientists',
+      'Exposure to next-generation neural interface design and testing',
+      'Opportunity to contribute to projects with real patient impact',
+    ],
+    lookingFor: [
+      'Currently enrolled in or recently graduated from a BS, MS, or PhD programme',
+      'Biology, bioengineering, neuroscience, electrical engineering, computer science, or related field',
+      'Must be <strong>authorised to work in the U.S.</strong>',
+      'Minimum 12-week commitment, full-time',
+    ],
+    niceToHave: [
+      'Prior lab or research experience in a relevant discipline',
+      'Demonstrated ability to work independently on a defined project',
+      'Genuine curiosity about the intersection of biology and engineering',
+    ],
+    benefits: ['Competitive internship stipend','Mentorship and regular feedback','Healthy meals and snacks in office','Access to state-of-the-art lab facilities'],
+  },
+  dream: {
+    dept: 'Open Role',
+    title: 'Dream',
+    titleAccent: 'Job',
+    tags: ['San Francisco, CA', 'Any discipline'],
+    applyEmail: 'nathan@axoneurotech.com?subject=Dream%20Job%20Application',
+    intro: `Didn't find what you were looking for? That's fine &mdash; some of the best people don't fit a job description. Tell us what role you'd create, what you'd build in it, and why Axo is the place you'd build it. We read every application.`,
+    doList: [
+      'Tell us <strong>what role you\'d create</strong> and why it matters to the mission',
+      'Show us what you\'ve built, written, or shipped &mdash; anything that demonstrates how you work',
+      'Explain <strong>what you\'d focus on in your first 90 days</strong>',
+      'Tell us why this work matters to you personally',
+    ],
+    lookingFor: [
+      'Exceptional ability in any discipline relevant to neurotechnology',
+      'Genuine alignment with the mission &mdash; not just the opportunity',
+      'Comfort operating in ambiguity and without hand-holding',
+      'Evidence of doing hard things well',
+    ],
+    niceToHave: [
+      'Any background in biology, engineering, neuroscience, or adjacent fields',
+      'Experience in early-stage startups or deep tech environments',
+      'Strong written communication &mdash; we weight this heavily',
+    ],
+    benefits: ['Competitive salary and equity (role-dependent)','Medical, dental, vision and life insurance','Flexible vacation and company-paid holidays','Healthy meals and snacks (non-remote)','Paid parental, bereavement, family care and medical leave','401(k)'],
+  },
+};
+
+window.openJob = function(id) {
+  const j = JOBS[id];
+  if (!j) return;
+  const doHTML   = j.doList.map(d => `<div class="jmod-item"><p>${d}</p></div>`).join('');
+  const lookHTML = j.lookingFor.map(d => `<div class="jmod-item"><p>${d}</p></div>`).join('');
+  const niceHTML = j.niceToHave.map(d => `<div class="jmod-nice-item">${d}</div>`).join('');
+  const benHTML  = j.benefits.map(d => `<div class="jmod-benefit"><div class="jmod-benefit-dot"></div><p>${d}</p></div>`).join('');
+  const tagsHTML = j.tags.map((t,i) => `<div class="jmod-tag${i===0?' hi':''}">${t}</div>`).join('');
+  document.getElementById('jmodal-content').innerHTML = `
+    <div class="jmod-eyebrow">${j.dept}</div>
+    <div class="jmod-title">${j.title}<em>${j.titleAccent}</em></div>
+    <div class="jmod-meta">${tagsHTML}</div>
+    <div class="jmod-section">
+      <div class="jmod-section-title">The Role</div>
+      <p class="jmod-intro">${j.intro}</p>
+    </div>
+    <div class="jmod-section">
+      <div class="jmod-section-title">What You'll Do</div>
+      <div class="jmod-list">${doHTML}</div>
+    </div>
+    <div class="jmod-section">
+      <div class="jmod-section-title">What We're Looking For</div>
+      <div class="jmod-list">${lookHTML}</div>
+    </div>
+    <div class="jmod-section">
+      <div class="jmod-nice">
+        <div class="jmod-nice-title">Nice to Have</div>
+        <div class="jmod-nice-list">${niceHTML}</div>
+      </div>
+    </div>
+    <div class="jmod-section">
+      <div class="jmod-section-title">Compensation &amp; Benefits</div>
+      <p style="font-size:13px;font-style:italic;color:var(--ink2);margin-bottom:20px;line-height:1.7">Competitive salary + equity. Individual pay is determined by job-related skills, experience, and relevant education or training.</p>
+      <div class="jmod-benefits">${benHTML}</div>
+    </div>
+    <div class="jmod-why">
+      <div class="jmod-section-title" style="margin-bottom:16px">Why Join Us</div>
+      <p>At Axo Neurotech, you'll be joining a team that left comfortable positions at larger institutions because the work was <strong>too important to move slowly</strong>. No internal politics. No revenue lines pulling the roadmap sideways. Just a small, focused team building the tools that will define the future of neurotechnology &mdash; rigorously, deliberately, and faster than anyone thought possible. <strong>We're just getting started.</strong></p>
+    </div>
+    <a href="mailto:${j.applyEmail}" class="jmod-apply">Apply for This Role &rarr;</a>
+  `;
+  const overlay = document.getElementById('joverlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeJob = function() {
+  document.getElementById('joverlay').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+document.getElementById('joverlay').addEventListener('click', function(e) {
+  if (e.target === this) window.closeJob();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeJob(); });
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>

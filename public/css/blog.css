@@ -1,0 +1,765 @@
+/* ===========================================
+   LOCALGHOST - HARD TRUTHS BLOG
+   All blog styles: index listing, post nav,
+   alarm/signal boxes, post-ref chips.
+   Requires: base.css, pages.css
+   =========================================== */
+
+/* ===========================================
+   INDEX — POST LIST
+   =========================================== */
+
+.post-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
+
+.post-item {
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 1.8rem 7rem 1.8rem 2rem;
+    background: var(--void);
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+}
+
+.post-item:last-child {
+    border-bottom: 1px solid var(--border);
+}
+
+.post-item:hover {
+    background: var(--void-lighter);
+    border-color: var(--terminal);
+    z-index: 1;
+}
+
+.post-item:hover .post-arrow { color: var(--terminal); }
+.post-item:hover .post-num { color: var(--terminal); text-shadow: 0 0 6px var(--terminal-dim); }
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.post-num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    transition: color 0.15s;
+    min-width: 60px;
+}
+
+.post-date {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.post-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--terminal);
+    letter-spacing: 0.15em;
+    border: 1px solid var(--terminal-dim);
+    padding: 0.15rem 0.5rem;
+    text-shadow: 0 0 4px var(--terminal-dim);
+}
+
+.post-tag.alarm {
+    color: var(--warning);
+    border-color: rgba(255, 138, 138, 0.5);
+    text-shadow: 0 0 4px rgba(255, 138, 138, 0.3);
+}
+
+.post-tag-red {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--warning);
+    letter-spacing: 0.15em;
+    border: 1px solid rgba(255, 138, 138, 0.5);
+    padding: 0.15rem 0.5rem;
+    text-shadow: 0 0 4px rgba(255, 138, 138, 0.3);
+}
+
+.post-title {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.post-excerpt {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0;
+}
+
+.post-arrow {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    color: var(--border);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    transition: color 0.15s;
+}
+
+/* ===========================================
+   INDEX — MANIFESTO FEATURED LINK
+   =========================================== */
+
+.manifesto-ref {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    background: var(--void-lighter);
+    text-decoration: none;
+    transition: border-color 0.15s;
+    margin-top: 3rem;
+}
+
+.manifesto-ref:hover { border-color: var(--terminal); }
+.manifesto-ref:hover .mr-arrow { color: var(--terminal); }
+
+.mr-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+}
+
+.mr-title {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.mr-sub {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 0.3rem;
+}
+
+.mr-arrow {
+    font-family: var(--font-mono);
+    color: var(--border);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    transition: color 0.15s;
+    white-space: nowrap;
+    margin-left: 2rem;
+    flex-shrink: 0;
+}
+
+/* ===========================================
+   POST — STATEMENT BOX
+   Hard-hitting opening declaration.
+   Same weight as countdown-box / question-box.
+   =========================================== */
+
+.statement-box {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 138, 138, 0.05) 0%, rgba(17, 17, 17, 0.9) 100%);
+    border: 1px solid var(--warning);
+    padding: 3rem 2.5rem;
+    margin: 2rem 0 3rem 0;
+    text-align: center;
+    overflow: hidden;
+    animation: scaleIn 0.8s ease-out;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.statement-box:hover {
+    box-shadow: 0 0 30px rgba(255, 138, 138, 0.12);
+}
+
+/* Big faded background character */
+.statement-box::before {
+    content: '!';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 320px;
+    font-weight: 700;
+    color: rgba(255, 138, 138, 0.03);
+    font-family: var(--font-mono);
+    line-height: 1;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.statement-box:hover::before {
+    opacity: 0.5;
+}
+
+.statement-box p {
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.statement-box .statement-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--warning);
+    letter-spacing: 0.3em;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.statement-box .statement-main {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--warning);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    text-shadow: 0 0 20px rgba(255, 138, 138, 0.3);
+    animation: statement-flicker 4s infinite;
+}
+
+.statement-box .statement-sub {
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-top: 1.2rem;
+    font-style: italic;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes statement-flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.85; }
+    94% { opacity: 1; }
+    96% { opacity: 0.9; }
+    97% { opacity: 1; }
+}
+
+/* ===========================================
+   POST — CONCLUSION BOX
+   Terminal green closing call to action.
+   =========================================== */
+
+.conclusion-box {
+    background: rgba(51, 255, 0, 0.02);
+    border: 2px solid var(--terminal);
+    padding: 2rem;
+    margin: 2.5rem 0;
+    text-align: center;
+    animation: scaleIn 0.7s ease-out;
+    transition: box-shadow 0.3s ease;
+}
+
+.conclusion-box:hover {
+    box-shadow: 0 0 40px rgba(51, 255, 0, 0.15);
+}
+
+.conclusion-box p { margin: 0; }
+.conclusion-box p + p { margin-top: 0.75rem; }
+
+.conclusion-box .conclusion-lead {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+}
+
+.conclusion-box .conclusion-main {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--terminal);
+    margin: 1rem 0;
+}
+
+.conclusion-box .conclusion-sub {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+    .statement-box { padding: 2rem 1.25rem; }
+    .statement-box::before { font-size: 200px; }
+    .statement-box .statement-main { font-size: 1.2rem; }
+    .conclusion-box { padding: 1.5rem 1rem; }
+    .conclusion-box .conclusion-main { font-size: 1.1rem; }
+}
+
+
+/* ===========================================
+   POST — ALARM BOX
+   Strong opinion. I might be wrong.
+   Warning red left border.
+   =========================================== */
+
+div.alarm {
+    border: 1px solid rgba(255, 138, 138, 0.4);
+    border-left: 3px solid var(--warning);
+    background: rgba(255, 138, 138, 0.04);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+}
+
+div.alarm p {
+    font-family: var(--font-mono);
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* ===========================================
+   POST — SIGNAL BOX
+   What I'm certain about.
+   Full green border, always visible.
+   =========================================== */
+
+.signal {
+    border: 1px solid rgba(51, 255, 0, 0.25);
+    border-left: 3px solid var(--terminal);
+    background: rgba(51, 255, 0, 0.02);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    transition: box-shadow 0.3s ease;
+}
+
+.signal:hover {
+    box-shadow: 0 0 20px rgba(51, 255, 0, 0.08);
+}
+
+.signal::before {
+    content: '> SIGNAL';
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--terminal);
+    letter-spacing: 0.25em;
+    margin-bottom: 0.7rem;
+    text-shadow: 0 0 4px var(--terminal-dim);
+}
+
+.signal p {
+    font-family: var(--font-mono);
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.65;
+}
+
+/* ===========================================
+   POST — FINAL WORDS
+   Closing statement. Must land hard.
+   Terminal green border, centred, prominent.
+   =========================================== */
+
+.final-words {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    line-height: 2.2;
+}
+
+.final-words .highlight {
+    color: var(--terminal);
+    font-weight: 700;
+    display: block;
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px var(--terminal-dim);
+}
+
+.final-words .small {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--border);
+    letter-spacing: 0.2em;
+    margin-top: 1.5rem;
+}
+
+/* ===========================================
+   POST — INLINE CROSS-REFERENCE CHIP
+   =========================================== */
+
+.post-ref {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--terminal);
+    text-decoration: none;
+    border: 1px solid var(--terminal-dim);
+    padding: 0.1rem 0.55rem;
+    letter-spacing: 0.05em;
+    transition: background 0.15s, border-color 0.15s;
+    vertical-align: middle;
+}
+
+.post-ref:hover {
+    background: rgba(51, 255, 0, 0.06);
+    border-color: var(--terminal);
+    color: var(--terminal);
+}
+
+/* ===========================================
+   POST — BOTTOM NAVIGATION
+   Always two links: ← index | next post →
+   =========================================== */
+
+.post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.post-nav a {
+    display: block;
+    text-decoration: none;
+    padding: 1.2rem 1.4rem;
+    border: 1px solid var(--border);
+    background: var(--void);
+    transition: border-color 0.15s, background 0.15s;
+    flex: 1;
+}
+
+.post-nav a:hover {
+    border-color: var(--terminal);
+    background: var(--void-lighter);
+}
+
+.post-nav a:hover .pn-title { color: var(--terminal); }
+
+.post-nav .next { text-align: right; }
+
+.pn-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.4rem;
+}
+
+.pn-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    transition: color 0.15s;
+    line-height: 1.4;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 600px) {
+    .post-item { padding: 1.4rem 1.2rem; }
+    .post-arrow { display: none; }
+
+    .manifesto-ref {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .mr-arrow { margin-left: 0; }
+
+    .alarm, .signal { padding: 1rem 1.2rem; }
+    .alarm p, .signal p { font-size: 0.9rem; }
+
+    .post-nav { flex-direction: column; }
+    .post-nav .next { text-align: left; }
+}
+
+/* ===========================================
+   POST — PODCAST PLAYER
+   Cypherpunk inline audio player.
+   Background-playback-aware (real <audio> element).
+   Lock-screen metadata via Media Session API.
+   Used at the top of each Hard Truths post.
+   =========================================== */
+
+.podcast-player {
+    border: 1px solid var(--border);
+    background: rgba(10, 14, 20, 0.4);
+    padding: 0.9rem 1.15rem;
+    margin: 1.5rem 0 2rem 0;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    transition: border-color 0.15s;
+}
+
+.podcast-player:hover {
+    border-color: var(--terminal-dim);
+}
+
+.podcast-player .pp-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.65rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.podcast-player .pp-meta .pp-label {
+    color: var(--terminal);
+    text-shadow: 0 0 4px var(--terminal-dim);
+}
+
+.podcast-player .pp-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.podcast-player .pp-play {
+    background: transparent;
+    border: 1px solid var(--terminal);
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s, box-shadow 0.15s;
+}
+
+.podcast-player .pp-play:hover,
+.podcast-player .pp-play:focus {
+    background: rgba(51, 255, 0, 0.08);
+    box-shadow: 0 0 12px rgba(51, 255, 0, 0.2);
+    outline: none;
+}
+
+.podcast-player .pp-play .pp-icon-pause {
+    display: none;
+}
+
+.podcast-player .pp-play.is-playing .pp-icon-play {
+    display: none;
+}
+
+.podcast-player .pp-play.is-playing .pp-icon-pause {
+    display: inline;
+}
+
+.podcast-player .pp-progress {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.podcast-player .pp-progress:focus {
+    outline: 1px solid var(--terminal-dim);
+    outline-offset: 2px;
+}
+
+.podcast-player .pp-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--terminal);
+    box-shadow: 0 0 6px var(--terminal-dim);
+    transition: width 0.1s linear;
+}
+
+.podcast-player .pp-time {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: right;
+}
+
+.podcast-player .pp-download {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.6rem;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    flex-shrink: 0;
+}
+
+.podcast-player .pp-download:hover,
+.podcast-player .pp-download:focus {
+    color: var(--terminal);
+    border-color: var(--terminal-dim);
+    background: rgba(51, 255, 0, 0.04);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .podcast-player {
+        padding: 0.8rem 0.9rem;
+    }
+    .podcast-player .pp-controls {
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+    .podcast-player .pp-progress {
+        order: 3;
+        flex-basis: 100%;
+    }
+    .podcast-player .pp-time {
+        min-width: 0;
+        font-size: 0.68rem;
+    }
+    .podcast-player .pp-download {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+/* ===========================================
+   POST — INLINE CITE MARKERS
+   Used for numbered citations in body prose.
+   Format: <a href="#ref-N" class="cite">[N]</a>
+   =========================================== */
+
+.cite {
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    color: var(--terminal);
+    text-decoration: none;
+    vertical-align: super;
+    line-height: 0;
+    padding: 0 0.08em 0 0.12em;
+    letter-spacing: 0;
+    text-shadow: 0 0 4px var(--terminal-dim);
+    transition: color 0.15s, text-shadow 0.15s;
+    white-space: nowrap;
+}
+
+.cite:hover,
+.cite:focus {
+    color: var(--text);
+    text-shadow: 0 0 8px var(--terminal);
+    outline: none;
+}
+
+/* Two adjacent cites like [11][13] should hug together without a gap */
+.cite + .cite {
+    margin-left: -0.08em;
+}
+
+/* ===========================================
+   POST — REFERENCES SECTION
+   Numbered bibliography entries at the end
+   of a Hard Truths post. One entry per
+   <p class="references" id="ref-N">.
+   =========================================== */
+
+.references {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin: 0 0 1.1rem 0;
+    padding-left: 2.8rem;
+    text-indent: -2.8rem;
+    word-break: break-word;
+    scroll-margin-top: 2rem;
+}
+
+.references:target {
+    background: rgba(51, 255, 0, 0.04);
+    border-left: 2px solid var(--terminal);
+    padding-left: 2.6rem;
+    margin-left: -0.8rem;
+    transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.references strong {
+    color: var(--terminal);
+    font-weight: 700;
+    text-shadow: 0 0 4px var(--terminal-dim);
+    letter-spacing: 0.02em;
+    display: inline-block;
+    min-width: 2.4rem;
+}
+
+.references em {
+    color: var(--text);
+    font-style: italic;
+}
+
+.references a {
+    color: var(--terminal);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--terminal-dim);
+    transition: color 0.15s, border-color 0.15s, text-shadow 0.15s;
+    word-break: break-all;
+}
+
+.references a:hover,
+.references a:focus {
+    color: var(--text);
+    border-bottom-color: var(--terminal);
+    text-shadow: 0 0 4px var(--terminal-dim);
+    outline: none;
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 600px) {
+    .references {
+        font-size: 0.74rem;
+        padding-left: 2.2rem;
+        text-indent: -2.2rem;
+        line-height: 1.55;
+    }
+
+    .references strong {
+        min-width: 2rem;
+    }
+
+    .cite {
+        font-size: 0.76em;
+    }
+}

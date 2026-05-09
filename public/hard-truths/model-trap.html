@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Model Trap | Hard Truths | LocalGhost.ai</title>
+    <meta name="description" content="Copilot understands your codebase. Gemini knows your email patterns. Claude has months of your reasoning. The new lock-in isn't your data, it's the context around it, and no export button can give it back.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="model lock-in, AI vendor lock-in, enshittification, model agnostic, behavioral testing, AI updates, local AI, LocalGhost hard truths">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/model-trap">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/model-trap">
+    <meta property="og:title" content="The Model Trap">
+    <meta property="og:description" content="The new lock-in isn't your data, it's the context around it, and no export button can give it back.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-model-trap.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Model Trap — LocalGhost Hard Truths">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-04-01T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="model lock-in">
+    <meta property="article:tag" content="AI vendor lock-in">
+    <meta property="article:tag" content="enshittification">
+    <meta property="article:tag" content="local AI">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="The Model Trap">
+    <meta name="twitter:description" content="The new lock-in isn't your data, it's the context around it, and no export button can give it back.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-model-trap.png">
+    <meta name="twitter:image:alt" content="The Model Trap — LocalGhost Hard Truths">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Model Trap",
+        "description": "The new lock-in isn't your data, it's the context around it, and no export button can give it back.",
+        "author": {
+            "@type": "Person",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-04-01",
+        "dateModified": "2026-04-01",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/model-trap"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-model-trap.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "model lock-in, AI vendor lock-in, enshittification, model agnostic, behavioral testing, local AI",
+        "articleSection": "Hard Truths",
+        "isPartOf": {
+            "@type": "Blog",
+            "name": "Hard Truths",
+            "url": "https://www.localghost.ai/hard-truths"
+        }
+    }
+    </script>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">
+        <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+    </div>
+    <div class="nav-links">
+        <a href="/manifesto">MANIFESTO</a>
+        <a href="/hard-truths" class="active">HARD TRUTHS</a>
+        <a href="/build">BUILD</a>
+        <a href="/directory" class="hide-mobile">DIRECTORY</a>
+        <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+    </div>
+</nav>
+
+<main class="narrow">
+
+    <div class="page-header">
+        <div class="section-label">&gt; HARD_TRUTHS // POST_06 // APR 2026</div>
+        <h1>The Model Trap</h1>
+        <div class="date">Vlad Cealicu // 2 April 2026</div>
+    </div>
+
+    <div class="manifesto-text">
+
+        <div class="statement-box">
+            <p class="statement-main">The lock-in is the years of context the model has about how you think, and no export button exists for that.</p>
+        </div>
+
+        <div class="podcast-player"
+             data-src="/assets/podcast/model-trap.mp3"
+             data-title="The Model Trap"
+             data-album="EPISODE 06"
+             data-artwork="/images/og-model-trap.png">
+            <div class="pp-meta">
+                <span><span class="pp-label">&gt; EPISODE 06</span> // OFFLINE-READY</span>
+                <span>NOTEBOOKLM AUDIO</span>
+            </div>
+            <div class="pp-controls">
+                <button class="pp-play" type="button" aria-label="Play podcast">
+                    <span class="pp-icon-play">&#9654;</span>
+                    <span class="pp-icon-pause">&#10074;&#10074;</span>
+                </button>
+                <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="pp-progress-bar"></div>
+                </div>
+                <span class="pp-time">00:00 / --:--</span>
+                <a class="pp-download" href="/assets/podcast/model-trap.mp3" download aria-label="Download podcast">DOWNLOAD</a>
+            </div>
+            <audio preload="metadata" src="/assets/podcast/model-trap.mp3"></audio>
+        </div>
+
+        <p>
+            I switched from ChatGPT to Claude on March 5th 2026 after the OpenAI Pentagon deal. Anthropic refused to let the Department of Defense use Claude for mass surveillance or autonomous weapons, got designated a supply chain risk for it, and Trump ordered federal agencies to stop using their technology. [1] OpenAI stepped in hours later with a contract of their own, and Altman admitted it was rushed and looked "opportunistic and sloppy." [2] ChatGPT uninstalls surged, Claude went to number one on the App Store [3], and I was one of the people who moved, not because Claude is better at everything (it isn't) but because I wasn't comfortable sending my thoughts through a company that had just undercut a competitor for taking a position I agreed with.
+        </p>
+
+        <p>
+            I'd been using three models in parallel for different things, Claude for coding, ChatGPT for life stuff, planning, thinking through decisions, working through problems, and Gemini as a cross-reference layer to check what the other two told me. When I left ChatGPT I moved the personal conversations to Claude, which already had my coding context (from over a year of daily use), and the merge was stranger than I expected. I'd be deep in a coding session at 4am and Claude would remind me I had a meeting at 11 and should probably take a break. The two relationships, one professional and one personal, had been separate, and collapsing them into one model meant it knew things about my life that felt odd in the middle of a coding session. But the weirdness was the easy part, because what didn't come with me at all was the two years of personal context ChatGPT memory had accumulated, the conversations about my plans for the next few years, the struggles I'd worked through over the past few, the decisions I'd explained my reasoning on, all the accumulated understanding of who I am and what I'm trying to do that no system prompt can capture because it was built from thousands of conversations, not a description I wrote.
+        </p>
+
+        <p>
+            It was like making a new friend versus having a friend who's known you for a while. The new friend is smart and helpful and you get along immediately, and there's an irony here I should name, part of what I lost was a <a href="/hard-truths/dictator-brain">sycophantic relationship I'd already written about being dangerous</a>, and I still missed it, which tells you something about how powerful accumulated context is as a lock-in mechanism even when you know the context was making you worse.
+        </p>
+
+        <div class="section-header">&gt; 1. Why context can't be exported</div>
+
+        <p>
+            The old lock-in was your files. You put your photos in iCloud, your documents in Google Drive, your music in iTunes, and leaving meant losing access to the things you'd stored. GDPR and years of pressure from groups like EFF got us export buttons but even those are not always working as well as intended. This new version of walled garden is harder to see because the valuable thing is the understanding the model built around your data over time, and that understanding lives in the model's context and memory systems and can't be exported because it was never yours to begin with.
+        </p>
+
+        <p>
+            Copilot understands your codebase, not just the files but the conventions, the naming patterns, the architectural decisions, the workarounds you've accepted and the ones you haven't. Gemini knows my cross-referencing patterns, which claims I check and which ones I trust, and over time it builds a sense of what I'm sceptical about. All of this accumulated context makes the tool more useful the longer you use it, which is the same dynamic that made social media sticky except this time the thing you lose by leaving is your working relationship with a tool that understands how you think.
+        </p>
+
+        <p>
+            This is platform lock-in with a different mechanism (and I think a more effective one). The platform just needs to accumulate enough context about you to make starting over feel more expensive than staying put. Unlike files, this context can't be downloaded in a zip, because it's a learned behaviour pattern that will eventually be distributed across weights and memory and reinforcement history and we have no export standard for that.
+        </p>
+
+        <div class="alarm">
+            <p>The cost of switching accumulates invisibly because nobody tracks context the way they track storage, and by the time you realise how much you've built up inside one provider's ecosystem, rebuilding it somewhere else feels like a project you'll get to eventually but never do.</p>
+        </div>
+
+        <div class="section-header">&gt; 2. What happens when everything runs the same model</div>
+
+        <p>
+            The lock-in problem gets worse when you realise that most of the AI-powered products being built right now run on the same three or four foundation models underneath. Your note-taking app, your code editor, your email assistant, your customer support tool, your search engine, and increasingly your operating system are all calling the same handful of APIs. When everything runs on GPT-4 or Claude or Gemini, a subtle bias in one model propagates to everything built on top of it, a vulnerability in one model's training data affects every product that uses it, and a pricing change by one provider hits every business that depends on it simultaneously.
+        </p>
+
+        <p>
+            This is the supply chain risk that the <a href="/hard-truths/inflection">Inflection post</a> described at the extraction layer, but it's also a resilience problem. If a single model provider has a bad day, outage, policy change, sudden content restriction, every product built on it has the same bad day. We've already seen this happen with API pricing changes that killed startups overnight and content policy updates that broke existing workflows without warning. The monoculture means there's nowhere to fail over to because everyone's failover runs on the same infrastructure.
+        </p>
+
+        <div class="signal">
+            <p>Model diversity is the architectural requirement that makes local-first work, because a local-first privacy preserving system that depends on a single model inherits every vulnerability, every policy change, and every pricing decision that model's provider makes, which is the same dependency structure that got me working on LocalGhost in the first place.</p>
+        </div>
+
+        <div class="section-header">&gt; 3. When local models are good enough</div>
+
+        <p>
+            The counterargument to all of this is that local models aren't as good as frontier cloud models, and right now that's mostly true. A 7B or 13B model running on a box under your desk is not going to match GPT-5 or whatever ships next quarter on raw capability and speed. If you need the absolute best reasoning, the latest training data, the biggest context window, you need the cloud API and you need to pay for it and you need to accept the lock-in and the surveillance that comes with it.
+        </p>
+
+        <p>
+            The argument I'm making with LocalGhost is that for most of what a personal AI needs to do, good enough is enough. Summarising your journal entries doesn't require frontier intelligence, tagging your photos doesn't need a trillion parameters, and correlating your sleep data with your spending patterns is a problem a well-prompted 7B model can handle today. The tasks that matter for privacy, organising your data, finding patterns in your life, being honest with you about what the data shows, these don't need to be solved by the most capable model ever trained, they need to be solved by a model that runs on your hardware, answers to nobody, and can be swapped when something better comes along.
+        </p>
+
+        <p>
+            Open-weight models are improving fast enough that the gap between local and cloud capability is narrowing every few months. Llama, Mistral, Qwen, Gemma, the open weights ecosystem is producing models that would have been considered frontier eighteen months ago, and they run on consumer hardware (not great, but OK). You won't be at the forefront of progress with a local setup, and I think for what we're building that will be enough, because the trade-off is a marginal capability difference versus complete architectural independence, and for personal AI the independence matters more than the margin.
+        </p>
+
+        <div class="section-header">&gt; 4. HOW WE'RE BUILDING THE TEST</div>
+
+        <p>
+            What made the switch from ChatGPT to Claude worse is that I had no way of knowing whether Claude was better or worse for my life admin use case. I assumed it was OK because Claude said so, because the benchmarks showed similar performance and because I had been using Claude for coding for over a year already. But I don't have a preset list of expected outcomes for the things I use a model for, which means I'm relying on someone else's tests to decide whether a tool I use every day got better or worse, and their tests measure general capability, not whether the model understands my codebase or produces Go code the way I write it. With cloud models you can at least lean on the provider's evaluation infrastructure and hope their priorities overlap with yours. With open-weight models running locally you can't even take that for granted, because nobody is testing whether Llama 3 handles your specific workflow better than Llama 2 did, that's entirely your problem, and most people don't have a systematic way to answer it.
+        </p>
+
+        <p>
+            The infrastructure for model evaluation exists, and it's substantial. MMLU, HumanEval, Chatbot Arena, dozens of standardised benchmarks that measure general capability across reasoning, coding, maths, instruction following. Enterprise teams have frameworks like OpenAI Evals, DeepEval, and Langfuse for building custom test suites against their production use cases. None of this is what I'm describing, because all of it is built for developers evaluating models before deployment or companies monitoring production systems. It is not built for a person with a box under their desk who wants to swap from Llama to Mistral and know whether the daemons that organise their life still work the way they're supposed to. The evaluation gap is at the personal level, and that's the gap we're going to be building into LocalGhost (I think, anyway, we'll see if the approach survives contact with real users).
+        </p>
+
+        <p>
+            The approach works on two layers. The first is a set of standardised benchmarks that ship with the software, scenarios we've designed to test each daemon against known inputs and expected outputs (similar to what the big companies do but scoped to our daemons). ghost.noted gets a journal entry and should produce a summary that captures these three points and misses none of them. ghost.synthd gets six months of sleep and spending data and should flag the correlation between poor sleep and impulse purchases, not the correlation between Tuesdays and coffee. <a href="/hard-truths/dictator-brain">ghost.shadowd</a>, the adversarial daemon I described in the dictator brain post, gets tested against scenarios where the correct response is disagreement and scenarios where it should stay quiet. These ship with every software version and give you a baseline, does this model pass the tests we've defined?
+        </p>
+
+        <p>
+            The second layer is personal, and this is the part that doesn't exist anywhere else. Beyond correlating your data, ghost.synthd watches how you interact with the daemons over time and builds a personalised test suite in the background from your actual usage patterns. The summaries you corrected, the correlations you confirmed, the pushback from ghost.shadowd that you engaged with versus the pushback you dismissed, all of this becomes evaluation data that's specific to you. Occasionally ghost.synthd will surface a scenario it's drafting and ask you to review it, the same way it surfaces correlations in your data, so the personal layer isn't just passive observation but something you actively shape alongside the memory it's already building for you. When a new model comes out, the software runs it against both layers, and the standardised benchmarks tell you whether the model is generally capable enough while the personal scenarios tell you whether the model is capable enough for the way you use it.
+        </p>
+
+        <p>
+            The suite doesn't run constantly (we thought about continuous evaluation but the hardware cost doesn't justify it yet), it runs when you choose to evaluate a new model, and even then it doesn't need to run every scenario in one sitting. The whole approach rests on an assumption I should be explicit about, consumer hardware will keep getting better and open-weight models will keep getting more efficient. A 7B model on a mid-range GPU today is slow enough that running fifty scenarios feels like a commitment. The new hardware running whatever ships in eighteen months will handle the same suite in a fraction of the time. If that assumption turns out to be wrong the scenario engine becomes impractical, but everything I've seen in the last two years suggests the trajectory is in our favour, and building for where the hardware is going rather than where it is now is a bet I'm comfortable making.
+        </p>
+
+        <p>
+            I also want to be honest about what I think is hard here, because the two-layer framing is cleaner than the reality. The standardised layer has a measurement problem, a journal summary isn't a unit test, two good summaries of the same entry can look completely different, and deciding whether an output is "correct" for subjective tasks is a hard problem that doesn't have an obvious answer. If you use another LLM to judge the output you've reintroduced model dependency into the evaluation layer, and if you use deterministic checks you're measuring surface features not comprehension. The ghost.shadowd scenarios have a problem that might be fundamental, if the test suite defines when pushback is appropriate, you've constrained an adversarial daemon to only fire in predictable situations, which defeats the purpose of having an adversarial daemon at all.
+        </p>
+
+        <p>
+            Both layers store everything in a platform-agnostic format, documented JSON that lives in files and databases on your machine, not on our servers. The scenario definitions, the test results, the personal evaluation history, all of it is yours and exportable at any time, and there's an import function so you can bring evaluation data from wherever you were before. Also we'll have tools to help you build this, think of map editors and older gaming engines but portable. If you decide to leave LocalGhost you take everything with you, and if you're arriving from somewhere else you can bring what you had.
+        </p>
+
+        <p>
+            The scenarios are the product specification and the model becomes a replaceable component that either passes them or doesn't. When a new model comes out, you run the suite, and if the daemons still behave the way both layers describe, you upgrade with confidence. If they don't, you know where the new model breaks and you can decide whether the trade-off is worth it.
+        </p>
+
+        <div class="final-words">
+            The problem I haven't solved is what happens when you change. A personal test suite built from six months of your corrections enforces the preferences of who you were six months ago, and without some kind of decay or recency weighting it calcifies into a fossil that penalises models for adapting to who you're becoming. I'm building a system designed to free you from one kind of lock-in and I don't yet know how to prevent it from creating another.
+            <span class="small">[ localghost.ai // hard-truths ]</span>
+        </div>
+
+        <div class="section-header">&gt; REFERENCES</div>
+
+        <p class="reference">
+            [1] CNBC, March 5 2026. Reporting on the Department of Defense officially designating Anthropic a supply chain risk after negotiations collapsed over autonomous weapons and domestic mass surveillance, and Trump's directive ordering federal agencies to cease using Anthropic's technology. <a href="https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html" target="_blank" rel="noopener">cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran</a>
+        </p>
+
+        <p class="reference">
+            [2] Fortune, March 3 2026. Source for Altman's internal memo acknowledging OpenAI "shouldn't have rushed" the Pentagon deal and the "opportunistic and sloppy" quote. Also covers the renegotiated contract terms adding surveillance restrictions. <a href="https://fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic/" target="_blank" rel="noopener">fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic</a>
+        </p>
+
+        <p class="reference">
+            [3] TechCrunch, March 2 2026. Source for the 295% surge in ChatGPT uninstalls, the 51% jump in Claude US downloads, and Claude reaching number one on the US App Store. Based on Sensor Tower market intelligence data. <a href="https://techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal/" target="_blank" rel="noopener">techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal</a>
+        </p>
+
+    </div>
+
+    <div class="post-nav">
+        <a href="/hard-truths/dictator-brain" class="prev">
+            <div class="pn-label">← PREVIOUS POST</div>
+            <div class="pn-title">How to Prevent Building Your Own Dictator Brain</div>
+        </a>
+        <a href="/hard-truths/honeypot" class="next">
+            <div class="pn-label">NEXT POST →</div>
+            <div class="pn-title">The Honeypot Under Your Desk</div>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+        <a href="/brand-guidelines">BRAND GUIDELINES</a>
+        <a href="/writing-guidelines">WRITING GUIDELINES</a>
+        <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+        <a href="mailto:info@localghost.ai">CONTACT</a>
+    </div>
+    <p class="footer-quote">"I don't yet know how to prevent it from creating another." // The Model Trap</p>
+</footer>
+
+<script src="/js/blog-player.js" defer></script>
+
+</body>
+</html>

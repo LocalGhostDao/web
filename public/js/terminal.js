@@ -18,7 +18,7 @@
         { text: 'CONNECTING...', delay: 0, type: 'normal' },
         { text: '1993 WAS A WARNING.', delay: 800, type: 'link', href: '/cypherpunk' },
         { text: `${new Date().getFullYear()} IS THE REALITY.`, delay: 600, type: 'link', href: '/manifesto' },
-        { text: '2026 IS THE DEADLINE.', delay: 600, type: 'link', href: '/inflection' },
+        { text: `${new Date().getFullYear() + 1} IS THE DEADLINE.`, delay: 600, type: 'link', href: '/hard-truths/inflection' },
         { text: '', delay: 400, type: 'empty' },
         { text: 'WE CANNOT FIX THE INTERNET.', delay: 600, type: 'warning' },
         { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', delay: 800, type: 'normal' },
@@ -96,7 +96,6 @@
             return;
         }
 
-        // Show skip hint on first character
         if (terminalState.currentLineIndex === 0 && terminalState.currentCharIndex === 0) {
             showSkipHint();
         }
@@ -155,7 +154,6 @@
         terminalState.introComplete = true;
         elements.inputLine.style.display = 'flex';
         elements.terminalInput.focus({ preventScroll: true });
-        // Remove skip hint if present
         const skipHint = document.getElementById('skipHint');
         if (skipHint) skipHint.remove();
     }
@@ -163,18 +161,15 @@
     function skipIntro() {
         if (terminalState.introComplete) return;
         
-        // Stop any pending typing
         if (terminalState.typingTimeout) {
             clearTimeout(terminalState.typingTimeout);
             terminalState.typingTimeout = null;
         }
         removeCursor();
         
-        // Clear current output and show all lines immediately
         elements.terminalOutput.innerHTML = '';
         restoreIntroLines();
         
-        // Complete the intro
         finishIntro();
     }
 
@@ -183,7 +178,6 @@
         hint.id = 'skipHint';
         hint.className = 'skip-hint';
         
-        // Check if mobile/touch device
         const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         hint.innerHTML = isMobile 
             ? '<span class="skip-key">TAP</span> SKIP'
@@ -212,7 +206,7 @@
             { text: 'CONNECTING...', type: 'normal' },
             { text: '1993 WAS A WARNING.', type: 'link', href: '/cypherpunk' },
             { text: `${new Date().getFullYear()} IS THE REALITY.`, type: 'link', href: '/manifesto' },
-            { text: '2026 IS THE DEADLINE.', type: 'link', href: '/inflection' },
+            { text: `${new Date().getFullYear() +1 } IS THE DEADLINE.`, type: 'link', href: '/hard-truths/inflection' },
             { text: '', type: 'empty' },
             { text: 'WE CANNOT FIX THE INTERNET.', type: 'warning' },
             { text: 'BUT WE CAN BUILD A ROOM WHERE IT CANNOT SEE YOU.', type: 'normal' },
@@ -278,7 +272,7 @@
             case 'why now':
                 addOutputLine('LOADING INFLECTION...', 'success');
                 setTimeout(() => {
-                    window.location.href = '/inflection';
+                    window.location.href = '/hard-truths/inflection';
                 }, 500);
                 break;
 
@@ -315,7 +309,6 @@
             case 'export':
             case 'reclaim':
             case 'volfied':
-                // Check if mobile - reclaim requires keyboard
                 const isMobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
                 if (isMobileDevice) {
                     addOutputLine('RECLAIM.EXE requires keyboard controls.', 'warning');
@@ -332,7 +325,6 @@
             case 'flee':
             case 'temple':
             case 'dino':
-                // Check if mobile - escape requires keyboard
                 const isMobileForEscape = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth <= 768;
                 if (isMobileForEscape) {
                     addOutputLine('ESCAPE.EXE requires keyboard controls.', 'warning');
@@ -598,14 +590,12 @@
         const msg = escapeState.messages[escapeState.currentMessage];
         ctx.textAlign = 'center';
         
-        // Position text at top of screen, away from snake
         const textY = 80;
         
         if (escapeState.phase === 'exploding' || escapeState.phase === 'done') {
             ctx.font = 'bold 28px JetBrains Mono, monospace';
             const glitchOffset = escapeState.phase === 'done' ? 0 : (Math.random() - 0.5) * 15;
             
-            // Dark background for text readability
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.fillRect(0, textY - 35, canvas.width, 50);
             
@@ -619,7 +609,6 @@
             ctx.shadowBlur = 0;
             
             if (escapeState.frame % 40 < 25) {
-                // Bottom text with background
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                 ctx.fillRect(0, canvas.height - 100, canvas.width, 60);
                 
@@ -633,7 +622,6 @@
                 ctx.fillText('NOW DO IT FOR REAL: LOCALGHOST.AI', centerX, canvas.height - 45);
             }
         } else {
-            // Dark background for text readability
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.fillRect(0, textY - 30, canvas.width, 45);
             
@@ -975,8 +963,8 @@
         const event = {
             title: 'Check LocalGhost.ai',
             description: 'See if the Sovereign Box has launched. https://localghost.ai',
-            start: '20250501T090000',
-            end: '20250501T093000'
+            start: '20270501T090000',
+            end: '20270501T093000'
         };
 
         const icsContent = [
@@ -1022,9 +1010,7 @@
     // ===========================================
     
     function setupEventListeners() {
-        // Terminal input
         elements.terminalInput.addEventListener('keydown', (e) => {
-            // Ignore if game modal is open
             if (elements.gameModal && elements.gameModal.classList.contains('active')) return;
             
             if (e.key === 'Enter') {
@@ -1036,7 +1022,6 @@
         });
 
         elements.terminalInput.addEventListener('input', () => {
-            // Ignore if game modal is open
             if (elements.gameModal && elements.gameModal.classList.contains('active')) return;
             
             elements.inputMirror.textContent = elements.terminalInput.value;
@@ -1064,9 +1049,8 @@
             }
         });
 
-        // Modal overlay clicks (excluding game modal - handled by TheShadow)
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            if (overlay.id === 'gameModal') return; // TheShadow handles this
+            if (overlay.id === 'gameModal') return;
             
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
@@ -1076,20 +1060,16 @@
             });
         });
 
-        // Escape key for modals and intro skip
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                // Skip intro if still typing
                 if (!terminalState.introComplete) {
                     skipIntro();
                     return;
                 }
-                // Close modals
                 closeAllModals();
             }
         });
 
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1103,7 +1083,6 @@
             });
         });
 
-        // Window resize for matrix canvas
         window.addEventListener('resize', () => {
             if (elements.matrixCanvas.classList.contains('active')) {
                 elements.matrixCanvas.width = window.innerWidth;
@@ -1111,7 +1090,6 @@
             }
         });
 
-        // Konami code easter egg
         let konamiCode = [];
         const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 
@@ -1163,7 +1141,6 @@
         addOutputLine
     };
 
-    // Start when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {

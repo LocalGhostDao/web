@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#111111"/>
+
+  <!-- Grid lines subtle -->
+  <line x1="0" y1="1" x2="1200" y2="1" stroke="#222222" stroke-width="1"/>
+  <line x1="0" y1="629" x2="1200" y2="629" stroke="#333333" stroke-width="1"/>
+  <line x1="60" y1="0" x2="60" y2="630" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="1140" y1="0" x2="1140" y2="630" stroke="#1a1a1a" stroke-width="1"/>
+
+  <!-- Top label -->
+  <text x="60" y="72" font-family="monospace" font-size="18" fill="#444444" letter-spacing="3">LOCALGHOST.AI // HARD_TRUTHS // POST_04 // MAR 2026</text>
+
+  <!-- Red accent bar -->
+  <rect x="60" y="100" width="4" height="120" fill="#cc3333"/>
+
+  <!-- Main headline -->
+  <text x="84" y="162" font-family="monospace" font-size="62" font-weight="bold" fill="#eeeeee" letter-spacing="-1">The Dream Is</text>
+  <text x="84" y="234" font-family="monospace" font-size="62" font-weight="bold" fill="#eeeeee" letter-spacing="-1">Crumbling.</text>
+
+  <!-- Subline -->
+  <text x="84" y="316" font-family="monospace" font-size="48" fill="#cc3333" letter-spacing="-1">Time to Get Scrappy.</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="370" x2="700" y2="370" stroke="#333333" stroke-width="1"/>
+
+  <!-- Pull quote -->
+  <text x="60" y="416" font-family="monospace" font-size="20" fill="#666666" letter-spacing="1">We got so good at making risk invisible</text>
+  <text x="60" y="446" font-family="monospace" font-size="20" fill="#666666" letter-spacing="1">that we forgot how to carry it.</text>
+
+  <!-- Author -->
+  <text x="60" y="530" font-family="monospace" font-size="18" fill="#444444" letter-spacing="2">Vlad Cealicu</text>
+
+  <!-- Bottom right domain -->
+  <text x="1140" y="530" font-family="monospace" font-size="18" fill="#333333" letter-spacing="2" text-anchor="end">localghost.ai</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="#1a1a1a"/>
+  <text x="60" y="616" font-family="monospace" font-size="14" fill="#444444" letter-spacing="3">THE ONLY CLOUD IS YOU</text>
+  <text x="1140" y="616" font-family="monospace" font-size="14" fill="#444444" letter-spacing="3" text-anchor="end">HARD TRUTHS</text>
+</svg>

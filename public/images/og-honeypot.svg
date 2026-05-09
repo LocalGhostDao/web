@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+
+  <!-- Subtle grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#161616" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Top bar -->
+  <text x="60" y="62" font-family="DejaVu Sans Mono, monospace" font-size="20" fill="#00d9ff" font-weight="bold">&gt; LOCALGHOST.AI</text>
+  <text x="1140" y="62" font-family="DejaVu Sans Mono, monospace" font-size="18" fill="#555555" text-anchor="end">HARD_TRUTHS // POST_07 // APR 2026</text>
+
+  <!-- Top divider -->
+  <line x1="60" y1="85" x2="1140" y2="85" stroke="#222222" stroke-width="1"/>
+
+  <!-- Main title -->
+  <text x="60" y="215" font-family="DejaVu Sans, sans-serif" font-size="64" font-weight="bold" fill="#f0f0f0" letter-spacing="-1">THE HONEYPOT</text>
+  <text x="60" y="285" font-family="DejaVu Sans, sans-serif" font-size="64" font-weight="bold" fill="#f0f0f0" letter-spacing="-1">UNDER YOUR DESK</text>
+
+  <!-- Red accent line -->
+  <line x1="60" y1="320" x2="180" y2="320" stroke="#ff4444" stroke-width="4"/>
+
+  <!-- Subtitle / quote -->
+  <text x="60" y="380" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a0a0a0" font-style="italic">We are not building a vault.</text>
+  <text x="60" y="416" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a0a0a0" font-style="italic">We are building a room with a false wall.</text>
+
+  <!-- Right side: stylized PIN/volume diagram -->
+  <g transform="translate(890, 145)">
+    <!-- Label -->
+    <text x="0" y="0" font-family="DejaVu Sans Mono, monospace" font-size="13" fill="#555555">// PIN → VOLUME</text>
+
+    <!-- Box 1: real -->
+    <g transform="translate(0, 20)">
+      <rect x="0" y="0" width="250" height="44" fill="#0f0f0f" stroke="#00d9ff" stroke-width="2"/>
+      <text x="16" y="29" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#00d9ff">2525</text>
+      <text x="92" y="29" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#888888">→ real volume</text>
+    </g>
+
+    <!-- Box 2: decoy -->
+    <g transform="translate(0, 76)">
+      <rect x="0" y="0" width="250" height="44" fill="#0f0f0f" stroke="#666666" stroke-width="2"/>
+      <text x="16" y="29" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#888888">2524</text>
+      <text x="92" y="29" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#666666">→ decoy</text>
+    </g>
+
+    <!-- Box 3: decoy -->
+    <g transform="translate(0, 132)">
+      <rect x="0" y="0" width="250" height="44" fill="#0f0f0f" stroke="#666666" stroke-width="2"/>
+      <text x="16" y="29" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#888888">2523</text>
+      <text x="92" y="29" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#666666">→ decoy</text>
+    </g>
+
+    <!-- Box 4: purge -->
+    <g transform="translate(0, 188)">
+      <rect x="0" y="0" width="250" height="44" fill="#0f0f0f" stroke="#ff4444" stroke-width="2"/>
+      <text x="16" y="29" font-family="DejaVu Sans Mono, monospace" font-size="17" fill="#ff4444">1525</text>
+      <text x="92" y="29" font-family="DejaVu Sans Mono, monospace" font-size="14" fill="#aa3333">→ the purge</text>
+    </g>
+
+    <!-- Label below -->
+    <text x="125" y="262" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#444444">no metadata. configuration</text>
+    <text x="125" y="278" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="11" fill="#444444">lives inside the volumes.</text>
+  </g>
+
+  <!-- Bottom divider -->
+  <line x1="60" y1="540" x2="1140" y2="540" stroke="#222222" stroke-width="1"/>
+
+  <!-- Bottom bar -->
+  <text x="60" y="585" font-family="DejaVu Sans Mono, monospace" font-size="16" fill="#555555">ghost.secd // duress mode // the purge</text>
+  <text x="1140" y="585" font-family="DejaVu Sans Mono, monospace" font-size="16" fill="#555555" text-anchor="end">localghost.ai/hard-truths/honeypot</text>
+</svg>

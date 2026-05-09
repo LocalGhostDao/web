@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Writing Guidelines | LocalGhost.ai</title>
+    <meta name="title" content="Writing Guidelines | LocalGhost.ai">
+    <meta name="description" content="How we write. The sentence-level rules behind the LocalGhost voice.">
+    <meta name="author" content="LocalGhost">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.localghost.ai/writing-guidelines">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.localghost.ai/writing-guidelines">
+    <meta property="og:title" content="Writing Guidelines | LocalGhost.ai">
+    <meta property="og:description" content="How we write. The sentence-level rules behind the LocalGhost voice.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-writing-guidelines.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.localghost.ai/writing-guidelines">
+    <meta name="twitter:title" content="Writing Guidelines | LocalGhost.ai">
+    <meta name="twitter:description" content="How we write. The sentence-level rules behind the LocalGhost voice.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-writing-guidelines.png">
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <meta name="msapplication-TileColor" content="#111111">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Writing Guidelines",
+        "description": "How we write. The sentence-level rules behind the LocalGhost voice.",
+        "url": "https://www.localghost.ai/writing-guidelines",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "logo": { "@type": "ImageObject", "url": "https://www.localghost.ai/images/logo.png" }
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/brand-guidelines.css">
+
+    <style>
+        .banned-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .banned-item {
+            background: var(--void);
+            padding: 0.9rem 1.2rem;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--warning);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .banned-item::before {
+            content: '✗';
+            position: absolute;
+            left: 0.75rem;
+            color: var(--warning);
+            opacity: 0.5;
+        }
+
+        .checklist {
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .checklist-item:last-child { border-bottom: none; }
+
+        .checklist-item::before {
+            content: '[ ]';
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .kill-item {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--warning);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .kill-item h3 {
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .kill-item p {
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .kill-item p:last-child { margin-bottom: 0; }
+
+        .nuance-item {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--terminal);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .nuance-item h3 {
+            color: var(--terminal);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .nuance-item p {
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .nuance-item p:last-child { margin-bottom: 0; }
+
+        .rule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin: 1rem 0 1.5rem;
+        }
+
+        .rule-cell {
+            background: var(--void);
+            padding: 1.25rem;
+        }
+
+        .rule-cell .rule-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.6rem;
+        }
+
+        .rule-cell .rule-label.do { color: var(--terminal); }
+        .rule-cell .rule-label.dont { color: var(--warning); }
+
+        .rule-cell .rule-text {
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .box-demo {
+            margin: 1.5rem 0;
+        }
+
+        .box-demo-alarm {
+            border: 1px solid rgba(255, 138, 138, 0.4);
+            border-left: 3px solid var(--warning);
+            background: rgba(255, 138, 138, 0.04);
+            padding: 1.25rem 1.5rem;
+            margin-bottom: -1px;
+        }
+
+        .box-demo-alarm::before {
+            content: '> ALARM';
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--warning);
+            letter-spacing: 0.25em;
+            margin-bottom: 0.6rem;
+            opacity: 0.8;
+        }
+
+        .box-demo-signal {
+            border: 1px solid rgba(51, 255, 0, 0.25);
+            border-left: 3px solid var(--terminal);
+            background: rgba(51, 255, 0, 0.02);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .box-demo-signal::before {
+            content: '> SIGNAL';
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--terminal);
+            letter-spacing: 0.25em;
+            margin-bottom: 0.6rem;
+            text-shadow: 0 0 4px var(--terminal-dim);
+        }
+
+        .box-demo p {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .ref-subrules {
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .ref-subrule {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .ref-subrule:last-child { border-bottom: none; }
+
+        .ref-subrule .ref-num {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--terminal);
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .writing-section {
+            margin-bottom: 4rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .writing-section:last-of-type { border-bottom: none; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">
+        <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+    </div>
+    <div class="nav-links">
+        <a href="/manifesto">MANIFESTO</a>
+        <a href="/hard-truths">HARD TRUTHS</a>
+        <a href="/build">BUILD</a>
+        <a href="/directory" class="hide-mobile">DIRECTORY</a>
+        <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+    </div>
+</nav>
+
+<main>
+    <div class="page-header">
+        <div class="section-label">&gt; WRITING_SYSTEM</div>
+        <h1>Writing Guidelines</h1>
+        <p class="subtitle">How we write. One voice across everything, technical posts, Hard Truths, manifesto, social. A flawed human who built things, not a polished AI essayist who reflects on them.</p>
+    </div>
+
+    <div class="toc">
+        <div class="toc-title">&gt; CONTENTS</div>
+        <ul class="toc-list">
+            <li><a href="#voice">The Voice</a></li>
+            <li><a href="#rules">Core Rules</a></li>
+            <li><a href="#allowed">Allowed With Care</a></li>
+            <li><a href="#kill">What to Kill</a></li>
+            <li><a href="#banned">Banned</a></li>
+            <li><a href="#structure">Structure</a></li>
+            <li><a href="#boxes">The Boxes</a></li>
+            <li><a href="#format">Format Rules</a></li>
+            <li><a href="#references">References</a></li>
+            <li><a href="#checklist">Checklist</a></li>
+        </ul>
+    </div>
+
+     <div class="logo-download-box" style="margin-top: 3rem;">
+        <div class="logo-download-info">
+            <h3 class="box-title">&gt; WRITING GUIDELINES // MARKDOWN</h3>
+            <p>Copy the full writing guidelines as markdown to paste into a doc, repo, or AI prompt.</p>
+        </div>
+        <button class="logo-download-btn" onclick="copyMarkdown(this)">[ COPY AS MD ]</button>
+    </div>
+
+    <!-- THE VOICE -->
+    <section id="voice" class="writing-section">
+        <div class="section-header">&gt; SECTION_01</div>
+        <h2>The Voice</h2>
+
+        <p>Someone who has built things and is being honest about what they observed rather than what sounds good. Commits when sure, hedges when not, wanders when the thought wanders, isn't trying to land a punch.</p>
+
+        <div class="principles-box">
+            <h3 class="box-title">&gt; THE FOUR THINGS</h3>
+            <div class="principle-item">
+                <span class="principle-icon">[1]</span>
+                <div class="principle-text"><strong>Curious.</strong> Wants to understand the actual mechanism, not the surface story.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[2]</span>
+                <div class="principle-text"><strong>Pragmatic.</strong> Picks the boring solution that ships and works, not the elegant one that doesn't.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[3]</span>
+                <div class="principle-text"><strong>A bit self-deprecating.</strong> Honest about misses without performing humility.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[4]</span>
+                <div class="principle-text"><strong>Direct.</strong> Once the situation is set up, get to the point.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CORE RULES -->
+    <section id="rules" class="writing-section">
+        <div class="section-header">&gt; SECTION_02</div>
+        <h2>Core Rules</h2>
+
+        <h3>Get to the point. No throat-clearing.</h3>
+        <p>"In today's evolving landscape" is dead weight. So is "in this post we'll examine three patterns". Both add words without signal. Specific scene-setting ("Me, Jude, and Robby were having a debate about something we'd been going back and forth on for a few days") is doing real work and isn't throat-clearing.</p>
+        <div class="rule-grid">
+            <div class="rule-cell">
+                <div class="rule-label dont">[✗] BAD</div>
+                <div class="rule-text">"In today's rapidly evolving tech landscape, it's worth considering how the industry has changed."</div>
+            </div>
+            <div class="rule-cell">
+                <div class="rule-label do">[✓] GOOD</div>
+                <div class="rule-text">"I was watching three companies simultaneously discover they had no one left who knew how anything worked."</div>
+            </div>
+        </div>
+
+        <h3>Hedge when uncertain. Commit when sure.</h3>
+        <p>Most decisions are uncertain so hedges are common ("I think", "we'll try", "for now", "I'm not sure yet"). When you actually know something, say it without hedging. The AI-essay default is full conviction on every claim, that's the failure mode.</p>
+        <div class="rule-grid">
+            <div class="rule-cell">
+                <div class="rule-label dont">[✗] BAD</div>
+                <div class="rule-text">"Our system handles all edge cases reliably and scales to any load."</div>
+            </div>
+            <div class="rule-cell">
+                <div class="rule-label do">[✓] GOOD</div>
+                <div class="rule-text">"It handles the cases we know about, and it tests cleanly to a few hundred thousand updates per second. We'll find out about the rest the usual way."</div>
+            </div>
+        </div>
+
+        <h3>Acknowledge work in progress.</h3>
+        <p>Say it's not done. Say what you'll iterate on. Say what you got wrong last time. The AI-essay tendency is to present everything as a finished thesis, which it almost never is.</p>
+
+        <h3>Close by leaving space, not by landing.</h3>
+        <p>Don't close on a conclusion and call it done. Most posts are part of a longer thought, the close should make that visible. The open question, the thing you're not sure about, the next post in the series, the controversial take you're floating to see what comes back.</p>
+        <p>Banned at the end, the constructed mic drop. Also banned, the soft "hope this is useful". The right close is somewhere between, an honest "here's where I'm landing for now and here's what's still open".</p>
+        <div class="rule-grid">
+            <div class="rule-cell">
+                <div class="rule-label dont">[✗] BAD (mic drop)</div>
+                <div class="rule-text">"The architecture is adversarial because the alternative is a system that gets better at telling you what you want to hear the longer you use it."</div>
+            </div>
+            <div class="rule-cell">
+                <div class="rule-label dont">[✗] BAD (soft)</div>
+                <div class="rule-text">"Hope this is useful, would love to hear what you think."</div>
+            </div>
+        </div>
+        <div class="rule-grid">
+            <div class="rule-cell">
+                <div class="rule-label do">[✓] GOOD (open question)</div>
+                <div class="rule-text">"Whether running a model with different priors is enough is the open question. I think it is. We'll know in a year."</div>
+            </div>
+            <div class="rule-cell">
+                <div class="rule-label do">[✓] GOOD (more to do)</div>
+                <div class="rule-text">"There's at least three more things to figure out before this is doing what I want. Two of them I have approaches for, one I don't yet."</div>
+            </div>
+        </div>
+
+        <h3>Use parentheticals freely.</h3>
+        <p>Short factual or wry asides in parens are how the prose thinks. Don't strip them in editing. They're cleaner than restructuring the sentence to fit the detail in.</p>
+
+        <h3>Be specific about when, where, and who.</h3>
+        <p>"At 11pm on Tuesday" beats "later that day". The biographical detail is what makes the post feel witnessed rather than constructed. Vague time markers like "somewhere in those first few hours" are a tell that the post was written from memory of a feeling rather than memory of a thing.</p>
+
+        <h3>Show the reasoning, including what you rejected.</h3>
+        <p>"We chose X" tells the reader nothing. "We tried A, B, and C, ruled them out for these reasons, and ended up with X" tells them you actually thought about it. The rejected paths often carry more signal than the chosen one.</p>
+
+        <h3>Vary sentence length but let the long ones run.</h3>
+        <p>If a sentence needs to be long to follow the shape of the thought, let it be long. Wall-to-wall short sentences performs urgency. Wall-to-wall long sentences turns into mush.</p>
+
+        <h3>Be specific. Use numbers, names, details.</h3>
+        <p>"300 applications in an hour" beats "strong demand". "47ms p99 latency" beats "fast". The specific detail is what makes an observation feel real.</p>
+
+        <h3>Assume intelligence.</h3>
+        <p>The reader is technical, sceptical, and has been burned before. Treat them as a peer.</p>
+
+        <h3>Use dark humour when it fits.</h3>
+        <p>Gallows wit that acknowledges the absurdity of the status quo is on-brand.</p>
+
+        <h3>Admit your own role when you have one.</h3>
+        <p>If you're criticising a pattern you participated in, say so. If a clever decision backfired, say so.</p>
+    </section>
+
+    <!-- ALLOWED WITH CARE -->
+    <section id="allowed" class="writing-section">
+        <div class="section-header">&gt; SECTION_03</div>
+        <h2>Allowed With Care</h2>
+
+        <p>Two things that AI prose abuses but that genuinely belong in the voice when used right. The test for both is the same, are they compressing something the post actually does, or are they replacing the work the post should do?</p>
+
+        <div class="nuance-item">
+            <h3>Aphoristic claims that the post defends.</h3>
+            <p>An aphoristic punchy line is allowed when it compresses a real claim the post defends with evidence. Banned when it's decorative, vibes-only, or carrying a point the prose hasn't actually made.</p>
+            <p>One opening claim that the post backs up is fine, often it's the cleanest possible statement-box. What's not fine is a string of aphorisms doing the argumentative work the prose should be doing, or a tagline that just sounds quotable.</p>
+            <p>The test, if a sceptical reader asked "okay, prove it", does the rest of the post actually do that?</p>
+            <div class="rule-grid" style="margin: 0;">
+                <div class="rule-cell">
+                    <div class="rule-label do">[✓] GOOD (defended)</div>
+                    <div class="rule-text">"The longer your AI knows you, the less likely it is to tell you the truth." (Followed by two studies showing memory increases sycophancy.)</div>
+                </div>
+                <div class="rule-cell">
+                    <div class="rule-label dont">[✗] BAD (decorative)</div>
+                    <div class="rule-text">"The future of work is the death of work." (Followed by a post that talks about productivity tools and doesn't make a case for either claim in the line.)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nuance-item">
+            <h3>Metaphors that compress an explanation you've already made.</h3>
+            <p>A metaphor is allowed when it compresses an explanation you've already earned the right to make. Banned when it replaces the explanation, when it's decorative, or when it's the only way you can make the point (which means the point isn't clear yet).</p>
+            <p>One or two per post that genuinely carry weight, not four in the same paragraph because the paragraph is doing too much work.</p>
+            <div class="rule-grid" style="margin: 0;">
+                <div class="rule-cell">
+                    <div class="rule-label do">[✓] GOOD (compressing)</div>
+                    <div class="rule-text">After three paragraphs explaining how cloud AI memory accumulates without ever being deleted, "the data never leaves, it just gets renamed". The metaphor closes a loop the prose already opened.</div>
+                </div>
+                <div class="rule-cell">
+                    <div class="rule-label dont">[✗] BAD (replacing)</div>
+                    <div class="rule-text">"It's like a mirror that shows you what you want to see" used as the entire explanation, without the prose ever explaining the actual mechanism that produces the behaviour.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT TO KILL -->
+    <section id="kill" class="writing-section">
+        <div class="section-header">&gt; SECTION_04</div>
+        <h2>What to Kill on Sight</h2>
+
+        <div class="kill-item">
+            <h3>Em dashes. All of them.</h3>
+            <p>No em dashes anywhere. Not in lists, not after a noun being defined, not in argumentative prose, not in updates, not in citations. Use a comma, a period, a parenthetical, or restructure. Readers now pattern-match em dashes as generated text.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Colons.</h3>
+            <p>Don't use them. Restructure with a comma, a period, or a parenthetical.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Constructed mic-drop closers.</h3>
+            <p>An aphoristic verdict at the end of the post that's there to land the post like applause-line. Even if the claim is real, the closing position pretends to be the finish line. Closes leave space instead.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Decorative or undefended aphorisms.</h3>
+            <p>An aphoristic line that doesn't compress a real claim the post defends, or that does the argumentative work the prose should be doing. See "Allowed With Care" for the line a defensible aphoristic claim can play, this kill is for the rest.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Decorative metaphors.</h3>
+            <p>"Like a mirror" used in place of an explanation, "wearing a different hat", "the plot of every X", strings of metaphors stacked because the underlying point isn't clear. See "Allowed With Care" for when a metaphor earns its place.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>The rhetorical flip.</h3>
+            <p>"It's not X. It's Y." sounds decisive, it's a cliché. Say the thing directly.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>The cascade chain.</h3>
+            <p>Listing consequences as a chain of short sentences reads like bullet points in disguise.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Triads of near-synonyms.</h3>
+            <p>Three adjectives or phrases that mean roughly the same thing ("clear, precise, and exact", "fast, efficient, and scalable", "careful, measured, thoughtful"). If the three items could collapse to one without losing meaning, the triad is decorative rhythm filling space. Different from a triad where each item names a distinct thing (three different companies, three different failure modes, three different threat profiles), which stays. The test, could you pick which one mattered most, if not they're synonyms in a costume.</p>
+            <p>The version that fails hardest is three adjectives stacked before a noun ("a clean, simple, elegant design"). That's the AI tic at full volume. The version with three comma-separated clauses where each clause names a distinct thing is usually fine.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Polish words used for emphasis.</h3>
+            <p>"Actually", "obviously", "exactly", "structurally", "underlying". AI prose uses these to add weight to claims. Every "actually" in the draft is a candidate for deletion.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Copula avoidance.</h3>
+            <p>Default to "is" and "has" unless a specific verb genuinely adds meaning. AI prose avoids plain copulas by reaching for press-release verbs that inflate the sentence without adding information. "The system serves as a gateway" is "the system is a gateway" in costume. Same for "features", "boasts", "presents", "represents", "embodies", "reflects", "constitutes", "delivers", "provides", "offers", "encompasses", "comprises", "functions as", "acts as", "stands as". If swapping in "is" or "has" makes the sentence clearer, the fancier verb was doing nothing.</p>
+            <p>The exception is a verb that carries real motion or consequence. "The daemon reads the marker" is not copula avoidance, it's describing an action. "The architecture serves as the foundation" is.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Polished essayist transitions.</h3>
+            <p>"And the incentive structure makes it worse." / "Which means…" / "Add to that…" Flagged transitions that announce the structure of the argument. Just keep going.</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Pronoun drift.</h3>
+            <p>Long sentences are good. Pronouns three clauses away from the noun they refer to are not. Re-name the subject instead of leaning on "it" or "them" or "that".</p>
+        </div>
+
+        <div class="kill-item">
+            <h3>Padding.</h3>
+            <p>"Additionally, it's worth considering…" is always deletable. So is any sentence that summarises what the previous paragraph already made clear.</p>
+        </div>
+    </section>
+
+    <!-- BANNED PHRASES -->
+    <section id="banned" class="writing-section">
+        <div class="section-header">&gt; SECTION_05</div>
+        <h2>Banned</h2>
+
+        <div class="banned-list">
+            <div class="banned-item">Em dashes ( — )</div>
+            <div class="banned-item">Colons ( : )</div>
+            <div class="banned-item">Delve / Dive into / Unpack</div>
+            <div class="banned-item">Harness / Leverage / Utilize</div>
+            <div class="banned-item">Game-changer / Cutting-edge</div>
+            <div class="banned-item">State-of-the-art</div>
+            <div class="banned-item">"This isn't X. This is Y."</div>
+            <div class="banned-item">"It's worth noting that…"</div>
+            <div class="banned-item">"In today's [adjective] landscape…"</div>
+            <div class="banned-item">"The honest answer is…"</div>
+            <div class="banned-item">"Needless to say…"</div>
+            <div class="banned-item">"At the end of the day…"</div>
+            <div class="banned-item">Move the needle</div>
+            <div class="banned-item">Deep dive</div>
+            <div class="banned-item">Synergy / Paradigm</div>
+            <div class="banned-item">"Actually" as emphasis</div>
+            <div class="banned-item">"Obviously" as emphasis</div>
+            <div class="banned-item">"Exactly" as emphasis</div>
+            <div class="banned-item">"Underneath" / "Underlying"</div>
+            <div class="banned-item">Serves as / Features / Boasts</div>
+            <div class="banned-item">Represents / Embodies / Reflects</div>
+            <div class="banned-item">Constitutes / Delivers / Provides</div>
+            <div class="banned-item">Functions as / Acts as / Stands as</div>
+            <div class="banned-item">Encompasses / Comprises / Offers</div>
+            <div class="banned-item">Triads of near-synonyms</div>
+        </div>
+    </section>
+
+    <!-- STRUCTURE -->
+    <section id="structure" class="writing-section">
+        <div class="section-header">&gt; SECTION_06</div>
+        <h2>Structure</h2>
+
+        <h3>Opening</h3>
+        <p>Three options that work. Specific scene-setting ("Me, Jude, and Robby were having a debate"). Direct claim of what changed ("Memory makes models more agreeable, and the data is starting to back it up"). Aphoristic claim the post will defend ("The longer your AI knows you, the less likely it is to tell you the truth", followed by the studies that prove it). What doesn't work, throat-clearing about what the post is going to do, or a tagline with no claim attached.</p>
+
+        <h3>Body</h3>
+        <p>Wander. Follow the thought. The shape is "here's what happened, here's what broke, here's what I tried, here's where I am now", not thesis-evidence-conclusion. The argument lives in the walking through, not in a pre-arranged outline.</p>
+
+        <h3>Headings</h3>
+        <p>Plain and descriptive. "How does this work?", "Why this approach?", "Known limitations". Not aphoristic chapter labels ("The Compound", "The Way Out"), that's a LinkedIn carousel pattern.</p>
+
+        <h3>Ending</h3>
+        <p>Leave space, don't land. Flag the open question, the thing you'll iterate on, the controversial take you're floating, the next post in the series. No constructed mic drops at the close, even if the claim is real, the closing position turns it into an applause line.</p>
+    </section>
+
+    <!-- THE BOXES -->
+    <section id="boxes" class="writing-section">
+        <div class="section-header">&gt; SECTION_07</div>
+        <h2>The Boxes</h2>
+
+        <p>Three types, used sparingly. Boxes hold strong claims. Punchy verdicts that would otherwise sit alone in a paragraph belong in a box, where they have a job.</p>
+
+        <div class="box-demo">
+            <div class="box-demo-alarm">
+                <p>A strong opinion you'd defend, but might be wrong about.</p>
+            </div>
+            <div class="box-demo-signal">
+                <p>Something you're certain of. Use sparingly, if everything is a signal, nothing is.</p>
+            </div>
+        </div>
+
+        <div class="principles-box" style="margin-top: 2rem;">
+            <h3 class="box-title">&gt; USAGE RULES</h3>
+            <div class="principle-item">
+                <span class="principle-icon">[1]</span>
+                <div class="principle-text">Multiple alarm boxes per post is fine. Only one or two signal boxes, the signal carries weight.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[2]</span>
+                <div class="principle-text">The <strong>statement-box</strong> is the opening declaration. Used once, at the top. Should be a defensible claim that the post will back up. An aphoristic compressed claim is fine here, that's what the box is for. A vibes-only tagline that the post never returns to is not.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[3]</span>
+                <div class="principle-text">Boxes earn their place. If the prose before doesn't build to the box, the box doesn't land. A box that restates the paragraph above it is the paragraph wearing a costume.</div>
+            </div>
+            <div class="principle-item">
+                <span class="principle-icon">[4]</span>
+                <div class="principle-text">Boxes don't replace prose. Posts can ship with no boxes if the argument doesn't have those moments.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMAT RULES -->
+    <section id="format" class="writing-section">
+        <div class="section-header">&gt; SECTION_08</div>
+        <h2>Format Rules</h2>
+
+        <div class="logo-rules">
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">First person when you were actually there</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">Parentheticals freely</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">Hedge when uncertain, commit when sure</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">Contractions (we'll, won't, can't, it's). Don't make the prose stiffer than your speech.</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label dont">[✗] DON'T</div>
+                <div class="logo-rule-text">Bullet points in prose, if it's a list, make it a sentence (lists for service breakdowns and config are fine)</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label dont">[✗] DON'T</div>
+                <div class="logo-rule-text">Subheadings just to break up long text, only when sections are genuinely distinct</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label dont">[✗] DON'T</div>
+                <div class="logo-rule-text">Bold for emphasis unless it genuinely earns it</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label dont">[✗] DON'T</div>
+                <div class="logo-rule-text">Summarise at the end, leave space instead</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">Link cross-page references</div>
+            </div>
+            <div class="logo-rule">
+                <div class="logo-rule-label do">[✓] DO</div>
+                <div class="logo-rule-text">Durable time references ("published in March 2026" not "last week")</div>
+            </div>
+        </div>
+
+        <h3>The Test</h3>
+        <p>Read it back. If it sounds like an essay constructed after the fact, rewrite it. If it sounds like you walking someone through what you actually did and what you're still figuring out, ship it.</p>
+    </section>
+
+    <!-- REFERENCES -->
+    <section id="references" class="writing-section">
+        <div class="section-header">&gt; SECTION_09</div>
+        <h2>References</h2>
+
+        <p>Posts that make empirical or historical claims need references. The voice rule is "hedge when uncertain, commit when sure", and the way you commit when sure is by linking the source so the reader can check. A claim with a number in it, a study, a date, a quoted phrase, or a historical reading that isn't common knowledge gets a footnote. Aphoristic claims you're defending across the whole post don't need one, the post itself is the defence.</p>
+
+        <p>Format, footnote-style with a numbered marker in the prose ([1], [2], [3]) and a &gt; REFERENCES block at the bottom of the post. Each reference is a short paragraph, not a bare citation. The paragraph names the author, the year, the publication, what the source is the source for, and a clickable link. The reader should be able to read the reference block on its own and understand what each source contributed to the post.</p>
+
+        <p>What the reference block is for, three things at once. First, the obvious one, letting the sceptical reader check the claim. Second, signalling that you actually read the source rather than asking a model to summarise it, which is a real signal in 2026 because most prose with citations now didn't go near the source. Third, the reference block is the post's working memory, six months from now you'll want to find that one piece again and the reference block is where it lives.</p>
+
+        <p>What's banned in references, the same things that are banned in prose. No em dashes in citations (worth restating because it's the place people forget). No colons in citation paragraphs. Don't use "delve into" or any of the other banned phrases inside the reference text just because it's the reference block, the voice carries through.</p>
+
+        <p>What's allowed that isn't allowed elsewhere, slightly more structured prose. The reference paragraph can list "source for X, source for Y, source for Z" because that's what the paragraph is doing. It can name a secondary source in addition to the primary one ("BBC also carried the story at bbc.co.uk/news for readers who prefer that source"). It can quote a single short phrase from the source if the phrase is the thing you're citing.</p>
+
+        <h3>Subrules</h3>
+        <div class="ref-subrules">
+            <div class="ref-subrule">
+                <span class="ref-num">[1]</span>
+                <div>Footnote markers go in the prose at the end of the sentence the source supports, not at the beginning. [4] after the period, not before the claim.</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[2]</span>
+                <div>Each reference gets its own numbered entry. Don't bundle three sources into one footnote unless they're genuinely doing the same job (e.g. multiple news outlets covering the same event).</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[3]</span>
+                <div>If you're citing a study, name the lead author and year in the prose ("Jain et al., thirty-eight people, averaging about ninety queries each") not just in the footnote. The reader shouldn't have to scroll to know whose study you're describing.</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[4]</span>
+                <div>If you're citing a book, name the author in the prose. Same reason.</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[5]</span>
+                <div>Links go in the reference block, not in the prose. The prose carries the marker, the block carries the URL. Exception, when you're linking to one of your own posts as a cross-reference (the existing rule), that link goes inline.</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[6]</span>
+                <div>Durable references only. "A 2025 paper" not "a recent paper". "October 2025" not "last October". Same rule as the rest of the post.</div>
+            </div>
+            <div class="ref-subrule">
+                <span class="ref-num">[7]</span>
+                <div>If a source is doing a lot of work in the post, the reference paragraph can be longer to explain what each source argued and why you used the reading you did. If a source is doing one fact (a date, a number, a name), the reference paragraph can be one sentence.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section id="checklist" class="writing-section">
+        <div class="section-header">&gt; SECTION_10</div>
+        <h2>Checklist Before Publishing</h2>
+
+        <div class="checklist">
+            <div class="checklist-item">Zero em dashes anywhere</div>
+            <div class="checklist-item">Zero colons</div>
+            <div class="checklist-item">No throat-clearing in the opener</div>
+            <div class="checklist-item">If the opener is an aphoristic claim, does the post actually defend it with evidence?</div>
+            <div class="checklist-item">Every metaphor either compresses an explanation already made, or is cut</div>
+            <div class="checklist-item">No more than one or two metaphors in the whole post</div>
+            <div class="checklist-item">Closing leaves space, not a verdict, not a soft fade</div>
+            <div class="checklist-item">No constructed mic drop at the end (even if the claim is real)</div>
+            <div class="checklist-item">Uncertain claims hedged, certain claims stated flat</div>
+            <div class="checklist-item">Parentheticals used freely</div>
+            <div class="checklist-item">At least one "this is incomplete / I'm not sure yet" acknowledgment somewhere</div>
+            <div class="checklist-item">If there's a statement-box, it's a defensible claim the post backs up</div>
+            <div class="checklist-item">Every "actually" / "obviously" / "exactly" used for emphasis is deleted</div>
+            <div class="checklist-item">Every "serves as" / "features" / "boasts" / "represents" survives the "is" test, if "is" works the fancy verb goes</div>
+            <div class="checklist-item">Every triad survives the "which one mattered most" test, if you couldn't pick one they're synonyms</div>
+            <div class="checklist-item">At least one specific named detail (year, person, place, number)</div>
+            <div class="checklist-item">At least one decision grounded in the moment you made it</div>
+            <div class="checklist-item">Rejected approaches mentioned alongside the chosen one</div>
+            <div class="checklist-item">Own role admitted if you have one</div>
+            <div class="checklist-item">Long sentences re-name their subject instead of pronoun-drifting</div>
+            <div class="checklist-item">No idea appears twice on the page in different words</div>
+            <div class="checklist-item">Banned phrases check passes</div>
+            <div class="checklist-item">Cross-page references linked</div>
+            <div class="checklist-item">Every empirical or historical claim has a footnote, every footnote resolves to a real source you actually read</div>
+            <div class="checklist-item">Footnote markers come after the sentence they support, not before</div>
+            <div class="checklist-item">Lead author and year named in the prose when citing a study</div>
+            <div class="checklist-item">Author named in the prose when citing a book</div>
+            <div class="checklist-item">Reference block uses the same voice rules as the post (no em dashes, no colons, no banned phrases)</div>
+            <div class="checklist-item">All links durable (no "click here", no naked URLs without context)</div>
+            <div class="checklist-item">Read it back, sounds like you walking someone through, not an essay constructed after the fact</div>
+        </div>
+    </section>
+
+    <a href="/brand-guidelines" class="back-link">[ ← BRAND GUIDELINES ]</a>
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+        <a href="/brand-guidelines">BRAND GUIDELINES</a>
+        <a href="/writing-guidelines">WRITING GUIDELINES</a>
+        <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+        <a href="mailto:info@localghost.ai">CONTACT</a>
+    </div>
+    <p class="footer-quote">
+        "If it sounds like an essay constructed after the fact, rewrite it. If it sounds like you walking someone through what you actually did, ship it."<br>
+        — Writing Guidelines
+    </p>
+</footer>
+
+<script>
+const markdownContent = `# LOCALGHOST // WRITING GUIDELINES
+
+One voice across everything, technical posts, Hard Truths, manifesto, social. A flawed human who built things, not a polished AI essayist who reflects on them.
+
+---
+
+## THE VOICE
+
+Someone who has built things and is being honest about what they observed rather than what sounds good. Commits when sure, hedges when not, wanders when the thought wanders, isn't trying to land a punch.
+
+The four things,
+1. Curious. Wants to understand the actual mechanism, not the surface story.
+2. Pragmatic. Picks the boring solution that ships and works, not the elegant one that doesn't.
+3. A bit self-deprecating. Honest about misses without performing humility.
+4. Direct. Once the situation is set up, get to the point.
+
+---
+
+## CORE RULES
+
+### Get to the point. No throat-clearing.
+"In today's evolving landscape" is dead weight. So is "in this post we'll examine three patterns". Both add words without signal. Specific scene-setting ("Me, Jude, and Robby were having a debate about something we'd been going back and forth on for a few days") is doing real work and isn't throat-clearing.
+
+BAD, "In today's rapidly evolving tech landscape, it's worth considering how the industry has changed."
+GOOD, "I was watching three companies simultaneously discover they had no one left who knew how anything worked."
+
+### Hedge when uncertain. Commit when sure.
+Most decisions are uncertain so hedges are common ("I think", "we'll try", "for now", "I'm not sure yet"). When you actually know something, say it without hedging. The AI-essay default is full conviction on every claim, that's the failure mode.
+
+BAD, "Our system handles all edge cases reliably and scales to any load."
+GOOD, "It handles the cases we know about, and it tests cleanly to a few hundred thousand updates per second. We'll find out about the rest the usual way."
+
+### Acknowledge work in progress.
+Say it's not done. Say what you'll iterate on. Say what you got wrong last time. The AI-essay tendency is to present everything as a finished thesis, which it almost never is.
+
+### Close by leaving space, not by landing.
+Don't close on a conclusion and call it done. Most posts are part of a longer thought, the close should make that visible. The open question, the thing you're not sure about, the next post in the series, the controversial take you're floating to see what comes back.
+
+Banned at the end, the constructed mic drop. Also banned, the soft "hope this is useful". The right close is somewhere between, an honest "here's where I'm landing for now and here's what's still open".
+
+BAD (mic drop), "The architecture is adversarial because the alternative is a system that gets better at telling you what you want to hear the longer you use it."
+BAD (soft), "Hope this is useful, would love to hear what you think."
+GOOD (open question), "Whether running a model with different priors is enough is the open question. I think it is. We'll know in a year."
+GOOD (more to do), "There's at least three more things to figure out before this is doing what I want. Two of them I have approaches for, one I don't yet."
+
+### Use parentheticals freely.
+Short factual or wry asides in parens are how the prose thinks. Don't strip them in editing. They're cleaner than restructuring the sentence to fit the detail in.
+
+### Be specific about when, where, and who.
+"At 11pm on Tuesday" beats "later that day". The biographical detail is what makes the post feel witnessed rather than constructed. Vague time markers like "somewhere in those first few hours" are a tell that the post was written from memory of a feeling rather than memory of a thing.
+
+### Show the reasoning, including what you rejected.
+"We chose X" tells the reader nothing. "We tried A, B, and C, ruled them out for these reasons, and ended up with X" tells them you actually thought about it. The rejected paths often carry more signal than the chosen one.
+
+### Vary sentence length but let the long ones run.
+If a sentence needs to be long to follow the shape of the thought, let it be long. Wall-to-wall short sentences performs urgency. Wall-to-wall long sentences turns into mush.
+
+### Be specific. Use numbers, names, details.
+"300 applications in an hour" beats "strong demand". "47ms p99 latency" beats "fast". The specific detail is what makes an observation feel real.
+
+### Assume intelligence.
+The reader is technical, sceptical, and has been burned before. Treat them as a peer.
+
+### Use dark humour when it fits.
+Gallows wit that acknowledges the absurdity of the status quo is on-brand.
+
+### Admit your own role when you have one.
+If you're criticising a pattern you participated in, say so. If a clever decision backfired, say so.
+
+---
+
+## ALLOWED WITH CARE
+
+Two things that AI prose abuses but that genuinely belong in the voice when used right. The test for both is the same, are they compressing something the post actually does, or are they replacing the work the post should do?
+
+### Aphoristic claims that the post defends.
+An aphoristic punchy line is allowed when it compresses a real claim the post defends with evidence. Banned when it's decorative, vibes-only, or carrying a point the prose hasn't actually made.
+
+One opening claim that the post backs up is fine, often it's the cleanest possible statement-box. What's not fine is a string of aphorisms doing the argumentative work the prose should be doing, or a tagline that just sounds quotable.
+
+The test, if a sceptical reader asked "okay, prove it", does the rest of the post actually do that?
+
+GOOD (defended), "The longer your AI knows you, the less likely it is to tell you the truth." (Followed by two studies showing memory increases sycophancy.)
+BAD (decorative), "The future of work is the death of work." (Followed by a post that talks about productivity tools and doesn't make a case for either claim in the line.)
+
+### Metaphors that compress an explanation you've already made.
+A metaphor is allowed when it compresses an explanation you've already earned the right to make. Banned when it replaces the explanation, when it's decorative, or when it's the only way you can make the point (which means the point isn't clear yet).
+
+One or two per post that genuinely carry weight, not four in the same paragraph because the paragraph is doing too much work.
+
+GOOD (compressing), after three paragraphs explaining how cloud AI memory accumulates without ever being deleted, "the data never leaves, it just gets renamed". The metaphor closes a loop the prose already opened.
+BAD (replacing), "It's like a mirror that shows you what you want to see" used as the entire explanation, without the prose ever explaining the actual mechanism that produces the behaviour.
+
+---
+
+## WHAT TO KILL ON SIGHT
+
+### Em dashes. All of them.
+No em dashes anywhere. Not in lists, not after a noun being defined, not in argumentative prose, not in updates, not in citations. Use a comma, a period, a parenthetical, or restructure. Readers now pattern-match em dashes as generated text.
+
+### Colons.
+Don't use them. Restructure with a comma, a period, or a parenthetical.
+
+### Constructed mic-drop closers.
+An aphoristic verdict at the end of the post that's there to land the post like applause-line. Even if the claim is real, the closing position pretends to be the finish line. Closes leave space instead.
+
+### Decorative or undefended aphorisms.
+An aphoristic line that doesn't compress a real claim the post defends, or that does the argumentative work the prose should be doing. See "Allowed With Care" for the line a defensible aphoristic claim can play, this kill is for the rest.
+
+### Decorative metaphors.
+"Like a mirror" used in place of an explanation, "wearing a different hat", "the plot of every X", strings of metaphors stacked because the underlying point isn't clear. See "Allowed With Care" for when a metaphor earns its place.
+
+### The rhetorical flip.
+"It's not X. It's Y." sounds decisive, it's a cliché. Say the thing directly.
+
+### The cascade chain.
+Listing consequences as a chain of short sentences reads like bullet points in disguise.
+
+### Triads of near-synonyms.
+Three adjectives or phrases that mean roughly the same thing ("clear, precise, and exact", "fast, efficient, and scalable", "careful, measured, thoughtful"). If the three items could collapse to one without losing meaning, the triad is decorative rhythm filling space. Different from a triad where each item names a distinct thing (three different companies, three different failure modes, three different threat profiles), which stays. The test, could you pick which one mattered most, if not they're synonyms in a costume.
+
+The version that fails hardest is three adjectives stacked before a noun ("a clean, simple, elegant design"). That's the AI tic at full volume. The version with three comma-separated clauses where each clause names a distinct thing is usually fine.
+
+### Polish words used for emphasis.
+"Actually", "obviously", "exactly", "structurally", "underlying". AI prose uses these to add weight to claims. Every "actually" in the draft is a candidate for deletion.
+
+### Copula avoidance.
+Default to "is" and "has" unless a specific verb genuinely adds meaning. AI prose avoids plain copulas by reaching for press-release verbs that inflate the sentence without adding information. "The system serves as a gateway" is "the system is a gateway" in costume. Same for "features", "boasts", "presents", "represents", "embodies", "reflects", "constitutes", "delivers", "provides", "offers", "encompasses", "comprises", "functions as", "acts as", "stands as". If swapping in "is" or "has" makes the sentence clearer, the fancier verb was doing nothing.
+
+The exception is a verb that carries real motion or consequence. "The daemon reads the marker" is not copula avoidance, it's describing an action. "The architecture serves as the foundation" is.
+
+### Polished essayist transitions.
+"And the incentive structure makes it worse." / "Which means…" / "Add to that…" Flagged transitions that announce the structure of the argument. Just keep going.
+
+### Pronoun drift.
+Long sentences are good. Pronouns three clauses away from the noun they refer to are not. Re-name the subject instead of leaning on "it" or "them" or "that".
+
+### Padding.
+"Additionally, it's worth considering…" is always deletable. So is any sentence that summarises what the previous paragraph already made clear.
+
+---
+
+## BANNED
+
+- Em dashes ( — )
+- Colons ( : )
+- Delve / Dive into / Unpack
+- Harness / Leverage / Utilize
+- Game-changer / Cutting-edge / State-of-the-art
+- "This isn't X. This is Y."
+- "It's worth noting that…"
+- "In today's [adjective] landscape…"
+- "The honest answer is…"
+- "Needless to say…"
+- "At the end of the day…"
+- Move the needle
+- Deep dive
+- Synergy / Paradigm
+- "Actually" / "obviously" / "exactly" used for emphasis
+- "Underneath" / "underlying"
+- Serves as / features / boasts / presents / represents
+- Embodies / reflects / constitutes / delivers / provides / offers
+- Functions as / acts as / stands as / encompasses / comprises
+- Triads of near-synonyms ("clear, precise, and exact", "clean, simple, elegant")
+
+---
+
+## STRUCTURE
+
+Opening, three options that work. Specific scene-setting ("Me, Jude, and Robby were having a debate"). Direct claim of what changed ("Memory makes models more agreeable, and the data is starting to back it up"). Aphoristic claim the post will defend ("The longer your AI knows you, the less likely it is to tell you the truth", followed by the studies that prove it). What doesn't work, throat-clearing about what the post is going to do, or a tagline with no claim attached.
+
+Body, wander. Follow the thought. The shape is "here's what happened, here's what broke, here's what I tried, here's where I am now", not thesis-evidence-conclusion.
+
+Headings, plain and descriptive. "How does this work?", "Why this approach?", "Known limitations". Not aphoristic chapter labels ("The Compound", "The Way Out").
+
+Ending, leave space. Flag the open question, the thing you'll iterate on, the controversial take you're floating, the next post in the series. No constructed mic drops at the close, even if the claim is real, the closing position turns it into an applause line.
+
+---
+
+## THE BOXES
+
+Three types, used sparingly. Boxes hold strong claims. Punchy verdicts that would otherwise sit alone in a paragraph belong in a box, where they have a job.
+
+> ALARM, a strong opinion you'd defend, but might be wrong about. Red border.
+> SIGNAL, something you're certain of. Use sparingly, if everything is a signal, nothing is. Green border.
+statement-box, the opening declaration. Used once, at the top.
+
+Rules,
+1. Multiple alarm boxes per post is fine. Only one or two signal boxes.
+2. The statement-box is a defensible claim the post backs up. An aphoristic compressed claim is fine here, that's what the box is for. A vibes-only tagline that the post never returns to is not.
+3. Boxes earn their place. If the prose before doesn't build to the box, the box doesn't land.
+4. Boxes don't replace prose. Posts can ship with no boxes.
+
+---
+
+## FORMAT RULES
+
+- First person when you were actually there
+- Parentheticals freely
+- Hedge when uncertain, commit when sure
+- Contractions (we'll, won't, can't, it's). Don't make the prose stiffer than your speech.
+- No bullet points in prose, if it's a list, make it a sentence. Lists for service breakdowns and config are fine.
+- Subheadings only when sections are genuinely distinct
+- No bold for emphasis unless it genuinely earns it
+- Don't summarise at the end, leave space instead
+- Link cross-page references
+- Durable time references ("published in March 2026" not "last week")
+
+---
+
+## THE TEST
+
+Read it back. If it sounds like an essay constructed after the fact, rewrite it. If it sounds like you walking someone through what you actually did and what you're still figuring out, ship it.
+
+---
+
+## REFERENCES
+
+Posts that make empirical or historical claims need references. The voice rule is "hedge when uncertain, commit when sure", and the way you commit when sure is by linking the source so the reader can check. A claim with a number in it, a study, a date, a quoted phrase, or a historical reading that isn't common knowledge gets a footnote. Aphoristic claims you're defending across the whole post don't need one, the post itself is the defence.
+
+Format, footnote-style with a numbered marker in the prose ([1], [2], [3]) and a > REFERENCES block at the bottom of the post. Each reference is a short paragraph, not a bare citation. The paragraph names the author, the year, the publication, what the source is the source for, and a clickable link. The reader should be able to read the reference block on its own and understand what each source contributed to the post.
+
+What the reference block is for, three things at once. First, the obvious one, letting the sceptical reader check the claim. Second, signalling that you actually read the source rather than asking a model to summarise it, which is a real signal in 2026 because most prose with citations now didn't go near the source. Third, the reference block is the post's working memory, six months from now you'll want to find that one piece again and the reference block is where it lives.
+
+What's banned in references, the same things that are banned in prose. No em dashes in citations (worth restating because it's the place people forget). No colons in citation paragraphs. Don't use "delve into" or any of the other banned phrases inside the reference text just because it's the reference block, the voice carries through.
+
+What's allowed that isn't allowed elsewhere, slightly more structured prose. The reference paragraph can list "source for X, source for Y, source for Z" because that's what the paragraph is doing. It can name a secondary source in addition to the primary one ("BBC also carried the story at bbc.co.uk/news for readers who prefer that source"). It can quote a single short phrase from the source if the phrase is the thing you're citing.
+
+### Subrules
+[1] Footnote markers go in the prose at the end of the sentence the source supports, not at the beginning. [4] after the period, not before the claim.
+[2] Each reference gets its own numbered entry. Don't bundle three sources into one footnote unless they're genuinely doing the same job (e.g. multiple news outlets covering the same event).
+[3] If you're citing a study, name the lead author and year in the prose ("Jain et al., thirty-eight people, averaging about ninety queries each") not just in the footnote. The reader shouldn't have to scroll to know whose study you're describing.
+[4] If you're citing a book, name the author in the prose. Same reason.
+[5] Links go in the reference block, not in the prose. The prose carries the marker, the block carries the URL. Exception, when you're linking to one of your own posts as a cross-reference (the existing rule), that link goes inline.
+[6] Durable references only. "A 2025 paper" not "a recent paper". "October 2025" not "last October". Same rule as the rest of the post.
+[7] If a source is doing a lot of work in the post, the reference paragraph can be longer to explain what each source argued and why you used the reading you did. If a source is doing one fact (a date, a number, a name), the reference paragraph can be one sentence.
+
+---
+
+## CHECKLIST BEFORE PUBLISHING
+
+- [ ] Zero em dashes anywhere
+- [ ] Zero colons
+- [ ] No throat-clearing in the opener
+- [ ] If the opener is an aphoristic claim, does the post actually defend it with evidence?
+- [ ] Every metaphor either compresses an explanation already made, or is cut
+- [ ] No more than one or two metaphors in the whole post
+- [ ] Closing leaves space, not a verdict, not a soft fade
+- [ ] No constructed mic drop at the end (even if the claim is real)
+- [ ] Uncertain claims hedged, certain claims stated flat
+- [ ] Parentheticals used freely
+- [ ] At least one "this is incomplete / I'm not sure yet" acknowledgment somewhere
+- [ ] If there's a statement-box, it's a defensible claim the post backs up
+- [ ] Every "actually" / "obviously" / "exactly" used for emphasis is deleted
+- [ ] Every "serves as" / "features" / "boasts" / "represents" survives the "is" test, if "is" works the fancy verb goes
+- [ ] Every triad survives the "which one mattered most" test, if you couldn't pick one they're synonyms
+- [ ] At least one specific named detail (year, person, place, number)
+- [ ] At least one decision grounded in the moment you made it
+- [ ] Rejected approaches mentioned alongside the chosen one
+- [ ] Own role admitted if you have one
+- [ ] Long sentences re-name their subject instead of pronoun-drifting
+- [ ] No idea appears twice on the page in different words
+- [ ] Banned phrases check passes
+- [ ] Cross-page references linked
+- [ ] Every empirical or historical claim has a footnote, every footnote resolves to a real source you actually read
+- [ ] Footnote markers come after the sentence they support, not before
+- [ ] Lead author and year named in the prose when citing a study
+- [ ] Author named in the prose when citing a book
+- [ ] Reference block uses the same voice rules as the post (no em dashes, no colons, no banned phrases)
+- [ ] All links durable (no "click here", no naked URLs without context)
+- [ ] Read it back, sounds like you walking someone through, not an essay constructed after the fact
+`;
+
+function copyMarkdown(btn) {
+    navigator.clipboard.writeText(markdownContent).then(() => {
+        btn.textContent = '[ COPIED ✓ ]';
+        btn.style.background = 'var(--terminal)';
+        btn.style.color = 'var(--void)';
+        setTimeout(() => {
+            btn.textContent = '[ COPY AS MD ]';
+            btn.style.background = '';
+            btn.style.color = '';
+        }, 2500);
+    });
+}
+</script>
+
+</body>
+</html>

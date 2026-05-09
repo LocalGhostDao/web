@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0e14"/>
+
+  <!-- Bright green border -->
+  <rect x="0" y="0" width="1200" height="630" fill="none" stroke="#39ff14" stroke-width="6"/>
+
+  <!-- Top divider line -->
+  <line x1="40" y1="60" x2="1160" y2="60" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- Top breadcrumb path -->
+  <text x="40" y="42" font-family="'Courier New', monospace" font-size="18" fill="#39ff14" font-weight="500">&gt; LOCALGHOST.AI // HARD_TRUTHS // POST_08 // APR 2026</text>
+
+  <!-- SIGNAL tag pill (green border, green text) -->
+  <rect x="40" y="80" width="90" height="28" fill="none" stroke="#39ff14" stroke-width="1.5"/>
+  <text x="85" y="99" font-family="'Courier New', monospace" font-size="14" fill="#39ff14" font-weight="600" text-anchor="middle">SIGNAL</text>
+
+  <!-- Headline - three lines, bold sans-serif -->
+  <!-- Line 1: "How to Build a" - white -->
+  <text x="40" y="200" font-family="'Helvetica Neue', Arial, sans-serif" font-size="78" font-weight="800" fill="#e5e7eb">How to Build a</text>
+  <!-- Line 2: "Critic Worth" - green -->
+  <text x="40" y="285" font-family="'Helvetica Neue', Arial, sans-serif" font-size="78" font-weight="800" fill="#39ff14">Critic Worth</text>
+  <!-- Line 3: "Listening To" - green -->
+  <text x="40" y="370" font-family="'Helvetica Neue', Arial, sans-serif" font-size="78" font-weight="800" fill="#39ff14">Listening To</text>
+
+  <!-- Subtitle divider -->
+  <line x1="40" y1="408" x2="900" y2="408" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- Subtitle - white monospace -->
+  <text x="40" y="440" font-family="'Courier New', monospace" font-size="20" fill="#e5e7eb">A daemon should ask questions, not walk you down a path it picked.</text>
+
+  <!-- Tagline - dimmed monospace -->
+  <text x="40" y="478" font-family="'Courier New', monospace" font-size="16" fill="#6b7280">ghost.shadowd — the question-asker, not the path-walker.</text>
+
+  <!-- Right side pixel-art critic character (magnifying glass / inspector style) -->
+  <!-- Character body, head and a magnifying glass -->
+  <g transform="translate(960, 170)">
+    <!-- Head -->
+    <rect x="40" y="0" width="80" height="80" fill="#39ff14"/>
+    <!-- Eyes -->
+    <rect x="55" y="25" width="12" height="12" fill="#0a0e14"/>
+    <rect x="93" y="25" width="12" height="12" fill="#0a0e14"/>
+    <!-- Mouth - thoughtful line, slight downturn (analytical, not smiling) -->
+    <rect x="60" y="58" width="40" height="5" fill="#0a0e14"/>
+    <!-- Body -->
+    <rect x="20" y="80" width="120" height="90" fill="#1f2937" stroke="#39ff14" stroke-width="3"/>
+    <!-- Body details: three coloured indicator squares -->
+    <rect x="38" y="118" width="18" height="18" fill="#39ff14"/>
+    <rect x="68" y="118" width="18" height="18" fill="#fbbf24"/>
+    <rect x="98" y="118" width="18" height="18" fill="#fbbf24"/>
+    <!-- Magnifying glass held to the side -->
+    <!-- Glass circle -->
+    <circle cx="155" cy="50" r="22" fill="none" stroke="#39ff14" stroke-width="5"/>
+    <!-- Glass inner reflection -->
+    <circle cx="148" cy="44" r="6" fill="#39ff14" opacity="0.3"/>
+    <!-- Handle -->
+    <rect x="170" y="65" width="6" height="22" fill="#39ff14" transform="rotate(45 173 76)"/>
+    <!-- A small question mark above the head -->
+    <text x="80" y="-15" font-family="'Courier New', monospace" font-size="48" font-weight="800" fill="#39ff14" text-anchor="middle">?</text>
+  </g>
+
+  <!-- Bottom divider line -->
+  <line x1="40" y1="570" x2="1160" y2="570" stroke="#1f2937" stroke-width="1"/>
+
+  <!-- Bottom bar -->
+  <text x="40" y="600" font-family="'Courier New', monospace" font-size="16" font-weight="700" fill="#39ff14">VLAD CEALICU</text>
+  <text x="220" y="600" font-family="'Courier New', monospace" font-size="14" fill="#6b7280">// LOCALGHOST.AI/HARD-TRUTHS/CRITIC-WORTH-LISTENING-TO</text>
+  <text x="1160" y="600" font-family="'Courier New', monospace" font-size="14" fill="#6b7280" text-anchor="end">THE ONLY CLOUD IS YOU</text>
+</svg>

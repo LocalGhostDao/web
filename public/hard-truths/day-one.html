@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ghost Has to Be Useful on Day One | Hard Truths | LocalGhost.ai</title>
+    <meta name="description"
+        content="A long onboarding flow is a team admitting they don't know who they are building for. Trello knew before Atlassian bought it. Linear knows now. Jira has been asking users what department they work in since 2002 and the wizard is still getting longer. Why ghost.synthd is built around inference from what you already have rather than a questionnaire you fill in before the product has shown you anything.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords"
+        content="product onboarding, setup UX, cold start, digital phenotyping, personality inference, Trello, Linear, Jira, LocalGhost, ghost.synthd, drip-feed onboarding">
+    <meta name="category" content="AI, Product, Privacy">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/day-one">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/day-one">
+    <meta property="og:title" content="The Ghost Has to Be Useful on Day One">
+    <meta property="og:description"
+        content="A long onboarding flow is a team admitting they don't know who they are building for.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-day-one.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Ghost Has to Be Useful on Day One, LocalGhost Hard Truths">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-04-18T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="onboarding">
+    <meta property="article:tag" content="product design">
+    <meta property="article:tag" content="cold start">
+    <meta property="article:tag" content="digital phenotyping">
+    <meta property="article:tag" content="ghost.synthd">
+    <meta property="article:reading_time" content="9">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="The Ghost Has to Be Useful on Day One">
+    <meta name="twitter:description"
+        content="A long onboarding flow is a team admitting they don't know who they are building for.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-day-one.png">
+    <meta name="twitter:image:alt" content="The Ghost Has to Be Useful on Day One, LocalGhost Hard Truths">
+    <meta name="fediverse:creator" content="@vladcealicu">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Ghost Has to Be Useful on Day One",
+        "description": "A long onboarding flow is a team admitting they don't know who they are building for.",
+        "author": {
+            "@type": "Person",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-04-18",
+        "dateModified": "2026-04-18",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/day-one"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-day-one.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "onboarding, setup UX, cold start, digital phenotyping, ghost.synthd, LocalGhost",
+        "articleSection": "Hard Truths",
+        "isPartOf": {
+            "@type": "Blog",
+            "name": "Hard Truths",
+            "url": "https://www.localghost.ai/hard-truths"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
+            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
+            { "@type": "ListItem", "position": 3, "name": "The Ghost Has to Be Useful on Day One", "item": "https://www.localghost.ai/hard-truths/day-one" }
+        ]
+    }
+    </script>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-logo">
+            <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS
+                    YOU</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/hard-truths" class="active">HARD TRUTHS</a>
+            <a href="/build">BUILD</a>
+            <a href="/directory" class="hide-mobile">DIRECTORY</a>
+            <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+        </div>
+    </nav>
+
+    <main class="narrow">
+
+        <div class="page-header">
+            <div class="section-label">&gt; HARD_TRUTHS // POST_12 // APR 2026</div>
+            <h1>The Ghost Has to Be Useful on Day One</h1>
+            <div class="date">Vlad Cealicu // 18 April 2026</div>
+        </div>
+
+        <div class="manifesto-text">
+
+            <div class="statement-box">
+                <p class="statement-main">A long onboarding flow is a team admitting they don't know who they are
+                    building for.</p>
+            </div>
+
+            <div class="podcast-player" data-src="/assets/podcast/day-one.mp3"
+                data-title="The Ghost Has to Be Useful on Day One" data-album="EPISODE 12"
+                data-artwork="/images/og-day-one.png">
+                <div class="pp-meta">
+                    <span><span class="pp-label">&gt; EPISODE 12</span> // OFFLINE-READY</span>
+                    <span>NOTEBOOKLM AUDIO</span>
+                </div>
+                <div class="pp-controls">
+                    <button class="pp-play" type="button" aria-label="Play podcast">
+                        <span class="pp-icon-play">&#9654;</span>
+                        <span class="pp-icon-pause">&#10074;&#10074;</span>
+                    </button>
+                    <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0"
+                        aria-valuemax="100" aria-valuenow="0">
+                        <div class="pp-progress-bar"></div>
+                    </div>
+                    <span class="pp-time">00:00 / --:--</span>
+                    <a class="pp-download" href="/assets/podcast/day-one.mp3" download
+                        aria-label="Download podcast">DOWNLOAD</a>
+                </div>
+                <audio preload="metadata" src="/assets/podcast/day-one.mp3"></audio>
+            </div>
+
+            <p>
+                A few days ago Cristina and I sat down for lunch in Assisi at AssaggiAssisi (chill little deli). I'd been up late the night before writing the 
+                   <a href="/hard-truths/before-you-ask">ghost.cued post</a>
+                and I was still turning it over in my head,
+                so I started telling her about it. The daemon that reads your environment and surfaces the right memory
+                at the right moment (and explaining how our brain does it). I explained that the ghost should already know you by the end of day one.
+            </p>
+
+            <p>
+                She said that sounded fine in theory but countered that Gemini already knew her. Her health, her
+                sleep, her plans, her interests, all of it (built up from months of her talking to the thing). She
+                assumed LocalGhost would need the same multi-week ramp she'd gone through with Gemini (the dynamic
+                I'd covered in the <a href="/hard-truths/model-trap">model-trap post</a>), and she wasn't going to sit
+                through it again just because it was more private and local. She'd rather spend twenty minutes on
+                install
+                day filling in a form and have something that fit her from the start than get a cold-start daemon that
+                only became the ghost she wanted some time in May. I offered a personality test as the short version of
+                that, Big Five or similar, ten minutes on install day and the ghost has a seed. She thought about it
+                and dismissed it as too pigeonhole-y. A personality test files you into a category on day one, and the
+                moment the ghost thinks of you in those terms it's stuck with the wrong frame until you notice the
+                mistake and correct it. She was expecting a setup phase, and I spent the rest of the lunch trying to
+                convince her I didn't need one, while also trying to think my own way out of needing one, because the
+                context should already be there in whatever devices the user has attached.
+            </p>
+
+            <div class="section-header">&gt; 1. Why not a personality test</div>
+
+            <p>
+                Cristina said "too pigeonhole-y" at the table and moved on, but I went home and spent a few hours
+                looking into it, because a short fun test really would have been the easiest way to seed the ghost. The
+                idea kept falling apart the more I read. Big Five reduces you to five axes the field settled on around
+                1990 <a href="#ref-1" class="cite">[1]</a>. Myers-Briggs and Enneagram do the same thing with different
+                categories. Any of them put you in a bucket the moment you fill in the form, and software that should
+                then
+                assist you filters
+                everything it does through that bucket. The bucket becomes the daemon's default, and it stays that way
+                until you catch the daemon doing something wrong, six months later, and realise it still thinks of you
+                as whatever the test said on day one.
+            </p>
+
+            <p>
+                The problem gets worse the more specific the category is. A setup form might have a tick-box for ADHD,
+                autism, dyslexia, or one of the many other conditions a person might be navigating, and the ghost would
+                read the tick-box and overadjust. Even setting medical diagnoses aside, two people are never weird in the same way. Two
+                people who tick the same box can be almost nothing like each other, and a daemon that treats them as the
+                same category is flattening the thing LocalGhost exists to preserve.
+            </p>
+
+            <p>
+                Cristina's instinct was right. The test itself is broken as a tool for seeding a personal daemon, no
+                matter how short or fun I made it. That answered the narrow question. Once that one was closed I moved
+                on to the wider one, which was whether any form belongs on install day at all.
+            </p>
+
+            <div class="section-header">&gt; 2. Why no onboarding questionnaire</div>
+
+            <p>
+                The <a href="/hard-truths/how-memory-gets-made">memory post</a> I had
+                finished a few nights earlier lays out how the ghost should interact with the user, and none of the
+                patterns it describes look anything like a form on install day. A form asks you to rate and describe
+                yourself, with no context in front of you, and it does it before the ghost has shown
+                you anything at all. The patterns in the memory post are the opposite of that, and they are where the
+                question-asking belongs once the ghost is running.
+            </p>
+
+            <div class="alarm">
+                <p>Trello before Atlassian bought it, and Linear now at $1.25 billion <a href="#ref-8"
+                        class="cite">[8]</a>. Both shipped without an onboarding form. Jira has been asking users what
+                    department they work in since 2002 and the wizard is still getting longer. LocalGhost.ai has to sit
+                    where Trello and Linear sit.</p>
+            </div>
+
+            <p>
+                A company that has to ask you a wall of questions to work out who you are and how the product should
+                work for you is a company staffed by people
+                who don't know their own product and don't know who it is for (Atlassian, cough cough). Real employees
+                know the audience because most of the time they are part of the audience. I have shipped onboarding
+                forms myself, under deadline pressure, at CCData, and I knew the form was the shortcut every time.
+                Onboarding flows are lazy, inelegant, and offensive to the user. The lunch with Cristina, and the time I
+                spent on it afterwards, is what made me realise I do not want to build one into LocalGhost.
+            </p>
+
+            <div class="section-header">&gt; 3. Where the signal already is</div>
+
+            <p>
+                If not a form, then what. The answer is inference from the behavioural traces the user has been
+                producing on their own devices for years, and the evidence that this works is a decade old. Kosinski,
+                Stillwell, and Graepel showed in 2013 that Facebook Likes alone could predict sexual orientation,
+                ethnicity, political and religious views, personality traits, intelligence, happiness, substance use,
+                parental separation, age, and gender to 80-95% accuracy on the binary outcomes <a href="#ref-2"
+                    class="cite">[2]</a>. Two years later, Youyou, Kosinski, and Stillwell ran the follow-up that still
+                anchors the field. A computer model using Facebook Likes judged personality more accurately than the
+                participants' own friends and family. Ten Likes outperformed a work colleague. 150 Likes outperformed a
+                parent or sibling. 300 Likes outperformed a spouse <a href="#ref-3" class="cite">[3]</a>. The point
+                wasn't about Facebook. Behavioural traces predict personality better than the people who know you
+                personally, and they do it without anyone sitting you down to take a test. That is the reason I think
+                LocalGhost is worth building, and also the reason I think the space it addresses will be taken over and
+                exploited by big tech, <a href="/hard-truths/inflection">as I wrote in the inflection post</a>. The same
+                inference that makes the ghost genuinely useful on local hardware is what the centralized cloud
+                platforms will want
+                to run against everyone else in order to sell them products.
+            </p>
+
+            <p>
+                The neurodivergence point is backed by the last decade of digital phenotyping research. Perochon et al.
+                (2023) in <em>Nature Medicine</em> screened autism in 17-36-month-olds using tablet-based behavioural
+                measures, AUC 0.90 <a href="#ref-4" class="cite">[4]</a>. Lee et al. (2023) used wearable data to detect
+                ADHD and sleep problems with AUC 0.798 <a href="#ref-5" class="cite">[5]</a>. Casals, Larsson, and
+                Hansen (2025) built a smartphone-sensor ADHD predictor hitting 80.8% sensitivity and 79.5% specificity,
+                with the built-in sensor features adding meaningfully to a cognitive-test baseline <a href="#ref-6"
+                    class="cite">[6]</a>. Neurodivergence has a behavioural signature that shows up in how people move,
+                read, respond, and attend. A device you already own produces enough of that signature to classify
+                accurately in a research setting but what the ghost infers on any one user has to still be a guess. The
+                software has to
+                treat it that way, a hypothesis that updates the moment the user corrects it and never a bucket that
+                sticks.
+            </p>
+
+            <p>
+                Put the studies together and the picture is that behavioural signal lives in almost everything the user
+                does with a device. How you write, what you read, what you rewrite, and how long you leave things in
+                draft. How you walk, how you exercise, how you sleep, all of it picked up by the wearable on your wrist
+                and the phone in your pocket. How you communicate, who you reach for and how often, which Stachl et al.
+                (2020) found was the single highest-signal channel for personality prediction across a month of passive
+                smartphone sensing <a href="#ref-7" class="cite">[7]</a>. The photos you take and keep and return to,
+                the music you play and skip, the way you tap on the phone itself (which in the Casals study added usable
+                signal on top of a dedicated cognitive test). None of it is a personality test because none of it is you
+                rating yourself. All of it is what you have already done, for your own reasons, left on devices you
+                already own. A ghost that can read that footprint locally has more to work with on day one than a cloud
+                assistant that just met you has after a month of conversation.
+            </p>
+
+            <div class="section-header">&gt; 4. What I think the setup should look like</div>
+
+            <p>
+                The ghost is a fleet of daemons, one per modality, each of which has a 
+                    href="https://github.com/LocalGhostDao/localghost">README in the repo</a>. 
+                    href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/noted/README.md">ghost.noted</a>
+                handles text, 
+                    href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/framed/README.md">ghost.framed</a>
+                handles images, 
+                    href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/voiced/README.md">ghost.voiced</a>
+                handles audio, and 
+                    href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/synthd/README.md">ghost.synthd</a>
+                sits above them. They run on a NAS, either one you already own or one we sell you. Each of your other
+                devices runs an app that pairs with the NAS on first run over the local network and opens a VPN tunnel
+                back to it. After that the app works from anywhere. On a train, in a hotel, at a cafe, it stays paired
+                with your NAS and pushes its modality over the tunnel, where ghost.synthd turns what comes in into a
+                model of you. The same app is how the ghost reaches you when it has something to say and how you reach
+                it when you have something to ask.
+            </p>
+
+            <p>
+                One device is enough to start getting value and you can add the rest over time, or never, and the ghost
+                still works. If you do not want to install the app on any device at all, the ghost builds from what you
+                tell it in chat on the box itself (you'll be able to access it directly via a web page), which is slower
+                but still works. Most people will install the phone
+                app at least, because the NAS is already theirs and a NAS is a product category users recognise. You get
+                a local archive of your own stuff as a side effect, your photos, your notes, your writing, your music,
+                your health data, all indexed locally and searchable by you.
+            </p>
+
+            <p>
+                The approvals work the way the platform already does them. iOS, Android, macOS, the wearable platform,
+                each asks about its own permissions the first time the ghost needs them, one at a time. No central form,
+                no LocalGhost-specific consent surface pretending to understand the thirty things being granted.
+                Revoking is easy and built in as is uninstalling. Everything the ghost sees lives on the NAS. The model
+                it builds of you is
+                written to local disk and secured in a way we discussed in <a href="/hard-truths/honeypot">The Honeypot
+                    Under Your Desk</a>, inference runs on the local GPU, nothing ships anywhere else.
+            </p>
+
+            <div class="section-header">&gt; 5. What it feels like when it works</div>
+
+            <p>
+                The architecture is the privacy and security commitment, and I think I can build a pretty good version
+                of you with
+                it. What it does not solve is how the thing will feel to live with. The clearest picture of that came
+                out of the same lunch. Cristina had ordered a cheese board at the deli. She did not pick the
+                cheeses and instead asked for the standard one they had and what came out was good. The longer menu
+                existed, with every
+                cheese and every cured meat spelled out, and we had ignored it. If we kept coming back the kitchen would
+                vary what they brought out, and we would slowly work through whatever they had. That is the shape I want
+                for day-one LocalGhost. A good default board on day one, and better at your taste with every visit.
+            </p>
+
+            <p>
+                The cheese board is the reassuring version. A digital version of you, if built well, is also going to
+                feel creepy. Even a partial success will be eerie to sit with, because it will know you from your own
+                footprint and sometimes it will be right about you in ways you had not noticed yourself.
+            </p>
+
+            <div class="final-words">
+                And creepiness is not even the worst part. We were paying the bill and I said that at least going
+                forward (regardless on how you get onboarded)
+                the ghost can read everything you link it to, text, emails, audio, the lot, so you won't have to input
+                much. Cristina said surely you can't just record other people and call it private software, that makes it
+                private for you and not for everyone else. The next post is about what the ghost owes the people it
+                overhears, or sees in pictures or video.
+                <span class="small">[ localghost.ai // hard-truths ]</span>
+            </div>
+
+            <div class="section-header">&gt; REFERENCES</div>
+
+            <p class="references" id="ref-1">
+                <strong>[1]</strong> The Big Five personality taxonomy (also called the Five-Factor Model) is the
+                consensus framework in trait psychology, consolidated through work by Goldberg, Costa, McCrae, and
+                others between roughly 1981 and 1992. The 100-item and 50-item versions of the International Personality
+                Item Pool are free to use and take 10-20 minutes to complete. Source for the historical provenance and
+                for the standard instrument length. Goldberg et al., 2006. "The international personality item pool and
+                the future of public-domain personality measures." <em>Journal of Research in Personality</em>. 
+                    href="https://ipip.ori.org/">ipip.ori.org</a>
+            </p>
+
+            <p class="references" id="ref-2">
+                <strong>[2]</strong> Kosinski, Stillwell, and Graepel, 2013. "Private traits and attributes are
+                predictable from digital records of human behavior." <em>Proceedings of the National Academy of
+                    Sciences</em>, 110(15), 5802-5805. Source for the 58,466-participant figure, the accuracy numbers on
+                predicting sexual orientation (88%), ethnicity (95%), and political affiliation (85%) from Facebook
+                Likes alone, and for the claim that behavioural traces predict sensitive personal attributes. 
+                    href="https://www.pnas.org/doi/10.1073/pnas.1218772110">pnas.org/doi/10.1073/pnas.1218772110</a>
+            </p>
+
+            <p class="references" id="ref-3">
+                <strong>[3]</strong> Youyou, Kosinski, and Stillwell, 2015. "Computer-based personality judgments are
+                more accurate than those made by humans." <em>Proceedings of the National Academy of Sciences</em>,
+                112(4), 1036-1040. Source for the 86,220-participant study and for the specific thresholds, 10 Likes to
+                outperform a work colleague's personality judgment of the participant, 70 for a friend or cohabitant,
+                150 for a parent or sibling, 300 for a spouse. Also the source for the finding that computer judgments
+                based on Likes had higher external validity than self-reported personality scores for predicting some
+                life outcomes. 
+                    href="https://www.pnas.org/doi/10.1073/pnas.1418680112">pnas.org/doi/10.1073/pnas.1418680112</a>
+            </p>
+
+            <p class="references" id="ref-4">
+                <strong>[4]</strong> Perochon, Di Martino, Carpenter, et al., 2023. "Early detection of autism using
+                digital behavioral phenotyping." <em>Nature Medicine</em>. Prospective study of 475 toddlers (17-36
+                months) in a primary-care setting using the SenseToKnow tablet app. Source for the AUC 0.90, sensitivity
+                87.8%, specificity 80.8% figures on autism screening from behavioural signals captured by computer
+                vision. 
+                    href="https://www.nature.com/articles/s41591-023-02574-3">nature.com/articles/s41591-023-02574-3</a>
+            </p>
+
+            <p class="references" id="ref-5">
+                <strong>[5]</strong> Lee et al., 2023. "Machine Learning-Based Prediction of
+                Attention-Deficit/Hyperactivity Disorder and Sleep Problems With Wearable Data in Children." <em>JAMA
+                    Network Open</em>. Diagnostic study of 79 children with ADHD and 68 with sleep problems using
+                circadian rhythm data from wearables. Source for the AUC 0.798 figure on ADHD detection from wearable
+                data. 
+                    href="https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2802554">jamanetwork.com/journals/jamanetworkopen/fullarticle/2802554</a>
+            </p>
+
+            <p class="references" id="ref-6">
+                <strong>[6]</strong> Casals, Larsson, and Hansen, 2025. "Machine learning on a smartphone-based CPT for
+                ADHD prediction." <em>Frontiers in Psychiatry</em>. Study of 952 neurotypical controls and 292
+                unmedicated ADHD patients using a smartphone-delivered Continuous Performance Test plus motion and
+                face-tracking sensor data. Source for the 80.8% sensitivity, 79.5% specificity numbers on ADHD
+                prediction from smartphone sensor data, and for the specific claim that sensor features from the phone
+                itself added meaningfully to the CPT baseline. 
+                    href="https://www.frontiersin.org/articles/10.3389/fpsyt.2025.1564351">frontiersin.org/articles/10.3389/fpsyt.2025.1564351</a>
+            </p>
+
+            <p class="references" id="ref-7">
+                <strong>[7]</strong> Stachl et al., 2020. "Predicting personality from patterns of behavior collected
+                with smartphones." <em>Proceedings of the National Academy of Sciences</em>, 117(30), 17680-17687. Study
+                of 624 volunteers tracked over 30 consecutive days producing 25,347,089 logging events across six
+                behavioural classes (communication and social behaviour, music consumption, app usage, mobility, overall
+                phone activity, day/night activity). Source for the Big Five prediction from passive smartphone sensing,
+                for the finding that communication and social behaviour was the most predictive class overall, and for
+                the median prediction performance at broad domain level (r = 0.37). 
+                    href="https://www.pnas.org/doi/10.1073/pnas.1920484117">pnas.org/doi/10.1073/pnas.1920484117</a>
+            </p>
+
+            <p class="references" id="ref-8">
+                <strong>[8]</strong> Linear, June 2025. Series C funding round of $82 million led by Accel, at a $1.25
+                billion valuation, bringing total raised to $134.2 million. Linear has been profitable since 2021,
+                serves more than 15,000 customers including OpenAI, Scale AI, and Perplexity, and grew ARR more than
+                200% year-on-year in 2025. Source for the $1.25 billion valuation and for Linear's minimal-onboarding
+                design approach, which Linear's own product documentation describes as pre-populated workspaces and no
+                setup configuration. TechCrunch coverage at 
+                    href="https://techcrunch.com/2025/06/10/atlassian-rival-linear-raises-82m-at-1-25b-valuation/">techcrunch.com/2025/06/10/atlassian-rival-linear-raises-82m-at-1-25b-valuation</a>.
+                Linear's own announcement at 
+                    href="https://linear.app/now/building-our-way">linear.app/now/building-our-way</a>.
+            </p>
+
+        </div>
+
+        <div class="post-nav">
+            <a href="/hard-truths/before-you-ask" class="prev">
+                <div class="pn-label">← PREVIOUS POST</div>
+                <div class="pn-title">Before You Ask</div>
+            </a>
+            <a href="/hard-truths/overhears" class="next">
+                <div class="pn-label">NEXT POST →</div>
+                <div class="pn-title">What the Ghost Owes the People It Overhears</div>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+        <p class="footer-quote">"A long onboarding flow is a team admitting they don't know who they are building for."
+            // The Ghost Has to Be Useful on Day One</p>
+    </footer>
+
+    <script src="/js/blog-player.js" defer></script>
+
+</body>
+
+</html>

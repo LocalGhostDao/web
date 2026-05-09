@@ -1,0 +1,37 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="scanlines" x="0" y="0" width="1200" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1200" height="2" fill="transparent"/>
+      <rect x="0" y="2" width="1200" height="2" fill="rgba(0,0,0,0.15)"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#scanlines)"/>
+
+  <!-- Label -->
+  <text x="80" y="120" font-family="'Courier New',Courier,monospace" font-size="14"
+        fill="#444444" letter-spacing="2">&gt; WRITING_SYSTEM</text>
+
+  <!-- Write like -->
+  <text x="80" y="210" font-family="'Courier New',Courier,monospace" font-size="72" font-weight="700"
+        fill="#E0E0E0">Write like</text>
+
+  <!-- a person. -->
+  <text x="80" y="300" font-family="'Courier New',Courier,monospace" font-size="72" font-weight="700"
+        fill="#33FF00">a person.</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="330" x2="1120" y2="330" stroke="#333333" stroke-width="1"/>
+
+  <!-- Rules -->
+  <text x="80" y="385" font-family="'Courier New',Courier,monospace" font-size="20"
+        fill="#FF8A8A">[✗]  Delve into / Leverage / Game-changer / This isn't X. It's Y.</text>
+  <text x="80" y="440" font-family="'Courier New',Courier,monospace" font-size="20"
+        fill="#33FF00">[✓]  Start with the observation. Be specific. Say what you mean.</text>
+  <text x="80" y="495" font-family="'Courier New',Courier,monospace" font-size="20"
+        fill="#33FF00">[✓]  Read it out loud. If it sounds like a conference, rewrite it.</text>
+
+  <!-- URL -->
+  <text x="80" y="575" font-family="'Courier New',Courier,monospace" font-size="18"
+        fill="#444444">&gt; localghost.ai/writing-guidelines</text>
+</svg>

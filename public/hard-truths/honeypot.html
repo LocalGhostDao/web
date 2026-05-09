@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Honeypot Under Your Desk | Hard Truths | LocalGhost.ai</title>
+    <meta name="description" content="A thief can't make you type your password. A person with a wrench can. First post on ghost.secd, the LocalGhost daemon that handles encryption, duress PINs, hidden volumes, and the purge.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="keywords" content="ghost.secd, duress mode, hidden volumes, compelled decryption, wrench attack, plausible deniability, LUKS2, Argon2id, FIDO2, AES-256-GCM, VeraCrypt, multi-PIN, the purge, local AI privacy, LocalGhost hard truths">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/honeypot">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/honeypot">
+    <meta property="og:title" content="The Honeypot Under Your Desk">
+    <meta property="og:description" content="A thief can't make you type your password. A person with a wrench can. First post on ghost.secd, the LocalGhost daemon that handles encryption, duress PINs, hidden volumes, and the purge.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-honeypot.png">
+    <meta property="og:image:secure_url" content="https://www.localghost.ai/images/og-honeypot.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Honeypot Under Your Desk. ghost.secd duress mode and the purge.">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-04-07T00:00:00Z">
+    <meta property="article:modified_time" content="2026-04-07T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="ghost.secd">
+    <meta property="article:tag" content="duress mode">
+    <meta property="article:tag" content="hidden volumes">
+    <meta property="article:tag" content="compelled decryption">
+    <meta property="article:tag" content="wrench attack">
+    <meta property="article:tag" content="plausible deniability">
+    <meta property="article:tag" content="LUKS2">
+    <meta property="article:tag" content="local AI">
+    <meta property="article:reading_time" content="11">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="The Honeypot Under Your Desk">
+    <meta name="twitter:description" content="A thief can't make you type your password. A person with a wrench can. First post on ghost.secd, the LocalGhost daemon that handles encryption, duress PINs, hidden volumes, and the purge.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-honeypot.png">
+    <meta name="twitter:image:alt" content="The Honeypot Under Your Desk. ghost.secd duress mode and the purge.">
+    <meta name="fediverse:creator" content="@vladcealicu">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Honeypot Under Your Desk",
+        "alternativeHeadline": "First post on ghost.secd: encryption, duress, and the purge",
+        "description": "A thief can't make you type your password. A person with a wrench can. First post on ghost.secd, the LocalGhost daemon that handles encryption, duress PINs, hidden volumes, and the purge.",
+        "author": {
+            "@type": "Person",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai",
+            "sameAs": [
+                "https://twitter.com/vladcealicu"
+            ]
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-04-07",
+        "dateModified": "2026-04-07",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/honeypot"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-honeypot.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "ghost.secd, duress mode, hidden volumes, compelled decryption, wrench attack, plausible deniability, LUKS2, Argon2id, FIDO2, AES-256-GCM, multi-PIN, the purge, local AI privacy",
+        "articleSection": "Hard Truths",
+        "wordCount": 2399,
+        "timeRequired": "PT11M",
+        "inLanguage": "en-GB",
+        "isPartOf": {
+            "@type": "Blog",
+            "name": "Hard Truths",
+            "url": "https://www.localghost.ai/hard-truths"
+        },
+        "about": [
+            { "@type": "Thing", "name": "Disk encryption" },
+            { "@type": "Thing", "name": "Plausible deniability" },
+            { "@type": "Thing", "name": "Compelled decryption" },
+            { "@type": "Thing", "name": "Local-first AI" },
+            { "@type": "Thing", "name": "Privacy" }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
+            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
+            { "@type": "ListItem", "position": 3, "name": "The Honeypot Under Your Desk", "item": "https://www.localghost.ai/hard-truths/honeypot" }
+        ]
+    }
+    </script>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">
+        <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+    </div>
+    <div class="nav-links">
+        <a href="/manifesto">MANIFESTO</a>
+        <a href="/hard-truths" class="active">HARD TRUTHS</a>
+        <a href="/build">BUILD</a>
+        <a href="/directory" class="hide-mobile">DIRECTORY</a>
+        <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+    </div>
+</nav>
+
+<main class="narrow">
+
+    <div class="page-header">
+        <div class="section-label">&gt; HARD_TRUTHS // POST_07 // APR 2026</div>
+        <h1>The Honeypot Under Your Desk</h1>
+        <div class="date">Vlad Cealicu // 07 April 2026</div>
+    </div>
+
+    <div class="manifesto-text">
+
+        <div class="statement-box">
+            <p class="statement-main">The more useful LocalGhost gets, the more dangerous it is to hand to anyone.</p>
+        </div>
+
+        <div class="podcast-player"
+             data-src="/assets/podcast/honeypot.mp3"
+             data-title="The Honeypot Under Your Desk"
+             data-album="EPISODE 07"
+             data-artwork="/images/og-honeypot.png">
+            <div class="pp-meta">
+                <span><span class="pp-label">&gt; EPISODE 07</span> // OFFLINE-READY</span>
+                <span>NOTEBOOKLM AUDIO</span>
+            </div>
+            <div class="pp-controls">
+                <button class="pp-play" type="button" aria-label="Play podcast">
+                    <span class="pp-icon-play">&#9654;</span>
+                    <span class="pp-icon-pause">&#10074;&#10074;</span>
+                </button>
+                <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="pp-progress-bar"></div>
+                </div>
+                <span class="pp-time">00:00 / --:--</span>
+                <a class="pp-download" href="/assets/podcast/honeypot.mp3" download aria-label="Download podcast">DOWNLOAD</a>
+            </div>
+            <audio preload="metadata" src="/assets/podcast/honeypot.mp3"></audio>
+        </div>
+
+        <p>
+            Cristina asked me what would happen if someone stole the box. I started explaining the encryption setup and stopped halfway through because I was answering the wrong question. A thief can't make you type your password. A person holding a gun to your head can (the standard wrench attack, XKCD 538) [1], and ghost.secd is built to protect against this scenario, because the attacker doesn't know how many PINs you have, you could have one or five, and there is no easy way to check.
+        </p>
+
+        <p>
+            I'd been so focused on building something that protects you from the cloud that I hadn't sat with what it means to carry your entire indexed life on a single piece of hardware that someone with legal authority can compel you to unlock. The same thing that makes LocalGhost useful, the fact that the box knows everything about you and can pull threads across years of context, is what makes the box the worst thing to surrender. A normal laptop seized at a border crossing leaks your email and your photos. A LocalGhost box hands over the searchable index to your entire life, perfectly correlated, with the daemons standing ready to answer questions about you that you wouldn't have thought to ask yourself.
+        </p>
+
+        <div class="section-header">&gt; 1. Where encryption stops helping</div>
+
+        <p>
+            Encryption protects data at rest. Encryption does not protect you when someone is standing in front of you with the legal authority to compel you to unlock the device. Border agents can require decryption in most jurisdictions (not all, but most) [2], courts can issue warrants compelling cooperation, and the wrench attack is the simplest version of the same threat model, a thirty-dollar wrench applied to a kneecap defeats any cryptographic system, because the attacker doesn't need to break the math, they just need to break the person.
+        </p>
+
+        <p>
+            The standard advice is to encrypt your stuff and hope, which works fine until the day it doesn't. The model LocalGhost has to work under is that you assume the box will eventually be seized, examined, or pointed at by someone with the authority to make you cooperate, and you build the security around that assumption rather than around the assumption that the encryption alone will hold forever.
+        </p>
+
+        <div class="section-header">&gt; 2. WHO THIS DEFENDS YOU AGAINST</div>
+
+        <p>
+            v1 of ghost.secd is built primarily for the bored border agent, the curious customs officer, the routine inspection where someone with legal authority wants to look but isn't running forensics. v1 is built secondarily for the wrench attack scenario where you want to be able to cooperate convincingly under coercion. It is not built for a targeted forensic examination by a state-level adversary who knows LocalGhost ships duress PINs and is specifically looking for the hidden volume signature, because hidden volume detection is a known research area, VeraCrypt's design has known statistical fingerprints [3], and any system that documents duress mode as a feature is by definition known to ship duress mode. If your threat model is a nation-state with prior knowledge and time, you need a different tool, and probably a different country.
+        </p>
+
+        <p>
+            At the other end of the coercion scale there is a hard limit. A border agent in an adversarial jurisdiction can compel every PIN you have, someone holding a weapon to your head can compel every PIN you have, and no duress architecture, including this one, physically prevents you from sharing every PIN when the cost of refusing is high enough. What v1 offers against unlimited coercion is structural ambiguity about completeness and nothing stronger, and I want to be clear that ambiguity is not the same as physical impossibility.
+        </p>
+
+        <div class="section-header">&gt; 3. HOW WE PLAN TO HIDE IT</div>
+
+        <p>
+            The basic idea is borrowed from VeraCrypt and similar tools that have done this for years. Hidden volumes work by encrypting parallel filesystems with different derived keys, where each PIN unlocks its own volume, and the same hardware key proves you're physically present regardless of which PIN you typed. Only the PIN determines which world you walk into.
+        </p>
+
+        <p>
+            The mechanical version is simple. ghost.secd manages two or more encrypted volumes with different derived keys. The FIDO2 hardware key proves physical possession but doesn't store the PINs anywhere. ghost.secd derives the decryption key from whichever PIN you entered, and the volume that derived key opens is the volume you see. There's no toggle in the software, no setting that says "duress mode active," nothing for a forensic examiner to find that would suggest other worlds exist. Each duress volume is just a different filesystem mounted by a different derived key, and the real volume sits in unallocated space that looks like random noise to anyone without the real PIN.
+        </p>
+
+        <p>
+            You configure your PINs once, at setup, and you remember them. You will never accidentally type a duress PIN when you meant the real one because each PIN is meaningfully distinct from the others, and the way you choose them is up to you. When someone is standing in front of you with the authority to make you unlock the box, you cooperate, you type a duress PIN, you watch them browse through six months of weather observations and grocery receipts, and you walk away with your real life intact.
+        </p>
+
+        <p>
+            v1 of ghost.secd generalises this beyond two PINs. You can configure one PIN if you don't want duress mode at all, two if you want a single decoy, five if you want layered plausibility where some PINs open populated decoy volumes and others open volumes that look freshly initialised, or any combination that includes a purge PIN that destroys everything instead of unlocking anything useful. The architecture treats every PIN identically by deriving a separate key from each and unlocking whatever volume that derived key happens to open, and the contents of the volume tell ghost.secd what to do next. Most volumes are filesystems, your real data or a decoy. One of the volumes can be almost empty, holding nothing but a marker that ghost.secd recognises as the instruction to start destroying everything.
+        </p>
+
+        <p>
+            The advantage is structural, there is no metadata anywhere on the box recording how many PINs exist or what each one does, because the configuration lives inside the encrypted volumes themselves and is invisible without the keys. An attacker who demands every PIN you have can't verify they got them all, can't distinguish a duress PIN from a real one without typing it, and can't tell from the outside which PIN unlocks a volume and which one wipes the box.
+        </p>
+
+        <p>
+            The duress PIN architecture and the volume separation are the v1.0 work, the part where multiple encrypted volumes coexist on the same disk with separate derived keys for each and the box can be unlocked into whichever one a PIN happens to open. The part where ghost.secd generates a fully convincing decoy life to populate a duress volume, with believable journals and plausible spending patterns and a lived-in photo library, is aspirational and substantially harder. For the initial release the duress volumes will be either fresh-looking systems that appear recently set up or manually populated decoys you build yourself. The automatic decoy generation comes later, and the design has problems I have not solved, including how to make a generated life look lived in without falling into the uncanny valley where the absence of texture is the tell.
+        </p>
+
+        <div class="alarm">
+            <p>The convincing decoy is the hardest piece of this design and I am not yet sure how well it will work in practice. The duress architecture ships in v1.0. The decoy generator does not, and I do not want to oversell the part of the system I have not built yet.</p>
+        </div>
+
+        <div class="section-header">&gt; 4. How to comply without surrendering</div>
+
+        <p>
+            This is the part I keep coming back to because it changes the threat model completely. The traditional security mindset treats compelled disclosure as a failure state, the point at which the system has lost. The hidden volume design treats compelled disclosure as a normal operating mode, something the architecture handles cleanly because the architecture was designed to handle compelled disclosure from the start.
+        </p>
+
+        <p>
+            You can hand over a PIN. You can let them browse. You can answer their questions about why your photo library is so small or why you don't journal much. The decoy life looks plausible because the only person who knows the decoy is a decoy is you, and the decoy is a different boring person who happens to use the same hardware. Sanitised data wouldn't work because the patterns themselves are identifying, and any decoy that preserved your real patterns with the dangerous bits redacted would just be a slightly worse version of surrender.
+        </p>
+
+        <div class="signal">
+            <p>If the box can't be surrendered without the surrender being total, the box is too dangerous to carry, and the people who most need privacy are the people who can least afford a device that converts seizure into total surveillance.</p>
+        </div>
+
+        <p>
+            The duress PIN architecture works partly because attackers don't always know to ask for additional PINs. The moment LocalGhost ships duress mode as a documented public feature, every adversary who has heard of LocalGhost knows to ask how many PINs exist, and VeraCrypt has this same problem with its two-volume design and has never solved it. The multi-PIN design only partially closes the gap, and partial is the right word, because I am not pretending the architecture beats a determined targeted adversary who has prior knowledge of how the system works.
+        </p>
+
+        <div class="section-header">&gt; 5. When you need everything gone</div>
+
+        <p>
+            Hidden volumes are for the case where you want your data to survive the encounter. The Purge is for the case where you don't.
+        </p>
+
+        <p>
+            The Purge is just another PIN in the multi-PIN scheme. ghost.secd does not distinguish between a real PIN, a duress PIN, and a purge PIN at the architecture level, because every PIN derives a key, every key opens a volume, and the only thing that determines what happens next is what ghost.secd finds inside that volume after it mounts. Most volumes contain a filesystem with your data, or a decoy filesystem with someone else's. The purge volume is almost empty, holding nothing but a short string that ghost.secd recognises as the instruction to start destroying everything.
+        </p>
+
+        <p>
+            The user experience is deliberately undramatic. You type the purge PIN, the volume mounts, ghost.secd reads the marker, and the screen shows what looks like a first-run setup wizard, the kind of screen you would see on a brand-new device that has never been configured. Behind that screen, every other encrypted volume is being overwritten with random data, every daemon's database is being dropped, the Postgres instances are being wiped, the Redis caches are being flushed, the Mist shards on the network (the distributed backup layer) are being dereferenced so the distributed copies become unrecoverable, and the encryption keys are being destroyed. By the time the destruction finishes the box is on its way back to factory state with no trace of what was on it before. The attacker watching you type sees nothing alarming. They see a fresh-looking device that could be a brand-new install, or maybe the wrong PIN, or maybe just a box that was never set up properly, and the assumptions they walk away with are not the assumptions they walked in with.
+        </p>
+
+        <p>
+            Remembering several PINs is harder than it sounds and most people do it badly. The way I handle it (and this is just one approach) is to anchor everything to one number I already know and offset from there. If my real PIN is 2525, then 2524 is one decoy, 2523 is another, and 1525 is the purge. The first three digits stay constant across the decoys with the last digit walking down by one each time, and the purge changes a different position entirely so I can never confuse the decoy pattern with the destruction pattern. Each PIN is distinct enough that I will not confuse them under stress, and related enough that I do not have to memorise four unrelated four-digit numbers. Build whatever mnemonic works for you, but build the system before you set the PINs, because trying to invent a memory aid after the fact is how you end up locking yourself out of the real volume.
+        </p>
+
+        <p>
+            The two options exist alongside each other because they answer different questions. The duress PIN answers how to cooperate without surrendering. The Purge answers how to make sure no one ever recovers anything from the box, ever. Those are not the same question, and neither answer is sufficient on its own.
+        </p>
+
+        <div class="section-header">&gt; 6. WHAT SECD IS AND WHAT IT ISN'T</div>
+
+        <p>
+            ghost.secd handles encryption, key management, presence verification, the duress flow, and the purge. There are other things ghost.secd will do that I am not ready to write about yet, including the harder parts around mobile integration where biometric APIs don't expose which finger unlocked the device, key recovery without compromising the hidden volume, and how the box behaves under cold-boot and DMA attacks when it's seized while still powered on. Those will get their own posts when the design is far enough along to defend in writing.
+        </p>
+
+        <p>
+            LocalGhost only works if the hardware can be carried, used, and occasionally surrendered without the surrender being total. If the design treats every encounter with authority as a failure state, the box becomes too dangerous to own, and the privacy benefits of running everything locally collapse the first time the box leaves your house.
+        </p>
+
+        <p>
+            We do not roll our own crypto (ever). ghost.secd uses LUKS2 with detached headers, Argon2id for key derivation, AES-256-GCM for the encryption itself, and FIDO2 hardware keys for presence verification. Every primitive is established and audited and has been studied longer than I have been writing software. The contribution we are making with ghost.secd is architectural, combining tools that already exist into a system where compliance and surrender stop being the same thing.
+        </p>
+
+        <div class="final-words">
+            Cristina asked me what would happen if someone stole the box. The version of LocalGhost I am building toward is one where the answer doesn't matter much. The box can be stolen, seized, or surrendered, and the most useful tool you own becomes the most boring thing the person looking at it has ever seen, a stranger who happens to use the same hardware. Whether the decoy generation will be convincing enough to survive a real encounter is something I won't know until people test it.
+            <span class="small">[ localghost.ai // hard-truths ]</span>
+        </div>
+
+        <div class="section-header">&gt; REFERENCES</div>
+
+        <p class="reference">
+            [1] Randall Munroe, XKCD 538, "Security". The comic that gave the wrench attack its name, illustrating that a $5 wrench applied to a person defeats any cryptographic system because the attacker bypasses the math entirely. <a href="https://xkcd.com/538/" target="_blank" rel="noopener">xkcd.com/538</a>
+        </p>
+
+        <p class="reference">
+            [2] EFF, "Digital Privacy at the U.S. Border", updated March 2017. Comprehensive legal analysis of border search authority, compelled decryption, Fifth Amendment protections, and the distinction between basic and advanced device searches. Source for the claim that border agents can require decryption in most jurisdictions, and for the legal landscape around compelled disclosure. <a href="https://www.eff.org/wp/digital-privacy-us-border-2017" target="_blank" rel="noopener">eff.org/wp/digital-privacy-us-border-2017</a>
+        </p>
+
+        <p class="reference">
+            [3] Schafer et al., 2017. "Defeating Plausible Deniability of VeraCrypt Hidden Operating Systems." Demonstrates that encrypted outer volumes can contain information that compromises the existence of a hidden OS, and that cross-drive analysis can detect hidden volume presence and estimate its size. Source for the claim that VeraCrypt's design has known statistical fingerprints and that hidden volume detection is a known research area. <a href="https://www.researchgate.net/publication/318155607_Defeating_Plausible_Deniability_of_VeraCrypt_Hidden_Operating_Systems" target="_blank" rel="noopener">researchgate.net/publication/318155607</a>
+        </p>
+
+    </div>
+
+    <div class="post-nav">
+        <a href="/hard-truths/model-trap" class="prev">
+            <div class="pn-label">← PREVIOUS POST</div>
+            <div class="pn-title">The Model Trap</div>
+        </a>
+        <a href="/hard-truths/critic-worth-listening-to" class="next">
+            <div class="pn-label">NEXT POST →</div>
+            <div class="pn-title">How to Build a Critic Worth Listening To</div>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+        <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+        <a href="/brand-guidelines">BRAND GUIDELINES</a>
+        <a href="/writing-guidelines">WRITING GUIDELINES</a>
+        <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+        <a href="mailto:info@localghost.ai">CONTACT</a>
+    </div>
+    <p class="footer-quote">"Whether the decoy generation will be convincing enough to survive a real encounter is something I won't know until people test it." // The Honeypot Under Your Desk</p>
+</footer>
+
+<script src="/js/blog-player.js" defer></script>
+
+</body>
+</html>

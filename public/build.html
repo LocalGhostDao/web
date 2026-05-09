@@ -88,8 +88,7 @@
         </div>
         <div class="nav-links">
             <a href="/manifesto">MANIFESTO</a>
-            <a href="/inflection" class="hide-mobile">WHY NOW</a>
-            <a href="/reckoning" class="hide-mobile">HARD TRUTHS</a>
+            <a href="/hard-truths">HARD TRUTHS</a>
             <a href="/build" class="active">BUILD</a>
             <a href="/directory" class="hide-mobile">DIRECTORY</a>
             <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
@@ -101,7 +100,7 @@
         <div class="page-header">
             <div class="section-label">&gt; BUILD_THIS</div>
             <h1>The Roadmap</h1>
-            <div class="date">LocalGhost.ai // January 2026</div>
+            <div class="date">Vlad Cealicu // 03 January 2026</div>
         </div>
 
         <!-- CONTENT -->
@@ -109,20 +108,20 @@
 
             <!-- STATUS CALLOUT -->
             <div class="status-callout">
-                <p class="status-title">We're Just Starting</p>
-                <p class="status-sub">Website and vision documented. Architecture designed. First commits incoming.</p>
+                <p class="status-title">Phase 1, Building in the Open</p>
+                <p class="status-sub">Website and vision documented. Architecture designed. Daemon READMEs live in the repo. Code is being written.</p>
                 <a href="https://github.com/LocalGhostDao/localghost" target="_blank" class="status-cta">[ WATCH THE REPO → ]</a>
             </div>
 
             <p>
-                If you believe in the <a href="/manifesto">mission</a>, here's what we need to make it happen. Some of this we're building. Some of it we can't build alone. All of it needs to exist.
+                If you believe in the <a href="/manifesto">mission</a>, here's what we need to make it happen. Some of this we're building, some of it we can't build alone, and all of it is listed below with enough detail to start.
             </p>
 
             <!-- SECTION 1: ECOSYSTEM GAPS -->
             <div class="section-header">&gt; 1. WHAT THE ECOSYSTEM NEEDS</div>
 
             <p>
-                These are the missing pieces — things <em>anyone</em> can build. Some are critical infrastructure; without them, local-first stays a hobby. Others make the difference between "technically possible" and "actually usable."
+                These are the missing pieces, things <em>anyone</em> can build. Without the critical ones, local-first stays a hobby.
             </p>
 
             <div class="roadmap-container">
@@ -130,9 +129,9 @@
                     <div class="roadmap-status-bar">CRITICAL GAP</div>
                     <div class="roadmap-content">
                         <h4>Local AI That Actually Works</h4>
-                        <p>A complete AI assistant running entirely on hardware you own. Not a tech demo — something your non-technical family member could use. Handles personal data, works offline, no subscription. Ollama runs models. Nobody's built the experience yet.</p>
+                        <p>A complete AI assistant running entirely on hardware you own. Not a tech demo, something your non-technical family member could use. Handles personal data, works offline, no subscription. Ollama runs models, but nobody has built the experience around them yet.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Partial: Ollama, LM Studio, llama.cpp</span>
+                            <span class="existing">Partial, Ollama, LM Studio, llama.cpp</span>
                         </div>
                     </div>
                 </div>
@@ -141,9 +140,9 @@
                     <div class="roadmap-status-bar">CRITICAL GAP</div>
                     <div class="roadmap-content">
                         <h4>Data Liberation Tools</h4>
-                        <p>Export everything you've given to Google, Apple, Facebook, banks, health apps — and import it somewhere you control. The "download your data" options are deliberately hard to use. We need tools that parse those exports into something useful.</p>
+                        <p>Export everything you've given to Google, Apple, Facebook, banks, and health apps, then import it somewhere you control. The "download your data" options are deliberately hard to use. We need tools that parse those exports into something useful.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Partial: Google Takeout parsers exist but are fragmented</span>
+                            <span class="existing">Partial, Google Takeout parsers exist but are fragmented</span>
                         </div>
                     </div>
                 </div>
@@ -152,9 +151,9 @@
                     <div class="roadmap-status-bar">NEEDED</div>
                     <div class="roadmap-content">
                         <h4>Serverless Backup</h4>
-                        <p>Back up your data across multiple locations without trusting any single company. Like BitTorrent but for keeping your stuff safe. The technology exists (erasure coding, DHT, etc.) — making it easy doesn't yet.</p>
+                        <p>Back up your data across multiple locations without trusting any single company. Like BitTorrent but for keeping your stuff safe. The technology exists (erasure coding, DHT, etc.) but making it easy doesn't yet.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Related: Syncthing, Restic, BorgBackup</span>
+                            <span class="existing">Related, Syncthing, Restic, BorgBackup</span>
                         </div>
                     </div>
                 </div>
@@ -163,9 +162,9 @@
                     <div class="roadmap-status-bar">NEEDED</div>
                     <div class="roadmap-content">
                         <h4>Cross-Device Sync Without the Cloud</h4>
-                        <p>Keep phone, laptop, and tablet in sync without going through someone else's servers. Syncthing does this and it's great — but it needs to be easier and work better on phones (iOS especially).</p>
+                        <p>Keep phone, laptop, and tablet in sync without going through someone else's servers. Syncthing does this and it's great, but it needs to be easier and work better on phones, iOS especially.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Partial: Syncthing (works well on Android, limited iOS)</span>
+                            <span class="existing">Partial, Syncthing (works well on Android, limited iOS)</span>
                         </div>
                     </div>
                 </div>
@@ -174,9 +173,9 @@
                     <div class="roadmap-status-bar">HELPFUL</div>
                     <div class="roadmap-content">
                         <h4>Local Photo Library</h4>
-                        <p>Google Photos and Apple Photos are genuinely good. A local version needs to match their search and organization features without sending everything to the cloud. Face recognition, scene tagging, timeline views — all running locally.</p>
+                        <p>Google Photos and Apple Photos are genuinely good. A local version needs to match their search and organization features without sending everything to the cloud. Face recognition, scene tagging, timeline views, all running locally.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Partial: PhotoPrism, Immich</span>
+                            <span class="existing">Partial, PhotoPrism, Immich</span>
                         </div>
                     </div>
                 </div>
@@ -185,9 +184,9 @@
                     <div class="roadmap-status-bar">HELPFUL</div>
                     <div class="roadmap-content">
                         <h4>Personal Knowledge Base</h4>
-                        <p>A system that collects everything you save — notes, emails, documents, bookmarks — and lets you search and ask questions about it. Obsidian is close. Making it work with local AI would be transformative.</p>
+                        <p>A system that collects everything you save, notes, emails, documents, bookmarks, and lets you search and ask questions about it. Obsidian is close. Making it work with local AI would be transformative.</p>
                         <div class="roadmap-meta">
-                            <span class="existing">Partial: Obsidian, Logseq, Notion (cloud)</span>
+                            <span class="existing">Partial, Obsidian, Logseq, Notion (cloud)</span>
                         </div>
                     </div>
                 </div>
@@ -202,11 +201,11 @@
             <div class="section-header">&gt; 2. OUR CONTRIBUTION</div>
 
             <p>
-                LocalGhost is our piece of the puzzle: a privacy-first, self-hosted AI system designed to run entirely on your hardware. Six daemons, each with one job. Hidden volumes and duress mode for when encryption isn't enough. Hardware tiers from Raspberry Pi to rack mount.
+                LocalGhost is our piece of the puzzle, a privacy-first, self-hosted AI system designed to run entirely on your hardware, built around a fleet of daemons that each handle one job, from ingesting your text, images, audio, and structured data, through building the memory layer, to backup, encryption, duress mode, and <a href="/hard-truths/dictator-brain">ghost.shadowd</a> which exists to challenge your thinking instead of confirming it. The fleet starts at ten daemons and will grow over time as new modalities and jobs are added. Hardware tiers run from Raspberry Pi to rack mount.
             </p>
 
             <p>
-                <span class="highlight">The technical details live in the repo.</span> Architecture, security model, roadmap phases, hardware specs — all documented there.
+                <span class="highlight">The technical details live in the repo.</span> Architecture, security model, roadmap phases, hardware specs, all documented there.
             </p>
 
             <div class="repo-links">
@@ -227,7 +226,7 @@
             </div>
 
             <p>
-                Current status: <strong>Phase 0</strong>. Website live, architecture documented, first commits incoming. Software releases named after ghosts — <code>wisp</code>, <code>shade</code>, <code>specter</code>, <code>phantom</code>, <code>poltergeist</code>. Hardware ships after software is stable.
+                Current status, Phase 1. Software releases are named after ghosts, from <code>wisp</code> through <code>poltergeist</code>, and hardware ships after software is stable.
             </p>
 
             <!-- SECTION 3: HOW TO HELP -->
@@ -236,16 +235,16 @@
             <div class="help-options">
                 <div class="help-card featured">
                     <div class="help-title">Watch the Repo</div>
-                    <p>We're just starting. Star the repo, watch for releases, and follow along as we build in the open. First commits landing soon.</p>
+                    <p>Building in the open. Star the repo, watch for releases, and follow along as daemons land and Mist stands up.</p>
                     <code><a href="https://github.com/LocalGhostDao/localghost" target="_blank">github.com/LocalGhostDao/localghost</a></code>
                 </div>
                 <div class="help-card">
                     <div class="help-title">Build Something</div>
-                    <p>See a gap in section 1? Fill it. Even partial solutions matter. The <a href="/directory">Directory</a> tracks what exists — add yours when it's ready.</p>
+                    <p>See a gap in section 1? Fill it. Even partial solutions matter. The <a href="/directory">Directory</a> tracks what exists, add yours when it's ready.</p>
                 </div>
                 <div class="help-card">
                     <div class="help-title">Write tallyd Plugins</div>
-                    <p>Data parsers for <code>ghost.tallyd</code> — bank exports, health apps, fitness trackers, anything that exports data. Plugin architecture makes this modular.</p>
+                    <p>Data parsers for <code>ghost.tallyd</code>, bank exports, health apps, fitness trackers, anything that exports data. Plugin architecture makes this modular.</p>
                 </div>
                 <div class="help-card">
                     <div class="help-title">Test and Break Things</div>
@@ -253,16 +252,13 @@
                 </div>
                 <div class="help-card">
                     <div class="help-title">Fund Development</div>
-                    <p><strong>ETH:</strong> zerocool.eth</p>
+                    <p><strong>ETH,</strong> zerocool.eth</p>
                     <code>0xc72C85BDd6584324619176618E86E5e3196C6b47</code>
                 </div>
             </div>
 
             <div class="final-words">
-                The box isn't a new dependency — it's infrastructure you own.<br>
-                Everything is open source. Export buttons built in.<br>
-                If you want to leave, you take your data with you.
-                <span class="highlight">Build something you actually own.</span>
+                The box on your desk is infrastructure you own, running open-source software and open-weights models. The roadmap above is the work, most of it still unwritten.
                 <span class="small">[ localghost.ai ]</span>
             </div>
         </div>
@@ -278,6 +274,7 @@
         <div class="footer-links">
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
             <a href="mailto:info@localghost.ai">CONTACT</a>
         </div>
