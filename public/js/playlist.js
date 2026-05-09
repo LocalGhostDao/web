@@ -445,14 +445,14 @@
         }
     });
 
-    /* ---- render tracklist from tracks[] ---- */
+    /* ---- render tracklist (appends tracks missing from HTML) ---- */
 
     function renderTracklist() {
-        tracklist.innerHTML = '';
-        for (var i = 0; i < tracks.length; i++) {
+        var existing = tracklist.querySelectorAll('.track-item').length;
+        for (var i = existing; i < tracks.length; i++) {
             var t = tracks[i];
             var div = document.createElement('div');
-            div.className = 'track-item' + (i === 0 ? ' is-active' : '');
+            div.className = 'track-item';
             div.setAttribute('data-index', i);
             div.innerHTML =
                 '<span class="track-num">' + t.num + '</span>' +
