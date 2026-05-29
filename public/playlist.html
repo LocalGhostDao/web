@@ -432,32 +432,24 @@
             letter-spacing: 0.05em;
             -webkit-tap-highlight-color: transparent;
             -webkit-appearance: none;
-            appearance: none;
         }
 
-        .pl-btn:hover,
-        .pl-btn:focus {
+        /* desktop: hover and keyboard focus get green */
+        .pl-btn:hover {
+            color: var(--terminal);
+            border-color: var(--terminal-dim);
+            background: rgba(51, 255, 0, 0.04);
+        }
+
+        .pl-btn:focus-visible {
             color: var(--terminal);
             border-color: var(--terminal-dim);
             background: rgba(51, 255, 0, 0.04);
             outline: none;
         }
 
-        /* kill sticky hover/focus on touch */
-        @media (hover: none) {
-            .pl-btn:hover,
-            .pl-btn:focus {
-                color: var(--text-dim);
-                border-color: var(--border);
-                background: transparent;
-                box-shadow: none;
-            }
-            .pl-btn.is-active:hover,
-            .pl-btn.is-active:focus {
-                color: var(--terminal);
-                border-color: var(--terminal);
-                background: rgba(51, 255, 0, 0.06);
-            }
+        .pl-btn:focus {
+            outline: none;
         }
 
         /* ---- toggle dot ---- */
@@ -473,6 +465,7 @@
             transition: background 0.2s, box-shadow 0.2s;
         }
 
+        /* toggle ON state */
         .pl-btn.is-active {
             color: var(--terminal);
             border-color: var(--terminal);
@@ -488,6 +481,21 @@
         @keyframes dot-pulse {
             0%, 100% { box-shadow: 0 0 6px var(--terminal); }
             50% { box-shadow: 0 0 12px var(--terminal), 0 0 2px var(--terminal); }
+        }
+
+        /* synced state: always highlighted */
+        .pl-btn.is-synced {
+            color: var(--terminal);
+            border-color: var(--terminal);
+            background: rgba(51, 255, 0, 0.06);
+        }
+
+        /* ---- mobile: wrap controls, two rows ---- */
+
+        @media (max-width: 600px) {
+            .playlist-controls {
+                flex-wrap: wrap;
+            }
         }
 
         /* ---- Responsive ---- */

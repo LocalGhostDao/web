@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<title>A Ghost Should Not Possess, LocalGhost Hard Truths</title>
+<desc>LocalGhost.ai social card for the Hard Truths post on the twenty-eight patterns of possession and what an anti-possession daemon does about each one.</desc>
+
+<defs>
+<pattern id="scanlines" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+<rect x="0" y="0" width="4" height="2" fill="#000000" fill-opacity="0.10"/>
+<rect x="0" y="2" width="4" height="2" fill="#000000" fill-opacity="0.00"/>
+</pattern>
+<filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+<feGaussianBlur stdDeviation="3" result="blur"/>
+<feMerge>
+<feMergeNode in="blur"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+
+<style>
+.mono { font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Menlo', 'Consolas', 'DejaVu Sans Mono', 'Liberation Mono', 'Courier New', monospace; }
+.green { fill: #33FF00; }
+.dim { fill: #1a8000; }
+.text { fill: #E0E0E0; }
+.text-dim { fill: #a0a0a0; }
+.border { stroke: #1a8000; fill: none; }
+.divider { stroke: #444444; fill: none; }
+</style>
+
+<rect x="0" y="0" width="1200" height="630" fill="#111111"/>
+<rect x="0" y="0" width="1200" height="630" fill="url(#scanlines)"/>
+
+<rect x="20" y="20" width="1160" height="590" class="border" stroke-width="1"/>
+<rect x="28" y="28" width="1144" height="574" stroke="#1a8000" stroke-opacity="0.25" fill="none" stroke-width="1"/>
+
+<text x="80" y="98" class="mono green" font-size="22" font-weight="500" letter-spacing="3" filter="url(#glow)">&gt; HARD_TRUTHS // POST_16 // MAY 2026</text>
+
+<line x1="80" y1="130" x2="1120" y2="130" class="divider" stroke-width="1"/>
+
+<text x="80" y="232" class="mono text" font-size="78" font-weight="700">A Ghost Should</text>
+<text x="80" y="322" class="mono text" font-size="78" font-weight="700">Not Possess</text>
+
+<line x1="80" y1="378" x2="200" y2="378" stroke="#33FF00" stroke-width="2"/>
+
+<text x="80" y="432" class="mono text-dim" font-size="22" font-weight="400">The same manipulation patterns that built the slot</text>
+<text x="80" y="464" class="mono text-dim" font-size="22" font-weight="400">machine, the cult, and the social media feed</text>
+<text x="80" y="496" class="mono text-dim" font-size="22" font-weight="400">are aimed at you through your AI.</text>
+
+<line x1="80" y1="556" x2="1120" y2="556" class="divider" stroke-width="1"/>
+
+<text x="80" y="586" class="mono green" font-size="20" font-weight="500" letter-spacing="2" filter="url(#glow)">&gt; LOCALGHOST.AI</text>
+<text x="305" y="586" class="mono text-dim" font-size="16" font-weight="400">| THE ONLY CLOUD IS YOU</text>
+
+<text x="1120" y="586" class="mono dim" font-size="18" font-weight="500" text-anchor="end" letter-spacing="1">ghost.shadowd</text>
+
+<g transform="translate(870, 165)" opacity="0.95">
+  <path d="M 120,0
+           C 178,0 220,46 220,108
+           C 220,148 200,180 175,196
+           L 175,220
+           C 175,232 185,238 198,242
+           C 232,252 250,270 250,290
+           L -10,290
+           C -10,270 8,252 42,242
+           C 55,238 65,232 65,220
+           L 65,196
+           C 40,180 20,148 20,108
+           C 20,46 62,0 120,0 Z"
+        fill="#111111" stroke="#33FF00" stroke-width="3" stroke-linejoin="round" filter="url(#glow)"/>
+
+  <g transform="translate(58, 60)">
+    <path d="M 0,0 L 0,42 L 5,37 L 10,42 L 15,37 L 20,42 L 25,37 L 30,42 L 35,37 L 38,42 L 38,0 Q 38,-20 19,-20 Q 0,-20 0,0 Z"
+          fill="#111111" stroke="#33FF00" stroke-width="2" stroke-linejoin="round" filter="url(#glow)"/>
+    <circle cx="12" cy="-6" r="2.8" fill="#33FF00"/>
+    <circle cx="26" cy="-6" r="2.8" fill="#33FF00"/>
+    <path d="M 14,7 Q 19,12 24,7" stroke="#33FF00" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(132, 72)">
+    <path d="M 0,0 L 0,34 L 4,29 L 8,34 L 12,29 L 16,34 L 20,29 L 24,34 L 28,29 L 28,0 Q 28,-14 14,-14 Q 0,-14 0,0 Z"
+          fill="#111111" stroke="#33FF00" stroke-width="2" stroke-linejoin="round" filter="url(#glow)"/>
+    <circle cx="9" cy="-4" r="2.2" fill="#33FF00"/>
+    <circle cx="19" cy="-4" r="2.2" fill="#33FF00"/>
+    <path d="M 10,5 Q 14,9 18,5" stroke="#33FF00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(92, 138)">
+    <path d="M 0,0 L 0,28 L 4,24 L 8,28 L 12,24 L 16,28 L 20,24 L 24,28 L 24,0 Q 24,-12 12,-12 Q 0,-12 0,0 Z"
+          fill="#111111" stroke="#33FF00" stroke-width="2" stroke-linejoin="round" filter="url(#glow)"/>
+    <circle cx="7" cy="-3" r="2" fill="#33FF00"/>
+    <circle cx="17" cy="-3" r="2" fill="#33FF00"/>
+    <path d="M 9,4 Q 12,7 15,4" stroke="#33FF00" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  </g>
+</g>
+
+</svg>

@@ -750,13 +750,19 @@ div.alarm p {
 @media (max-width: 600px) {
     .references {
         font-size: 0.74rem;
-        padding-left: 2.2rem;
-        text-indent: -2.2rem;
+        padding-left: 0;
+        text-indent: 0;
         line-height: 1.55;
     }
 
     .references strong {
-        min-width: 2rem;
+        min-width: 0;
+        margin-right: 0.4rem;
+    }
+
+    .references:target {
+        padding-left: 0.6rem;
+        margin-left: 0;
     }
 
     .cite {
