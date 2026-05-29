@@ -9,7 +9,7 @@
     'use strict';
 
     var tracks = [
-        { num: '01', title: "A Cypherpunk's Manifesto",        src: "/assets/playlist/01. A Cypherpunk's Manifesto.mp3",    post: '/cypherpunk' },
+        { num: '01', title: "A Cypherpunk's Manifesto",       src: "/assets/playlist/01. A Cypherpunk's Manifesto.mp3",    post: '/cypherpunk' },
         { num: '02', title: 'This Dystopia Is Boring',         src: '/assets/playlist/02. This Dystopia Is Boring.mp3',     post: '/manifesto' },
         { num: '03', title: 'The Window',                      src: '/assets/playlist/03. The Window.mp3',                  post: '/hard-truths/inflection' },
         { num: '04', title: 'The First Honest Thing',          src: '/assets/playlist/04. The First Honest Thing.mp3',      post: '/hard-truths/reckoning' },
@@ -21,11 +21,11 @@
         { num: '10', title: 'The Same Technique',              src: '/assets/playlist/10. The Same Technique.mp3',          post: '/hard-truths/critic-worth-listening-to' },
         { num: '11', title: 'Napoli 1820',                     src: '/assets/playlist/11. Napoli 1820.mp3',                 post: '/hard-truths/how-memory-gets-made' },
         { num: '12', title: 'The Labyrinth Defends Itself',    src: '/assets/playlist/12. The Labyrinth Defends Itself.mp3',post: '/hard-truths/the-bureaucracy-trap' },
-        { num: '13', title: 'Radio Checklist',                 src: '/assets/playlist/13. Radio Checklist.mp3',             post: '/hard-truths/before-you-ask' },
-        { num: '14', title: 'Assisi Espresso Chair',           src: '/assets/playlist/14. Assisi Espresso Chair.mp3',       post: '/hard-truths/day-one' },
-        { num: '15', title: 'What The Ghost Owes',             src: '/assets/playlist/15. What The Ghost Owes.mp3',         post: '/hard-truths/overhears' },
-        { num: '16', title: 'Integration Tax',                 src: '/assets/playlist/16. Integration Tax.mp3',             post: '/hard-truths/integration-tax' },
-        { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                      post: '/hard-truths/index-not-a-person' },
+        { num: '13', title: 'Radio Checklist',              src: '/assets/playlist/13. Radio Checklist.mp3',         post: '/hard-truths/before-you-ask' },
+        { num: '14', title: 'Assisi Espresso Chair',         src: '/assets/playlist/14. Assisi Espresso Chair.mp3',    post: '/hard-truths/day-one' },
+        { num: '15', title: 'What The Ghost Owes',             src: '/assets/playlist/15. What The Ghost Owes.mp3',      post: '/hard-truths/overhears' },
+        { num: '16', title: 'Integration Tax',                 src: '/assets/playlist/16. Integration Tax.mp3',          post: '/hard-truths/integration-tax' },
+        { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                   post: '/hard-truths/index-not-a-person' },
         { num: '18', title: 'A Ghost Should Not Possess',      src: '/assets/playlist/18. A Ghost Should Not Possess.mp3',  post: '/hard-truths/should-not-possess' }
     ];
 
@@ -141,26 +141,48 @@
     /* ---- preload durations for tracklist display ---- */
 
     function probeDurations() {
-        tracks.forEach(function (t, i) {
+        var i = 0;
+        function probeNext() {
+            if (i >= tracks.length) return;
+            var idx = i;
+            var t = tracks[idx];
             var probe = new Audio();
+            var done = false;
             probe.preload = 'metadata';
-            probe.src = t.src;
             probe.addEventListener('loadedmetadata', function () {
-                durations[i] = fmt(probe.duration);
-                var cell = tracklist.querySelector('.track-duration[data-for="' + i + '"]');
-                if (cell) cell.textContent = durations[i];
+                if (done) return;
+                done = true;
+                durations[idx] = fmt(probe.duration);
+                var cell = tracklist.querySelector('.track-duration[data-for="' + idx + '"]');
+                if (cell) cell.textContent = durations[idx];
                 probe.src = '';
-                probe = null;
+                i++;
+                probeNext();
             });
-        });
+            probe.addEventListener('error', function () {
+                if (done) return;
+                done = true;
+                probe.src = '';
+                i++;
+                probeNext();
+            });
+            probe.src = t.src;
+        }
+        probeNext();
     }
 
     /* ---- event bindings ---- */
 
     playBtn.addEventListener('click', function () {
         if (audio.paused) {
-            if (!audio.src || audio.src === window.location.href) loadTrack(0, true);
-            else audio.play();
+            if (!audio.src || audio.src === window.location.href) {
+                loadTrack(0, true);
+            } else {
+                audio.play().catch(function () {
+                    /* mobile might need a fresh load */
+                    loadTrack(current, true);
+                });
+            }
         } else {
             audio.pause();
         }
@@ -286,78 +308,46 @@
         }).catch(function () { return 'unknown'; });
     }
 
-    /* ---- UI indicators ---- */
+    /* ---- UI indicators (cache check only, no network) ---- */
 
     function refreshCacheIndicators() {
         if (!cacheSupported()) return;
         var items = tracklist.querySelectorAll('.track-item');
 
-        getMeta().then(function (meta) {
-            var cachedCount = 0;
-            var staleCount = 0;
-            var checks = tracks.map(function (t, i) {
-                return caches.open(CACHE_NAME).then(function (cache) {
-                    return cache.match(t.src);
-                }).then(function (r) {
-                    if (!r) {
-                        items[i] && items[i].classList.remove('is-cached', 'is-stale');
-                        return;
-                    }
+        var cachedCount = 0;
+        var checks = tracks.map(function (t, i) {
+            return caches.open(CACHE_NAME).then(function (cache) {
+                return cache.match(t.src);
+            }).then(function (r) {
+                if (r) {
                     cachedCount++;
                     items[i] && items[i].classList.add('is-cached');
-                    /* check freshness in background */
-                    return checkFreshness(t.src, meta).then(function (state) {
-                        if (state === 'stale') {
-                            staleCount++;
-                            items[i] && items[i].classList.add('is-stale');
-                        } else {
-                            items[i] && items[i].classList.remove('is-stale');
-                        }
-                    });
-                }).catch(function () {});
-            });
-
-            Promise.all(checks).then(function () {
-                if (staleCount > 0) {
-                    downloadAllBtn.innerHTML = '\u2193 ' + staleCount + ' UPDATE' + (staleCount > 1 ? 'S' : '');
-                } else if (cachedCount >= tracks.length) {
-                    downloadAllBtn.innerHTML = '\u2713 SYNCED';
-                } else if (cachedCount > 0) {
-                    downloadAllBtn.innerHTML = '\u2193 SYNC (' + cachedCount + '/' + tracks.length + ')';
                 } else {
-                    downloadAllBtn.innerHTML = '\u2193 SAVE OFFLINE';
+                    items[i] && items[i].classList.remove('is-cached', 'is-stale');
                 }
-            });
+            }).catch(function () {});
+        });
+
+        Promise.all(checks).then(function () {
+            if (cachedCount >= tracks.length) {
+                downloadAllBtn.innerHTML = '\u2713 SYNCED';
+                downloadAllBtn.classList.add('is-synced');
+            } else if (cachedCount > 0) {
+                downloadAllBtn.innerHTML = '\u2193 SYNC (' + cachedCount + '/' + tracks.length + ')';
+                downloadAllBtn.classList.remove('is-synced');
+            } else {
+                downloadAllBtn.innerHTML = '\u2193 SAVE OFFLINE';
+                downloadAllBtn.classList.remove('is-synced');
+            }
         });
     }
 
     /* ---- cache-first audio loading ---- */
 
     function setCachedSrc(src, autoplay) {
-        if (!cacheSupported()) {
-            audio.src = src;
-            audio.load();
-            if (autoplay) audio.play().catch(function () {});
-            return;
-        }
-        caches.open(CACHE_NAME).then(function (cache) {
-            return cache.match(src);
-        }).then(function (response) {
-            if (response) {
-                return response.blob().then(function (blob) {
-                    audio.src = URL.createObjectURL(blob);
-                    audio.load();
-                    if (autoplay) audio.play().catch(function () {});
-                });
-            }
-            audio.src = src;
-            audio.load();
-            if (autoplay) audio.play().catch(function () {});
-        }).catch(function () {
-            audio.src = src;
-            audio.load();
-            if (autoplay) audio.play().catch(function () {});
-        });
+        audio.src = src;
+        audio.load();
+        if (autoplay) audio.play().catch(function () {});
     }
 
     /* ---- sync: cache new + update stale, with per-track progress ---- */
@@ -439,7 +429,7 @@
             e.preventDefault();
             if (audio.paused) {
                 if (!audio.src || audio.src === window.location.href) loadTrack(0, true);
-                else audio.play();
+                else audio.play().catch(function () { loadTrack(current, true); });
             } else {
                 audio.pause();
             }
@@ -471,7 +461,7 @@
     renderTracklist();
     loadTrack(0, false);
     probeDurations();
-    refreshCacheIndicators();
+    try { refreshCacheIndicators(); } catch (e) { /* cache API unavailable */ }
 
     /* =========================================================
        OSCILLOSCOPE — Web Audio API waveform visualisation.
