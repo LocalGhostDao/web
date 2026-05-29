@@ -9,7 +9,7 @@
     'use strict';
 
     var tracks = [
-        { num: '01', title: "A Cypherpunk's Manifesto",       src: "/assets/playlist/01. A Cypherpunk's Manifesto.mp3",    post: '/cypherpunk' },
+        { num: '01', title: "A Cypherpunk's Manifesto",        src: "/assets/playlist/01. A Cypherpunk's Manifesto.mp3",    post: '/cypherpunk' },
         { num: '02', title: 'This Dystopia Is Boring',         src: '/assets/playlist/02. This Dystopia Is Boring.mp3',     post: '/manifesto' },
         { num: '03', title: 'The Window',                      src: '/assets/playlist/03. The Window.mp3',                  post: '/hard-truths/inflection' },
         { num: '04', title: 'The First Honest Thing',          src: '/assets/playlist/04. The First Honest Thing.mp3',      post: '/hard-truths/reckoning' },
@@ -21,11 +21,11 @@
         { num: '10', title: 'The Same Technique',              src: '/assets/playlist/10. The Same Technique.mp3',          post: '/hard-truths/critic-worth-listening-to' },
         { num: '11', title: 'Napoli 1820',                     src: '/assets/playlist/11. Napoli 1820.mp3',                 post: '/hard-truths/how-memory-gets-made' },
         { num: '12', title: 'The Labyrinth Defends Itself',    src: '/assets/playlist/12. The Labyrinth Defends Itself.mp3',post: '/hard-truths/the-bureaucracy-trap' },
-        { num: '13', title: 'Radio Checklist',              src: '/assets/playlist/13. Radio Checklist.mp3',         post: '/hard-truths/before-you-ask' },
-        { num: '14', title: 'Assisi Espresso Chair',         src: '/assets/playlist/14. Assisi Espresso Chair.mp3',    post: '/hard-truths/day-one' },
-        { num: '15', title: 'What The Ghost Owes',             src: '/assets/playlist/15. What The Ghost Owes.mp3',      post: '/hard-truths/overhears' },
-        { num: '16', title: 'Integration Tax',                 src: '/assets/playlist/16. Integration Tax.mp3',          post: '/hard-truths/integration-tax' },
-        { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                   post: '/hard-truths/index-not-a-person' },
+        { num: '13', title: 'Radio Checklist',                 src: '/assets/playlist/13. Radio Checklist.mp3',             post: '/hard-truths/before-you-ask' },
+        { num: '14', title: 'Assisi Espresso Chair',           src: '/assets/playlist/14. Assisi Espresso Chair.mp3',       post: '/hard-truths/day-one' },
+        { num: '15', title: 'What The Ghost Owes',             src: '/assets/playlist/15. What The Ghost Owes.mp3',         post: '/hard-truths/overhears' },
+        { num: '16', title: 'Integration Tax',                 src: '/assets/playlist/16. Integration Tax.mp3',             post: '/hard-truths/integration-tax' },
+        { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                      post: '/hard-truths/index-not-a-person' },
         { num: '18', title: 'A Ghost Should Not Possess',      src: '/assets/playlist/18. A Ghost Should Not Possess.mp3',  post: '/hard-truths/should-not-possess' }
     ];
 
@@ -159,14 +159,8 @@
 
     playBtn.addEventListener('click', function () {
         if (audio.paused) {
-            if (!audio.src || audio.src === window.location.href) {
-                loadTrack(0, true);
-            } else {
-                audio.play().catch(function () {
-                    /* mobile might need a fresh load */
-                    loadTrack(current, true);
-                });
-            }
+            if (!audio.src || audio.src === window.location.href) loadTrack(0, true);
+            else audio.play();
         } else {
             audio.pause();
         }
@@ -326,16 +320,12 @@
             Promise.all(checks).then(function () {
                 if (staleCount > 0) {
                     downloadAllBtn.innerHTML = '\u2193 ' + staleCount + ' UPDATE' + (staleCount > 1 ? 'S' : '');
-                    downloadAllBtn.classList.remove('is-synced');
                 } else if (cachedCount >= tracks.length) {
                     downloadAllBtn.innerHTML = '\u2713 SYNCED';
-                    downloadAllBtn.classList.add('is-synced');
                 } else if (cachedCount > 0) {
                     downloadAllBtn.innerHTML = '\u2193 SYNC (' + cachedCount + '/' + tracks.length + ')';
-                    downloadAllBtn.classList.remove('is-synced');
                 } else {
                     downloadAllBtn.innerHTML = '\u2193 SAVE OFFLINE';
-                    downloadAllBtn.classList.remove('is-synced');
                 }
             });
         });
@@ -449,7 +439,7 @@
             e.preventDefault();
             if (audio.paused) {
                 if (!audio.src || audio.src === window.location.href) loadTrack(0, true);
-                else audio.play().catch(function () { loadTrack(current, true); });
+                else audio.play();
             } else {
                 audio.pause();
             }
@@ -481,7 +471,7 @@
     renderTracklist();
     loadTrack(0, false);
     probeDurations();
-    try { refreshCacheIndicators(); } catch (e) { /* cache API unavailable */ }
+    refreshCacheIndicators();
 
     /* =========================================================
        OSCILLOSCOPE — Web Audio API waveform visualisation.
