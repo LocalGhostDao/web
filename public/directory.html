@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Primary Meta Tags -->
     <title>Local-First Directory | LocalGhost.ai</title>
     <meta name="title" content="Local-First Directory | LocalGhost.ai">
-    <meta name="description" content="A public index of local-first, open-source projects. Software that runs offline, exports clean, and can't be killed remotely.">
-    <meta name="keywords" content="local-first, directory, open source, self-hosted, offline-first, data sovereignty, freehold, privacy software, decentralized apps">
+    <meta name="description" content="A curated index of local-first AI tools that run offline, self-host, and keep your data on your own hardware. Model runtimes, chat interfaces, local knowledge bases, and on-device personal AI.">
+    <meta name="keywords" content="local-first, directory, local AI, open source, self-hosted, offline-first, data sovereignty, freehold, privacy software, local LLM">
     <meta name="author" content="LocalGhost">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.localghost.ai/directory">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.localghost.ai/directory">
     <meta property="og:title" content="Local-First Directory | Software You Actually Own">
-    <meta property="og:description" content="Projects that run local, export clean, and don't betray. No ads, no rankings—just the list.">
+    <meta property="og:description" content="Local-first AI tools that run offline, export clean, and don't betray. No ads, no rankings, just the list.">
     <meta property="og:image" content="https://www.localghost.ai/images/og-directory.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LocalGhost.ai">
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.localghost.ai/directory">
     <meta name="twitter:title" content="Local-First Directory | Software You Actually Own">
-    <meta name="twitter:description" content="Projects that run local, export clean, and don't betray.">
+    <meta name="twitter:description" content="Local-first AI tools that run local, export clean, and don't betray.">
     <meta name="twitter:image" content="https://www.localghost.ai/images/og-directory.png">
-    
+
     <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -41,14 +41,14 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="theme-color" content="#111111">
     <meta name="msapplication-TileColor" content="#111111">
-    
+
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "name": "Local-First Directory",
-        "description": "A public index of local-first, open-source projects that respect user sovereignty.",
+        "description": "A curated index of local-first AI tools that run offline, self-host, and keep your data on your own hardware.",
         "url": "https://www.localghost.ai/directory",
         "isPartOf": {
             "@type": "WebSite",
@@ -68,6 +68,26 @@
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/directory.css">
+    <style>
+        .dir-note { color: var(--text-dim); margin-bottom: 2rem; line-height: 1.7; }
+        .dir-note code { color: var(--terminal); }
+        .dir-cat { margin: 2.5rem 0 1rem; color: var(--terminal); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.95rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .dir-cat .cat-note { color: var(--text-dim); text-transform: none; font-weight: 400; font-size: 0.8rem; margin-left: 0.5rem; }
+        .dir-grid { display: grid; gap: 0.85rem; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+        .dir-card { border: 1px solid var(--border); padding: 1rem 1.1rem; position: relative; transition: border-color 0.15s, transform 0.15s; }
+        .dir-card:hover { border-color: var(--terminal); transform: translateY(-2px); }
+        .dir-card.ours { border-color: var(--terminal); }
+        .dir-card h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+        .dir-card h3 a { color: inherit; text-decoration: none; }
+        .dir-card h3 a:hover { color: var(--terminal); }
+        .dir-card h3 a::after { content: " \2197"; color: var(--terminal); font-size: 0.8rem; }
+        .dir-card p { color: var(--text-dim); font-size: 0.85rem; line-height: 1.55; margin: 0 0 0.7rem; }
+        .dir-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+        .dir-tag { font-size: 0.65rem; letter-spacing: 0.05em; padding: 0.12rem 0.4rem; border: 1px solid var(--border); color: var(--text-dim); text-transform: uppercase; }
+        .dir-tag.lic { color: var(--terminal); border-color: var(--terminal); }
+        .dir-tag.src { color: var(--warning); border-color: var(--warning); }
+        .ours-badge { position: absolute; top: -1px; right: -1px; background: var(--terminal); color: #111; font-size: 0.55rem; letter-spacing: 0.1em; padding: 0.15rem 0.45rem; text-transform: uppercase; font-weight: 700; }
+    </style>
 </head>
 <body class="page-directory">
     <!-- NAVIGATION -->
@@ -92,22 +112,132 @@
             <div class="subtitle">Projects that run local, export clean, and don't betray the user.</div>
         </div>
 
-        <!-- UNDER CONSTRUCTION -->
-        <div class="construction-box">
-            <div class="construction-icon">[ ]</div>
-            <div class="construction-title">BUILDING THE INDEX</div>
-            <p class="construction-text">
-                We're building the crawler. Soon this page will list every project that hosts the beacon file—local-first tools that respect your sovereignty, indexed and searchable.
-            </p>
-            <p class="construction-text">
-                No marketing budgets. No sales pitches. Just code that works.
-            </p>
-            <div class="status-line">
-                <span class="blink">_</span> STATUS: CRAWLER IN DEVELOPMENT
+        <p class="dir-note">
+            The crawler that will index <code>/.well-known/freehold.json</code> beacons automatically is still in development (see what's coming, below). Until it ships, this is a hand-checked starting list of local-first AI tools, grouped by where they sit in the stack. Inclusion here means a tool runs locally or self-hosts and keeps your data on your own hardware. It is the curated version, not yet the formal freehold verification, that arrives with the beacon. No ads, no rankings, no pay to play.
+        </p>
+
+        <!-- 01 RUNTIME -->
+        <div class="dir-cat">01 · Runtime <span class="cat-note">the engine that runs a model on your own machine</span></div>
+        <div class="dir-grid">
+            <div class="dir-card">
+                <h3><a href="https://ollama.com" target="_blank">Ollama</a></h3>
+                <p>Run open models from one command, with a local API. Pulls and serves Llama, Mistral, Gemma, Qwen and more.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Offline</span><span class="dir-tag">Mac / Win / Linux</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://github.com/ggml-org/llama.cpp" target="_blank">llama.cpp</a></h3>
+                <p>The inference engine most local tools build on. Runs quantised GGUF models on CPU or GPU.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://lmstudio.ai" target="_blank">LM Studio</a></h3>
+                <p>Desktop app to find, run and chat with local models, with an OpenAI-compatible server built in.</p>
+                <div class="dir-tags"><span class="dir-tag">Free / closed</span><span class="dir-tag">Offline</span><span class="dir-tag">Mac / Win / Linux</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://jan.ai" target="_blank">Jan</a></h3>
+                <p>An open-source offline ChatGPT alternative. Runs models on-device with an OpenAI-compatible API.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://gpt4all.io" target="_blank">GPT4All</a></h3>
+                <p>Nomic's desktop app for running local models, including private chat over your own documents.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://localai.io" target="_blank">LocalAI</a></h3>
+                <p>A self-hosted, OpenAI-compatible API for local inference across text, audio and images.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Self-host</span><span class="dir-tag">Docker</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://github.com/vllm-project/vllm" target="_blank">vLLM</a></h3>
+                <p>A high-throughput serving engine for running models efficiently on your own GPUs.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Self-host</span><span class="dir-tag">Linux / GPU</span></div>
             </div>
         </div>
 
-        <!-- WHAT TO EXPECT -->
+        <!-- 02 INTERFACE -->
+        <div class="dir-cat">02 · Interface <span class="cat-note">the window you talk to a model through</span></div>
+        <div class="dir-grid">
+            <div class="dir-card">
+                <h3><a href="https://openwebui.com" target="_blank">Open WebUI</a></h3>
+                <p>A self-hosted, ChatGPT-style web interface that pairs with Ollama or any OpenAI-compatible backend.</p>
+                <div class="dir-tags"><span class="dir-tag src">Source-available</span><span class="dir-tag">Self-host</span><span class="dir-tag">Needs a backend</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://www.librechat.ai" target="_blank">LibreChat</a></h3>
+                <p>A self-hostable chat interface that works across many local and remote model backends.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Self-host</span><span class="dir-tag">Needs a backend</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://anythingllm.com" target="_blank">AnythingLLM</a></h3>
+                <p>An all-in-one app for chatting with your own documents using local models, with retrieval built in.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Desktop / Docker</span></div>
+            </div>
+        </div>
+
+        <!-- 03 KNOWLEDGE -->
+        <div class="dir-cat">03 · Knowledge &amp; memory <span class="cat-note">where your own notes and files live, locally</span></div>
+        <div class="dir-grid">
+            <div class="dir-card">
+                <h3><a href="https://obsidian.md" target="_blank">Obsidian</a></h3>
+                <p>A local-first Markdown knowledge base. Your notes are plain files on your disk, with optional AI plugins.</p>
+                <div class="dir-tags"><span class="dir-tag">Free / closed</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://logseq.com" target="_blank">Logseq</a></h3>
+                <p>An open-source, local-first outliner that stores everything as Markdown files on your machine.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://www.reorproject.org" target="_blank">Reor</a></h3>
+                <p>A local-first AI note-taking app that runs models on-device and links related notes automatically.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Offline</span><span class="dir-tag">Desktop</span></div>
+            </div>
+        </div>
+
+        <!-- 04 PERSONAL AI -->
+        <div class="dir-cat">04 · Personal AI <span class="cat-note">an assistant that knows you and runs on your hardware (emerging)</span></div>
+        <div class="dir-grid">
+            <div class="dir-card">
+                <h3><a href="https://khoj.dev" target="_blank">Khoj</a></h3>
+                <p>A self-hostable AI that searches and chats over your own notes and documents, scoped mainly to your files.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Self-host</span><span class="dir-tag">Desktop</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://pewdiepie-archdaemon.github.io/odysseus/" target="_blank">Odysseus AI</a></h3>
+                <p>A free, self-hosted AI workspace from PewDiePie. Chat, autonomous agents, tools, model serving, email, research and documents in one private interface that runs on your own hardware. Connect local models or your own API endpoints.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Self-host</span><span class="dir-tag">No telemetry</span></div>
+            </div>
+            <div class="dir-card ours">
+                <span class="ours-badge">Ours</span>
+                <h3><a href="https://www.localghost.ai" target="_blank">LocalGhost</a></h3>
+                <p>A fleet of small Go daemons for notes, memory, voice, vision and adversarial review, running on hardware you own with no cloud dependency. Early-stage and in active development, not yet a finished product.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Self-host</span><span class="dir-tag">In development</span></div>
+            </div>
+        </div>
+
+        <!-- BESIDE THE STACK -->
+        <div class="dir-cat">Specialised <span class="cat-note">local-first tools for one domain, beside the assistant stack</span></div>
+        <div class="dir-grid">
+            <div class="dir-card">
+                <h3><a href="https://rotki.com" target="_blank">Rotki</a></h3>
+                <p>A local-first, privacy-preserving portfolio and accounting tracker. Your financial data stays on your machine.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Offline</span><span class="dir-tag">Desktop</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://github.com/ggml-org/whisper.cpp" target="_blank">whisper.cpp</a></h3>
+                <p>Fully offline speech-to-text on your own hardware. Transcribe audio with no upload.</p>
+                <div class="dir-tags"><span class="dir-tag lic">MIT</span><span class="dir-tag">Offline</span><span class="dir-tag">Cross-platform</span></div>
+            </div>
+            <div class="dir-card">
+                <h3><a href="https://www.comfy.org" target="_blank">ComfyUI</a></h3>
+                <p>A node-based interface for running image-generation models locally, with full control of the pipeline.</p>
+                <div class="dir-tags"><span class="dir-tag lic">Open source</span><span class="dir-tag">Offline</span><span class="dir-tag">GPU</span></div>
+            </div>
+        </div>
+
+        <!-- WHAT'S COMING -->
         <div class="expect-section">
             <h2>&gt; WHAT'S COMING</h2>
             <ul class="expect-list">
@@ -116,8 +246,7 @@
                 <li>Searchable index by capability: offline-first, self-hosted, export formats</li>
                 <li>Verification that your project actually works offline and the export works</li>
                 <li>RSS feed to follow new additions to the index</li>
-                <li>Full directory downloadable as JSON — take the data, run it yourself</li>
-                <li>No ads, no pay-to-play — just the list</li>
+                <li>Full directory downloadable as JSON, take the data, run it yourself</li>
             </ul>
         </div>
 
@@ -125,32 +254,32 @@
         <div class="expect-section">
             <h2>&gt; WHAT STILL NEEDS TO BE BUILT</h2>
             <p style="color: var(--text-dim); margin-bottom: 1rem;">
-                See something missing from the ecosystem? We've mapped the gaps — the critical infrastructure, the tools that don't exist yet, and where help is needed most.
+                See something missing from the ecosystem? We've mapped the gaps, the critical infrastructure, the tools that don't exist yet, and where help is needed most.
             </p>
             <a href="/build" class="back-link" style="display: block; text-align: center; margin-top: 1rem;">[ VIEW THE ROADMAP → ]</a>
         </div>
 
         <div class="link-row">
             <a href="/manifesto" class="back-link">[ ← THE MANIFESTO ]</a>
-            <a href="/hard-truths" class="back-link">[ HARD TRUTHS → ]</a>
+            <a href="/why-local-ai" class="back-link">[ WHY LOCAL AI → ]</a>
         </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-links">
+<footer>
+    <div class="footer-links">
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/writing-guidelines">WRITING GUIDELINES</a>
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
-            <a href="mailto:info@localghost.ai">CONTACT</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
         </div>
-        <p class="footer-quote">
-            <a href="/manifesto" style="color: inherit; text-decoration: none;">
-                "Great open-source, local-first software doesn't cold-call. It just exists — waiting to be found."<br>
-                — <span style="border-bottom: 1px solid var(--border);">Why We Build</span>
-            </a>
-        </p>
-    </footer>
+    <p class="footer-quote">
+        "Code, not promises."<br>
+        Why We Build
+    </p>
+</footer>
+
 </body>
 </html>
