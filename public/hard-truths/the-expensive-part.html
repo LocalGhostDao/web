@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Expensive Part Was Never the AI | Hard Truths | LocalGhost.ai</title>
+    <meta name="description" content="A near-frontier model runs at interactive speed on a card you own, for the cost of the electricity. Renting the same capability from OpenAI, Anthropic or Google is a fee priced below cost, your data on their servers, and only rising.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="local LLM, Gemma 4, llama.cpp, eGPU, Thunderbolt, RTX 4070, NAS inference, CUDA, memory bandwidth, local AI, self-hosted AI, LocalGhost, data sovereignty, homelab AI, GPU offload, AI subscription cost, ChatGPT Plus, Claude Pro, cloud AI subsidy, inference cost, AI privacy, run AI locally">
+    <meta name="category" content="AI, Architecture, Hardware">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/the-expensive-part">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/the-expensive-part">
+    <meta property="og:title" content="The Expensive Part Was Never the AI | LocalGhost Hard Truths">
+    <meta property="og:description" content="A near-frontier model runs at interactive speed on a card you own, for the cost of the electricity. Renting the same capability from OpenAI, Anthropic or Google is a fee priced below cost, your data on their servers, and only rising.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-the-expensive-part.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Expensive Part Was Never the AI, LocalGhost Hard Truths">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-06-11T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="local LLM">
+    <meta property="article:tag" content="Gemma 4">
+    <meta property="article:tag" content="llama.cpp">
+    <meta property="article:tag" content="eGPU">
+    <meta property="article:tag" content="RTX 4070">
+    <meta property="article:tag" content="NAS inference">
+    <meta property="article:tag" content="local AI">
+    <meta property="article:tag" content="LocalGhost">
+    <meta property="article:reading_time" content="12">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="The Expensive Part Was Never the AI">
+    <meta name="twitter:description" content="A near-frontier model runs on a card you own for the cost of the electricity. The rented version is priced below cost, logged on their servers, and rising.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-the-expensive-part.png">
+    <meta name="twitter:image:alt" content="The Expensive Part Was Never the AI, LocalGhost Hard Truths">
+    <meta name="fediverse:creator" content="@vladcealicu">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Expensive Part Was Never the AI",
+        "description": "A near-frontier model runs at interactive speed on a card you own, for the cost of the electricity. Renting the same capability from OpenAI, Anthropic or Google is a fee priced below cost, your data on their servers, and only rising.",
+        "author": {
+            "@type": "Person",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai",
+            "sameAs": [
+                "https://twitter.com/vladcealicu",
+                "https://github.com/vladcealicu"
+            ]
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "LocalGhost.ai",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-06-11",
+        "dateModified": "2026-06-12",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/the-expensive-part"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-the-expensive-part.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "local LLM, Gemma 4, llama.cpp, eGPU, Thunderbolt, RTX 4070, NAS inference, CUDA, local AI, LocalGhost",
+        "articleSection": "Hard Truths",
+        "wordCount": 4527,
+        "inLanguage": "en-GB",
+        "isPartOf": {
+            "@type": "Blog",
+            "name": "Hard Truths",
+            "url": "https://www.localghost.ai/hard-truths"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
+            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
+            { "@type": "ListItem", "position": 3, "name": "The Expensive Part Was Never the AI", "item": "https://www.localghost.ai/hard-truths/the-expensive-part" }
+        ]
+    }
+    </script>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    <style>
+        /* Table layout for the benchmark and cost tables. No colours or backgrounds set,
+           borders inherit the text colour so the dark theme handles itself.
+           Move into blog.css if these should apply site-wide. */
+        .manifesto-text table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95em;
+        }
+        .manifesto-text th,
+        .manifesto-text td {
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--border, #444444);
+        }
+        .manifesto-text thead th {
+            border-bottom: 2px solid var(--terminal-dim, #1a8000);
+        }
+        .manifesto-text th:last-child,
+        .manifesto-text td:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+        @media (max-width: 600px) {
+            .manifesto-text table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .manifesto-text th,
+            .manifesto-text td {
+                padding: 0.4rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">
+        <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+    </div>
+    <div class="nav-links">
+        <a href="/manifesto">MANIFESTO</a>
+        <a href="/hard-truths" class="active">HARD TRUTHS</a>
+        <a href="/build">BUILD</a>
+        <a href="/directory" class="hide-mobile">DIRECTORY</a>
+        <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+    </div>
+</nav>
+
+<main class="narrow">
+
+    <div class="page-header">
+        <div class="section-label">&gt; HARD_TRUTHS // POST_17 // JUN 2026</div>
+        <h1>The Expensive Part Was Never the AI</h1>
+        <div class="date">Vlad Cealicu // 11 June 2026</div>
+    </div>
+
+    <div class="manifesto-text">
+
+        <div class="statement-box">
+            <p class="statement-main">A good model fits on a £500 card you could own. You rent it instead, and the rent is collected twice, in money and in everything you type.</p>
+        </div>
+
+        <div class="podcast-player"
+             data-src="/assets/podcast/the-expensive-part.mp3"
+             data-title="The Expensive Part Was Never the AI"
+             data-album="EPISODE 17"
+             data-artwork="/images/og-the-expensive-part.png">
+            <div class="pp-meta">
+                <span><span class="pp-label">&gt; EPISODE 17</span> // OFFLINE-READY</span>
+                <span>NOTEBOOKLM AUDIO</span>
+            </div>
+            <div class="pp-controls">
+                <button class="pp-play" type="button" aria-label="Play podcast">
+                    <span class="pp-icon-play">&#9654;</span>
+                    <span class="pp-icon-pause">&#10074;&#10074;</span>
+                </button>
+                <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="pp-progress-bar"></div>
+                </div>
+                <span class="pp-time">00:00 / --:--</span>
+                <a class="pp-download" href="/assets/podcast/the-expensive-part.mp3" download aria-label="Download podcast">DOWNLOAD</a>
+            </div>
+            <audio preload="metadata" src="/assets/podcast/the-expensive-part.mp3"></audio>
+        </div>
+
+        <p>
+            In late May 2026, during a short London stopover (two weeks), I was up late working on LocalGhost, waiting on the NAS to run tests I had written for categorising journal entries with Gemma 4, a first pass at the memory layer from POST_09 (<a href="/hard-truths/how-memory-gets-made">How Memory Gets Made</a>). On CPU each test took long enough that I started playing Dredge or Slay the Spire 2 while I waited. Cristina walked in, watched me for a bit, and said, "You're procrastinating. Not a bad thing, but commit to one or the other instead of trying to do both. And if you move the GPU over, I bet the project goes much quicker." She was right on both counts. So I unplugged the eGPU from the laptop and pointed it at the NAS, to see what a graphics card would do for the slow part.
+        </p>
+
+        <p>
+            The GPU was my gaming card. I bought it in July 2023 with a Thunderbolt enclosure so my laptop could play games it had no business running, and for three years that was all it did. It carried me through Baldur's Gate 3 and the Alexander the Great campaign in Age of Empires II <a href="#ref-7" class="cite">[7]</a>, Dan Carlin's Mania for Subjugation <a href="#ref-8" class="cite">[8]</a> in my ears while I ran the pixel version of the same conquests.
+        </p>
+
+        <div class="section-header">&gt; 1. My current LocalGhost testing setup</div>
+
+        <p>
+            I run a UGREEN NASync DXP8800 Pro as my homelab <a href="#ref-1" class="cite">[1]</a>. It's an 8-bay box with a 12th-gen Intel i5 (10 cores, 12 threads), 64GB of RAM, 6x 24TB drives in RAID 10, and a pair of 8TB SSDs, on Debian 13.
+        </p>
+
+        <p>
+            It was already doing real work before the GPU went in. Twenty-two (so far) websites behind nginx, on Postgres and Redis. A full Ethereum archive node on Erigon and a full Bitcoin Core node. A pile of dump storage, about 1TB used of the 70TB the array gives me. It had also been running Gemma 4 E4B for local inference <a href="#ref-5" class="cite">[5]</a>.
+        </p>
+
+        <p>
+            The chain nodes run on the 8TB SSDs, mirrored. Erigon on spinning disk doesn't run so much as die, the random IO is more than HDDs can give, and Bitcoin Core isn't far behind. The two nodes together sit on about 30 of the 64GB of RAM. The websites, the databases and the dump storage live on the big RAID 10 array. None of it breaks a sweat, and there was plenty of room left for a model. The extra RAM and storage are why I decided not to drop anything and instead keep adding to the NAS.
+        </p>
+
+        <p>
+            The box connects to a Hyperoptic 1Gb residential line with Starlink as backup<a href="#note-1" class="cite">*</a>, the two together about £50 a month. Power runs through an Anker Solix C1000 Gen 2 <a href="#ref-4" class="cite">[4]</a>, which keeps the whole thing running for about 12 hours if the grid drops. What makes it fully redundant is that the Anker powers the Hyperoptic router, the switch and the Starlink too, not just the box, so a grid cut leaves the machine powered and still reachable. Lose the grid and the primary line at the same time and it keeps serving, syncing and answering, on hardware I own, on a connection that costs less than most people's phone bill.
+        </p>
+
+        <p>
+            Now for the GPU. It is a standard MSI RTX 4070 (12GB) <a href="#ref-2" class="cite">[2]</a>, and it sits in a Razer Core X Chroma <a href="#ref-3" class="cite">[3]</a>, a Thunderbolt 3 eGPU enclosure. They are the pair from the opening, three years of gaming service behind them.
+        </p>
+
+        <div class="section-header">&gt; 2. The setup</div>
+
+        <p>
+            Connecting the card was the easy part, I spent the rest of the night making it work. The box had to come off the hot path before I could upgrade it, and I did that without dropping anything, because a maintenance window is a crutch for bad software and architecture. It is the extreme form of bad planning and incompetent teams, and while in some circumstances it might be the best solution, it is also the laziest one.
+        </p>
+
+        <p>
+            I'd been running Gemma E4B on CPU by choice, on 4 of the box's 10 cores, through llama.cpp <a href="#ref-6" class="cite">[6]</a>. The NAS had never had a GPU, so it had no NVIDIA driver at all. Installing the driver meant enabling the non-free apt component (I had non-free-firmware but not plain non-free, where the driver lives), then fighting a broken kernel headers situation. The DKMS module build kept failing on a <code>generated/autoconf.h: No such file or directory</code> error, the headers for my running kernel left incomplete by a distro upgrade I'd started and never finished.
+        </p>
+
+        <p>
+            Finishing it meant a full distro upgrade to a clean kernel. The catch is the NAS serves twenty-two live websites, and I was not going to take them down to do it, so I moved them to my laptop first. Each site runs as a Docker container with its own nginx, so moving them was just pulling the repos onto the laptop, bringing the containers up, and copying over the TLS certs so HTTPS kept working. The public IP and the DNS never change, both point at my home connection either way. What decides which machine answers is the router, which forwards ports 80 and 443 to one internal address. I gave the laptop a fixed LAN IP and repointed those two rules from the NAS to the laptop. Traffic landed on the laptop, the NAS went quiet, and I upgraded it with every site still serving.
+        </p>
+
+        <p>
+            The upgrade pulled in a fresh kernel (6.12.90), and the driver finally built against that, once I removed the older broken kernels DKMS was also trying (and failing) to build for. Then I pointed the two forward rules back at the NAS.
+        </p>
+
+        <p>
+            Then the Thunderbolt side. The enclosure was recognised but the GPU wasn't appearing on the PCIe bus, it needed authorising. On a headless NAS there's no desktop prompt to click "allow," and <code>boltctl enroll</code> failed because PolicyKit wasn't installed. Installing polkit fixed the enrollment, which persists the authorisation so the card comes up automatically on every boot. The link came up at Thunderbolt 3 speeds (40 Gb/s, roughly PCIe 3.0 x4), which is what the Core X Chroma runs at, and that barely matters for inference.
+        </p>
+
+        <p>
+            With the driver built (NVIDIA 550.163.01, CUDA 12.4) and the card enumerated, the last step was rebuilding llama.cpp with CUDA support. The existing binary was CPU-only and ignored the GPU offload flag entirely. A clean <code>cmake -DGGML_CUDA=ON</code> build, auto-detecting the 4070's Ada architecture (sm_89), and the GPU was finally in the loop.
+        </p>
+
+        <div class="section-header">&gt; 3. The benchmark</div>
+
+        <p>
+            I benchmarked with llama.cpp's <code>llama-bench</code>, running each model twice. Once forcing everything onto CPU (<code>-ngl 0</code>), once offloading all layers to the GPU (<code>-ngl 99</code>). Two metrics, prompt processing (how fast it ingests input) and token generation (how fast it produces output, the number you feel).
+        </p>
+
+        <p>
+            I tested two models, Gemma 4 E4B (7.52B parameters, 4.95GB at Q4_K_M) and the new Gemma 4 12B (11.91B parameters, 6.62GB at Q4_K_M).
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Backend</th>
+                    <th>Prompt (t/s)</th>
+                    <th>Generation (t/s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Gemma 4 E4B</td><td>CPU</td><td>404.78</td><td>8.72</td></tr>
+                <tr><td>Gemma 4 E4B</td><td>GPU</td><td>5490.26</td><td>111.58</td></tr>
+                <tr><td>Gemma 4 12B</td><td>CPU</td><td>152.73</td><td>3.44</td></tr>
+                <tr><td>Gemma 4 12B</td><td>GPU</td><td>2830.20</td><td>53.44</td></tr>
+            </tbody>
+        </table>
+
+        <p>
+            The E4B ran about 13x faster on the GPU, the 12B about 15x faster.
+        </p>
+
+        <p>
+            The 12B is the interesting case. On CPU it generates at 3.44 tokens per second, slower than handwriting, unusable for anything interactive. On the GPU it does 53 tokens per second, faster than you can read, though it is the slower of the two models by a wide margin, less than half the E4B's 112 on the same card. So 53 is usable but well short of fast, the floor of comfortable interactive use rather than anything snappy. The move that matters is still the jump from 3.44 to 53, from technically running to actually usable.
+        </p>
+
+        <p>
+            The bigger model gets the bigger GPU speedup, 15x against 13x. LLM token generation is bound by memory bandwidth, not raw compute, and the GPU's ~500 GB/s of memory bandwidth dwarfs the CPU's ~50-80 GB/s <a href="#ref-2" class="cite">[2]</a>. The larger the model, the more punishing that gap becomes on CPU, so the GPU's advantage widens with model size.
+        </p>
+
+        <p>
+            The Thunderbolt question, does running the GPU over a 40 Gb/s external link instead of a native PCIe slot hurt? For inference, almost not at all. The model weights cross the link once at load time, then live entirely in the card's own VRAM. Token generation streams those weights from VRAM at the card's full bandwidth and never touches the Thunderbolt link. The thin external connection only matters while loading the model, not while using it. A 4070 in a box on the end of a cable runs inference at very nearly the speed it would in a desktop slot, provided the whole model fits in VRAM. The 12B at 6.62GB leaves comfortable room in the 4070's 12GB, so it does.
+        </p>
+
+        <div class="section-header">&gt; 4. What I ended up with</div>
+
+        <p>
+            A local Gemma 4 12B running as a system service, generating at interactive speed, on the same box that already serves the websites, runs the chain nodes and holds the storage, with no cloud dependency and no data leaving the machine. The GPU auto-authorises on boot and the model loads on the GPU automatically. The model supports a 128k training context (I run it at 32k, which the card holds comfortably, VRAM being the practical constraint long before the model's limit), native multimodal input, tool calling, and a reasoning channel.
+        </p>
+
+        <p>
+            The tests that started all this are the proof. The journal categorisation suite that took an hour on CPU now runs in four minutes. And the full memory encoding from How Memory Gets Made, the overnight pass that turns a day into memory, now fits the night it was designed for. A heavy day is over four hours of recording, sixty pictures, eighty locations pulled off Google Maps, around two hundred emails and a thousand messages. Encoding that on the GPU takes about two hours. On CPU the same pass takes over a day, which means the system falls behind its own life and never catches up. Overnight consolidation only works if a day encodes in less than a night, and the card is the difference between the design being a post and being a daemon.
+        </p>
+
+        <p>
+            The whole thing keeps answering through a power cut for half a day, and none of it is rented. It is a foundation I can expand and test on, and it is close to the hardware and setup LocalGhost will run in production.
+        </p>
+
+        <div class="section-header">&gt; 5. What it costs</div>
+
+        <p>
+            This question has two answers, because the box I built is a production homelab and most of its cost has nothing to do with the model. At current new prices the bare NAS is about £1,120, the RAM upgrade to 64GB another £150, the six 24TB drives around £2,100, the two 8TB SSDs that hold the chain nodes about £1,000, and the Anker that carries it through a power cut about £500. The card and the enclosure would add £830 if I had bought them for this, and I did not, they were the gaming setup from the opening, so the GPU that runs a near-frontier model cost me nothing extra. Call it £5,700 all in, and almost none of it is the AI. That money buys 70TB of storage, a full Ethereum archive node, a full Bitcoin node and half a day of power resilience.
+        </p>
+
+        <p>
+            So the more useful question is what it costs to run the model and the things that sit directly around it, and nothing else. That build is a plain tower, all new. The <a href="/#fleet">daemon fleet</a>, Postgres, Redis and the model, on one machine you own.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Spec</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Ryzen 5 5600 + B550M bundle</td><td>6 cores, PCIe 4.0</td><td>~£175</td></tr>
+                <tr><td>RAM</td><td>2x 16GB DDR4</td><td>~£50</td></tr>
+                <tr><td>MSI RTX 5070 12GB</td><td>newer card, same price, more bandwidth than the one I tested</td><td>~£499</td></tr>
+                <tr><td>1TB NVMe SSD</td><td>OS, model weights, daemons</td><td>~£55</td></tr>
+                <tr><td>2x 4TB HDD</td><td>mirrored, bulk storage</td><td>~£200</td></tr>
+                <tr><td>Mid-tower case</td><td></td><td>~£60</td></tr>
+                <tr><td>850W PSU</td><td>feeds the card directly, headroom for the next one</td><td>~£90</td></tr>
+                <tr><td><strong>Total</strong></td><td></td><td><strong>~£1,130</strong></td></tr>
+            </tbody>
+        </table>
+
+        <p>
+            In a tower the card drops straight into the PCIe slot, so there is no enclosure and no second power supply, and the GPU runs at full bandwidth instead of over a cable. The SSD is not optional even though the bulk storage is on the spinning drives, because the OS and the model weights load from flash or the whole thing crawls. What sets the generation speed is the card, and the 5070 in that table costs the same as the 4070 I benchmarked but carries more memory bandwidth, around 670 GB/s against 500 <a href="#ref-13" class="cite">[13]</a>. This workload is bound by that bandwidth, so the 5070 runs faster than my numbers, not slower. I have not run this exact card, so read that as the floor, not the ceiling.
+        </p>
+
+        <p>
+            The part that runs the model is a £500 card in a tower that costs about the same again.
+        </p>
+
+        <div class="section-header">&gt; 6. The thing you are renting</div>
+
+        <p>
+            That tower is a one-time cost. The alternative is a fee that arrives every month for as long as you use it. The standard tier at OpenAI, Anthropic and Google sits at the best part of twenty pounds a month, the power tiers at eighty and a hundred and sixty, and Google's ceiling at two hundred <a href="#ref-9" class="cite">[9]</a>. Anyone running more than one of them, which is common, clears a thousand pounds a year. And that subscription is the cheap end of it, because buying the same usage by the token through the API runs far past the flat fee on a heavy day.
+        </p>
+
+        <div class="alarm">
+            <p>If you are going to tokenmaxx (you should not), do it on hardware where the only card that maxes out is the GPU.</p>
+        </div>
+
+        <p>
+            Against that the tower is about eleven hundred pounds once, plus the electricity to run it, which on a UK tariff is on the order of one standard subscription a year and less if you sleep the box between sessions. For a heavy or multi-tool user the hardware pays for itself inside a year, and after that the running cost sits far below the fee it replaced.
+        </p>
+
+        <p>
+            The sticker is not the real number. Sam Altman said in January 2025 that OpenAI was losing money even on its $200-a-month Pro subscriptions, because people used them more than expected <a href="#ref-10" class="cite">[10]</a>. The frontier labs are pricing inference below what it costs them to serve, to take and hold market share, and the sector loses money at a scale only venture and hyperscaler capital can absorb. Independent analysis calls the result a false floor, a price that normalises upward once that capital tightens <a href="#ref-10" class="cite">[10]</a>.
+        </p>
+
+        <p>
+            You can already feel the floor moving. The providers have started tightening what the fee buys, blocking the automation tools that ran heavy workloads through subscription accounts and turning generous, fuzzy limits into explicit hard caps that drop you to a weaker model once you cross them. Anthropic stacked weekly limits on top of its five-hour ones in 2025, and Google now publishes daily prompt counts per tier <a href="#ref-11" class="cite">[11]</a>. That is the price rising while the number on the page stays still, and the number on the page is expected to rise as well.
+        </p>
+
+        <p>
+            Money is only half of it. Every prompt you send is a record on someone else's disk, and you control it less than you think. When a court told OpenAI to preserve ChatGPT logs for a copyright case, the order swept up conversations users had explicitly deleted, across the free, Plus and Pro tiers, and roughly twenty million of them are now headed to the plaintiffs <a href="#ref-12" class="cite">[12]</a>. The users had no say in it, because they were not parties to the case, their attempts to intervene were denied, and the delete button they had pressed turned out to mean nothing. And a court order is only one of the ways that data gets used. The logs already exist, which makes turning them against you a policy decision rather than an engineering one, a Terms of Service update written by management you did not choose. They may have no appetite for that today, but every company's incentives drift given enough time, and the data is already sitting there for when they do. On a box you own there is no third party holding the logs, nothing to subpoena, and no one positioned to overrule you.
+        </p>
+
+        <p>
+            AI was never cheap, it was subsidised, and you were the land being taken.
+        </p>
+
+        <div class="signal">
+            <p>Deleted means deleted only when the delete button is yours. Everywhere else it means retained until someone with more standing than you decides otherwise.</p>
+        </div>
+
+        <p>
+            The counterweight is capability. A 12B model on a 4070 is not GPT-5 and it is not Claude Fable, and I am not going to pretend otherwise. The frontier models are genuinely smarter, and for the hardest reasoning and the longest agentic runs they pull ahead and it is not close. What has changed is how rarely that ceiling is the thing that bites. For more than nine in ten of the tasks I run, model intelligence is not the bottleneck. The smart ones earn their price on the open-ended work, the 'scan this whole codebase and find the bug I cannot see' kind of task, where the value is in the model noticing something I never pointed it at. The local model is the right tool for the opposite and far more common case, where I already know the problem, I have the architecture in my head, and I need a capable hand to build the thing I have already scoped. Drafting, summarising, answering against my own notes, coding to a plan I already hold, the bulk of daily use sits well inside what a local near-frontier model handles.
+        </p>
+
+        <p>
+            The other concession is convenience. Getting here cost me a night of kernel headers and boltctl, and twenty pounds a month buys not spending that night. Local is not for everyone, and it does not need to be. What matters is that the alternative exists, and that for some people, me included, cost and flexibility are everything.
+        </p>
+
+        <p>
+            So two lines move in opposite directions. The rented one is priced below cost today, its price is set to climb, its limits are already tightening, and your data sits on hardware you cannot see. The owned one is a fixed cost that falls every year, its weights improve every quarter, nothing ever leaves the box, and nothing about it changes unless I change it. For anyone using this seriously the two have already crossed, and they were never going to cross back.
+        </p>
+
+        <p>
+            And it only points one way from here. The open-weight families keep improving on the same curve, DeepSeek and others often faster than Gemma, and the hardware is moving to meet them. Shared-memory designs that feed the processor and the model from one pool of RAM, rather than a separate and expensive block of VRAM, are spreading from a handful of premium machines toward the mainstream, and they drop the hardware barrier again.
+        </p>
+
+        <p>
+            The rented models are moving the other way. They grow more cautious over time, quicker to refuse, more fond of the polite line about what they cannot help with on requests that were always fine, because the company is liable for every answer it puts its name to. An open model on your own disk carries none of that and does what you ask, and the open weights are getting more capable and more open at the same time, not less. So the end state is every model worth running available in both places at once, your box and the managed cloud, and when the same model runs in both, the local copy wins on the things that never depended on raw capability, on cost, on privacy, and on whether it answers you at all.
+        </p>
+
+        <div class="final-words">
+            The card I bought to play Baldur's Gate 3 now runs the model LocalGhost will ship on. The tower in that table is the production shape, or something close to it, with the GPU the one part you swap as the cards get faster. The £500 card is the only line on the page that gets cheaper every year, the storage and the nodes hold roughly flat, and the model rides down the curve on its own. The expensive part was never the AI, it was choosing to rent it from someone else, in money that only goes up and data you never get back, when the model itself fits in a box you own. The daemon fleet that ties the box together is still being written, and that is the next thing I build.
+            <span class="small">[ localghost.ai // hard-truths ]</span>
+        </div>
+
+        <div class="section-header">&gt; NOTE</div>
+
+        <p class="references" id="note-1">
+            <strong>*</strong> The redundancy is two independent lines that never share the load. Hyperoptic is primary on its own router. The Starlink Mini sits in bypass mode, plugged straight into a second NIC on the NAS with nothing else behind it, cold until it is needed. A small Go service under systemd watches both lines and flips between them. While Hyperoptic is up the box publishes only its IPv4 A record and Starlink carries nothing. When Hyperoptic drops, the service routes the box out over the Starlink NIC, pulls the IPv4 A record, and publishes an IPv6 AAAA in its place. It uses v6 because Starlink's v4 is behind CGNAT with no way in, and it reads the address fresh each time because the prefix rotates. It reverses all of that when Hyperoptic returns. Because Starlink only ever serves inbound while it is also the default route, replies leave the way requests came in and there is no asymmetric routing to manage. The one visitor it cannot serve during a Hyperoptic outage is one with no IPv6 at all, and that is a price worth paying for relying on no third party and no proprietary tunnel. The gap shrinks every year regardless, as either Starlink finds a way off CGNAT or, more likely, IPv6 spreads across enough routers and ISPs that a client without it becomes the rare exception. Long term (famous last words), it stops being a problem at all.
+        </p>
+
+        <div class="section-header">&gt; REFERENCES</div>
+
+        <p class="references" id="ref-1">
+            <strong>[1]</strong> UGREEN NASync DXP8800 Pro. The 8-bay NAS the whole setup runs on, 12th-gen Intel i5, room for eight drives plus two M.2 SSDs. Source for the chassis I describe in the opening. Product page at <a href="https://nas.ugreen.com" target="_blank" rel="noopener">nas.ugreen.com</a>.
+        </p>
+
+        <p class="references" id="ref-2">
+            <strong>[2]</strong> NVIDIA GeForce RTX 4070. The card I benchmarked, 12GB of VRAM and around 504 GB/s of memory bandwidth, which is the number that does the work in the results table. Source for the card spec and the bandwidth figure I lean on when explaining why token generation is bandwidth-bound rather than compute-bound. Specs at <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4070-4070-ti/" target="_blank" rel="noopener">nvidia.com</a>.
+        </p>
+
+        <p class="references" id="ref-3">
+            <strong>[3]</strong> Razer Core X Chroma. The Thunderbolt 3 eGPU enclosure the card sits in, 700W internal power supply, 40 Gb/s link. Source for the enclosure and the link speed I describe in the setup section. Product page at <a href="https://www.razer.com/gaming-egpus/razer-core-x" target="_blank" rel="noopener">razer.com</a>.
+        </p>
+
+        <p class="references" id="ref-4">
+            <strong>[4]</strong> Anker Solix C1000 Gen 2. The 1kWh portable power station that holds the box up for about half a day through a grid drop. Source for the UPS in the opening. Product page at <a href="https://www.anker.com/products/a1761-solix-c1000" target="_blank" rel="noopener">anker.com</a>.
+        </p>
+
+        <p class="references" id="ref-5">
+            <strong>[5]</strong> Gemma. Google DeepMind's open-weight model family. I run Gemma 4 E4B and Gemma 4 12B locally at Q4_K_M quantisation. Source for the two models I benchmarked. Model docs at <a href="https://ai.google.dev/gemma" target="_blank" rel="noopener">ai.google.dev/gemma</a>, weights on Hugging Face under <a href="https://huggingface.co/google" target="_blank" rel="noopener">huggingface.co/google</a>.
+        </p>
+
+        <p class="references" id="ref-6">
+            <strong>[6]</strong> llama.cpp. The C and C++ inference engine I use to run the models, rebuilt here with CUDA support (<code>GGML_CUDA=ON</code>) so it offloads to the GPU instead of silently falling back to CPU. Source for the runtime and the <code>llama-bench</code> tool the results come from. Repository at <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a>.
+        </p>
+
+        <p class="references" id="ref-7">
+            <strong>[7]</strong> Chronicles Alexander the Great, an expansion for Age of Empires II (Definitive Edition). The DLC campaign I was playing, 18 scenarios following Alexander's conquests, released October 2025. Source for the campaign named in the opening. Store page at <a href="https://store.steampowered.com/app/3793540/Age_of_Empires_II_DE__Chronicles_Alexander_the_Great/" target="_blank" rel="noopener">store.steampowered.com</a>.
+        </p>
+
+        <p class="references" id="ref-8">
+            <strong>[8]</strong> Mania for Subjugation, part of Dan Carlin's Hardcore History. The podcast I was listening to, Carlin's multi-part history of Alexander the Great, first installment released June 2024. Source for the podcast named in the opening. Show page at <a href="https://www.dancarlin.com/product/hardcore-history-71-mania-for-subjugation/" target="_blank" rel="noopener">dancarlin.com</a>.
+        </p>
+
+        <p class="references" id="ref-9">
+            <strong>[9]</strong> Consumer AI subscription pricing, accessed June 2026. Standard tiers at OpenAI (ChatGPT Plus), Anthropic (Claude Pro) and Google (Google AI Pro) sit at the best part of twenty pounds a month in the UK, with power tiers around eighty and a hundred and sixty and Google's ceiling near two hundred, and a multi-tool user clearing a thousand pounds a year. Source for the fees the post compares against. Pricing at <a href="https://openai.com/chatgpt/pricing" target="_blank" rel="noopener">openai.com</a>, <a href="https://www.claude.com/pricing" target="_blank" rel="noopener">claude.com</a> and <a href="https://gemini.google/subscriptions/" target="_blank" rel="noopener">gemini.google</a>.
+        </p>
+
+        <p class="references" id="ref-10">
+            <strong>[10]</strong> The economics of frontier inference. In January 2025 Sam Altman said OpenAI was losing money even on its $200-a-month Pro subscriptions because people used them more than expected, against reported losses of about $5 billion on $3.7 billion of revenue for 2024. Reporting and analysis through 2026 describe the major labs pricing inference below their own cost to serve in order to capture market share, and warn that the resulting low prices are a temporary floor that rises when that capital tightens. Sources for the subsidy argument. Altman's admission covered at <a href="https://fortune.com/2025/01/07/sam-altman-openai-chatgpt-pro-subscription-losing-money-tech" target="_blank" rel="noopener">fortune.com</a>, token pricing analysis at <a href="https://www.investing.com/analysis/the-ai-token-pricing-crisis-behind-openai-and-anthropics-revenue-race-200680777" target="_blank" rel="noopener">investing.com</a> and "The Era of Cheap AI Is Ending" at <a href="https://carlesabarca.com/posts/cheap-ai-ending/" target="_blank" rel="noopener">carlesabarca.com</a>.
+        </p>
+
+        <p class="references" id="ref-11">
+            <strong>[11]</strong> Tightening subscription limits, 2025 and 2026. In July 2025 Anthropic introduced weekly rate limits for its Pro and Max plans to curb subscribers running Claude Code continuously, stacked on top of the existing five-hour limits. Through 2026 the providers kept narrowing what the monthly fee buys, blocking third-party tools that impersonated official clients to route heavy use through flat-rate subscriptions, and publishing explicit daily prompt caps where vague access language once stood. Sources for the claim that the real price is already rising. The weekly limits covered at <a href="https://techcrunch.com/2025/07/28/anthropic-unveils-new-rate-limits-to-curb-claude-code-power-users/" target="_blank" rel="noopener">techcrunch.com</a>, the industry-wide rationing at <a href="https://www.pymnts.com/artificial-intelligence-2/2026/ai-usage-limits-are-becoming-the-new-reality-for-consumers/" target="_blank" rel="noopener">pymnts.com</a>, the broader argument in "The Era of Cheap AI Is Ending" at <a href="https://carlesabarca.com/posts/cheap-ai-ending/" target="_blank" rel="noopener">carlesabarca.com</a>.
+        </p>
+
+        <p class="references" id="ref-12">
+            <strong>[12]</strong> In re OpenAI, Inc. Copyright Infringement Litigation (S.D.N.Y.). A 2025 preservation order required OpenAI to retain ChatGPT output logs that users had deleted or that privacy law would otherwise erase, across the free, Plus and Pro tiers, and in January 2026 the court affirmed that roughly twenty million conversations would be produced to the plaintiffs, with affected users denied standing to intervene. Source for the deletion and retention claims. Coverage at <a href="https://news.bloomberglaw.com/ip-law/openai-must-turn-over-20-million-chatgpt-logs-judge-affirms" target="_blank" rel="noopener">news.bloomberglaw.com</a> and <a href="https://natlawreview.com/article/openai-loses-privacy-gambit-20-million-chatgpt-logs-likely-headed-copyright" target="_blank" rel="noopener">natlawreview.com</a>.
+        </p>
+
+        <p class="references" id="ref-13">
+            <strong>[13]</strong> NVIDIA GeForce RTX 5070. The newer card in the tower build, 12GB of GDDR7 on a 192-bit bus for 672 GB/s of memory bandwidth against the 4070's 504, the gap that makes it the faster inference card at the same price. Source for the bandwidth comparison in the tower section. Specs at <a href="https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/" target="_blank" rel="noopener">nvidia.com</a>.
+        </p>
+
+    </div>
+
+    <div class="post-nav">
+        <a href="/hard-truths/should-not-possess" class="prev">
+            <div class="pn-label">← PREVIOUS POST</div>
+            <div class="pn-title">A Ghost Should Not Possess</div>
+        </a>
+        <a href="/hard-truths" class="next">
+            <div class="pn-label">ALL POSTS →</div>
+            <div class="pn-title">Hard Truths Index</div>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+    <p class="footer-quote">"The £500 card is the only line on the page that gets cheaper every year." // The Expensive Part Was Never the AI</p>
+</footer>
+
+<script src="/js/blog-player.js" defer></script>
+
+</body>
+</html>

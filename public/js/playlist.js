@@ -26,7 +26,8 @@
         { num: '15', title: 'What The Ghost Owes',             src: '/assets/playlist/15. What The Ghost Owes.mp3',      post: '/hard-truths/overhears' },
         { num: '16', title: 'Integration Tax',                 src: '/assets/playlist/16. Integration Tax.mp3',          post: '/hard-truths/integration-tax' },
         { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                   post: '/hard-truths/index-not-a-person' },
-        { num: '18', title: 'A Ghost Should Not Possess',      src: '/assets/playlist/18. A Ghost Should Not Possess.mp3',  post: '/hard-truths/should-not-possess' }
+        { num: '18', title: 'A Ghost Should Not Possess',      src: '/assets/playlist/18. A Ghost Should Not Possess.mp3',  post: '/hard-truths/should-not-possess' },
+        { num: '19', title: 'Late May, Flat',      src: '/assets/playlist/19. Late May, Flat.mp3',  post: '/hard-truths/the-expensive-part' }
     ];
 
     var audio       = document.getElementById('pl-audio');
