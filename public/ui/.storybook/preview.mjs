@@ -1,4 +1,4 @@
-import '../src/styles.css'
+import '../src/css/index.css'
 
 export const parameters = {
   layout: 'centered',

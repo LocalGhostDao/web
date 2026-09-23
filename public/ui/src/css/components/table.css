@@ -1,0 +1,105 @@
+@layer components {
+    @property --table-border-width {
+        syntax: '<length>';
+        inherits: true;
+        initial-value: 2px;
+    }
+
+    table {
+        --table-border-color: var(--box-border-color);
+
+        border: none;
+        outline: none;
+        font-family: var(--font-family);
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-normal);
+        line-height: var(--line-height);
+        text-align: left;
+        position: relative;
+        border-spacing: 0 0;
+
+        th {
+            font-weight: var(--font-weight-bold);
+        }
+
+        th,
+        td {
+            position: relative;
+            padding-right: 1ch;
+
+            &:last-of-type {
+                padding-right: 0;
+            }
+        }
+
+        &[divide-='vertical'],
+        &[divide-='both'],
+        &:not([divide-]) {
+            th,
+            td {
+                &:not(:last-of-type) {
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        right: calc(0.5ch - var(--table-border-width) / 2);
+                        bottom: 0;
+                        border-left: solid var(--table-border-width)
+                            var(--table-border-color);
+                        height: 100%;
+                    }
+
+                    table[box-] &::before {
+                        bottom: calc(-0.5lh - var(--table-border-width) / 2);
+                        border-left: solid var(--table-border-width)
+                            var(--table-border-color);
+                        height: calc(100% + 1lh);
+                    }
+                }
+            }
+        }
+
+        &[divide-='horizontal'],
+        &[divide-='both'],
+        &:not([divide-]) {
+            tr {
+                position: relative;
+
+                th,
+                td {
+                    padding-bottom: 1lh;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        bottom: calc(0.5lh - var(--table-border-width) / 2);
+                        width: 100%;
+                        border-top: solid var(--table-border-width)
+                            var(--table-border-color);
+                    }
+
+                    table[box-] &::after {
+                        left: calc(-0.5ch - var(--table-border-width) / 2);
+                        width: calc(100% + 1ch);
+                        border-top: solid var(--table-border-width)
+                            var(--table-border-color);
+                    }
+                }
+            }
+        }
+
+        &[divide-='horizontal'],
+        &[divide-='both'],
+        &:not([divide-]) {
+            *:last-child tr:last-child {
+                th,
+                td {
+                    padding-bottom: 0;
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
