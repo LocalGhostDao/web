@@ -543,6 +543,8 @@ while IFS= read -r -d '' html_file; do
     
     if [ "$rel_path" = "index.html" ]; then
         clean_url="/"; priority="1.0"
+    elif [ "$rel_path" = "about.html" ]; then
+        clean_url="/about"; priority="0.9"
     elif [[ "$rel_path" == */index.html ]]; then
         clean_url="/${rel_path%index.html}"; priority="0.8"
     else
@@ -581,7 +583,7 @@ LLMS_FILE="$DEST_DIR/llms.txt"
     cat << 'EOF'
 # LocalGhost.ai
 
-> LocalGhost is a local-first, privacy-focused AI platform built on cypherpunk principles. All inference and data storage runs on user-owned hardware with no cloud dependency. Fully open-source. The project is currently in Phase 0, architecture and manifesto documented, first commits landing. Founder: Vlad Cealicu, former Co-Founder and CTO of CryptoCompare / CCData.
+> LocalGhost is a local-first, privacy-focused AI platform built on cypherpunk principles. All inference and data storage runs on user-owned hardware with no cloud dependency. Fully open-source. The project started in December 2025 and is pre-release, in Phase 1 of its public roadmap, with architecture and daemon specs published and code being written in the open. Founder: Vlad Cealicu, former Co-Founder and CTO of CryptoCompare / CCData. The About page (https://www.localghost.ai/about) holds the canonical key facts and FAQ.
 
 The site has three primary sections: the Manifesto (the philosophical and technical argument for local-first AI), Hard Truths (a long-form essay series on tech, power, privacy, and the skills pipeline), and Build (the public roadmap and contribution guide). The tone is direct and opinionated. Posts are labelled SIGNAL, ALARM, or WINDOW to indicate certainty level.
 
@@ -589,7 +591,7 @@ The site has three primary sections: the Manifesto (the philosophical and techni
 
 EOF
 
-    for slug in manifesto build hard-truths directory; do
+    for slug in about manifesto build hard-truths directory; do
         src="$SRC_DIR/${slug}.html"
         [ ! -f "$src" ] && continue
         has_noindex "$src" && continue
@@ -651,6 +653,17 @@ Source: ${SITE_URL}
 This file contains the full prose content of every published essay on LocalGhost.ai, rendered from source HTML into structured plaintext. Section headers (## N. TITLE), callouts ([ALARM], [SIGNAL]), and conclusion boxes are preserved as markdown. Each section is delimited by a machine-readable header with canonical URL.
 
 EOF
+
+    ABOUT_FILE="$SRC_DIR/about.html"
+    if [ -f "$ABOUT_FILE" ] && ! has_noindex "$ABOUT_FILE"; then
+        echo "================================================================"
+        echo "# About LocalGhost"
+        echo "URL: ${SITE_URL}/about"
+        echo "================================================================"
+        echo ""
+        html_to_text "$ABOUT_FILE"
+        echo ""
+    fi
 
     MANIFESTO_FILE="$SRC_DIR/manifesto.html"
     if [ -f "$MANIFESTO_FILE" ] && ! has_noindex "$MANIFESTO_FILE"; then

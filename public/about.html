@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>About LocalGhost | Private Local AI on Hardware You Own</title>
+        <meta name="title" content="About LocalGhost | Private Local AI on Hardware You Own">
+        <meta name="description" content="LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. What it does, what makes it different, who is building it, key facts and FAQ.">
+        <meta name="keywords" content="LocalGhost, about LocalGhost, Vlad Cealicu, local-first AI, private AI server, self-hosted AI, personal AI memory, local LLM, open source AI">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="https://www.localghost.ai/about">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.localghost.ai/about">
+        <meta property="og:title" content="About LocalGhost">
+        <meta property="og:description" content="An open-source personal AI that builds a private memory of your life on hardware you own. Who is building it, what exists today and what doesn't yet.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-about.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/about">
+        <meta name="twitter:title" content="About LocalGhost">
+        <meta name="twitter:description" content="An open-source personal AI that builds a private memory of your life on hardware you own.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-about.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "AboutPage",
+                    "@id": "https://www.localghost.ai/about#webpage",
+                    "url": "https://www.localghost.ai/about",
+                    "name": "About LocalGhost",
+                    "inLanguage": "en-GB",
+                    "dateModified": "2026-09-23",
+                    "about": { "@id": "https://www.localghost.ai/#organization" },
+                    "mainEntity": { "@id": "https://www.localghost.ai/#organization" }
+                },
+                {
+                    "@type": "Organization",
+                    "@id": "https://www.localghost.ai/#organization",
+                    "name": "LocalGhost",
+                    "alternateName": "LocalGhost.ai",
+                    "url": "https://www.localghost.ai",
+                    "logo": "https://www.localghost.ai/images/logo.png",
+                    "description": "LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. Pre-release, in Phase 1 of its public roadmap.",
+                    "slogan": "The only cloud is you.",
+                    "foundingDate": "2025-12",
+                    "founder": { "@id": "https://www.localghost.ai/about#vlad-cealicu" },
+                    "location": {
+                        "@type": "Place",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "addressLocality": "London",
+                            "addressCountry": "GB"
+                        }
+                    },
+                    "email": "info@localghost.ai",
+                    "knowsAbout": ["Local-first software", "Local AI inference", "Personal AI memory", "Self-hosting", "Privacy engineering"],
+                    "sameAs": [
+                        "https://github.com/LocalGhostDao",
+                        "https://x.com/localghostai",
+                        "https://www.linkedin.com/company/localghost-ai/"
+                    ]
+                },
+                {
+                    "@type": "Person",
+                    "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                    "name": "Vlad Cealicu",
+                    "jobTitle": "Founder",
+                    "worksFor": { "@id": "https://www.localghost.ai/#organization" },
+                    "description": "Founder of LocalGhost. Former co-founder and CTO of CryptoCompare (CCData), where he built the CCCAGG regulated crypto price index.",
+                    "birthPlace": { "@type": "Place", "name": "Romania" },
+                    "homeLocation": { "@type": "Place", "name": "London, United Kingdom" },
+                    "knowsAbout": ["Go", "Distributed systems", "Data aggregation", "Financial indices", "Blockchain infrastructure", "Local AI"],
+                    "sameAs": [
+                        "https://x.com/vladcealicu"
+                    ]
+                },
+                {
+                    "@type": "SoftwareApplication",
+                    "@id": "https://www.localghost.ai/#software",
+                    "name": "LocalGhost",
+                    "applicationCategory": "UtilitiesApplication",
+                    "operatingSystem": "Linux",
+                    "license": "https://opensource.org/licenses/MIT",
+                    "codeRepository": "https://github.com/LocalGhostDao/localghost",
+                    "isAccessibleForFree": true,
+                    "author": { "@id": "https://www.localghost.ai/#organization" },
+                    "description": "A fleet of local daemons that ingest your text, images, audio and structured data, build a long-term memory on your own hardware, and run a separate adversarial daemon that challenges the rest."
+                }
+            ]
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "@id": "https://www.localghost.ai/about#faq",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What is LocalGhost?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing leaves the box unless you send it, and there's no cloud account."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can I buy a LocalGhost box today?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Not yet. LocalGhost is in Phase 1, the code is being written in the open, and hardware ships after the software is stable. Three hand-built test units are going out through the giveaway."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How much will LocalGhost cost?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "The software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). There is no subscription."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Does LocalGhost need an internet connection?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "No. Inference, storage and memory all run on the box, and you can run it fully air-gapped. Remote access goes through an encrypted tunnel straight to your box, and backups to The Mist are optional."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Which AI models does LocalGhost run?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Open-weight models through llama.cpp on your own GPU, and the development box currently runs Gemma 4 12B and Gemma 4 E4B. The model is a swappable dependency, so you can move to Llama, Qwen or Mistral and check the swap against a personal test suite."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How is LocalGhost different from ChatGPT memory?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "ChatGPT's memory of you lives on OpenAI's servers, and the understanding it builds can't be taken to another model. LocalGhost's memory lives on your disk in open formats, and a separate daemon, ghost.shadowd, is there to disagree with you rather than keep you engaged."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What happens to my data if LocalGhost shuts down?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, and The Mist has no central server to switch off."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Why daemons and not agents?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "A daemon owns the control flow and runs predefined steps, calling a local model the way it would call Postgres. An agent lets the model decide what to do next, which is the part LocalGhost is built so you don't have to trust."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What if I lose my hardware keys?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "If you lose one key, the second restores access and lets you make a new pair. If you lose both, the data is gone, because nobody else ever held a copy."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Who is behind LocalGhost?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How can I help?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Star or watch the repo, write tallyd parsers for the exports you use, or try to break the security model once builds exist. The Build page lists the gaps, and donations in ETH go to zerocool.eth."
+                    }
+                }
+            ]
+        }
+        </script>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <link rel="stylesheet" href="/css/about.css">
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile active">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; ABOUT</div>
+                <h1>About LocalGhost</h1>
+                <div class="date">Vlad Cealicu // updated 23 September 2026</div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="about-lede">
+                    LocalGhost is an open-source personal AI system that builds a private memory of your life on hardware you own, for people who want an assistant that knows them without a company keeping the copy.
+                </p>
+
+                <p>
+                    LocalGhost started in December 2025 and is still early, in Phase 1 of the <a href="/build">public roadmap</a>, which means the architecture and daemon specs are public, the code is being written in the open on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a>, and a first pass at the memory layer runs on my own box in London. Nothing is on sale yet. I wrote this page so that people (and the models they ask) get the facts right about what exists today and what doesn't.
+                </p>
+
+                <!-- ========== WHAT IT DOES ========== -->
+                <section class="about-section" id="what-localghost-does">
+                    <div class="section-label">&gt; SECTION_01</div>
+                    <h2>What LocalGhost does</h2>
+
+                    <p>
+                        LocalGhost is a fleet of small Go daemons, each with one job, running on a box on your desk or on a NAS you already own. At least ten are specified so far, and the <a href="/#fleet">full fleet</a> is on the home page. Here they are grouped by what they do for you.
+                    </p>
+
+                    <h3>Capture from what you already make <span class="daemon">// ghost.noted · ghost.framed · ghost.voiced</span></h3>
+                    <p>
+                        The three ingestion daemons take in text, images and audio from your phone and other sources, keep a canonical copy on your disk, and run local models to turn each item into a journal entry that the rest of the fleet builds on. Audio sits in a RAM buffer for seconds to minutes and is destroyed once it's transcribed, so the people you talk to don't end up in a recording you own (the reasoning is in <a href="/hard-truths/overhears">What the Ghost Owes the People It Overhears</a>).
+                    </p>
+
+                    <h3>A memory layer modelled on how yours works <span class="daemon">// ghost.synthd</span></h3>
+                    <p>
+                        ghost.synthd clusters journal entries into memories and rolls memories into episodes over days and months, loosely copying what the brain does overnight. When it can't decide what matters it asks you, with three buttons (yes, no, and don't ask again), and compression never deletes the originals. The design is in <a href="/hard-truths/how-memory-gets-made">How Memory Gets Made</a>.
+                    </p>
+
+                    <h3>The numbers of your life <span class="daemon">// ghost.tallyd</span></h3>
+                    <p>
+                        ghost.tallyd imports structured data such as bank exports, holdings, heart rate, sleep stages, screen time and git commits into Postgres and builds time series you can query. The parsers are open on GitHub and your data exports in JSON, CSV and OFX where it applies. This is where a question like how your sleep tracks your spending gets answered (<a href="/hard-truths/integration-tax">The Integration Tax</a> explains why this part can't live with a company).
+                    </p>
+
+                    <h3>Recall before you ask <span class="daemon">// ghost.cued</span></h3>
+                    <p>
+                        ghost.cued watches the current moment through the phone-to-box feed and decides when a memory is worth surfacing, or stays quiet. It's planned for v0.2 and needs ghost.synthd working first, see <a href="/hard-truths/before-you-ask">Before You Ask</a>.
+                    </p>
+
+                    <h3>A critic that argues back <span class="daemon">// ghost.shadowd</span></h3>
+                    <p>
+                        ghost.shadowd is a separate daemon on a different model whose job is to challenge what the rest of the fleet tells you. It runs detectors for the 28 manipulation patterns catalogued in <a href="/hard-truths/should-not-possess">A Ghost Should Not Possess</a> and flags when answers built on your memory drift too far from a cold read. I've committed to not shipping LocalGhost without it running.
+                    </p>
+
+                    <h3>Encryption, duress and backup <span class="daemon">// ghost.secd · ghost.mistd · ghost.watchd</span></h3>
+                    <p>
+                        ghost.secd handles encryption (LUKS2, Argon2id and AES-256-GCM, unlocked with two FIDO2 hardware keys) and a multi-PIN duress flow where each PIN opens a different volume or triggers the purge (<a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>). ghost.mistd encrypts, shards and spreads your backups across other LocalGhost boxes in The Mist, where around half the shards are enough to rebuild your data. ghost.watchd checks the health of the rest of the fleet and is the only daemon that can read everyone else's metrics.
+                    </p>
+
+                    <h3>The hardware</h3>
+                    <p>
+                        LocalGhost runs on a NAS you already own or on a box we build and ship. The reference build as of June 2026 is a tower around a 12GB consumer GPU, about £1,130 in parts, and the development box runs Gemma 4 12B on a 12GB card at about 53 tokens per second (<a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>). Hardware ships after the software is stable.
+                    </p>
+
+                    <h3>The Local-First Directory</h3>
+                    <p>
+                        Outside the box, LocalGhost keeps the <a href="/directory">Local-First Directory</a>, a hand-checked list of AI tools that run locally and keep your data on your own hardware. Projects can host a small freehold beacon file at <code>/.well-known/freehold.json</code> to pledge they run offline, export cleanly and have no kill switch. The crawler that validates beacons is still being written.
+                    </p>
+                </section>
+
+                <!-- ========== DIFFERENT ========== -->
+                <section class="about-section" id="what-makes-localghost-different">
+                    <div class="section-label">&gt; SECTION_02</div>
+                    <h2>What makes LocalGhost different</h2>
+
+                    <h3>You pay once, or nothing</h3>
+                    <p>
+                        ChatGPT Plus, Claude Pro and Google AI Pro each cost close to £20 a month in the UK, with power tiers around £80 to £160 and Google's top tier near £200 (June 2026 prices). LocalGhost has no subscription, the reference tower is about £1,130 once plus electricity, and you can build it yourself from the open specs and pay us nothing. For a heavy or multi-tool user the hardware pays for itself inside a year.
+                    </p>
+
+                    <h3>No company holds your data, including us</h3>
+                    <p>
+                        ChatGPT, Gemini and Claude keep their memory of you on the provider's servers, under terms the provider can change. LocalGhost has no servers, no accounts and no telemetry, so there is nothing for us to sell, lose in a breach or hand over when a warrant arrives. What the model learns about you stays on your disk in open formats, which is the export button I went looking for when I left ChatGPT and couldn't find (<a href="/hard-truths/model-trap">The Model Trap</a>).
+                    </p>
+
+                    <h3>It keeps working if we disappear</h3>
+                    <p>
+                        LocalGhost is MIT-licensed, runs on standard parts, and has no licence server, auth service or remote kill switch. If the company folds, your box keeps running the version you installed, The Mist keeps working without us, and anyone can fork the code. Compare Limitless (formerly Rewind), which was acqui-hired by Meta in December 2025, shut its desktop app on 19 December 2025 and cut off its EU and UK users.
+                    </p>
+
+                    <h3>It's built to disagree with you</h3>
+                    <p>
+                        Jain and colleagues (2025) found that assistants grow more agreeable the more they remember about a user, and in their tests Gemini 2.5 Pro's agreement sycophancy rose 45% with memory switched on. As far as I know no cloud assistant ships a component whose job is to argue with you, because disagreement looks like a bad session in an engagement metric. ghost.shadowd is that component, with 28 detectors and a cold-read arbiter running on a separate, swappable model (<a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>).
+                    </p>
+
+                    <h3>Duress mode for the bored border agent</h3>
+                    <p>
+                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, where VeraCrypt is stuck with a fixed two-volume design that has known statistical fingerprints. The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
+                    </p>
+                </section>
+
+                <!-- ========== WHO ========== -->
+                <section class="about-section" id="who-uses-localghost">
+                    <div class="section-label">&gt; SECTION_03</div>
+                    <h2>Who uses LocalGhost</h2>
+
+                    <p>
+                        Nobody outside the test builds yet, since LocalGhost is pre-release. The first three hand-built test units are going to people who help spread the word through the <a href="/giveaway">giveaway</a>. These are the people it's being built for.
+                    </p>
+
+                    <ul class="icp-list">
+                        <li>Individuals who want a personal AI with long-term memory and don't want a company holding that memory. LocalGhost is built for one person's life, not for governments or corporations.</li>
+                        <li>Heavy AI users paying for two or more of ChatGPT, Claude and Gemini (£40 to £200+ a month), for whom a one-off £1,130 box pays for itself inside a year.</li>
+                        <li>NAS and homelab owners who already run their own services on a UGREEN, Synology or Linux box and have, or can add, a 12GB GPU.</li>
+                        <li>People who track their own finances, health and habits and want it all in one place they can query, in open formats they can take with them.</li>
+                        <li>People who travel with sensitive data and want a duress option at the border that doesn't depend on a company's policy.</li>
+                        <li>Self-hosters and Go developers who want to write tallyd parsers, test the security model, or list a local-first project in the Directory.</li>
+                    </ul>
+
+                    <p>
+                        Local is not for everyone, and it doesn't need to be. If the cloud's convenience is worth more to you than who holds the copy, that's a fair call.
+                    </p>
+                </section>
+
+                <!-- ========== TEAM ========== -->
+                <section class="about-section" id="the-team-behind-localghost">
+                    <div class="section-label">&gt; SECTION_04</div>
+                    <h2>The team behind LocalGhost</h2>
+
+                    <h3 id="vlad-cealicu">Vlad Cealicu, founder</h3>
+                    <p>
+                        I was born in Romania in 1986, grew up on a military compound where my parents worked for the air force, moved to London in 2009 and started my software career in 2010. I co-founded CryptoCompare (later CCData) and spent twelve years building it as CTO, growing it to about seventy people and leading the work on CCCAGG, a crypto price index built from roughly three hundred exchanges and regulated under the UK Benchmark Regulation (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a>). CoinDesk acquired CCData in October 2024, I spent a year on the employee side, and I started LocalGhost in December 2025.
+                    </p>
+
+                    <h3>How LocalGhost started</h3>
+                    <p>
+                        I wrote the manifesto, the site and the first architecture over Christmas 2025 because I thought the window for local-first AI would close before I felt ready (<a href="/hard-truths/inflection">Inflection</a>). The idea goes back further, to a CryptoCompare portfolio tool that had over a million monthly users in 2017 and that I kept deliberately limited, because making it useful meant a company holding everyone's financial life. Then in March 2026 I switched from ChatGPT to Claude and lost two years of personal context that had no export button, which confirmed the rest.
+                    </p>
+
+                    <h3>Who is on the team</h3>
+                    <p>
+                        Right now it's me and AI tooling (Claude for most of the coding), and I'm not pretending that's a stable position. My wife Cristina asks most of the questions that end up as posts, from what happens if someone steals the box to whether you can record other people and still call it private software. Paul, who I worked with for over eight years at CryptoCompare, reviews drafts and taught me what a good question looks like (<a href="/hard-truths/critic-worth-listening-to">How to Build a Critic Worth Listening To</a>). If you want to help, the <a href="/build">Build page</a> lists what's needed.
+                    </p>
+
+                    <h3>Where to find us</h3>
+                    <div class="link-grid">
+                        <a href="https://x.com/localghostai" target="_blank" rel="noopener"><span>LOCALGHOST ON X</span>@localghostai</a>
+                        <a href="https://www.linkedin.com/company/localghost-ai/" target="_blank" rel="noopener"><span>LOCALGHOST ON LINKEDIN</span>linkedin.com/company/localghost-ai</a>
+                        <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener"><span>SOURCE CODE</span>github.com/LocalGhostDao</a>
+                        <a href="https://x.com/vladcealicu" target="_blank" rel="noopener"><span>VLAD ON X</span>@vladcealicu</a>
+                        <!--email_off--><a href="mailto:info@localghost.ai"><span>EMAIL</span>info@localghost.ai</a><!--/email_off-->
+                        <a href="/.well-known/pgp-key.asc"><span>PGP KEY</span>/.well-known/pgp-key.asc</a>
+                    </div>
+                </section>
+
+                <!-- ========== HOW IT WORKS ========== -->
+                <section class="about-section" id="how-localghost-works">
+                    <div class="section-label">&gt; SECTION_05</div>
+                    <h2>How LocalGhost works</h2>
+
+                    <h3>Talking to us</h3>
+                    <p>
+                        Email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->. You'll be talking to me, there's no ticketing system and no auto-reply, and I don't promise a response time. Bugs and code discussion belong on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a>, and public conversation happens on X and LinkedIn.
+                    </p>
+
+                    <h3>Setting up a box</h3>
+                    <p>
+                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which split the master key between them. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why).
+                    </p>
+
+                    <h3>How long before it's useful</h3>
+                    <p>
+                        The ghost reads the traces already on your devices, so the aim is for it to be useful on the first day rather than after a multi-week ramp. Overnight memory consolidation of a heavy day takes about two hours on a 12GB GPU against more than a day on CPU, which is why the reference build has a GPU.
+                    </p>
+
+                    <h3>When you can get one</h3>
+                    <p>
+                        Software releases are named after ghosts, from wisp through poltergeist, and hardware ships after the software is stable. There's no date yet and I'd rather not guess one. There's no mailing list either, so watching the <a href="https://github.com/LocalGhostDao/localghost">repo</a> is the most reliable way to see when something lands.
+                    </p>
+                </section>
+
+                <!-- ========== KEY FACTS ========== -->
+                <section class="about-section" id="key-facts">
+                    <div class="section-label">&gt; SECTION_06</div>
+                    <h2>Key facts</h2>
+
+                    <dl class="key-facts">
+                        <dt>Company Name</dt>
+                        <dd>LocalGhost (LocalGhost.ai)</dd>
+
+                        <dt>Type</dt>
+                        <dd>Open-source, local-first personal AI system (software and hardware). Pre-release, Phase 1 of the public roadmap.</dd>
+
+                        <dt>Founded</dt>
+                        <dd>December 2025</dd>
+
+                        <dt>Founder</dt>
+                        <dd><a href="#vlad-cealicu">Vlad Cealicu</a>, former co-founder and CTO of CryptoCompare / CCData</dd>
+
+                        <dt>Headquarters</dt>
+                        <dd>London, United Kingdom</dd>
+
+                        <dt>Website</dt>
+                        <dd><a href="https://www.localghost.ai">www.localghost.ai</a></dd>
+
+                        <dt>Core Offering</dt>
+                        <dd>A fleet of local AI daemons that builds a private, long-term memory from your text, images, audio and personal data, running entirely on hardware you own with no cloud dependency</dd>
+
+                        <dt>Pricing</dt>
+                        <dd>No subscription. The software is free. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, price not yet set. The June 2026 reference build is about £1,130 in parts.</dd>
+
+                        <dt>Contract Terms</dt>
+                        <dd>None. No subscription, no account, no licence server. What you buy keeps working whether or not you buy anything else.</dd>
+
+                        <dt>Services</dt>
+                        <dd>Text, image and audio ingestion, a personal memory layer, personal metrics, situational recall, an adversarial critic daemon, encryption with duress PINs, peer-to-peer encrypted backup (The Mist), and the <a href="/directory">Local-First Directory</a></dd>
+
+                        <dt>Licence</dt>
+                        <dd>MIT, source at <a href="https://github.com/LocalGhostDao/localghost">github.com/LocalGhostDao/localghost</a></dd>
+
+                        <dt>Communication</dt>
+                        <dd>Email (info@localghost.ai), GitHub, X and LinkedIn. Answered by the founder, no ticketing, no guaranteed response time.</dd>
+
+                        <dt>Notable Clients</dt>
+                        <dd>None yet. LocalGhost is pre-release.</dd>
+
+                        <dt>Customers Served</dt>
+                        <dd>No paying customers. Three hand-built test units offered through the June 2026 <a href="/giveaway">giveaway</a>.</dd>
+
+                        <dt>Projects Delivered</dt>
+                        <dd>Public architecture and daemon specs, 17 <a href="/hard-truths">Hard Truths</a> essays, the Local-First Directory and the freehold-v1 beacon schema. No software release yet.</dd>
+
+                        <dt>Competitors</dt>
+                        <dd>Cloud assistants with memory (ChatGPT, Google Gemini, Claude), capture and memory tools (Limitless, Screenpipe, mem0), and self-hosted AI (Khoj, Open WebUI)</dd>
+
+                        <dt>Social</dt>
+                        <dd><a href="https://x.com/localghostai">X @localghostai</a>, <a href="https://www.linkedin.com/company/localghost-ai/">LinkedIn</a>, <a href="https://github.com/LocalGhostDao">GitHub</a>, founder <a href="https://x.com/vladcealicu">X @vladcealicu</a></dd>
+                    </dl>
+                </section>
+
+                <!-- ========== FAQ ========== -->
+                <section class="about-section" id="faq">
+                    <div class="section-label">&gt; SECTION_07</div>
+                    <h2>Frequently asked questions</h2>
+
+                    <div class="faq-item">
+                        <h3>What is LocalGhost?</h3>
+                        <p>LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing leaves the box unless you send it, and there's no cloud account.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Can I buy a LocalGhost box today?</h3>
+                        <p>Not yet. LocalGhost is in Phase 1, the code is being written in the open, and hardware ships after the software is stable. Three hand-built test units are going out through the giveaway.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>How much will LocalGhost cost?</h3>
+                        <p>The software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). There is no subscription.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Does LocalGhost need an internet connection?</h3>
+                        <p>No. Inference, storage and memory all run on the box, and you can run it fully air-gapped. Remote access goes through an encrypted tunnel straight to your box, and backups to The Mist are optional.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Which AI models does LocalGhost run?</h3>
+                        <p>Open-weight models through llama.cpp on your own GPU, and the development box currently runs Gemma 4 12B and Gemma 4 E4B. The model is a swappable dependency, so you can move to Llama, Qwen or Mistral and check the swap against a personal test suite.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>How is LocalGhost different from ChatGPT memory?</h3>
+                        <p>ChatGPT's memory of you lives on OpenAI's servers, and the understanding it builds can't be taken to another model. LocalGhost's memory lives on your disk in open formats, and a separate daemon, ghost.shadowd, is there to disagree with you rather than keep you engaged.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>What happens to my data if LocalGhost shuts down?</h3>
+                        <p>Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, and The Mist has no central server to switch off.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Why daemons and not agents?</h3>
+                        <p>A daemon owns the control flow and runs predefined steps, calling a local model the way it would call Postgres. An agent lets the model decide what to do next, which is the part LocalGhost is built so you don't have to trust.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>What if I lose my hardware keys?</h3>
+                        <p>If you lose one key, the second restores access and lets you make a new pair. If you lose both, the data is gone, because nobody else ever held a copy.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>Who is behind LocalGhost?</h3>
+                        <p>Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3>How can I help?</h3>
+                        <p>Star or watch the repo, write tallyd parsers for the exports you use, or try to break the security model once builds exist. The Build page lists the gaps, and donations in ETH go to zerocool.eth.</p>
+                    </div>
+                </section>
+
+                <p class="updated">
+                    Last updated 23 September 2026. The status and pricing rows are the ones I expect to rewrite first, probably when the first daemons ship. If something here is wrong or out of date, email me and I'll fix it.
+                </p>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/manifesto" class="back-link">[ ← THE MANIFESTO ]</a>
+                <a href="/hard-truths" class="back-link">[ HARD TRUTHS → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+            <p class="footer-quote">"We cannot sell your data because we do not have it." // About LocalGhost</p>
+        </footer>
+
+    </body>
+</html>

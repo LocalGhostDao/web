@@ -1,0 +1,226 @@
+/* ===========================================
+   LOCALGHOST - ABOUT PAGE
+   Real h2/h3 headings (crawlable structure),
+   key facts definition list, FAQ blocks.
+   =========================================== */
+
+.about-lede {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text);
+    border-left: 2px solid var(--terminal);
+    padding-left: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-section {
+    margin-top: 4rem;
+    padding: 0;
+    max-width: none;
+}
+
+.about-section .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--terminal);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+}
+
+.about-section h2 {
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.about-section h3 {
+    font-size: 1rem;
+    margin: 2rem 0 0.75rem;
+}
+
+.about-section h3 .daemon {
+    color: var(--text-dim);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+}
+
+.about-section p {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+}
+
+.about-section a {
+    color: var(--terminal);
+}
+
+/* ICP list */
+.icp-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.icp-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.9rem;
+    line-height: 1.7;
+}
+
+.icp-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--terminal);
+    font-family: var(--font-mono);
+    font-weight: 700;
+}
+
+/* Social / contact links */
+.link-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.link-grid a {
+    display: block;
+    padding: 0.9rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transition: background 0.2s, color 0.2s;
+    overflow-wrap: anywhere;
+}
+
+.link-grid a:nth-child(2n) {
+    border-right: none;
+}
+
+.link-grid a:nth-last-child(-n+2) {
+    border-bottom: none;
+}
+
+.link-grid a span {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.25rem;
+}
+
+.link-grid a:hover {
+    background: var(--terminal);
+    color: var(--void);
+}
+
+.link-grid a:hover span {
+    color: var(--void);
+}
+
+/* Key facts definition list */
+.key-facts {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+    background: var(--void-lighter);
+    overflow: hidden;
+}
+
+.key-facts > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.key-facts dt,
+.key-facts dd {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin: 0;
+}
+
+.key-facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terminal);
+    border-right: 1px solid var(--border);
+}
+
+.key-facts dd {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.key-facts dt:last-of-type,
+.key-facts dd:last-of-type {
+    border-bottom: none;
+}
+
+.key-facts dd a {
+    color: var(--terminal);
+}
+
+/* FAQ */
+.faq-item {
+    border-top: 1px solid var(--border);
+    padding-top: 0.25rem;
+}
+
+.faq-item:last-of-type {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+}
+
+.faq-item h3::before {
+    content: '[?] ';
+    color: var(--text-dim);
+}
+
+.updated {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--terminal-dim);
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+    .key-facts {
+        grid-template-columns: 1fr;
+    }
+
+    .key-facts dt {
+        border-right: none;
+        border-bottom: none;
+        padding-bottom: 0.2rem;
+    }
+
+    .key-facts dd {
+        padding-top: 0.2rem;
+    }
+
+    .link-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .link-grid a,
+    .link-grid a:nth-child(2n) {
+        border-right: none;
+    }
+
+    .link-grid a:nth-last-child(2) {
+        border-bottom: 1px solid var(--border);
+    }
+}
