@@ -1,0 +1,7 @@
+The Go programming language , https://go.dev
+
+The Go release tarball is an unmodified copy of the official release from https://go.dev/dl/,
+checked against go.dev's published SHA-256 when it was mirrored.
+
+Copyright The Go Authors. Distributed under a BSD-style license (BSD 3-Clause); the full text is the
+LICENSE file inside the tarball and at https://go.dev/LICENSE.

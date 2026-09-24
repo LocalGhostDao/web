@@ -273,6 +273,13 @@ section {
     margin-bottom: 0.5rem;
 }
 
+/* Section headers promoted from <div> to <h2> for document outline and SEO.
+   Zero-specificity element part so page stylesheets still win, while the
+   base h2 weight doesn't leak onto pages that only use this label style. */
+:where(h2).section-header {
+    font-weight: inherit;
+}
+
 p {
     margin-bottom: 1.5rem;
     color: var(--text);

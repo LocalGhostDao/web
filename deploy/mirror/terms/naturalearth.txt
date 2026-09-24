@@ -1,0 +1,8 @@
+Natural Earth , https://www.naturalearthdata.com
+
+world.geojson, world-50m.geojson and world-110m.geojson are unmodified copies of Natural Earth's
+admin 0 countries at 1:10m, 1:50m and 1:110m, as GeoJSON from
+https://github.com/nvkelso/natural-earth-vector (renamed only).
+
+Natural Earth data is in the public domain: https://www.naturalearthdata.com/about/terms-of-use/
+Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.

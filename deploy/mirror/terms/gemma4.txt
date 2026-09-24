@@ -1,0 +1,10 @@
+Gemma 4 , Google
+
+Gemma 4 is released by Google under the Apache License 2.0 (TERMS-apache-2.0.txt beside this file):
+https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html
+
+The files here are GGUF conversions of the Gemma 4 weights for llama.cpp; the Q4_K_M file is
+quantised, which modifies the weights (Apache 2.0, section 4(b)).
+EDIT-ME: say who made the GGUF files and where they came from, e.g. "converted and quantised by
+<name> (https://huggingface.co/<repo>)", or "converted by LocalGhost from google/<model> with
+llama.cpp <commit>". Then delete this EDIT-ME paragraph.

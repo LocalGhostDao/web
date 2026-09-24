@@ -1,0 +1,2 @@
+#fetch https://www.apache.org/licenses/LICENSE-2.0.txt
+The publish replaces this file's content with the Apache License 2.0 text from the URL above.

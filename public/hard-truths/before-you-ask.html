@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Before You Ask | Hard Truths | LocalGhost.ai</title>
-    <meta name="description" content="RAG answers the questions you ask. It cannot help when the moment passes before the question forms. What the brain does that RAG does not, and what ghost.cued has to do.">
+    <meta name="description" content="RAG answers the questions you ask, and can't help when the moment passes before the question forms. What the brain does instead, and what ghost.cued copies.">
     <meta name="author" content="Vlad Cealicu">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="ghost.cued, personal memory AI, context-aware retrieval, hippocampal remapping, priming, spreading activation, cue overload, procedural memory, LocalGhost, local AI, RAG limitations, Fitts Posner, ambient computing">
     <meta name="category" content="AI, Architecture, Neuroscience">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/before-you-ask">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/before-you-ask">
     <meta property="og:title" content="Before You Ask | LocalGhost Hard Truths">
@@ -34,7 +35,7 @@
     <meta property="article:tag" content="local AI">
     <meta property="article:reading_time" content="5">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="Before You Ask">
     <meta name="twitter:description" content="RAG answers the questions you ask. It cannot help when the moment passes before the question forms. Four mechanisms from neuroscience that point at what a ghost has to do instead.">
@@ -49,17 +50,22 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         "headline": "Before You Ask",
         "description": "RAG answers the questions you ask. It cannot help when the moment passes before the question forms. Four mechanisms from neuroscience that point at what a ghost has to do instead.",
         "author": {
             "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
             "name": "Vlad Cealicu",
-            "url": "https://www.localghost.ai"
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
+            "sameAs": [
+                "https://x.com/vladcealicu"
+            ]
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
             "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
@@ -81,10 +87,11 @@
         "keywords": "ghost.cued, context-aware retrieval, hippocampal remapping, priming, procedural memory, RAG limitations, local AI, personal memory",
         "articleSection": "Hard Truths",
         "isPartOf": {
-            "@type": "Blog",
-            "name": "Hard Truths",
-            "url": "https://www.localghost.ai/hard-truths"
-        }
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/before-you-ask",
+        "inLanguage": "en-GB",
+        "wordCount": 3335
     }
     </script>
     <script type="application/ld+json">
@@ -92,12 +99,28 @@
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
-            { "@type": "ListItem", "position": 3, "name": "Before You Ask", "item": "https://www.localghost.ai/hard-truths/before-you-ask" }
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Before You Ask",
+                "item": "https://www.localghost.ai/hard-truths/before-you-ask"
+            }
         ]
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/blog.css">
@@ -123,7 +146,7 @@
     <div class="page-header">
         <div class="section-label">&gt; HARD_TRUTHS // POST_11 // APR 2026</div>
         <h1>Before You Ask</h1>
-        <div class="date">Vlad Cealicu // 17 April 2026</div>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-04-17">17 April 2026</time></div>
     </div>
 
     <div class="manifesto-text">
@@ -163,7 +186,7 @@
             After talking to Nick I called my pilot friend Ionuț. We grew up together on a military compound in Romania, our parents both worked for the air force, and he has been flying for a major carrier for about ten years. I was curious how he handled talking to the tower. He laughed and said the early radio stress is something every pilot deals with, and that it is worse on commercial aircraft, because the radio work is a carefully choreographed exchange of phrases, codes, and sequenced questions between the flight deck and the controller, and you have to hit it right in the right order. You get used to it eventually, but it takes time and practice. On his first commercial flights the First Officer sitting next to him would handle the radio or cue him when he stalled. Not just on the callsign, on the whole sequence. He had practised it many times, he knew it, but knowing it in a simulator or on the ground lands differently when you are in charge of a plane with hundreds of people on board. The First Officer sitting next to him was the thing that closed the gap.
         </p>
 
-        <div class="section-header">&gt; 1. Why retrieval is not the whole job</div>
+        <h2 class="section-header">&gt; 1. Why retrieval is not the whole job</h2>
 
         <p>
             I have spent the last month designing the retrieval layer of LocalGhost. ghost.noted (extracts journal entries) takes whatever text arrives and publishes entries to the <a href="https://www.localghost.ai/#fleet" target="_blank" rel="noopener">fleet</a>. ghost.synthd (clusters entries into memories) consumes those entries the way <a href="/hard-truths/how-memory-gets-made">POST_09</a> described, rolls memories into episodes, handles the queue of questions about which ones matter, and exposes an API the app layer queries. Vector embeddings in pgvector, a reranker where latency allows, a conversational layer over the top that LocalGhost's app talks to. The industry-standard pattern for this is RAG, and at small scale, with a well-curated index and a few hundred retrieved chunks, the pattern works. You can build a system that answers questions about your life reasonably well with the tools that exist today.
@@ -185,7 +208,7 @@
             The second stage is the model that consumes whatever the retriever returned. Liu et al. (2023) showed that language models handed long retrieved contexts follow a U-shaped performance curve, strongest when the relevant passage is at the start or end of the context, weakest when it sits in the middle, even on models explicitly built for long contexts <a href="#ref-2" class="cite">[2]</a>. Chroma's 2025 "Context Rot" report tested 18 frontier models (GPT-4.1, Claude Opus 4, Gemini 2.5 Pro, Qwen3, and others) and found every one degraded as input length grew, on tasks as simple as retrieving a single fact, with the degradation worse when the query did not lexically match the target or when distractors were present <a href="#ref-3" class="cite">[3]</a>. A personal memory layer meant to store a life cannot stay small forever. Five years of notes and photos and messages is not a few hundred chunks, it is hundreds of thousands. Both failure modes compound at that scale. The retriever returns a looser shortlist, and the model attends to the wrong parts of the looser shortlist. The ghost has to start from the assumption that pure Q&A retrieval cannot hold a lifetime.
         </p>
 
-        <div class="section-header">&gt; 2. How the brain does it</div>
+        <h2 class="section-header">&gt; 2. How the brain does it</h2>
 
         <p>
             If RAG is not how the right memory reaches the right moment, I wanted to understand how the brain does it, because the brain clearly does it well. You do not search your memory for your partner's name when they walk into the room. The name arrives because they walked in. The context did the work. The brain does this constantly, for faces, for smells, for rooms, for the phase of a conversation, and the memories it surfaces are the ones that match the current state of the world, with the situation acting as the query and the retrieval following from it. Four things have to be true for that to work, and there is a real neural mechanism behind each one.
@@ -207,7 +230,7 @@
             The fourth is the learning curve, the fact that a memory worth surfacing the first time is not worth surfacing the fiftieth. Fitts and Posner (1967) described the three phases of skill acquisition, the cognitive phase where the learner is effortfully constructing each action, the associative phase where errors decrease and fluency rises, and the autonomous phase where the skill runs without conscious attention <a href="#ref-12" class="cite">[12]</a>. The neural substrate shifts as the phases progress. Early on, hippocampus and prefrontal cortex do the heavy lifting. As the skill consolidates, activity transfers to the basal ganglia and cerebellum, and the explicit retrieval the skill originally needed becomes a procedural memory that does not require a cue <a href="#ref-13" class="cite">[13]</a>. This is what Ionuț described when I called him. The First Officer cued him on the first flights, fewer cues by the tenth, stopped cueing by the fiftieth. He told me he does not need the help anymore. The cueing did its job by making itself unnecessary. A good mentor tracks the curve and pulls back. A cue that arrives when the learner no longer needs it is interference, not help.
         </p>
 
-        <div class="section-header">&gt; 3. What ghost.cued is for</div>
+        <h2 class="section-header">&gt; 3. What ghost.cued is for</h2>
 
         <p>
             ghost.cued is the daemon that reads the user's environment and asks ghost.synthd to surface the right memory for the moment. That is the whole job. The four mechanisms behind it are the ones the brain has been running for hundreds of thousands of years, implemented in tech instead of tissue. The tech version can be better than the biological one in specific ways. The store is more organised, the ranker is more predictable, the curve is inspectable, and the tip of the tongue does not exist, because the answer is either in the archive and surfaced or it is not. ghost.cued does not need to be smarter than the brain to be useful. It needs to be cleaner.
@@ -222,7 +245,7 @@
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
-        <div class="section-header">&gt; REFERENCES</div>
+        <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="references" id="ref-1">
             <strong>[1]</strong> The HNSW algorithm is described in Malkov and Yashunin, 2018. "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs." <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, arXiv:1603.09320. Source for the algorithmic basis of most production vector indexes including pgvector, Weaviate, Qdrant, and Milvus. On recall degradation at scale with fixed parameters and the effects of dynamic inserts and deletions on graph quality, see the practitioner literature that has emerged from production deployments, including Bhat, Jan 2026, "HNSW at Scale: Why Your RAG System Gets Worse as the Vector Database Grows" (<em>Towards Data Science</em>), which shows controlled experiments of recall dropping as index size grows at fixed ef_search, and the Marqo 2025 research note "Understanding Recall in HNSW Search," which measured NDCG@10 drops of up to 18% from under-configured parameters and up to 17% from insertion order effects. <a href="https://arxiv.org/abs/1603.09320">arxiv.org/abs/1603.09320</a>. Practitioner coverage at <a href="https://towardsdatascience.com/hnsw-at-scale-why-your-rag-system-gets-worse-as-the-vector-database-grows/">towardsdatascience.com/hnsw-at-scale-why-your-rag-system-gets-worse-as-the-vector-database-grows/</a> and <a href="https://www.marqo.ai/blog/understanding-recall-in-hnsw-search">marqo.ai/blog/understanding-recall-in-hnsw-search</a>.

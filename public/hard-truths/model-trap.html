@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Model Trap | Hard Truths | LocalGhost.ai</title>
-    <meta name="description" content="Copilot understands your codebase. Gemini knows your email patterns. Claude has months of your reasoning. The new lock-in isn't your data, it's the context around it, and no export button can give it back.">
+    <meta name="description" content="Copilot knows your codebase, Gemini your email, Claude months of your reasoning. The new lock-in is the context around your data, and nothing exports it.">
     <meta name="author" content="Vlad Cealicu">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="model lock-in, AI vendor lock-in, enshittification, model agnostic, behavioral testing, AI updates, local AI, LocalGhost hard truths">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/model-trap">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/model-trap">
     <meta property="og:title" content="The Model Trap">
@@ -20,7 +21,7 @@
     <meta property="og:image:alt" content="The Model Trap — LocalGhost Hard Truths">
     <meta property="og:site_name" content="LocalGhost.ai">
     <meta property="og:locale" content="en_GB">
-    <meta property="article:published_time" content="2026-04-01T00:00:00Z">
+    <meta property="article:published_time" content="2026-04-02T00:00:00Z">
     <meta property="article:author" content="Vlad Cealicu">
     <meta property="article:section" content="Hard Truths">
     <meta property="article:tag" content="model lock-in">
@@ -28,7 +29,7 @@
     <meta property="article:tag" content="enshittification">
     <meta property="article:tag" content="local AI">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="The Model Trap">
     <meta name="twitter:description" content="The new lock-in isn't your data, it's the context around it, and no export button can give it back.">
@@ -42,25 +43,30 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         "headline": "The Model Trap",
         "description": "The new lock-in isn't your data, it's the context around it, and no export button can give it back.",
         "author": {
             "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
             "name": "Vlad Cealicu",
-            "url": "https://www.localghost.ai"
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
+            "sameAs": [
+                "https://x.com/vladcealicu"
+            ]
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
             "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://www.localghost.ai/images/logo.png"
             }
         },
-        "datePublished": "2026-04-01",
-        "dateModified": "2026-04-01",
+        "datePublished": "2026-04-02",
+        "dateModified": "2026-04-02",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.localghost.ai/hard-truths/model-trap"
@@ -74,10 +80,38 @@
         "keywords": "model lock-in, AI vendor lock-in, enshittification, model agnostic, behavioral testing, local AI",
         "articleSection": "Hard Truths",
         "isPartOf": {
-            "@type": "Blog",
-            "name": "Hard Truths",
-            "url": "https://www.localghost.ai/hard-truths"
-        }
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/model-trap",
+        "inLanguage": "en-GB",
+        "wordCount": 2674
+    }
+    </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "The Model Trap",
+                "item": "https://www.localghost.ai/hard-truths/model-trap"
+            }
+        ]
     }
     </script>
     <link rel="stylesheet" href="/css/base.css">
@@ -105,7 +139,7 @@
     <div class="page-header">
         <div class="section-label">&gt; HARD_TRUTHS // POST_06 // APR 2026</div>
         <h1>The Model Trap</h1>
-        <div class="date">Vlad Cealicu // 2 April 2026</div>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-04-02">2 April 2026</time></div>
     </div>
 
     <div class="manifesto-text">
@@ -149,7 +183,7 @@
             It was like making a new friend versus having a friend who's known you for a while. The new friend is smart and helpful and you get along immediately, and there's an irony here I should name, part of what I lost was a <a href="/hard-truths/dictator-brain">sycophantic relationship I'd already written about being dangerous</a>, and I still missed it, which tells you something about how powerful accumulated context is as a lock-in mechanism even when you know the context was making you worse.
         </p>
 
-        <div class="section-header">&gt; 1. Why context can't be exported</div>
+        <h2 class="section-header">&gt; 1. Why context can't be exported</h2>
 
         <p>
             The old lock-in was your files. You put your photos in iCloud, your documents in Google Drive, your music in iTunes, and leaving meant losing access to the things you'd stored. GDPR and years of pressure from groups like EFF got us export buttons but even those are not always working as well as intended. This new version of walled garden is harder to see because the valuable thing is the understanding the model built around your data over time, and that understanding lives in the model's context and memory systems and can't be exported because it was never yours to begin with.
@@ -167,7 +201,7 @@
             <p>The cost of switching accumulates invisibly because nobody tracks context the way they track storage, and by the time you realise how much you've built up inside one provider's ecosystem, rebuilding it somewhere else feels like a project you'll get to eventually but never do.</p>
         </div>
 
-        <div class="section-header">&gt; 2. What happens when everything runs the same model</div>
+        <h2 class="section-header">&gt; 2. What happens when everything runs the same model</h2>
 
         <p>
             The lock-in problem gets worse when you realise that most of the AI-powered products being built right now run on the same three or four foundation models underneath. Your note-taking app, your code editor, your email assistant, your customer support tool, your search engine, and increasingly your operating system are all calling the same handful of APIs. When everything runs on GPT-4 or Claude or Gemini, a subtle bias in one model propagates to everything built on top of it, a vulnerability in one model's training data affects every product that uses it, and a pricing change by one provider hits every business that depends on it simultaneously.
@@ -181,7 +215,7 @@
             <p>Model diversity is the architectural requirement that makes local-first work, because a local-first privacy preserving system that depends on a single model inherits every vulnerability, every policy change, and every pricing decision that model's provider makes, which is the same dependency structure that got me working on LocalGhost in the first place.</p>
         </div>
 
-        <div class="section-header">&gt; 3. When local models are good enough</div>
+        <h2 class="section-header">&gt; 3. When local models are good enough</h2>
 
         <p>
             The counterargument to all of this is that local models aren't as good as frontier cloud models, and right now that's mostly true. A 7B or 13B model running on a box under your desk is not going to match GPT-5 or whatever ships next quarter on raw capability and speed. If you need the absolute best reasoning, the latest training data, the biggest context window, you need the cloud API and you need to pay for it and you need to accept the lock-in and the surveillance that comes with it.
@@ -195,7 +229,7 @@
             Open-weight models are improving fast enough that the gap between local and cloud capability is narrowing every few months. Llama, Mistral, Qwen, Gemma, the open weights ecosystem is producing models that would have been considered frontier eighteen months ago, and they run on consumer hardware (not great, but OK). You won't be at the forefront of progress with a local setup, and I think for what we're building that will be enough, because the trade-off is a marginal capability difference versus complete architectural independence, and for personal AI the independence matters more than the margin.
         </p>
 
-        <div class="section-header">&gt; 4. HOW WE'RE BUILDING THE TEST</div>
+        <h2 class="section-header">&gt; 4. HOW WE'RE BUILDING THE TEST</h2>
 
         <p>
             What made the switch from ChatGPT to Claude worse is that I had no way of knowing whether Claude was better or worse for my life admin use case. I assumed it was OK because Claude said so, because the benchmarks showed similar performance and because I had been using Claude for coding for over a year already. But I don't have a preset list of expected outcomes for the things I use a model for, which means I'm relying on someone else's tests to decide whether a tool I use every day got better or worse, and their tests measure general capability, not whether the model understands my codebase or produces Go code the way I write it. With cloud models you can at least lean on the provider's evaluation infrastructure and hope their priorities overlap with yours. With open-weight models running locally you can't even take that for granted, because nobody is testing whether Llama 3 handles your specific workflow better than Llama 2 did, that's entirely your problem, and most people don't have a systematic way to answer it.
@@ -234,7 +268,7 @@
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
-        <div class="section-header">&gt; REFERENCES</div>
+        <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="reference">
             [1] CNBC, March 5 2026. Reporting on the Department of Defense officially designating Anthropic a supply chain risk after negotiations collapsed over autonomous weapons and domestic mass surveillance, and Trump's directive ordering federal agencies to cease using Anthropic's technology. <a href="https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html" target="_blank" rel="noopener">cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran</a>

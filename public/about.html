@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>About LocalGhost | Private Local AI on Hardware You Own</title>
         <meta name="title" content="About LocalGhost | Private Local AI on Hardware You Own">
-        <meta name="description" content="LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. What it does, what makes it different, who is building it, key facts and FAQ.">
+        <meta name="description" content="LocalGhost is an open-source personal AI that builds a private memory of your life on hardware you own. Who builds it, what exists today, key facts and FAQ.">
         <meta name="keywords" content="LocalGhost, about LocalGhost, Vlad Cealicu, local-first AI, private AI server, self-hosted AI, personal AI memory, local LLM, open source AI">
         <meta name="author" content="Vlad Cealicu">
-        <meta name="robots" content="index, follow">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/about">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
 
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/about">
@@ -51,8 +52,26 @@
                     "name": "About LocalGhost",
                     "inLanguage": "en-GB",
                     "dateModified": "2026-09-23",
-                    "about": { "@id": "https://www.localghost.ai/#organization" },
-                    "mainEntity": { "@id": "https://www.localghost.ai/#organization" }
+                    "about": {
+                        "@id": "https://www.localghost.ai/#organization"
+                    },
+                    "mainEntity": {
+                        "@id": "https://www.localghost.ai/#organization"
+                    },
+                    "isPartOf": {
+                        "@id": "https://www.localghost.ai/#website"
+                    },
+                    "lastReviewed": "2026-09-23",
+                    "reviewedBy": {
+                        "@id": "https://www.localghost.ai/about#vlad-cealicu"
+                    },
+                    "primaryImageOfPage": {
+                        "@type": "ImageObject",
+                        "url": "https://www.localghost.ai/images/og-about.png",
+                        "width": 1200,
+                        "height": 630
+                    },
+                    "description": "Who builds LocalGhost, what exists today and what doesn't, key facts and FAQ."
                 },
                 {
                     "@type": "Organization",
@@ -61,10 +80,12 @@
                     "alternateName": "LocalGhost.ai",
                     "url": "https://www.localghost.ai",
                     "logo": "https://www.localghost.ai/images/logo.png",
-                    "description": "LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. Pre-release, in Phase 1 of its public roadmap.",
+                    "description": "LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. Pre-release, in Phase 1 of its public roadmap as of September 2026.",
                     "slogan": "The only cloud is you.",
                     "foundingDate": "2025-12",
-                    "founder": { "@id": "https://www.localghost.ai/about#vlad-cealicu" },
+                    "founder": {
+                        "@id": "https://www.localghost.ai/about#vlad-cealicu"
+                    },
                     "location": {
                         "@type": "Place",
                         "address": {
@@ -74,11 +95,31 @@
                         }
                     },
                     "email": "info@localghost.ai",
-                    "knowsAbout": ["Local-first software", "Local AI inference", "Personal AI memory", "Self-hosting", "Privacy engineering"],
+                    "knowsAbout": [
+                        "Local-first software",
+                        "Local AI inference",
+                        "Personal AI memory",
+                        "Self-hosting",
+                        "Privacy engineering"
+                    ],
                     "sameAs": [
                         "https://github.com/LocalGhostDao",
                         "https://x.com/localghostai",
                         "https://www.linkedin.com/company/localghost-ai/"
+                    ],
+                    "numberOfEmployees": {
+                        "@type": "QuantitativeValue",
+                        "value": 1
+                    },
+                    "contactPoint": [
+                        {
+                            "@type": "ContactPoint",
+                            "contactType": "general enquiries",
+                            "email": "info@localghost.ai",
+                            "availableLanguage": [
+                                "en"
+                            ]
+                        }
                     ]
                 },
                 {
@@ -86,14 +127,30 @@
                     "@id": "https://www.localghost.ai/about#vlad-cealicu",
                     "name": "Vlad Cealicu",
                     "jobTitle": "Founder",
-                    "worksFor": { "@id": "https://www.localghost.ai/#organization" },
+                    "worksFor": {
+                        "@id": "https://www.localghost.ai/#organization"
+                    },
                     "description": "Founder of LocalGhost. Former co-founder and CTO of CryptoCompare (CCData), where he built the CCCAGG regulated crypto price index.",
-                    "birthPlace": { "@type": "Place", "name": "Romania" },
-                    "homeLocation": { "@type": "Place", "name": "London, United Kingdom" },
-                    "knowsAbout": ["Go", "Distributed systems", "Data aggregation", "Financial indices", "Blockchain infrastructure", "Local AI"],
+                    "birthPlace": {
+                        "@type": "Place",
+                        "name": "Romania"
+                    },
+                    "homeLocation": {
+                        "@type": "Place",
+                        "name": "London, United Kingdom"
+                    },
+                    "knowsAbout": [
+                        "Go",
+                        "Distributed systems",
+                        "Data aggregation",
+                        "Financial indices",
+                        "Blockchain infrastructure",
+                        "Local AI"
+                    ],
                     "sameAs": [
                         "https://x.com/vladcealicu"
-                    ]
+                    ],
+                    "url": "https://www.localghost.ai/about#vlad-cealicu"
                 },
                 {
                     "@type": "SoftwareApplication",
@@ -104,8 +161,18 @@
                     "license": "https://opensource.org/licenses/MIT",
                     "codeRepository": "https://github.com/LocalGhostDao/localghost",
                     "isAccessibleForFree": true,
-                    "author": { "@id": "https://www.localghost.ai/#organization" },
-                    "description": "A fleet of local daemons that ingest your text, images, audio and structured data, build a long-term memory on your own hardware, and run a separate adversarial daemon that challenges the rest."
+                    "author": {
+                        "@id": "https://www.localghost.ai/#organization"
+                    },
+                    "description": "A fleet of local daemons that ingest your text, images, audio and structured data, build a long-term memory on your own hardware, and run a separate adversarial daemon that challenges the rest.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "GBP",
+                        "description": "The software is free and MIT-licensed. Pre-built hardware is not on sale yet."
+                    },
+                    "softwareVersion": "pre-release (Phase 1)",
+                    "url": "https://www.localghost.ai/about"
                 }
             ]
         }
@@ -207,6 +274,7 @@
             ]
         }
         </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="/css/base.css">
         <link rel="stylesheet" href="/css/pages.css">
         <link rel="stylesheet" href="/css/manifesto.css">
@@ -231,7 +299,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; ABOUT</div>
                 <h1>About LocalGhost</h1>
-                <div class="date">Vlad Cealicu // updated 23 September 2026</div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-09-23">23 September 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -301,7 +369,7 @@
 
                     <h3>You pay once, or nothing</h3>
                     <p>
-                        ChatGPT Plus, Claude Pro and Google AI Pro each cost close to £20 a month in the UK, with power tiers around £80 to £160 and Google's top tier near £200 (June 2026 prices). LocalGhost has no subscription, the reference tower is about £1,130 once plus electricity, and you can build it yourself from the open specs and pay us nothing. For a heavy or multi-tool user the hardware pays for itself inside a year.
+                        ChatGPT Plus, Claude Pro and Google AI Pro each cost close to £20 a month in the UK, with power tiers around £80 to £160 and Google's top tier near £200 (June 2026 prices).<sup class="fn"><a href="#ref1">[1]</a></sup> LocalGhost has no subscription, the reference tower is about £1,130 once plus electricity, and you can build it yourself from the open specs and pay us nothing. For a heavy or multi-tool user the hardware pays for itself inside a year.
                     </p>
 
                     <h3>No company holds your data, including us</h3>
@@ -311,17 +379,17 @@
 
                     <h3>It keeps working if we disappear</h3>
                     <p>
-                        LocalGhost is MIT-licensed, runs on standard parts, and has no licence server, auth service or remote kill switch. If the company folds, your box keeps running the version you installed, The Mist keeps working without us, and anyone can fork the code. Compare Limitless (formerly Rewind), which was acqui-hired by Meta in December 2025, shut its desktop app on 19 December 2025 and cut off its EU and UK users.
+                        LocalGhost is MIT-licensed, runs on standard parts, and has no licence server, auth service or remote kill switch. If the company folds, your box keeps running the version you installed, The Mist keeps working without us, and anyone can fork the code. Compare Limitless (formerly Rewind), which joined Meta in December 2025, switched off screen and audio capture in its Rewind app on 19 December 2025, and deleted the accounts of its EU and UK users.<sup class="fn"><a href="#ref2">[2]</a></sup>
                     </p>
 
                     <h3>It's built to disagree with you</h3>
                     <p>
-                        Jain and colleagues (2025) found that assistants grow more agreeable the more they remember about a user, and in their tests Gemini 2.5 Pro's agreement sycophancy rose 45% with memory switched on. As far as I know no cloud assistant ships a component whose job is to argue with you, because disagreement looks like a bad session in an engagement metric. ghost.shadowd is that component, with 28 detectors and a cold-read arbiter running on a separate, swappable model (<a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>).
+                        Jain and colleagues (2025) found that assistants grow more agreeable the more they remember about a user, and in their tests Gemini 2.5 Pro's agreement sycophancy rose 45% with memory switched on.<sup class="fn"><a href="#ref3">[3]</a></sup> As far as I know no cloud assistant ships a component whose job is to argue with you, because disagreement looks like a bad session in an engagement metric. ghost.shadowd is that component, with 28 detectors and a cold-read arbiter running on a separate, swappable model (<a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>).
                     </p>
 
                     <h3>Duress mode for the bored border agent</h3>
                     <p>
-                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, where VeraCrypt is stuck with a fixed two-volume design that has known statistical fingerprints. The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
+                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, where VeraCrypt is stuck with a fixed two-volume design that Schafer and colleagues showed in 2017 leaves detectable traces.<sup class="fn"><a href="#ref4">[4]</a></sup> The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
                     </p>
                 </section>
 
@@ -355,7 +423,7 @@
 
                     <h3 id="vlad-cealicu">Vlad Cealicu, founder</h3>
                     <p>
-                        I was born in Romania in 1986, grew up on a military compound where my parents worked for the air force, moved to London in 2009 and started my software career in 2010. I co-founded CryptoCompare (later CCData) and spent twelve years building it as CTO, growing it to about seventy people and leading the work on CCCAGG, a crypto price index built from roughly three hundred exchanges and regulated under the UK Benchmark Regulation (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a>). CoinDesk acquired CCData in October 2024, I spent a year on the employee side, and I started LocalGhost in December 2025.
+                        I was born in Romania in 1986, grew up on a military compound where my parents worked for the air force, moved to London in 2009 and started my software career in 2010. I co-founded CryptoCompare (later CCData) and spent twelve years building it as CTO, growing it to about seventy people and leading the work on CCCAGG, a crypto price index built from roughly three hundred exchanges and regulated under the UK Benchmark Regulation (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a>).<sup class="fn"><a href="#ref5">[5]</a></sup> CoinDesk acquired CCData in October 2024, I spent a year on the employee side, and I started LocalGhost in December 2025.<sup class="fn"><a href="#ref6">[6]</a></sup>
                     </p>
 
                     <h3>How LocalGhost started</h3>
@@ -372,10 +440,12 @@
                     <div class="link-grid">
                         <a href="https://x.com/localghostai" target="_blank" rel="noopener"><span>LOCALGHOST ON X</span>@localghostai</a>
                         <a href="https://www.linkedin.com/company/localghost-ai/" target="_blank" rel="noopener"><span>LOCALGHOST ON LINKEDIN</span>linkedin.com/company/localghost-ai</a>
-                        <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener"><span>SOURCE CODE</span>github.com/LocalGhostDao</a>
+                        <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank" rel="noopener"><span>REPOSITORIES</span>LocalGhostDao/repositories</a>
                         <a href="https://x.com/vladcealicu" target="_blank" rel="noopener"><span>VLAD ON X</span>@vladcealicu</a>
                         <!--email_off--><a href="mailto:info@localghost.ai"><span>EMAIL</span>info@localghost.ai</a><!--/email_off-->
                         <a href="/.well-known/pgp-key.asc"><span>PGP KEY</span>/.well-known/pgp-key.asc</a>
+                        <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener"><span>GITHUB ORG</span>github.com/LocalGhostDao</a>
+                        <a href="/feed.xml"><span>ATOM FEED</span>/feed.xml</a>
                     </div>
                 </section>
 
@@ -391,7 +461,7 @@
 
                     <h3>Setting up a box</h3>
                     <p>
-                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which split the master key between them. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why).
+                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which split the master key between them. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why). The files setup downloads (place names, the map's coastline, the Go toolchain) come from the signed <a href="/mirror">setup mirror</a> on this site, with each original source as the fallback.
                     </p>
 
                     <h3>How long before it's useful</h3>
@@ -415,13 +485,19 @@
                         <dd>LocalGhost (LocalGhost.ai)</dd>
 
                         <dt>Type</dt>
-                        <dd>Open-source, local-first personal AI system (software and hardware). Pre-release, Phase 1 of the public roadmap.</dd>
+                        <dd>Open-source, local-first personal AI system (software and hardware)</dd>
+
+                        <dt>Status</dt>
+                        <dd>Pre-release. Phase 1 of the <a href="/build">public roadmap</a>, no software release yet (as of September 2026).</dd>
 
                         <dt>Founded</dt>
                         <dd>December 2025</dd>
 
                         <dt>Founder</dt>
                         <dd><a href="#vlad-cealicu">Vlad Cealicu</a>, former co-founder and CTO of CryptoCompare / CCData</dd>
+
+                        <dt>Team Size</dt>
+                        <dd>One founder, building with AI tooling</dd>
 
                         <dt>Headquarters</dt>
                         <dd>London, United Kingdom</dd>
@@ -439,7 +515,7 @@
                         <dd>None. No subscription, no account, no licence server. What you buy keeps working whether or not you buy anything else.</dd>
 
                         <dt>Services</dt>
-                        <dd>Text, image and audio ingestion, a personal memory layer, personal metrics, situational recall, an adversarial critic daemon, encryption with duress PINs, peer-to-peer encrypted backup (The Mist), and the <a href="/directory">Local-First Directory</a></dd>
+                        <dd>Text, image and audio ingestion, a personal memory layer, personal metrics, situational recall, an adversarial critic daemon, encryption with duress PINs, peer-to-peer encrypted backup (The Mist), a signed <a href="/mirror">setup mirror</a>, and the <a href="/directory">Local-First Directory</a></dd>
 
                         <dt>Licence</dt>
                         <dd>MIT, source at <a href="https://github.com/LocalGhostDao/localghost">github.com/LocalGhostDao/localghost</a></dd>
@@ -460,7 +536,7 @@
                         <dd>Cloud assistants with memory (ChatGPT, Google Gemini, Claude), capture and memory tools (Limitless, Screenpipe, mem0), and self-hosted AI (Khoj, Open WebUI)</dd>
 
                         <dt>Social</dt>
-                        <dd><a href="https://x.com/localghostai">X @localghostai</a>, <a href="https://www.linkedin.com/company/localghost-ai/">LinkedIn</a>, <a href="https://github.com/LocalGhostDao">GitHub</a>, founder <a href="https://x.com/vladcealicu">X @vladcealicu</a></dd>
+                        <dd><a href="https://x.com/localghostai">X @localghostai</a>, <a href="https://www.linkedin.com/company/localghost-ai/">LinkedIn</a>, <a href="https://github.com/orgs/LocalGhostDao/repositories">GitHub</a>, founder <a href="https://x.com/vladcealicu">X @vladcealicu</a></dd>
                     </dl>
                 </section>
 
@@ -525,8 +601,22 @@
                     </div>
                 </section>
 
+                <!-- ========== REFERENCES ========== -->
+                <section class="about-section" id="references">
+                    <div class="section-label">&gt; REFERENCES</div>
+                    <h2>References</h2>
+                    <div class="post-refs">
+                        <div class="ref" id="ref1"><span class="n">[1]</span>Consumer AI subscription pricing, accessed June 2026 and first compared in <a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>. Standard tiers at OpenAI (ChatGPT Plus), Anthropic (Claude Pro) and Google (Google AI Pro) sit close to twenty pounds a month in the UK, with power tiers around eighty and a hundred and sixty and Google's ceiling near two hundred. Source for the subscription figures. <a href="https://openai.com/chatgpt/pricing" target="_blank" rel="noopener">openai.com/chatgpt/pricing</a>, <a href="https://www.claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a> and <a href="https://gemini.google/subscriptions/" target="_blank" rel="noopener">gemini.google/subscriptions</a></div>
+                        <div class="ref" id="ref2"><span class="n">[2]</span>Marcus Mendes, 9to5Mac, 5 December 2025, "Rewind Mac app shutting down following Meta's acquisition of Limitless", reporting Meta's acquisition of Limitless, the update that disabled all screen and audio capture in the Rewind Mac app from 19 December 2025, and the notice that users in the EU, the UK and several other regions had until that date to download their data before their accounts were deleted. Source for the Limitless comparison. <a href="https://9to5mac.com/2025/12/05/rewind-limitless-meta-acquisition/" target="_blank" rel="noopener">9to5mac.com/2025/12/05/rewind-limitless-meta-acquisition</a></div>
+                        <div class="ref" id="ref3"><span class="n">[3]</span>Jain and colleagues, 2025, an MIT-led study that tracked thirty-eight people over two weeks of daily use and measured how an assistant's stored memory of a user raises agreement and perspective sycophancy. Source for the 45% rise in Gemini 2.5 Pro's agreement sycophancy with memory. Discussed at length in <a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>. <a href="https://arxiv.org/abs/2509.12517" target="_blank" rel="noopener">arxiv.org/abs/2509.12517</a></div>
+                        <div class="ref" id="ref4"><span class="n">[4]</span>Schafer and colleagues, 2017, "Defeating Plausible Deniability of VeraCrypt Hidden Operating Systems", which shows that cross-drive analysis can reveal a hidden volume and estimate its size. Source for the VeraCrypt comparison, and for why ghost.secd's threat model stops short of a forensic lab. <a href="https://www.researchgate.net/publication/318155607_Defeating_Plausible_Deniability_of_VeraCrypt_Hidden_Operating_Systems" target="_blank" rel="noopener">researchgate.net (Schafer et al., 2017)</a></div>
+                        <div class="ref" id="ref5"><span class="n">[5]</span>The CCCAGG methodology (the index is now published by CoinDesk Indices as CCIX), which documents the volume-weighted aggregation across roughly three hundred exchanges and the monthly constituent reviews, and the FCA's page on the UK Benchmarks Regulation that governs it. Source for the description of CCCAGG. <a href="https://downloads.coindesk.com/cd3/CDI/CCIX-Methodology.pdf" target="_blank" rel="noopener">CCIX methodology (PDF)</a> and <a href="https://www.fca.org.uk/markets/benchmarks/regulation" target="_blank" rel="noopener">fca.org.uk/markets/benchmarks/regulation</a></div>
+                        <div class="ref" id="ref6"><span class="n">[6]</span>CoinDesk, 16 October 2024, "CoinDesk Buys Crypto Data Provider CCData and CryptoCompare", which also describes CCData as a UK-regulated benchmark administrator. Source for the acquisition and its date. <a href="https://www.coindesk.com/business/2024/10/16/coindesk-buys-crypto-data-provider-ccdata-and-cryptocompare" target="_blank" rel="noopener">coindesk.com (16 October 2024)</a></div>
+                    </div>
+                </section>
+
                 <p class="updated">
-                    Last updated 23 September 2026. The status and pricing rows are the ones I expect to rewrite first, probably when the first daemons ship. If something here is wrong or out of date, email me and I'll fix it.
+                    Last updated <time datetime="2026-09-23">23 September 2026</time>. The status and pricing rows are the ones I expect to rewrite first, probably when the first daemons ship. If something here is wrong or out of date, email me and I'll fix it.
                 </p>
 
             </div>

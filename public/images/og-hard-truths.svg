@@ -1,0 +1,45 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Window bar -->
+  <rect x="80" y="70" width="1040" height="32" fill="#2a2a2a" rx="4"/>
+  <circle cx="102" cy="86" r="6" fill="#ff5f56"/>
+  <circle cx="122" cy="86" r="6" fill="#ffbd2e"/>
+  <circle cx="142" cy="86" r="6" fill="#27ca3f"/>
+  <text x="170" y="92" fill="#808080" font-family="monospace" font-size="16">ghost@localghost ~ $ ls hard-truths/ | wc -l</text>
+
+  <text x="80" y="180" fill="#33ff00" font-family="monospace" font-size="22" letter-spacing="6">&gt; HARD_TRUTHS</text>
+  <text x="80" y="265" fill="#E0E0E0" font-family="monospace" font-size="76" font-weight="bold">Hard Truths</text>
+
+  <text x="80" y="330" fill="#a0a0a0" font-family="monospace" font-size="26">Uncomfortable observations about tech, power</text>
+  <text x="80" y="368" fill="#a0a0a0" font-family="monospace" font-size="26">and what we broke along the way.</text>
+
+  <line x1="80" y1="420" x2="1120" y2="420" stroke="#444444" stroke-width="1"/>
+
+  <g font-family="monospace" font-size="18">
+    <rect x="80" y="450" width="96" height="32" fill="none" stroke="#FF8A8A"/>
+    <text x="128" y="472" text-anchor="middle" fill="#FF8A8A">ALARM</text>
+    <rect x="192" y="450" width="104" height="32" fill="none" stroke="#33ff00"/>
+    <text x="244" y="472" text-anchor="middle" fill="#33ff00">SIGNAL</text>
+    <rect x="312" y="450" width="104" height="32" fill="none" stroke="#a0a0a0"/>
+    <text x="364" y="472" text-anchor="middle" fill="#a0a0a0">WINDOW</text>
+  </g>
+  <text x="80" y="530" fill="#a0a0a0" font-family="monospace" font-size="20">Essays on local AI, privacy and memory by Vlad Cealicu</text>
+
+  <!-- Ghost -->
+  <g transform="translate(950, 190) scale(0.55)" opacity="0.9">
+    <path d="M125,0 C194,0 250,56 250,125 L250,310 L218,275 L187,310 L156,275 L125,310 L94,275 L62,310 L31,275 L0,310 L0,125 C0,56 56,0 125,0 Z" fill="none" stroke="#33ff00" stroke-width="6"/>
+    <circle cx="80" cy="130" r="22" fill="#33ff00"/>
+    <circle cx="170" cy="130" r="22" fill="#33ff00"/>
+    <path d="M65,195 Q125,250 185,195" fill="none" stroke="#33ff00" stroke-width="6"/>
+  </g>
+
+  <text x="1120" y="600" text-anchor="end" fill="#1a8000" font-family="monospace" font-size="18">LOCALGHOST.AI // THE ONLY CLOUD IS YOU</text>
+</svg>

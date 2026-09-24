@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,10 @@
     <meta name="title" content="Why We Build | LocalGhost.ai Manifesto">
     <meta name="description" content="This dystopia is boring. The exit is open. A manifesto for local-first, open-source sovereignty. Code, not promises.">
     <meta name="keywords" content="manifesto, cypherpunk, enshittification, local-first, open source, privacy, data sovereignty, platform capitalism, self-hosted">
-    <meta name="author" content="LocalGhost">
-    <meta name="robots" content="index, follow">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://www.localghost.ai/manifesto">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/manifesto">
@@ -20,15 +21,17 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LocalGhost.ai">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="en_GB">
     <meta property="article:published_time" content="2025-12-18T00:00:00Z">
-    <meta property="article:author" content="LocalGhost">
+    <meta property="article:author" content="Vlad Cealicu">
     <meta property="article:section" content="Manifesto">
     <meta property="article:tag" content="cypherpunk">
     <meta property="article:tag" content="privacy">
     <meta property="article:tag" content="open-source">
     
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghostai">
+    <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:url" content="https://www.localghost.ai/manifesto">
     <meta name="twitter:title" content="This Dystopia is Boring | LocalGhost Manifesto">
     <meta name="twitter:description" content="The exit is open. Code, not promises.">
@@ -58,7 +61,9 @@
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
+            "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
                 "url": "https://www.localghost.ai/images/logo.png"
@@ -68,9 +73,17 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.localghost.ai/manifesto"
-        }
+        },
+        "dateModified": "2025-12-18",
+        "url": "https://www.localghost.ai/manifesto",
+        "inLanguage": "en-GB",
+        "isPartOf": {
+            "@id": "https://www.localghost.ai/#website"
+        },
+        "wordCount": 1090
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/manifesto.css">
@@ -95,7 +108,7 @@
         <div class="page-header">
             <div class="section-label">&gt; THE_WHY</div>
             <h1>Why We Build</h1>
-            <div class="date">Vlad Cealicu // 18 December 2025</div>
+            <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2025-12-18">18 December 2025</time></div>
         </div>
 
         <div class="manifesto-text">
@@ -113,7 +126,7 @@
                 <p class="verdict">A digital slum built on rented land, where every interaction is a toll booth and every platform is a cage.</p>
             </div>
 
-            <div class="section-header">&gt; 1. WHERE THIS STARTED</div>
+            <h2 class="section-header">&gt; 1. WHERE THIS STARTED</h2>
 
             <p>
                 Thirty years ago, the <a href="/cypherpunk" style="color: var(--terminal);">Cypherpunks</a> saw the walls closing in and understood that centralised systems eventually serve the centre rather than the edges, so their response was architectural rather than political, a body of working code that made privacy the default of the system rather than a feature you had to ask for.
@@ -123,7 +136,7 @@
                 <span class="highlight">Their mandate was absolute and has not aged, privacy is necessary, so write the code.</span>
             </p>
 
-            <div class="section-header">&gt; 2. HOW THE ROT WORKS</div>
+            <h2 class="section-header">&gt; 2. HOW THE ROT WORKS</h2>
 
             <p>
                 The code wasn't enough to stop the incentive of greed. Cory Doctorow gave the resulting disease a name, <a href="https://pluralistic.net/2023/01/21/potemkin-ai/#hey-guys" target="_blank" style="color: var(--warning); text-decoration: none; border-bottom: 1px solid var(--warning);">enshittification</a>.
@@ -137,7 +150,7 @@
                 The platforms can no longer risk the kind of innovation they once lived on. <span class="highlight">They are terrified of the very instincts that built them.</span>
             </p>
 
-            <div class="section-header">&gt; 3. WHAT CHANGED</div>
+            <h2 class="section-header">&gt; 3. WHAT CHANGED</h2>
 
             <p>
                 While the platforms were building bureaucracies, <span class="highlight">the pioneers were writing open-source, privacy-first code.</span>
@@ -155,7 +168,7 @@
                 The path is clearer than it has ever been. Build in the open, document as you go, become the foundation for whoever comes next.
             </p>
 
-            <div class="section-header">&gt; 4. HOW WE BUILD</div>
+            <h2 class="section-header">&gt; 4. HOW WE BUILD</h2>
 
             <p>
                 We're done with promises. Promises get broken in board meetings. To resist the rot, we build with architectural immunity, systems designed so the incentive to enshittify has nowhere to land.
@@ -167,7 +180,7 @@
                 <li><span class="label">No Kill Switch.</span> If a vendor, a government, or a boardroom can brick your device, the design is hostile by intent.</li>
             </ul>
 
-            <div class="section-header">&gt; 5. WHO THIS IS FOR</div>
+            <h2 class="section-header">&gt; 5. WHO THIS IS FOR</h2>
 
             <p>
                 This isn't a lifestyle choice or a moral sermon. Convenience will always win for the masses, and no one owes their time to infrastructure they didn't ask to manage.

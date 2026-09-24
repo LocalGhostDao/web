@@ -31,6 +31,33 @@ rm "$TMPKEY"
 
 ---
 
+## 🪞 SETUP MIRROR
+
+`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, the OpenStreetMap coastline cut into tiles, the Go toolchain, and later a pinned llama.cpp and the model weights), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
+
+The scripts, conf and terms live in [`deploy/mirror/`](deploy/mirror/README.md), never served. The mirror is built into `public/mirror/`, where the builds and signed manifest are gitignored and [`index.html`](https://www.localghost.ai/mirror) explains what it carries, why, and how a box verifies it. On every deploy `deploy.sh` runs the publish (downloading only what changed upstream), then puts new builds live under `/mirror/`: build directories first, the signed manifest after.
+
+```bash
+./deploy/deploy.sh                                # site + mirror
+MIRROR_SETS="geo landtiles" ./deploy/deploy.sh    # site + only those mirror sets
+MIRROR=off ./deploy/deploy.sh                     # site only
+```
+
+Verify the mirror by hand:
+
+```bash
+TMPKEY=$(mktemp) && \
+curl -s https://www.localghost.ai/.well-known/pgp-key.asc | gpg --dearmor > "$TMPKEY" && \
+gpgv --keyring "$TMPKEY" \
+  <(curl -s https://www.localghost.ai/mirror/MANIFEST.txt.asc) \
+  <(curl -s https://www.localghost.ai/mirror/MANIFEST.txt) && \
+rm "$TMPKEY"
+```
+
+Boxes do this themselves with `tools/mirror_fetch.sh` in the server repo, against the key committed there as `tools/mirror-key.asc`.
+
+---
+
 ## ⚡ THE STACK
 
 We don't use React. We don't use Tailwind. We don't use npm.
@@ -50,6 +77,7 @@ We don't use React. We don't use Tailwind. We don't use npm.
 | Page | Path | Description |
 |------|------|-------------|
 | **Terminal** | `/` | Main interface. Interactive CLI with hidden commands. |
+| **Setup Mirror** | `/mirror` | What the signed setup mirror carries, why, and how boxes verify it. |
 | **About** | `/about` | Who builds LocalGhost, what exists today, key facts and FAQ. |
 | **Manifesto** | `/manifesto` | "Why We Build" — the philosophical foundation. |
 | **Cypherpunk** | `/cypherpunk` | The 1993 Cypherpunk's Manifesto (source material). |
@@ -194,7 +222,7 @@ We accept PRs that make the message clearer or the code cleaner.
 
 | Repo | Status |
 |------|--------|
-| `localghost` | Coming soon — hardware/software specification |
+| [`localghost`](https://github.com/LocalGhostDao/localghost) | The server: daemons, setup scripts, `tools/mirror_fetch.sh` |
 | `the-mist` | Coming soon — P2P backup network protocol |
 
 ---

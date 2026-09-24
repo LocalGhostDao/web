@@ -224,3 +224,39 @@
         border-bottom: 1px solid var(--border);
     }
 }
+
+/* Footnotes and references (same look as the essay pages) */
+sup.fn {
+    line-height: 0;
+}
+
+sup.fn a {
+    color: var(--terminal);
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+sup.fn a:hover {
+    text-decoration: underline;
+}
+
+.post-refs {
+    margin-top: 1rem;
+}
+
+.post-refs .ref {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.post-refs .ref .n {
+    color: var(--terminal);
+    margin-right: 0.4rem;
+}
+
+.post-refs .ref a {
+    color: var(--terminal);
+}

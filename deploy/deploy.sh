@@ -78,6 +78,17 @@ extract_pubdate() {
     extract_meta "$file" "article:published_time"
 }
 
+# Last-modified date for the sitemap: explicit modified_time meta, then the
+# last git commit touching the file, then the publish date, then file mtime.
+page_lastmod() {
+    local file="$1" d
+    d=$(extract_meta "$file" "article:modified_time")
+    [ -z "$d" ] && d=$(git -C "$SRC_DIR" log -1 --format=%cs -- "$file" 2>/dev/null)
+    [ -z "$d" ] && d=$(extract_meta "$file" "article:published_time")
+    [ -z "$d" ] && d=$(date -u -r "$file" +%Y-%m-%d 2>/dev/null)
+    echo "${d:0:10}"
+}
+
 extract_author() {
     local file="$1"
     local a
@@ -109,8 +120,8 @@ html_to_text() {
         /<div[^>]*class="[^"]*page-header[^"]*"/ { in_page = 1; print; next }
         in_page {
             print
-            if (/<\/div>[[:space:]]*$/ && !/class="page-header"/) {
-                # crude close: first line ending in </div> after page-header opens
+            # the page-header block closes on a line holding only </div>
+            if (/^[[:space:]]*<\/div>[[:space:]]*$/) {
                 in_page = 0
             }
             next
@@ -138,9 +149,23 @@ html_to_text() {
         s|<script[^>]*>.*</script>||g
         s|<style[^>]*>.*</style>||g
 
-        # Section headers: "> 1. TITLE" → H2 (strip the leading > marker)
-        s|<div[^>]*class="[^"]*section-header[^"]*"[^>]*>[[:space:]]*&gt;[[:space:]]*([^<]*)</div>|\n\n## \1\n|g
-        s|<div[^>]*class="[^"]*section-header[^"]*"[^>]*>([^<]*)</div>|\n\n## \1\n|g
+        # Section headers: "> 1. TITLE" → H2 (strip the leading > marker).
+        # Posts use <h2 class="section-header">, older pages used a <div>.
+        s|<(div\|h2)[^>]*class="[^"]*section-header[^"]*"[^>]*>[[:space:]]*&gt;[[:space:]]*([^<]*)</(div\|h2)>|\n\n## \2\n|g
+        s|<(div\|h2)[^>]*class="[^"]*section-header[^"]*"[^>]*>([^<]*)</(div\|h2)>|\n\n## \2\n|g
+
+        # Other headings (About page, directory categories)
+        s|<h2[^>]*>|\n\n## |g
+        s|</h2>|\n|g
+        s|<h3[^>]*>|\n### |g
+        s|</h3>|\n|g
+
+        # Byline pieces: author link and <time> keep their text
+        s|<a[^>]*rel="author"[^>]*>([^<]*)</a>|\1|g
+        s|<time[^>]*>([^<]*)</time>|\1|g
+
+        # List items
+        s|<li[^>]*>|- |g
 
         # Statement box pieces
         s|<p[^>]*class="[^"]*statement-label[^"]*"[^>]*>([^<]*)</p>||g
@@ -266,6 +291,7 @@ ASSET_OUTPUT=$(rsync -av --checksum --delete \
     --exclude='feed.xml' \
     --exclude='robots.txt' \
     --exclude='ghost/deploy-manifest*' \
+    --exclude='/mirror/' \
     --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
 
@@ -301,7 +327,7 @@ while IFS= read -r -d '' css_file; do
     TOTAL_SAVED=$((TOTAL_SAVED + SAVED))
     PERCENT=$((SAVED * 100 / ORIG_SIZE))
     echo "  [⚡] $rel_path (-${PERCENT}%)"
-done < <(find "$SRC_DIR" -name "*.css" -type f -print0)
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.css" -type f -print0)
 
 if [ "$TOTAL_SAVED" -gt 1024 ]; then
     echo "  [Σ] Saved: $((TOTAL_SAVED / 1024))KB"
@@ -319,7 +345,7 @@ while IFS= read -r -d '' js_file; do
     mkdir -p "$(dirname "$dest_file")"
     cp "$js_file" "$dest_file"
     echo "  [↑] $rel_path"
-done < <(find "$SRC_DIR" -name "*.js" -type f -print0)
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.js" -type f -print0)
 
 # ============================================
 # 3.5 PODCAST AUDIO TRANSCODING
@@ -401,6 +427,95 @@ else
     fi
 fi
 
+# ============================================
+# 3.6 SETUP MIRROR
+# Every file a box downloads at setup, listed in
+# deploy/mirror/mirror.conf. publish.sh (next to
+# it, never served) builds it into public/mirror/,
+# where the builds and manifest are gitignored and
+# index.html documents the mirror. It re-downloads
+# only what changed upstream and makes no new
+# build when nothing did. Then it goes live in three steps so
+# a box never sees a manifest naming files that
+# aren't there yet:
+#   1. new build dirs are hard-linked into the web
+#      root (a copy if it's another filesystem);
+#      build dirs never change, so one that's
+#      already there is done
+#   2. the signed MANIFEST.txt pair is swapped in
+#   3. builds the publish pruned are removed
+# The main rsync above and the deploy manifest
+# below skip the builds (gigabytes, own signature);
+# index.html goes live with the rest of the HTML.
+# Runs before the "no changes" exit, so every
+# deploy refreshes it. A failure never stops the
+# site deploy: the last good build stays up.
+#   MIRROR=off ./deploy/deploy.sh           skip it
+#   MIRROR_SETS="geo landtiles" ./deploy/deploy.sh
+# ============================================
+echo ""
+echo "> SETUP MIRROR..."
+
+MIRROR_SCRIPT="$(realpath "$(dirname "$0")/mirror/publish.sh" 2>/dev/null)"
+SRC_MIRROR="$SRC_DIR/mirror"
+DEST_MIRROR="$DEST_DIR/mirror"
+
+if [ "${MIRROR:-on}" = "off" ]; then
+    echo "  [—] Skipped (MIRROR=off)"
+elif [ ! -f "$MIRROR_SCRIPT" ]; then
+    echo "  [—] No deploy/mirror/publish.sh in this checkout"
+else
+    # MIRROR_SETS is a space-separated list, split on purpose
+    # shellcheck disable=SC2086
+    GHOST_MIRROR_DATA="$SRC_MIRROR" sh "$MIRROR_SCRIPT" ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
+    if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+        echo "  [✗] Mirror publish failed, the last good build is still served"
+    fi
+fi
+
+if [ "${MIRROR:-on}" != "off" ] && [ -f "$SRC_MIRROR/MANIFEST.txt" ] && [ -f "$SRC_MIRROR/MANIFEST.txt.asc" ]; then
+    mkdir -p "$DEST_MIRROR"
+    MIRROR_OK=true
+
+    # 1. new build directories
+    for build in "$SRC_MIRROR"/[0-9]*T[0-9]*Z; do
+        [ -d "$build" ] || continue
+        name="$(basename "$build")"
+        [ -d "$DEST_MIRROR/$name" ] && continue
+        rm -rf "$DEST_MIRROR/.$name.tmp"
+        if cp -al "$build" "$DEST_MIRROR/.$name.tmp" 2>/dev/null || \
+           { rm -rf "$DEST_MIRROR/.$name.tmp"; cp -a "$build" "$DEST_MIRROR/.$name.tmp"; }; then
+            mv "$DEST_MIRROR/.$name.tmp" "$DEST_MIRROR/$name"
+            echo "  [+] MIRROR BUILD: $name"
+        else
+            rm -rf "$DEST_MIRROR/.$name.tmp"
+            MIRROR_OK=false
+            echo "  [✗] Could not copy mirror build $name"
+        fi
+    done
+
+    # 2. the signed manifest, only once every build it names is in place
+    if [ "$MIRROR_OK" = true ] && \
+       { ! cmp -s "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/MANIFEST.txt" || \
+         ! cmp -s "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/MANIFEST.txt.asc"; }; then
+        cp "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/.MANIFEST.txt.tmp"
+        cp "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/.MANIFEST.txt.asc.tmp"
+        mv -f "$DEST_MIRROR/.MANIFEST.txt.tmp" "$DEST_MIRROR/MANIFEST.txt"
+        mv -f "$DEST_MIRROR/.MANIFEST.txt.asc.tmp" "$DEST_MIRROR/MANIFEST.txt.asc"
+        echo "  [↑] MIRROR MANIFEST: build $(sed -n 's/^# Build: //p' "$DEST_MIRROR/MANIFEST.txt")"
+    fi
+
+    # 3. builds the publish pruned (the live manifest no longer names them)
+    if [ "$MIRROR_OK" = true ]; then
+        for build in "$DEST_MIRROR"/[0-9]*T[0-9]*Z; do
+            [ -d "$build" ] || continue
+            [ -d "$SRC_MIRROR/$(basename "$build")" ] && continue
+            rm -rf "$build"
+            echo "  [✗] MIRROR PURGED: $(basename "$build")"
+        done
+    fi
+fi
+
 # 4. Check HTML files for changes
 while IFS= read -r -d '' src_file; do
     rel_path="${src_file#$SRC_DIR/}"
@@ -416,7 +531,7 @@ while IFS= read -r -d '' src_file; do
             echo "MOD:$rel_path" >> "$TEMP_FILE"
         fi
     fi
-done < <(find "$SRC_DIR" -name "*.html" -type f -print0)
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.html" -type f -print0)
 
 while IFS= read -r -d '' dest_file; do
     rel_path="${dest_file#$DEST_DIR/}"
@@ -425,7 +540,7 @@ while IFS= read -r -d '' dest_file; do
     if [ ! -f "$src_file" ]; then
         echo "DEL:$rel_path" >> "$TEMP_FILE"
     fi
-done < <(find "$DEST_DIR" -name "*.html" -type f -print0)
+done < <(find "$DEST_DIR" -path "$DEST_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.html" -type f -print0)
 
 if grep -qE "^(NEW|MOD|DEL):" "$TEMP_FILE" 2>/dev/null; then
     grep -E "^(NEW|MOD|DEL):" "$TEMP_FILE" | while read -r line; do
@@ -513,7 +628,7 @@ while IFS= read -r -d '' src_file; do
     echo "  [⚡] $rel_path"
     
     rm -f "$html_work"
-done < <(find "$SRC_DIR" -name "*.html" -type f -print0)
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.html" -type f -print0)
 
 # 6. Generate sitemap.xml
 echo ""
@@ -546,22 +661,23 @@ while IFS= read -r -d '' html_file; do
     elif [ "$rel_path" = "about.html" ]; then
         clean_url="/about"; priority="0.9"
     elif [[ "$rel_path" == */index.html ]]; then
-        clean_url="/${rel_path%index.html}"; priority="0.8"
+        clean_url="/${rel_path%/index.html}"; priority="0.8"
     else
         clean_url="/${rel_path%.html}"; priority="0.8"
     fi
     
-    URLS+=("$priority|$clean_url")
-done < <(find "$SRC_DIR" -name "*.html" -type f -print0)
+    URLS+=("$priority|$clean_url|$(page_lastmod "$html_file")")
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.html" -type f -print0)
 
 IFS=$'\n' SORTED_URLS=($(sort -t'|' -k1,1rn -k2,2 <<< "${URLS[*]}")); unset IFS
 
 for entry in "${SORTED_URLS[@]}"; do
-    priority="${entry%%|*}"; url="${entry#*|}"
+    IFS='|' read -r priority url lastmod <<< "$entry"
+    [ -z "$lastmod" ] && lastmod="$LASTMOD"
     cat >> "$SITEMAP_FILE" << EOF
   <url>
     <loc>${SITE_URL}${url}</loc>
-    <lastmod>${LASTMOD}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${priority}</priority>
   </url>
@@ -584,6 +700,16 @@ LLMS_FILE="$DEST_DIR/llms.txt"
 # LocalGhost.ai
 
 > LocalGhost is a local-first, privacy-focused AI platform built on cypherpunk principles. All inference and data storage runs on user-owned hardware with no cloud dependency. Fully open-source. The project started in December 2025 and is pre-release, in Phase 1 of its public roadmap, with architecture and daemon specs published and code being written in the open. Founder: Vlad Cealicu, former Co-Founder and CTO of CryptoCompare / CCData. The About page (https://www.localghost.ai/about) holds the canonical key facts and FAQ.
+
+Key facts (canonical source https://www.localghost.ai/about)
+
+- Company: LocalGhost (LocalGhost.ai), an open-source, local-first personal AI system (software and hardware)
+- Founded: December 2025, London, United Kingdom
+- Founder: Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData (acquired by CoinDesk, October 2024)
+- Status: pre-release, Phase 1 of the public roadmap, no software release yet
+- Licence: MIT, source at https://github.com/LocalGhostDao/localghost
+- Pricing: no subscription, software free, pre-built boxes a one-time purchase at parts and assembly plus a 30% margin (price not yet set)
+- Contact: info@localghost.ai, X @localghostai, founder on X @vladcealicu
 
 The site has three primary sections: the Manifesto (the philosophical and technical argument for local-first AI), Hard Truths (a long-form essay series on tech, power, privacy, and the skills pipeline), and Build (the public roadmap and contribution guide). The tone is direct and opinionated. Posts are labelled SIGNAL, ALARM, or WINDOW to indicate certainty level.
 
@@ -627,6 +753,7 @@ EOF
 - [GitHub Organisation](https://github.com/LocalGhostDao): Source code, including the main localghost repository with README, SECURITY, and architecture docs.
 - [Brand Guidelines](${SITE_URL}/brand-guidelines): Visual identity, colour palette, typography.
 - [Writing Guidelines](${SITE_URL}/writing-guidelines): Editorial standards for the Hard Truths series.
+- [Setup Mirror](${SITE_URL}/mirror): The signed mirror LocalGhost boxes download their setup files from, what it carries, why it exists, and how a box verifies it.
 - [llms-full.txt](${SITE_URL}/llms-full.txt): Full text of all published essays concatenated, for complete context ingestion.
 EOF
 } > "$LLMS_FILE"
@@ -739,8 +866,10 @@ fi
   <updated>${FEED_UPDATED}</updated>
   <author>
     <name>Vlad Cealicu</name>
-    <uri>${SITE_URL}</uri>
+    <uri>${SITE_URL}/about</uri>
   </author>
+  <icon>${SITE_URL}/favicon.ico</icon>
+  <logo>${SITE_URL}/images/logo.png</logo>
   <rights>© $(date +%Y) LocalGhost</rights>
   <generator uri="${SITE_URL}" version="${BUILD_ID}">LocalGhost Deploy</generator>
 EOF
@@ -796,75 +925,38 @@ ROBOTS_FILE="$DEST_DIR/robots.txt"
 cat > "$ROBOTS_FILE" << EOF
 # LocalGhost.ai robots.txt
 # Generated: ${BUILD_ID}
-# Policy: AI crawlers are welcome. We want to be cited.
-
-# OpenAI (ChatGPT, training + answers)
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-# Anthropic (Claude)
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-# Perplexity
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Perplexity-User
-Allow: /
-
-# Common Crawl (used by many models for training)
-User-agent: CCBot
-Allow: /
-
-# Google (Google-Extended controls AI training/answers independently of Googlebot)
-User-agent: Google-Extended
-Allow: /
+# Policy: search engines and AI crawlers are welcome. We want to be cited.
+# Every crawler gets the same rules. The named agents are listed so the
+# welcome is explicit, and they share one group so the Disallow lines
+# below apply to them too (a crawler only reads the most specific group
+# that names it).
 
 User-agent: Googlebot
-Allow: /
-
-# Apple Intelligence
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-# Bing / Copilot
+User-agent: Google-Extended
 User-agent: bingbot
-Allow: /
-
 User-agent: msnbot
-Allow: /
-
-# Meta AI
-User-agent: meta-externalagent
-Allow: /
-
-User-agent: FacebookBot
-Allow: /
-
-# DuckDuckGo
 User-agent: DuckDuckBot
-Allow: /
-
-# Default policy for everything else
+User-agent: DuckAssistBot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: Claude-Web
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: MistralAI-User
+User-agent: CCBot
+User-agent: meta-externalagent
+User-agent: FacebookBot
 User-agent: *
 Allow: /
 Disallow: /ghost/
+Disallow: /mirror/
 Disallow: /assets/podcast/*.m4a\$
 
 # Sitemaps
@@ -874,6 +966,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
 # Atom feed: ${SITE_URL}/feed.xml
 # LLM index: ${SITE_URL}/llms.txt
 # LLM full archive: ${SITE_URL}/llms-full.txt
+# About and key facts: ${SITE_URL}/about
 EOF
 
 ROBOTS_LINES=$(wc -l < "$ROBOTS_FILE")
@@ -907,7 +1000,8 @@ MANIFEST_SIG="$DEST_DIR/ghost/deploy-manifest.txt.asc"
     echo "# Build: ${BUILD_ID}"
     echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo ""
-    find "$DEST_DIR" -type f ! -path "*/ghost/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
+    # the setup mirror's builds are signed separately (/mirror/MANIFEST.txt)
+    find "$DEST_DIR" -path "$DEST_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -type f ! -path "*/ghost/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
 } > "$MANIFEST_FILE"
 
 gpg --batch --yes --armor --local-user info@localghost.ai --output "$MANIFEST_SIG" --detach-sign "$MANIFEST_FILE"

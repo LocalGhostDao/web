@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Primary Meta Tags -->
-    <title>Local-First Directory | LocalGhost.ai</title>
-    <meta name="title" content="Local-First Directory | LocalGhost.ai">
-    <meta name="description" content="A curated index of local-first AI tools that run offline, self-host, and keep your data on your own hardware. Model runtimes, chat interfaces, local knowledge bases, and on-device personal AI.">
+    <title>Local-First AI Directory | LocalGhost.ai</title>
+    <meta name="title" content="Local-First AI Directory | LocalGhost.ai">
+    <meta name="description" content="A hand-checked list of local-first AI tools that run offline or self-host and keep your data on your own hardware, from model runtimes to personal AI.">
     <meta name="keywords" content="local-first, directory, local AI, open source, self-hosted, offline-first, data sovereignty, freehold, privacy software, local LLM">
     <meta name="author" content="LocalGhost">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://www.localghost.ai/directory">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -22,10 +23,11 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="LocalGhost.ai">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:locale" content="en_GB">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:url" content="https://www.localghost.ai/directory">
     <meta name="twitter:title" content="Local-First Directory | Software You Actually Own">
     <meta name="twitter:description" content="Local-first AI tools that run local, export clean, and don't betray.">
@@ -51,27 +53,238 @@
         "description": "A curated index of local-first AI tools that run offline, self-host, and keep your data on your own hardware.",
         "url": "https://www.localghost.ai/directory",
         "isPartOf": {
-            "@type": "WebSite",
-            "name": "LocalGhost.ai",
-            "url": "https://www.localghost.ai"
+            "@id": "https://www.localghost.ai/#website"
         },
         "publisher": {
-            "@type": "Organization",
-            "name": "LocalGhost.ai",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.localghost.ai/images/logo.png"
-            }
+            "@id": "https://www.localghost.ai/#organization"
+        },
+        "inLanguage": "en-GB",
+        "mainEntity": {
+            "@type": "ItemList",
+            "name": "Local-first AI tools",
+            "numberOfItems": 19,
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Ollama",
+                        "url": "https://ollama.com",
+                        "description": "Run open models from one command, with a local API. Pulls and serves Llama, Mistral, Gemma, Qwen and more.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "llama.cpp",
+                        "url": "https://github.com/ggml-org/llama.cpp",
+                        "description": "The inference engine most local tools build on. Runs quantised GGUF models on CPU or GPU.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "LM Studio",
+                        "url": "https://lmstudio.ai",
+                        "description": "Desktop app to find, run and chat with local models, with an OpenAI-compatible server built in.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Jan",
+                        "url": "https://jan.ai",
+                        "description": "An open-source offline ChatGPT alternative. Runs models on-device with an OpenAI-compatible API.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "GPT4All",
+                        "url": "https://gpt4all.io",
+                        "description": "Nomic's desktop app for running local models, including private chat over your own documents.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "LocalAI",
+                        "url": "https://localai.io",
+                        "description": "A self-hosted, OpenAI-compatible API for local inference across text, audio and images.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 7,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "vLLM",
+                        "url": "https://github.com/vllm-project/vllm",
+                        "description": "A high-throughput serving engine for running models efficiently on your own GPUs.",
+                        "applicationCategory": "Runtime"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 8,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Open WebUI",
+                        "url": "https://openwebui.com",
+                        "description": "A self-hosted, ChatGPT-style web interface that pairs with Ollama or any OpenAI-compatible backend.",
+                        "applicationCategory": "Interface"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 9,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "LibreChat",
+                        "url": "https://www.librechat.ai",
+                        "description": "A self-hostable chat interface that works across many local and remote model backends.",
+                        "applicationCategory": "Interface"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 10,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "AnythingLLM",
+                        "url": "https://anythingllm.com",
+                        "description": "An all-in-one app for chatting with your own documents using local models, with retrieval built in.",
+                        "applicationCategory": "Interface"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 11,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Obsidian",
+                        "url": "https://obsidian.md",
+                        "description": "A local-first Markdown knowledge base. Your notes are plain files on your disk, with optional AI plugins.",
+                        "applicationCategory": "Knowledge & memory"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 12,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Logseq",
+                        "url": "https://logseq.com",
+                        "description": "An open-source, local-first outliner that stores everything as Markdown files on your machine.",
+                        "applicationCategory": "Knowledge & memory"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 13,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Reor",
+                        "url": "https://www.reorproject.org",
+                        "description": "A local-first AI note-taking app that runs models on-device and links related notes automatically.",
+                        "applicationCategory": "Knowledge & memory"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 14,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Khoj",
+                        "url": "https://khoj.dev",
+                        "description": "A self-hostable AI that searches and chats over your own notes and documents, scoped mainly to your files.",
+                        "applicationCategory": "Personal AI"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 15,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Odysseus AI",
+                        "url": "https://pewdiepie-archdaemon.github.io/odysseus/",
+                        "description": "A free, self-hosted AI workspace from PewDiePie. Chat, autonomous agents, tools, model serving, email, research and documents in one private interface that runs on your own hardware. Connect local models or your own API endpoints.",
+                        "applicationCategory": "Personal AI"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 16,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "LocalGhost",
+                        "url": "https://www.localghost.ai",
+                        "description": "A fleet of small Go daemons for notes, memory, voice, vision and adversarial review, running on hardware you own with no cloud dependency. Early-stage and in active development, not yet a finished product.",
+                        "applicationCategory": "Personal AI"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 17,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "Rotki",
+                        "url": "https://rotki.com",
+                        "description": "A local-first, privacy-preserving portfolio and accounting tracker. Your financial data stays on your machine.",
+                        "applicationCategory": "Specialised"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 18,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "whisper.cpp",
+                        "url": "https://github.com/ggml-org/whisper.cpp",
+                        "description": "Fully offline speech-to-text on your own hardware. Transcribe audio with no upload.",
+                        "applicationCategory": "Specialised"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 19,
+                    "item": {
+                        "@type": "SoftwareApplication",
+                        "name": "ComfyUI",
+                        "url": "https://www.comfy.org",
+                        "description": "A node-based interface for running image-generation models locally, with full control of the pipeline.",
+                        "applicationCategory": "Specialised"
+                    }
+                }
+            ]
         }
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/directory.css">
     <style>
         .dir-note { color: var(--text-dim); margin-bottom: 2rem; line-height: 1.7; }
         .dir-note code { color: var(--terminal); }
-        .dir-cat { margin: 2.5rem 0 1rem; color: var(--terminal); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.95rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+        .dir-cat { font-family: inherit; line-height: inherit; margin: 2.5rem 0 1rem; color: var(--terminal); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.95rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
         .dir-cat .cat-note { color: var(--text-dim); text-transform: none; font-weight: 400; font-size: 0.8rem; margin-left: 0.5rem; }
         .dir-grid { display: grid; gap: 0.85rem; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
         .dir-card { border: 1px solid var(--border); padding: 1rem 1.1rem; position: relative; transition: border-color 0.15s, transform 0.15s; }
@@ -118,7 +331,7 @@
         </p>
 
         <!-- 01 RUNTIME -->
-        <div class="dir-cat">01 · Runtime <span class="cat-note">the engine that runs a model on your own machine</span></div>
+        <h2 class="dir-cat">01 · Runtime <span class="cat-note">the engine that runs a model on your own machine</span></h2>
         <div class="dir-grid">
             <div class="dir-card">
                 <h3><a href="https://ollama.com" target="_blank">Ollama</a></h3>
@@ -158,7 +371,7 @@
         </div>
 
         <!-- 02 INTERFACE -->
-        <div class="dir-cat">02 · Interface <span class="cat-note">the window you talk to a model through</span></div>
+        <h2 class="dir-cat">02 · Interface <span class="cat-note">the window you talk to a model through</span></h2>
         <div class="dir-grid">
             <div class="dir-card">
                 <h3><a href="https://openwebui.com" target="_blank">Open WebUI</a></h3>
@@ -178,7 +391,7 @@
         </div>
 
         <!-- 03 KNOWLEDGE -->
-        <div class="dir-cat">03 · Knowledge &amp; memory <span class="cat-note">where your own notes and files live, locally</span></div>
+        <h2 class="dir-cat">03 · Knowledge &amp; memory <span class="cat-note">where your own notes and files live, locally</span></h2>
         <div class="dir-grid">
             <div class="dir-card">
                 <h3><a href="https://obsidian.md" target="_blank">Obsidian</a></h3>
@@ -198,7 +411,7 @@
         </div>
 
         <!-- 04 PERSONAL AI -->
-        <div class="dir-cat">04 · Personal AI <span class="cat-note">an assistant that knows you and runs on your hardware (emerging)</span></div>
+        <h2 class="dir-cat">04 · Personal AI <span class="cat-note">an assistant that knows you and runs on your hardware (emerging)</span></h2>
         <div class="dir-grid">
             <div class="dir-card">
                 <h3><a href="https://khoj.dev" target="_blank">Khoj</a></h3>
@@ -219,7 +432,7 @@
         </div>
 
         <!-- BESIDE THE STACK -->
-        <div class="dir-cat">Specialised <span class="cat-note">local-first tools for one domain, beside the assistant stack</span></div>
+        <h2 class="dir-cat">Specialised <span class="cat-note">local-first tools for one domain, beside the assistant stack</span></h2>
         <div class="dir-grid">
             <div class="dir-card">
                 <h3><a href="https://rotki.com" target="_blank">Rotki</a></h3>

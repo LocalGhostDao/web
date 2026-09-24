@@ -1,0 +1,9 @@
+GeoNames , https://www.geonames.org
+
+The files admin1CodesASCII.txt, admin2Codes.txt, countryInfo.txt and allCountries.zip are unmodified
+copies of the GeoNames data dumps (https://download.geonames.org/export/dump/).
+
+GeoNames data is licensed under the Creative Commons Attribution 4.0 License:
+https://creativecommons.org/licenses/by/4.0/
+The data is provided "as is" without warranty or any representation of accuracy, timeliness or
+completeness.

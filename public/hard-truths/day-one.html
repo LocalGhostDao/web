@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Ghost Has to Be Useful on Day One | Hard Truths | LocalGhost.ai</title>
-    <meta name="description"
-        content="A long onboarding flow is a team admitting they don't know who they are building for. Trello knew before Atlassian bought it. Linear knows now. Jira has been asking users what department they work in since 2002 and the wizard is still getting longer. Why ghost.synthd is built around inference from what you already have rather than a questionnaire you fill in before the product has shown you anything.">
+    <title>The Ghost Has to Be Useful on Day One | LocalGhost.ai</title>
+    <meta name="description" content="A long onboarding flow is a team admitting they don't know who they're building for. Why ghost.synthd infers you from what you already have instead.">
     <meta name="author" content="Vlad Cealicu">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords"
         content="product onboarding, setup UX, cold start, digital phenotyping, personality inference, Trello, Linear, Jira, LocalGhost, ghost.synthd, drip-feed onboarding">
     <meta name="category" content="AI, Product, Privacy">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/day-one">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/day-one">
     <meta property="og:title" content="The Ghost Has to Be Useful on Day One">
@@ -35,7 +35,7 @@
     <meta property="article:tag" content="ghost.synthd">
     <meta property="article:reading_time" content="9">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="The Ghost Has to Be Useful on Day One">
     <meta name="twitter:description"
@@ -51,17 +51,22 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         "headline": "The Ghost Has to Be Useful on Day One",
         "description": "A long onboarding flow is a team admitting they don't know who they are building for.",
         "author": {
             "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
             "name": "Vlad Cealicu",
-            "url": "https://www.localghost.ai"
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
+            "sameAs": [
+                "https://x.com/vladcealicu"
+            ]
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
             "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
@@ -83,10 +88,11 @@
         "keywords": "onboarding, setup UX, cold start, digital phenotyping, ghost.synthd, LocalGhost",
         "articleSection": "Hard Truths",
         "isPartOf": {
-            "@type": "Blog",
-            "name": "Hard Truths",
-            "url": "https://www.localghost.ai/hard-truths"
-        }
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/day-one",
+        "inLanguage": "en-GB",
+        "wordCount": 2798
     }
     </script>
     <script type="application/ld+json">
@@ -94,12 +100,28 @@
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
-            { "@type": "ListItem", "position": 3, "name": "The Ghost Has to Be Useful on Day One", "item": "https://www.localghost.ai/hard-truths/day-one" }
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "The Ghost Has to Be Useful on Day One",
+                "item": "https://www.localghost.ai/hard-truths/day-one"
+            }
         ]
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/blog.css">
@@ -126,7 +148,7 @@
         <div class="page-header">
             <div class="section-label">&gt; HARD_TRUTHS // POST_12 // APR 2026</div>
             <h1>The Ghost Has to Be Useful on Day One</h1>
-            <div class="date">Vlad Cealicu // 18 April 2026</div>
+            <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-04-18">18 April 2026</time></div>
         </div>
 
         <div class="manifesto-text">
@@ -184,7 +206,7 @@
                 context should already be there in whatever devices the user has attached.
             </p>
 
-            <div class="section-header">&gt; 1. Why not a personality test</div>
+            <h2 class="section-header">&gt; 1. Why not a personality test</h2>
 
             <p>
                 Cristina said "too pigeonhole-y" at the table and moved on, but I went home and spent a few hours
@@ -213,7 +235,7 @@
                 on to the wider one, which was whether any form belongs on install day at all.
             </p>
 
-            <div class="section-header">&gt; 2. Why no onboarding questionnaire</div>
+            <h2 class="section-header">&gt; 2. Why no onboarding questionnaire</h2>
 
             <p>
                 The <a href="/hard-truths/how-memory-gets-made">memory post</a> I had
@@ -241,7 +263,7 @@
                 spent on it afterwards, is what made me realise I do not want to build one into LocalGhost.
             </p>
 
-            <div class="section-header">&gt; 3. Where the signal already is</div>
+            <h2 class="section-header">&gt; 3. Where the signal already is</h2>
 
             <p>
                 If not a form, then what. The answer is inference from the behavioural traces the user has been
@@ -291,7 +313,7 @@
                 assistant that just met you has after a month of conversation.
             </p>
 
-            <div class="section-header">&gt; 4. What I think the setup should look like</div>
+            <h2 class="section-header">&gt; 4. What I think the setup should look like</h2>
 
             <p>
                 The ghost is a fleet of daemons, one per modality, each of which has a 
@@ -331,7 +353,7 @@
                     Under Your Desk</a>, inference runs on the local GPU, nothing ships anywhere else.
             </p>
 
-            <div class="section-header">&gt; 5. What it feels like when it works</div>
+            <h2 class="section-header">&gt; 5. What it feels like when it works</h2>
 
             <p>
                 The architecture is the privacy and security commitment, and I think I can build a pretty good version
@@ -361,7 +383,7 @@
                 <span class="small">[ localghost.ai // hard-truths ]</span>
             </div>
 
-            <div class="section-header">&gt; REFERENCES</div>
+            <h2 class="section-header">&gt; REFERENCES</h2>
 
             <p class="references" id="ref-1">
                 <strong>[1]</strong> The Big Five personality taxonomy (also called the Five-Factor Model) is the

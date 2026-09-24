@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How Memory Gets Made | Hard Truths | LocalGhost.ai</title>
-    <meta name="description" content="Have you ever considered how a computer representation of your brain would work? On what your brain keeps, what it quietly releases while you sleep, when calcification is the right answer, and where the constraints on a system running on your own hardware differ from the constraints on biology.">
+    <meta name="description" content="What your brain keeps, what it releases while you sleep, and what that means for a memory layer that runs on your own hardware. The design behind ghost.synthd.">
     <meta name="author" content="Vlad Cealicu">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="memory, forgetting, consolidation, sleep, reconsolidation, schema theory, clustering, anchors, flashbulb memory, multi-modal, calcification, vector databases, ghost.noted, ghost.framed, ghost.voiced, local AI, Bartlett, Schacter, Nader, Loftus, LocalGhost hard truths">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/how-memory-gets-made">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/how-memory-gets-made">
     <meta property="og:title" content="How Memory Gets Made">
@@ -36,7 +37,7 @@
     <meta property="article:tag" content="local AI">
     <meta property="article:reading_time" content="17">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="How Memory Gets Made">
     <meta name="twitter:description" content="Have you ever considered how a computer representation of your brain would work? This is the crudest starting point I can imagine.">
@@ -51,21 +52,23 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         "headline": "How Memory Gets Made",
         "alternativeHeadline": "Have you ever considered how a computer representation of your brain would work",
         "description": "Have you ever considered how a computer representation of your brain would work? This is the crudest starting point I can imagine.",
         "author": {
             "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
             "name": "Vlad Cealicu",
-            "url": "https://www.localghost.ai",
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
             "sameAs": [
-                "https://twitter.com/vladcealicu"
+                "https://x.com/vladcealicu"
             ]
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
             "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
@@ -99,17 +102,31 @@
             "Chhikara, P., Khant, D., Aryan, S., Singh, T., & Yadav, D. (2025). Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory. arXiv:2504.19413."
         ],
         "isPartOf": {
-            "@type": "Blog",
-            "name": "Hard Truths",
-            "url": "https://www.localghost.ai/hard-truths"
+            "@id": "https://www.localghost.ai/hard-truths#blog"
         },
         "about": [
-            { "@type": "Thing", "name": "Memory" },
-            { "@type": "Thing", "name": "Sleep and memory consolidation" },
-            { "@type": "Thing", "name": "Schema theory" },
-            { "@type": "Thing", "name": "Memory reconsolidation" },
-            { "@type": "Thing", "name": "Local-first AI" }
-        ]
+            {
+                "@type": "Thing",
+                "name": "Memory"
+            },
+            {
+                "@type": "Thing",
+                "name": "Sleep and memory consolidation"
+            },
+            {
+                "@type": "Thing",
+                "name": "Schema theory"
+            },
+            {
+                "@type": "Thing",
+                "name": "Memory reconsolidation"
+            },
+            {
+                "@type": "Thing",
+                "name": "Local-first AI"
+            }
+        ],
+        "url": "https://www.localghost.ai/hard-truths/how-memory-gets-made"
     }
     </script>
     <script type="application/ld+json">
@@ -117,12 +134,28 @@
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
-            { "@type": "ListItem", "position": 3, "name": "How Memory Gets Made", "item": "https://www.localghost.ai/hard-truths/how-memory-gets-made" }
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "How Memory Gets Made",
+                "item": "https://www.localghost.ai/hard-truths/how-memory-gets-made"
+            }
         ]
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/blog.css">
@@ -148,7 +181,7 @@
     <div class="page-header">
         <div class="section-label">&gt; HARD_TRUTHS // POST_09 // APR 2026</div>
         <h1>How Memory Gets Made</h1>
-        <div class="date">Vlad Cealicu // 13 April 2026</div>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-04-13">13 April 2026</time></div>
     </div>
 
     <div class="manifesto-text">
@@ -196,7 +229,7 @@
             Cristina and I had stopped paying attention to the 2012 dinner the day we left Milan, and the difference between what each of our brains did with it in the fourteen years since is the whole question this post is about.
         </p>
 
-        <div class="section-header">&gt; 1. WHAT YOUR BRAIN KEPT THAT HERS DID NOT</div>
+        <h2 class="section-header">&gt; 1. WHAT YOUR BRAIN KEPT THAT HERS DID NOT</h2>
 
         <p>
             I do not have a better memory than Cristina. The dinner attached to something in my head in 2012 that nothing in her head was holding a slot for, and what I am calling a slot is the modern colloquial version of what Frederic Bartlett called a schema in his 1932 book <em>Remembering</em><a href="#ref-2" class="cite">[2]</a>. Bartlett's participants were given a Native American folk tale called "The War of the Ghosts" to read, and when asked to recall it later they reshaped it to fit their own existing expectations of what a story looked like, dropping the parts that did not fit and inventing bridges where the original had none. The material that had nowhere to attach either distorted to fit or failed to encode at all.
@@ -206,7 +239,7 @@
             That is the mechanism that decided the fate of the 2012 dinner. Cristina's brain did not actively prune the evening. The evening never fully encoded in the first place, because nothing in her existing schema was holding a slot for what made it memorable. Mine had a slot. The evening attached to it, the slot kept the memory alive, and walking past the building fourteen years later triggered the retrieval before I had time to think about it. Endel Tulving called this encoding specificity, that a memory is most retrievable when the cues at recall match the cues at encoding<a href="#ref-15" class="cite">[15]</a>. The building was the cue at encoding, and the building was the cue at retrieval, which is why standing in front of it on 2 April was enough to surface a dinner I had not thought about in years.
         </p>
 
-        <div class="section-header">&gt; 2. How the neighbourhood forms</div>
+        <h2 class="section-header">&gt; 2. How the neighbourhood forms</h2>
 
         <p>
             The reason my brain had a slot for Napoli 1820 in the first place was what happened at the next table that night. We each ordered a pizza and we felt full. The man eating alone next to us worked his way through a portion of pasta, a full pizza the size of the ones we were eating, a burrata roughly the size of a toddler's head that he ate with a spoon, and closed the meal with an espresso and an amaro. He did the whole thing in forty minutes without any visible effort. I went home that night and the building was attached, in my head, to him.
@@ -228,7 +261,7 @@
             Which is why, on 2 April, I stopped in front of the building and Cristina did not. I had not noticed I was collecting these moments until I was standing in front of the restaurant with her. The pattern was in my head for fourteen years without ever being conscious until the building acted as the retrieval cue, which is exactly what Tulving's encoding specificity principle predicts. The cluster cannot wait for the user to ask about it. It has to surface when something in the environment, whether a building or a smell or a photograph, matches a cue that was present at encoding. Every time I had thought about any member of the cluster the whole neighbourhood got touched, and the touch reinforced it, which is the study-phase retrieval account of the spacing effect and a robust finding in memory research going back to Ebbinghaus<a href="#ref-6" class="cite">[6]</a>. The cluster's age is the age of its most recent member, not the average age of its members, which is how a fourteen-year-old memory can be more accessible than a fourteen-week-old one that belongs to no neighbourhood at all.
         </p>
 
-        <div class="section-header">&gt; 3. SOME THINGS DO NOT NEED A NEIGHBOURHOOD</div>
+        <h2 class="section-header">&gt; 3. SOME THINGS DO NOT NEED A NEIGHBOURHOOD</h2>
 
         <p>
             Clustering is how most memories survive, but it is not the only mechanism the brain uses. When I was 18, a close friend of mine called Bogdan died in a car accident. I remember the wake, the funeral, and the days afterwards spent with other friends of his. The way I think about this memory is as an anchor, a core memory, something life-defining that does not need a neighbourhood to justify its survival. Neuroscience has a different name for it, flashbulb memory. Brown and Kulik coined the term in 1977<a href="#ref-3" class="cite">[3]</a>, and subsequent research has shown that flashbulb memories feel more vivid and more certain than ordinary memories while not actually being more accurate in their specific details<a href="#ref-11" class="cite">[11]</a><a href="#ref-13" class="cite">[13]</a>. What the science says is preserved is the felt certainty, with the details drifting like any other memory. What I know is preserved, from the inside, is that the memory is load-bearing for who I am now, and the accuracy of the room and the order of events matters less than the weight.
@@ -246,7 +279,7 @@
             <p>No system can infer which of your memories are anchors. The model can guess, the clustering can spot correlations, but the final call has to come from the person whose life it is, or the system becomes the thing deciding what mattered.</p>
         </div>
 
-        <div class="section-header">&gt; 4. Why detail fades and outline survives</div>
+        <h2 class="section-header">&gt; 4. Why detail fades and outline survives</h2>
 
         <p>
             Try to remember what you ate for lunch yesterday. You probably can. Try to remember what you ate for lunch on the second Tuesday of last month. You probably cannot. Try to remember what you ate on the second Tuesday of October 2019, and the question is almost insulting. The detail is gone and even the framework you would need to find the detail is gone.
@@ -264,7 +297,7 @@
             <p>The brain forgets because it has to. A system you build does not have to forget the same way, and the parts of the brain's behaviour worth copying are the ones that came from the brain working with what mattered, not the ones that came from biological constraint.</p>
         </div>
 
-        <div class="section-header">&gt; 5. WHERE THE BRAIN AND THE DISK PART WAYS</div>
+        <h2 class="section-header">&gt; 5. WHERE THE BRAIN AND THE DISK PART WAYS</h2>
 
         <p>
             My intuition and the science diverge most sharply here. The intuitive model says the original of a memory stays fixed while the interpretation layer on top of it changes. Your past does not change, only the map of your past does. This is not how the brain works, and the reason it is not how the brain works is one of the most interesting things about it.
@@ -282,7 +315,7 @@
             This is also where I have to stop pretending the memory is text. The Napoli 1820 memory is not a paragraph I wrote in 2012, it is a visual of the man with the spoon in the burrata, the sound of the room, the smell of the pizza I had just finished, and the feeling of being full and impressed at the same time. The paragraph I wrote afterwards was a handle on the rest of it, not a replacement. Which is why I am building LocalGhost as a fleet rather than a single daemon. ghost.noted handles text, because text is the most compressed and most searchable projection of a memory; ghost.framed will extend the fleet to images, extracting text from photos and screenshots while preserving the image itself as the original; ghost.voiced will extend it to voice, transcribing recordings while preserving the audio. The daemons all write into the same memory layer, the originals genuinely do not move regardless of format, and the observations this post has named hold across all of them.
         </p>
 
-        <div class="section-header">&gt; 6. WHEN THE SYSTEM HAS TO ASK</div>
+        <h2 class="section-header">&gt; 6. WHEN THE SYSTEM HAS TO ASK</h2>
 
         <p>
             Architecture is only half the problem. The other half is how the user experiences the system, and the place to start is with the decisions the system can make on its own. Most of what flows through ghost.noted does not need to calcify. A grocery list, a half-finished thought, a note about a meeting that went nowhere, a screenshot of an article I might read later. The correct thing for the system to do is hold it at full resolution for a while, let it compress into outline-level detail, and let it fade. The system can make those calls on its own most of the time, using frequency of touch and cluster membership and proximity to an anchor as signals, and the calls are right often enough that you do not need to be involved.
@@ -316,7 +349,7 @@
             Deletion is the case with operational consequences. When the user deletes an original, whether a photo, a note, or an audio file, the system cannot simply drop the source and leave the interpretation layer standing. Clusters that depended on the deleted member have to re-form without it. Summaries that cited it have to be regenerated. The graph has to be walked and rewritten. This cannot happen instantly because it is expensive, and it cannot be optional because leaving stale references to a deleted source is a privacy failure. The correct behaviour is a slow background restructuring the same way the sleep consolidation pass rewrites the map overnight.
         </p>
 
-        <div class="section-header">&gt; 7. WHAT ALREADY EXISTS AND WHAT DOES NOT</div>
+        <h2 class="section-header">&gt; 7. WHAT ALREADY EXISTS AND WHAT DOES NOT</h2>
 
         <p>
             The landscape has three rough categories and none of them is doing what this post is describing. Capture tools like Rewind (now rebranded as Limitless) and its open-source alternative Screenpipe record everything you see and hear and make the result searchable, which solves a real problem but not the one I am trying to solve, because a perfect transcript of every meeting I have been in does not tell me which meetings shaped how I think. Memory layers for AI agents like mem0<a href="#ref-4" class="cite">[4]</a>, Neocortex, Zep, and Letta implement clustering and relevance scoring in an architecture that is closer to what this post wants, but the memory is owned by the application and runs wherever the application runs, which is almost always someone else's cloud. Networked note apps like Reflect, Obsidian with AI plugins, Notion, and Personal.ai are fast and polished, but they require you to write the note first and they do not do background consolidation on content you have not already decided to care about.
@@ -330,7 +363,7 @@
             <p>The reason this category does not exist is probably that nobody can figure out how to turn it into a subscription. A thing you run on your own box, that belongs to you, and that refuses to optimise for engagement is structurally hostile to the business model every adjacent product has converged on.</p>
         </div>
 
-        <div class="section-header">&gt; 8. WHICH PARTS ARE WORTH COPYING</div>
+        <h2 class="section-header">&gt; 8. WHICH PARTS ARE WORTH COPYING</h2>
 
         <p>
             The question I am left with is not whether to reproduce the brain or improve on it, because the brain is not broken and does not need improving. The question is which of the brain's behaviours a memory layer should copy and which it should leave to biology. A memory layer that calcifies the wrong things is a failure. A memory layer that tries to remember everything the brain already forgets for good reasons is also a failure. The layer has to know when calcification is the right call and when it is not, and it has to make that distinction on its own most of the time, because asking the user about every decision is how you turn a useful tool into homework.
@@ -345,7 +378,7 @@
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
-        <div class="section-header">&gt; REFERENCES</div>
+        <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="references" id="ref-1">
             <strong>[1]</strong> Alberini, C. M. (2011). The role of reconsolidation and the dynamic process of long-term memory formation and storage. <em>Frontiers in Behavioral Neuroscience</em>, 5, 12. <a href="https://doi.org/10.3389/fnbeh.2011.00012" target="_blank">doi.org/10.3389/fnbeh.2011.00012</a>

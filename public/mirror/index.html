@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Setup Mirror, Signed Box Downloads | LocalGhost.ai</title>
+        <meta name="title" content="Setup Mirror, Signed Box Downloads | LocalGhost.ai">
+        <meta name="description" content="The signed mirror LocalGhost boxes download their setup files from. What it carries and under which terms, why it exists, and how a box checks every file.">
+        <meta name="keywords" content="LocalGhost mirror, setup mirror, signed downloads, sha256 manifest, gpg signature, GeoNames, Natural Earth, OpenStreetMap land polygons, self-hosted AI setup">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <link rel="canonical" href="https://www.localghost.ai/mirror">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="https://www.localghost.ai/mirror">
+        <meta property="og:title" content="The LocalGhost Setup Mirror">
+        <meta property="og:description" content="Every file a LocalGhost box downloads at setup, published with its terms and listed in a signed manifest.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-mirror.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+        <meta property="article:published_time" content="2026-09-24T00:00:00Z">
+        <meta property="article:author" content="Vlad Cealicu">
+        <meta property="article:section" content="Infrastructure">
+        <meta property="article:tag" content="mirror">
+        <meta property="article:tag" content="supply chain">
+        <meta property="article:tag" content="local-first">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/mirror">
+        <meta name="twitter:title" content="The LocalGhost Setup Mirror">
+        <meta name="twitter:description" content="Every file a LocalGhost box downloads at setup, published with its terms and listed in a signed manifest.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-mirror.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            "headline": "The LocalGhost Setup Mirror",
+            "description": "What the signed setup mirror carries and under which terms, why it exists, and how a LocalGhost box checks every file it downloads from it.",
+            "image": "https://www.localghost.ai/images/og-mirror.png",
+            "author": {
+                "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                "name": "Vlad Cealicu",
+                "url": "https://www.localghost.ai/about#vlad-cealicu",
+                "sameAs": [
+                    "https://x.com/vladcealicu"
+                ]
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.localghost.ai/#organization",
+                "name": "LocalGhost",
+                "url": "https://www.localghost.ai",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.localghost.ai/images/logo.png"
+                }
+            },
+            "datePublished": "2026-09-24",
+            "dateModified": "2026-09-24",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://www.localghost.ai/mirror"
+            },
+            "url": "https://www.localghost.ai/mirror",
+            "inLanguage": "en-GB",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            },
+            "about": [
+                { "@type": "Thing", "name": "Software supply chain" },
+                { "@type": "Thing", "name": "Signed downloads" },
+                { "@type": "Thing", "name": "Self-hosted AI setup" }
+            ],
+            "proficiencyLevel": "Expert"
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
+                { "@type": "ListItem", "position": 2, "name": "Setup Mirror", "item": "https://www.localghost.ai/mirror" }
+            ]
+        }
+        </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <style>
+            .mirror-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
+            .mirror-table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); }
+            .mirror-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; line-height: 1.55; background: var(--void-lighter); }
+            .mirror-table th, .mirror-table td { text-align: left; vertical-align: top; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border); }
+            .mirror-table tr:last-child td { border-bottom: none; }
+            .mirror-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; }
+            .mirror-table td:first-child { font-family: var(--font-mono); color: var(--terminal); white-space: nowrap; }
+            .mirror-table code { display: block; border: none; background: none; padding: 0; margin: 0 0 0.2rem; font-size: 0.8rem; overflow-wrap: anywhere; }
+            .mirror-table code, pre.cmd, .manifesto-text code { font-variant-ligatures: none; }
+            .mirror-table .later td { color: var(--text-dim); }
+            .mirror-table .later td:first-child { color: var(--text-dim); }
+            @media (max-width: 640px) {
+                .mirror-table-wrap { border: none; }
+                .mirror-table, .mirror-table tbody, .mirror-table tr, .mirror-table td { display: block; width: 100%; }
+                .mirror-table thead { display: none; }
+                .mirror-table tr { border: 1px solid var(--border); margin-bottom: 0.75rem; }
+                .mirror-table td { border-bottom: none; padding: 0.35rem 0.8rem; }
+                .mirror-table td:first-child { padding-top: 0.7rem; }
+                .mirror-table td:last-child { padding-bottom: 0.7rem; }
+                .mirror-table td[data-label]:not(:first-child)::before { content: attr(data-label); display: block; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.15rem; }
+            }
+            .mirror-steps { margin: 1.25rem 0 1.5rem 1.25rem; }
+            .mirror-steps li { margin-bottom: 0.9rem; line-height: 1.75; padding-left: 0.25rem; }
+            .mirror-steps li::marker { color: var(--terminal); font-family: var(--font-mono); }
+            pre.cmd { background: var(--void-lighter); border: 1px solid var(--border); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.25rem 0 1.5rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); }
+            pre.cmd .c { color: var(--text-dim); }
+            .credits { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); border: 1px dashed var(--terminal-dim); padding: 0.9rem 1rem; margin: 1.5rem 0; }
+            .post-refs { margin-top: 1.5rem; }
+            .post-refs .ref { color: var(--text-dim); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem; overflow-wrap: anywhere; }
+            .post-refs .ref .n { color: var(--terminal); margin-right: 0.4rem; }
+            .post-refs .ref a { color: var(--terminal); }
+            sup.fn { line-height: 0; }
+            sup.fn a { color: var(--terminal); text-decoration: none; font-size: 0.85em; }
+            sup.fn a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; MIRROR</div>
+                <h1>Setup Mirror</h1>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-09-24">24 September 2026</time></div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="mirror-lede">
+                    This is where a LocalGhost box gets the files it downloads once, at setup. Every file here is a copy of something already public (or cut from it), published with the terms it came under, and listed in a manifest signed with the same key that signs every deploy of this site.
+                </p>
+
+                <p>
+                    The mirror started in September 2026 with three sets, <code>geo</code>, <code>landtiles</code> and <code>go</code>. The pinned llama.cpp source and the model weights are already in the config but not published yet. The weights wait until the terms that have to travel with them are complete.
+                </p>
+
+                <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
+
+                <p>
+                    Files come in sets, and a box asks for a set by name. Each set sits in its own folder with a <code>TERMS</code> file per licence and a <code>NOTICE.txt</code> that says which file is under which terms and where it came from.
+                </p>
+
+                <div class="mirror-table-wrap">
+                    <table class="mirror-table">
+                        <thead>
+                            <tr><th>Set</th><th>Files</th><th>Where it comes from</th><th>Terms</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="Set">geo</td>
+                                <td data-label="Files"><code>admin1CodesASCII.txt</code> <code>admin2Codes.txt</code> <code>countryInfo.txt</code> <code>allCountries.zip</code></td>
+                                <td data-label="Where it comes from">The GeoNames data dumps, unmodified. The box uses them for reverse geocoding.</td>
+                                <td data-label="Terms">CC BY 4.0<sup class="fn"><a href="#ref1">[1]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">geo</td>
+                                <td data-label="Files"><code>world.geojson</code> <code>world-50m.geojson</code> <code>world-110m.geojson</code></td>
+                                <td data-label="Where it comes from">Natural Earth's country boundaries at three scales (10m, 50m and 110m), renamed only. The base of the map.</td>
+                                <td data-label="Terms">Public domain<sup class="fn"><a href="#ref2">[2]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">landtiles</td>
+                                <td data-label="Files"><code>landtiles.tar.gz</code></td>
+                                <td data-label="Where it comes from">OpenStreetMap's land polygons, cut on the server into one-degree tiles for the map's coastline.</td>
+                                <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">go</td>
+                                <td data-label="Files"><code>go1.25.4.linux-amd64.tar.gz</code></td>
+                                <td data-label="Where it comes from">The official Go release, checked against go.dev's published SHA-256 before it's mirrored. Setup needs it before any Go exists on the box.</td>
+                                <td data-label="Terms">BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup></td>
+                            </tr>
+                            <tr class="later">
+                                <td data-label="Set">llama</td>
+                                <td data-label="Files"><code>llama.cpp-&lt;commit&gt;.tar.gz</code></td>
+                                <td data-label="Where it comes from">GitHub's source archive of one pinned commit of the inference engine. Not published yet.</td>
+                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref5">[5]</a></sup></td>
+                            </tr>
+                            <tr class="later">
+                                <td data-label="Set">models</td>
+                                <td data-label="Files">Gemma 4 12B (Q4_K_M) and its vision projector, EmbeddingGemma 300M</td>
+                                <td data-label="Where it comes from">GGUF conversions of Google's weights for llama.cpp. Not published yet.</td>
+                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup>, Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="section-header">&gt; 2. WHY A MIRROR</h2>
+
+                <p>
+                    Before this, setting up a box meant fetching from four different places on the day (GeoNames, GitHub, the OpenStreetMap data server and Google's Go downloads) and trusting each of them to be up, to serve the same bytes it served last week, and not to keep a record of who asked. Any one of the four being slow or down made setup slow or broken, and none of them owes a LocalGhost box anything.
+                </p>
+
+                <p>
+                    The coastline was the worst of it. OpenStreetMap's land polygons arrive as one large shapefile that has to be cut into the tiles the map reads, which takes a few minutes and a couple of GB of RAM. The mirror does that once, on the server, and every box downloads the finished tiles instead.
+                </p>
+
+                <p>
+                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror will carry one commit, named in the file, and a new pin is a new file name that makes boxes rebuild.
+                </p>
+
+                <p>
+                    It's also one less set of logs. This site runs with access logging off, the mirror included, so nothing here records the IP address of a box that set itself up. Fetching from each upstream directly would tell every one of them.
+                </p>
+
+                <h2 class="section-header">&gt; 3. HOW A BOX CHECKS IT</h2>
+
+                <p>
+                    Boxes fetch from here with <code>tools/mirror_fetch.sh</code> in the <a href="https://github.com/LocalGhostDao/localghost">server repo</a>, and install nothing unless every check passes.
+                </p>
+
+                <ol class="mirror-steps">
+                    <li>It downloads <code>MANIFEST.txt</code> and <code>MANIFEST.txt.asc</code> and verifies the signature against <code>tools/mirror-key.asc</code>, the public key committed in the server repo, in a throwaway gpg home so nothing in your own keyring is involved.</li>
+                    <li>It requires the mirror's own header on the manifest, so another manifest signed by the same key (a release, or a deploy of this site) can't be passed off as a mirror manifest.</li>
+                    <li>It refuses a build older than the last one that box used (the build name is kept in <code>/var/lib/ghost/mirror-build</code>), so an old manifest with a perfectly valid signature can't be replayed to roll a box back.</li>
+                    <li>It downloads each file under a temporary name, resuming if the connection drops, and only gives it its real name once its SHA-256 matches the manifest.</li>
+                </ol>
+
+                <p>
+                    If the mirror can't be reached or a check fails, the setup scripts fall back to the upstream source, so the mirror can make setup faster and more predictable but it can't stop a box from being set up. <code>GHOST_MIRROR=off</code> skips it entirely, and <code>GHOST_MIRROR=&lt;url&gt;</code> points a box at a copy you host yourself.
+                </p>
+
+                <h2 class="section-header">&gt; 4. HOW IT'S BUILT</h2>
+
+                <p>
+                    The mirror is rebuilt on every deploy of this site, by a script that sits next to the deploy script in the <a href="https://github.com/LocalGhostDao/web">web repo</a> and is never served. It downloads a file again only when upstream says it changed, stops if the Go tarball doesn't match go.dev's checksum, and refuses to publish anything whose terms file isn't finished.
+                </p>
+
+                <p>
+                    A publish that changes something goes into a new folder named after the time it was built (<code>20260924T120000Z</code>, say). A folder never changes once it's published. Sets that didn't change are hard-linked from the previous build rather than copied, and the last two builds are kept, so a box halfway through a download when the next build lands still gets the bytes its manifest named. The manifest and its signature are written last and only go live once every file they name is already in place. When nothing changed upstream there's no new build at all.
+                </p>
+
+<pre class="cmd">/mirror/MANIFEST.txt                    <span class="c"># sha256 of every file, one per line</span>
+/mirror/MANIFEST.txt.asc                <span class="c"># signature, info@localghost.ai</span>
+/mirror/&lt;build&gt;/&lt;set&gt;/&lt;file&gt;            <span class="c"># the files</span>
+/mirror/&lt;build&gt;/&lt;set&gt;/TERMS-&lt;name&gt;.txt  <span class="c"># the terms a file is under</span>
+/mirror/&lt;build&gt;/&lt;set&gt;/NOTICE.txt        <span class="c"># which file, which terms, from where</span></pre>
+
+                <h2 class="section-header">&gt; 5. CHECK IT YOURSELF</h2>
+
+                <p>
+                    You don't need a box to check any of this. The key is the one published at <a href="/.well-known/pgp-key.asc">/.well-known/pgp-key.asc</a>, the same key that signs every deploy of this site.
+                </p>
+
+<pre class="cmd">curl -sO https://www.localghost.ai/mirror/MANIFEST.txt
+curl -sO https://www.localghost.ai/mirror/MANIFEST.txt.asc
+curl -s https://www.localghost.ai/.well-known/pgp-key.asc | gpg --import
+gpg --verify MANIFEST.txt.asc MANIFEST.txt
+
+<span class="c"># then any file against its line in the manifest, the Go tarball for example</span>
+BUILD=$(sed -n 's/^# Build: //p' MANIFEST.txt)
+curl -sO https://www.localghost.ai/mirror/$BUILD/go/go1.25.4.linux-amd64.tar.gz
+grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/go/| |" | sha256sum -c</pre>
+
+                <h2 class="section-header">&gt; 6. TERMS</h2>
+
+                <p>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The coastline tiles are a derivative database of OpenStreetMap's land polygons, offered under the same Open Database License as the original, and the method that produced them is published as source code in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
+                </p>
+
+                <p>
+                    Google released Gemma 4 under Apache 2.0 in April 2026.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use, which have to be handed to everyone who receives the model, in full, with its use restrictions intact.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish refuses a model until its terms file is complete, which is the main reason the weights aren't here yet.
+                </p>
+
+                <div class="credits">Map data © OpenStreetMap contributors. Made with Natural Earth. Place names from GeoNames.</div>
+
+                <p>
+                    Postgres and Redis still come from their own apt repositories at setup, and I haven't decided yet whether mirroring those is worth the work. If you maintain one of the sources above and want it handled differently, or you find a file here that doesn't match its manifest, email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->.
+                </p>
+
+                <h2 class="section-header">&gt; REFERENCES</h2>
+                <div class="post-refs">
+                    <div class="ref" id="ref1"><span class="n">[1]</span>GeoNames, the geographical database behind the <code>geo</code> set's place names, publishes its data dumps under the Creative Commons Attribution 4.0 licence. Source for the GeoNames terms. <a href="https://www.geonames.org/" target="_blank" rel="noopener">geonames.org</a> and <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by/4.0</a></div>
+                    <div class="ref" id="ref2"><span class="n">[2]</span>Natural Earth's terms of use, which place all of its vector and raster data in the public domain. Source for the Natural Earth terms. The GeoJSON copies come from the natural-earth-vector repository on GitHub. <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">naturalearthdata.com/about/terms-of-use</a></div>
+                    <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de, which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the coastline terms. The tiling code is <code>internal/landtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
+                    <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
+                    <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive. Source for the llama.cpp terms. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a></div>
+                    <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence. Source for the Gemma 4 terms. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a></div>
+                    <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and require anyone redistributing the model to pass the terms on and keep the use restrictions in the Gemma Prohibited Use Policy in force. Source for the EmbeddingGemma terms. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a> and <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a></div>
+                </div>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/about" class="back-link">[ ← ABOUT ]</a>
+                <a href="/build" class="back-link">[ THE ROADMAP → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+            <p class="footer-quote">"Every box gets the same bytes, and every byte is in a signed manifest." // Setup Mirror</p>
+        </footer>
+
+    </body>
+</html>

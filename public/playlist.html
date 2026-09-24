@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>The Build Soundtrack | Playlist | LocalGhost.ai</title>
         <meta name="description" content="Every post on LocalGhost has a song. Each one goes through Claude Opus to extract a style and lyrics, then straight into Suno, all AI-led.">
         <meta name="author" content="Vlad Cealicu">
-        <meta name="robots" content="index, follow">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <meta name="keywords" content="LocalGhost, playlist, AI music, Suno, Claude Opus, cypherpunk, AI songwriting, Hard Truths soundtrack">
         <meta name="category" content="Music, AI, Technology">
         <meta name="language" content="en-GB">
         <link rel="canonical" href="https://www.localghost.ai/playlist">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
         <meta property="og:type" content="music.playlist">
         <meta property="og:url" content="https://www.localghost.ai/playlist">
         <meta property="og:title" content="The Build Soundtrack">
@@ -22,7 +23,7 @@
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="@localghost_ai">
+        <meta name="twitter:site" content="@localghostai">
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:title" content="The Build Soundtrack">
         <meta name="twitter:description" content="Every post on LocalGhost has a song. Each one goes through Claude Opus to extract a style and lyrics, then straight into Suno, all AI-led.">
@@ -43,17 +44,15 @@
             "url": "https://www.localghost.ai/playlist",
             "author": {
                 "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
                 "name": "Vlad Cealicu",
-                "url": "https://www.localghost.ai"
+                "url": "https://www.localghost.ai/about#vlad-cealicu",
+                "sameAs": [
+                    "https://x.com/vladcealicu"
+                ]
             },
             "publisher": {
-                "@type": "Organization",
-                "name": "LocalGhost.ai",
-                "url": "https://www.localghost.ai",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https://www.localghost.ai/images/logo.png"
-                }
+                "@id": "https://www.localghost.ai/#organization"
             },
             "image": {
                 "@type": "ImageObject",
@@ -68,24 +67,113 @@
             "keywords": "AI music, Suno, Claude Opus, cypherpunk, LocalGhost, Hard Truths soundtrack",
             "numTracks": 17,
             "track": [
-                { "@type": "MusicRecording", "name": "A Cypherpunk's Manifesto", "position": 1, "url": "https://www.localghost.ai/cypherpunk" },
-                { "@type": "MusicRecording", "name": "This Dystopia Is Boring", "position": 2, "url": "https://www.localghost.ai/manifesto" },
-                { "@type": "MusicRecording", "name": "The Window", "position": 3, "url": "https://www.localghost.ai/hard-truths/inflection" },
-                { "@type": "MusicRecording", "name": "The First Honest Thing", "position": 4, "url": "https://www.localghost.ai/hard-truths/reckoning" },
-                { "@type": "MusicRecording", "name": "Saint Bow Lane", "position": 5, "url": "https://www.localghost.ai/hard-truths/skillcraft" },
-                { "@type": "MusicRecording", "name": "One Bad Quarter", "position": 6, "url": "https://www.localghost.ai/hard-truths/one-bad-quarter" },
-                { "@type": "MusicRecording", "name": "Ghost and Shadow", "position": 7, "url": "https://www.localghost.ai/hard-truths/dictator-brain" },
-                { "@type": "MusicRecording", "name": "No Export Button", "position": 8, "url": "https://www.localghost.ai/hard-truths/model-trap" },
-                { "@type": "MusicRecording", "name": "A Room With A False Wall", "position": 9, "url": "https://www.localghost.ai/hard-truths/honeypot" },
-                { "@type": "MusicRecording", "name": "The Same Technique", "position": 10, "url": "https://www.localghost.ai/hard-truths/critic-worth-listening-to" },
-                { "@type": "MusicRecording", "name": "Napoli 1820", "position": 11, "url": "https://www.localghost.ai/hard-truths/how-memory-gets-made" },
-                { "@type": "MusicRecording", "name": "The Labyrinth Defends Itself", "position": 12, "url": "https://www.localghost.ai/hard-truths/the-bureaucracy-trap" },
-                { "@type": "MusicRecording", "name": "Radio Checklist", "position": 13, "url": "https://www.localghost.ai/hard-truths/before-you-ask" },
-                { "@type": "MusicRecording", "name": "Assisi Espresso Chair", "position": 14, "url": "https://www.localghost.ai/hard-truths/day-one" },
-                { "@type": "MusicRecording", "name": "What The Ghost Owes", "position": 15, "url": "https://www.localghost.ai/hard-truths/overhears" },
-                { "@type": "MusicRecording", "name": "Integration Tax", "position": 16, "url": "https://www.localghost.ai/hard-truths/integration-tax" },
-                { "@type": "MusicRecording", "name": "Bucket", "position": 17, "url": "https://www.localghost.ai/hard-truths/index-not-a-person" }
-            ]
+                {
+                    "@type": "MusicRecording",
+                    "name": "A Cypherpunk's Manifesto",
+                    "position": 1,
+                    "url": "https://www.localghost.ai/cypherpunk"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "This Dystopia Is Boring",
+                    "position": 2,
+                    "url": "https://www.localghost.ai/manifesto"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "The Window",
+                    "position": 3,
+                    "url": "https://www.localghost.ai/hard-truths/inflection"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "The First Honest Thing",
+                    "position": 4,
+                    "url": "https://www.localghost.ai/hard-truths/reckoning"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Saint Bow Lane",
+                    "position": 5,
+                    "url": "https://www.localghost.ai/hard-truths/skillcraft"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "One Bad Quarter",
+                    "position": 6,
+                    "url": "https://www.localghost.ai/hard-truths/one-bad-quarter"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Ghost and Shadow",
+                    "position": 7,
+                    "url": "https://www.localghost.ai/hard-truths/dictator-brain"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "No Export Button",
+                    "position": 8,
+                    "url": "https://www.localghost.ai/hard-truths/model-trap"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "A Room With A False Wall",
+                    "position": 9,
+                    "url": "https://www.localghost.ai/hard-truths/honeypot"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "The Same Technique",
+                    "position": 10,
+                    "url": "https://www.localghost.ai/hard-truths/critic-worth-listening-to"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Napoli 1820",
+                    "position": 11,
+                    "url": "https://www.localghost.ai/hard-truths/how-memory-gets-made"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "The Labyrinth Defends Itself",
+                    "position": 12,
+                    "url": "https://www.localghost.ai/hard-truths/the-bureaucracy-trap"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Radio Checklist",
+                    "position": 13,
+                    "url": "https://www.localghost.ai/hard-truths/before-you-ask"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Assisi Espresso Chair",
+                    "position": 14,
+                    "url": "https://www.localghost.ai/hard-truths/day-one"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "What The Ghost Owes",
+                    "position": 15,
+                    "url": "https://www.localghost.ai/hard-truths/overhears"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Integration Tax",
+                    "position": 16,
+                    "url": "https://www.localghost.ai/hard-truths/integration-tax"
+                },
+                {
+                    "@type": "MusicRecording",
+                    "name": "Bucket",
+                    "position": 17,
+                    "url": "https://www.localghost.ai/hard-truths/index-not-a-person"
+                }
+            ],
+            "inLanguage": "en-GB",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            }
         }
         </script>
         <script type="application/ld+json">
@@ -93,11 +181,22 @@
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-                { "@type": "ListItem", "position": 2, "name": "Playlist", "item": "https://www.localghost.ai/playlist" }
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Playlist",
+                    "item": "https://www.localghost.ai/playlist"
+                }
             ]
         }
         </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
         <link rel="stylesheet" href="/css/base.css">
         <link rel="stylesheet" href="/css/pages.css">
         <link rel="stylesheet" href="/css/blog.css">
@@ -534,7 +633,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; PLAYLIST</div>
                 <h1>The Build Soundtrack</h1>
-                <div class="date">Vlad Cealicu // Claude Opus + Suno</div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // Claude Opus + Suno</div>
             </div>
 
             <div class="manifesto-text">

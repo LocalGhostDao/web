@@ -152,6 +152,7 @@
     padding: 1.25rem;
 }
 
+.roadmap-content h3,
 .roadmap-content h4 {
     font-family: var(--font-mono);
     font-size: 1rem;

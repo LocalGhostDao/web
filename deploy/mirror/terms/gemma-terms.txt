@@ -1,0 +1,8 @@
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
+
+EDIT-ME: EmbeddingGemma is under the Gemma Terms of Use, not Apache 2.0, and whoever distributes it
+must give every recipient a copy of that agreement and keep its use restrictions (section 3.2, the
+Gemma Prohibited Use Policy at https://ai.google.dev/gemma/prohibited_use_policy) in force. Paste the
+full text of the Gemma Terms of Use below the first line (from https://ai.google.dev/gemma/terms, or
+the licence file that came with the model), then delete this EDIT-ME paragraph. The publish refuses
+the model until then.

@@ -1,1 +1,22 @@
 public/assets/podcast/should-not-possess.m4a
+
+# --- LocalGhost setup mirror ---
+# Scripts, conf, terms and the PUBLIC key live in deploy/mirror/ and are in git. The mirror is built
+# into public/mirror/: its builds and signed manifest are gigabytes and never go to GitHub; only the
+# page that documents it (index.html) does.
+/public/mirror/*
+!/public/mirror/index.html
+[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]T[0-9][0-9][0-9][0-9][0-9][0-9]Z/
+*.gguf
+*.shp
+*.lgt
+landtiles*.tar.gz
+land-polygons-complete-4326*
+allCountries.zip
+allCountries.txt
+go*.linux-*.tar.gz
+llama.cpp-*.tar.gz
+# never a private key
+*.key
+secring.*
+private-keys-v1.d/

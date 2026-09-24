@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Expensive Part Was Never the AI | Hard Truths | LocalGhost.ai</title>
-    <meta name="description" content="A near-frontier model runs at interactive speed on a card you own, for the cost of the electricity. Renting the same capability from OpenAI, Anthropic or Google is a fee priced below cost, your data on their servers, and only rising.">
+    <title>The Expensive Part Was Never the AI | LocalGhost.ai</title>
+    <meta name="description" content="A near-frontier model runs at interactive speed on a £500 GPU you can own. Renting it from OpenAI, Anthropic or Google costs twice, in fees and in what you type.">
     <meta name="author" content="Vlad Cealicu">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="local LLM, Gemma 4, llama.cpp, eGPU, Thunderbolt, RTX 4070, NAS inference, CUDA, memory bandwidth, local AI, self-hosted AI, LocalGhost, data sovereignty, homelab AI, GPU offload, AI subscription cost, ChatGPT Plus, Claude Pro, cloud AI subsidy, inference cost, AI privacy, run AI locally">
     <meta name="category" content="AI, Architecture, Hardware">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/the-expensive-part">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/the-expensive-part">
     <meta property="og:title" content="The Expensive Part Was Never the AI | LocalGhost Hard Truths">
@@ -34,7 +35,7 @@
     <meta property="article:tag" content="LocalGhost">
     <meta property="article:reading_time" content="12">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@localghost_ai">
+    <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="The Expensive Part Was Never the AI">
     <meta name="twitter:description" content="A near-frontier model runs on a card you own for the cost of the electricity. The rented version is priced below cost, logged on their servers, and rising.">
@@ -49,21 +50,22 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Article",
+        "@type": "BlogPosting",
         "headline": "The Expensive Part Was Never the AI",
         "description": "A near-frontier model runs at interactive speed on a card you own, for the cost of the electricity. Renting the same capability from OpenAI, Anthropic or Google is a fee priced below cost, your data on their servers, and only rising.",
         "author": {
             "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
             "name": "Vlad Cealicu",
-            "url": "https://www.localghost.ai",
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
             "sameAs": [
-                "https://twitter.com/vladcealicu",
-                "https://github.com/vladcealicu"
+                "https://x.com/vladcealicu"
             ]
         },
         "publisher": {
             "@type": "Organization",
-            "name": "LocalGhost.ai",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
             "url": "https://www.localghost.ai",
             "logo": {
                 "@type": "ImageObject",
@@ -87,10 +89,9 @@
         "wordCount": 4527,
         "inLanguage": "en-GB",
         "isPartOf": {
-            "@type": "Blog",
-            "name": "Hard Truths",
-            "url": "https://www.localghost.ai/hard-truths"
-        }
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/the-expensive-part"
     }
     </script>
     <script type="application/ld+json">
@@ -98,12 +99,28 @@
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-            { "@type": "ListItem", "position": 2, "name": "Hard Truths", "item": "https://www.localghost.ai/hard-truths" },
-            { "@type": "ListItem", "position": 3, "name": "The Expensive Part Was Never the AI", "item": "https://www.localghost.ai/hard-truths/the-expensive-part" }
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "The Expensive Part Was Never the AI",
+                "item": "https://www.localghost.ai/hard-truths/the-expensive-part"
+            }
         ]
     }
     </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/blog.css">
@@ -166,7 +183,7 @@
     <div class="page-header">
         <div class="section-label">&gt; HARD_TRUTHS // POST_17 // JUN 2026</div>
         <h1>The Expensive Part Was Never the AI</h1>
-        <div class="date">Vlad Cealicu // 11 June 2026</div>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-06-11">11 June 2026</time></div>
     </div>
 
     <div class="manifesto-text">
@@ -206,7 +223,7 @@
             The GPU was my gaming card. I bought it in July 2023 with a Thunderbolt enclosure so my laptop could play games it had no business running, and for three years that was all it did. It carried me through Baldur's Gate 3 and the Alexander the Great campaign in Age of Empires II <a href="#ref-7" class="cite">[7]</a>, Dan Carlin's Mania for Subjugation <a href="#ref-8" class="cite">[8]</a> in my ears while I ran the pixel version of the same conquests.
         </p>
 
-        <div class="section-header">&gt; 1. My current LocalGhost testing setup</div>
+        <h2 class="section-header">&gt; 1. My current LocalGhost testing setup</h2>
 
         <p>
             I run a UGREEN NASync DXP8800 Pro as my homelab <a href="#ref-1" class="cite">[1]</a>. It's an 8-bay box with a 12th-gen Intel i5 (10 cores, 12 threads), 64GB of RAM, 6x 24TB drives in RAID 10, and a pair of 8TB SSDs, on Debian 13.
@@ -228,7 +245,7 @@
             Now for the GPU. It is a standard MSI RTX 4070 (12GB) <a href="#ref-2" class="cite">[2]</a>, and it sits in a Razer Core X Chroma <a href="#ref-3" class="cite">[3]</a>, a Thunderbolt 3 eGPU enclosure. They are the pair from the opening, three years of gaming service behind them.
         </p>
 
-        <div class="section-header">&gt; 2. The setup</div>
+        <h2 class="section-header">&gt; 2. The setup</h2>
 
         <p>
             Connecting the card was the easy part, I spent the rest of the night making it work. The box had to come off the hot path before I could upgrade it, and I did that without dropping anything, because a maintenance window is a crutch for bad software and architecture. It is the extreme form of bad planning and incompetent teams, and while in some circumstances it might be the best solution, it is also the laziest one.
@@ -254,7 +271,7 @@
             With the driver built (NVIDIA 550.163.01, CUDA 12.4) and the card enumerated, the last step was rebuilding llama.cpp with CUDA support. The existing binary was CPU-only and ignored the GPU offload flag entirely. A clean <code>cmake -DGGML_CUDA=ON</code> build, auto-detecting the 4070's Ada architecture (sm_89), and the GPU was finally in the loop.
         </p>
 
-        <div class="section-header">&gt; 3. The benchmark</div>
+        <h2 class="section-header">&gt; 3. The benchmark</h2>
 
         <p>
             I benchmarked with llama.cpp's <code>llama-bench</code>, running each model twice. Once forcing everything onto CPU (<code>-ngl 0</code>), once offloading all layers to the GPU (<code>-ngl 99</code>). Two metrics, prompt processing (how fast it ingests input) and token generation (how fast it produces output, the number you feel).
@@ -297,7 +314,7 @@
             The Thunderbolt question, does running the GPU over a 40 Gb/s external link instead of a native PCIe slot hurt? For inference, almost not at all. The model weights cross the link once at load time, then live entirely in the card's own VRAM. Token generation streams those weights from VRAM at the card's full bandwidth and never touches the Thunderbolt link. The thin external connection only matters while loading the model, not while using it. A 4070 in a box on the end of a cable runs inference at very nearly the speed it would in a desktop slot, provided the whole model fits in VRAM. The 12B at 6.62GB leaves comfortable room in the 4070's 12GB, so it does.
         </p>
 
-        <div class="section-header">&gt; 4. What I ended up with</div>
+        <h2 class="section-header">&gt; 4. What I ended up with</h2>
 
         <p>
             A local Gemma 4 12B running as a system service, generating at interactive speed, on the same box that already serves the websites, runs the chain nodes and holds the storage, with no cloud dependency and no data leaving the machine. The GPU auto-authorises on boot and the model loads on the GPU automatically. The model supports a 128k training context (I run it at 32k, which the card holds comfortably, VRAM being the practical constraint long before the model's limit), native multimodal input, tool calling, and a reasoning channel.
@@ -311,7 +328,7 @@
             The whole thing keeps answering through a power cut for half a day, and none of it is rented. It is a foundation I can expand and test on, and it is close to the hardware and setup LocalGhost will run in production.
         </p>
 
-        <div class="section-header">&gt; 5. What it costs</div>
+        <h2 class="section-header">&gt; 5. What it costs</h2>
 
         <p>
             This question has two answers, because the box I built is a production homelab and most of its cost has nothing to do with the model. At current new prices the bare NAS is about £1,120, the RAM upgrade to 64GB another £150, the six 24TB drives around £2,100, the two 8TB SSDs that hold the chain nodes about £1,000, and the Anker that carries it through a power cut about £500. The card and the enclosure would add £830 if I had bought them for this, and I did not, they were the gaming setup from the opening, so the GPU that runs a near-frontier model cost me nothing extra. Call it £5,700 all in, and almost none of it is the AI. That money buys 70TB of storage, a full Ethereum archive node, a full Bitcoin node and half a day of power resilience.
@@ -349,7 +366,7 @@
             The part that runs the model is a £500 card in a tower that costs about the same again.
         </p>
 
-        <div class="section-header">&gt; 6. The thing you are renting</div>
+        <h2 class="section-header">&gt; 6. The thing you are renting</h2>
 
         <p>
             That tower is a one-time cost. The alternative is a fee that arrives every month for as long as you use it. The standard tier at OpenAI, Anthropic and Google sits at the best part of twenty pounds a month, the power tiers at eighty and a hundred and sixty, and Google's ceiling at two hundred <a href="#ref-9" class="cite">[9]</a>. Anyone running more than one of them, which is common, clears a thousand pounds a year. And that subscription is the cheap end of it, because buying the same usage by the token through the API runs far past the flat fee on a heavy day.
@@ -408,13 +425,13 @@
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
-        <div class="section-header">&gt; NOTE</div>
+        <h2 class="section-header">&gt; NOTE</h2>
 
         <p class="references" id="note-1">
             <strong>*</strong> The redundancy is two independent lines that never share the load. Hyperoptic is primary on its own router. The Starlink Mini sits in bypass mode, plugged straight into a second NIC on the NAS with nothing else behind it, cold until it is needed. A small Go service under systemd watches both lines and flips between them. While Hyperoptic is up the box publishes only its IPv4 A record and Starlink carries nothing. When Hyperoptic drops, the service routes the box out over the Starlink NIC, pulls the IPv4 A record, and publishes an IPv6 AAAA in its place. It uses v6 because Starlink's v4 is behind CGNAT with no way in, and it reads the address fresh each time because the prefix rotates. It reverses all of that when Hyperoptic returns. Because Starlink only ever serves inbound while it is also the default route, replies leave the way requests came in and there is no asymmetric routing to manage. The one visitor it cannot serve during a Hyperoptic outage is one with no IPv6 at all, and that is a price worth paying for relying on no third party and no proprietary tunnel. The gap shrinks every year regardless, as either Starlink finds a way off CGNAT or, more likely, IPv6 spreads across enough routers and ISPs that a client without it becomes the rare exception. Long term (famous last words), it stops being a problem at all.
         </p>
 
-        <div class="section-header">&gt; REFERENCES</div>
+        <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="references" id="ref-1">
             <strong>[1]</strong> UGREEN NASync DXP8800 Pro. The 8-bay NAS the whole setup runs on, 12th-gen Intel i5, room for eight drives plus two M.2 SSDs. Source for the chassis I describe in the opening. Product page at <a href="https://nas.ugreen.com" target="_blank" rel="noopener">nas.ugreen.com</a>.
