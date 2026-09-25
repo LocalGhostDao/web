@@ -168,11 +168,11 @@
             <div class="manifesto-text">
 
                 <p class="mirror-lede">
-                    This is where a LocalGhost box gets the files it downloads once, at setup. Every file here is a copy of something already public (or cut from it), published with the terms it came under, and listed in a manifest signed with the same key that signs every deploy of this site.
+                    This is where a LocalGhost box gets the files it downloads once, at setup. Every file here is a copy of something already public, published as it came and with the terms it came under, and listed in a manifest signed with the same key that signs every deploy of this site.
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with three sets, <code>geo</code>, <code>landtiles</code> and <code>go</code>. The pinned llama.cpp source and the model weights are already in the config but not published yet. The weights wait until the terms that have to travel with them are complete.
+                    The mirror started in September 2026 with three sets, <code>geo</code>, <code>landpolygons</code> and <code>go</code>. The pinned llama.cpp source and the model weights are already in the config but not published yet. The weights wait until the terms that have to travel with them are complete.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -200,9 +200,9 @@
                                 <td data-label="Terms">Public domain<sup class="fn"><a href="#ref2">[2]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">landtiles</td>
-                                <td data-label="Files"><code>landtiles.tar.gz</code></td>
-                                <td data-label="Where it comes from">OpenStreetMap's land polygons, cut on the server into one-degree tiles for the map's coastline.</td>
+                                <td data-label="Set">landpolygons</td>
+                                <td data-label="Files"><code>land-polygons-complete-4326.zip</code></td>
+                                <td data-label="Where it comes from">OpenStreetMap's land polygons from osmdata.openstreetmap.de, unmodified. The box cuts them into its map's coastline tiles.</td>
                                 <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
                             </tr>
                             <tr>
@@ -234,7 +234,7 @@
                 </p>
 
                 <p>
-                    The coastline was the worst of it. OpenStreetMap's land polygons arrive as one large shapefile that has to be cut into the tiles the map reads, which takes a few minutes and a couple of GB of RAM. The mirror does that once, on the server, and every box downloads the finished tiles instead.
+                    The mirror doesn't change anything it carries. OpenStreetMap's land polygons are published as osmdata makes them, and each box cuts them into the tiles its map reads, which takes a few minutes and a couple of GB of RAM on the box. Keeping the processing on the box means the web server only ever proxies files it has checked and signed, and anyone can compare a file here with the upstream copy byte for byte.
                 </p>
 
                 <p>
@@ -297,7 +297,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
                 <p>
-                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The coastline tiles are a derivative database of OpenStreetMap's land polygons, offered under the same Open Database License as the original, and the method that produced them is published as source code in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons are an unmodified copy of the OpenStreetMap data published by osmdata.openstreetmap.de, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
                 </p>
 
                 <p>
@@ -314,7 +314,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <div class="post-refs">
                     <div class="ref" id="ref1"><span class="n">[1]</span>GeoNames, the geographical database behind the <code>geo</code> set's place names, publishes its data dumps under the Creative Commons Attribution 4.0 licence. Source for the GeoNames terms. <a href="https://www.geonames.org/" target="_blank" rel="noopener">geonames.org</a> and <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by/4.0</a></div>
                     <div class="ref" id="ref2"><span class="n">[2]</span>Natural Earth's terms of use, which place all of its vector and raster data in the public domain. Source for the Natural Earth terms. The GeoJSON copies come from the natural-earth-vector repository on GitHub. <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">naturalearthdata.com/about/terms-of-use</a></div>
-                    <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de, which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the coastline terms. The tiling code is <code>internal/landtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
+                    <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de, which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
                     <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
                     <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive. Source for the llama.cpp terms. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a></div>
                     <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence. Source for the Gemma 4 terms. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a></div>

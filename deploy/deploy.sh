@@ -451,7 +451,7 @@ fi
 # deploy refreshes it. A failure never stops the
 # site deploy: the last good build stays up.
 #   MIRROR=off ./deploy/deploy.sh           skip it
-#   MIRROR_SETS="geo landtiles" ./deploy/deploy.sh
+#   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh
 # ============================================
 echo ""
 echo "> SETUP MIRROR..."
@@ -469,7 +469,11 @@ else
     # shellcheck disable=SC2086
     GHOST_MIRROR_DATA="$SRC_MIRROR" sh "$MIRROR_SCRIPT" ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
     if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-        echo "  [✗] Mirror publish failed, the last good build is still served"
+        if [ -f "$DEST_MIRROR/MANIFEST.txt" ]; then
+            echo "  [✗] Mirror publish failed, build $(sed -n 's/^# Build: //p' "$DEST_MIRROR/MANIFEST.txt") is still served"
+        else
+            echo "  [✗] Mirror publish failed, nothing is published yet"
+        fi
     fi
 fi
 

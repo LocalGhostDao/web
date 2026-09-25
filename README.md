@@ -33,13 +33,13 @@ rm "$TMPKEY"
 
 ## 🪞 SETUP MIRROR
 
-`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, the OpenStreetMap coastline cut into tiles, the Go toolchain, and later a pinned llama.cpp and the model weights), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
+`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, OpenStreetMap's land polygons, the Go toolchain, and later a pinned llama.cpp and the model weights), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
 
 The scripts, conf and terms live in [`deploy/mirror/`](deploy/mirror/README.md), never served. The mirror is built into `public/mirror/`, where the builds and signed manifest are gitignored and [`index.html`](https://www.localghost.ai/mirror) explains what it carries, why, and how a box verifies it. On every deploy `deploy.sh` runs the publish (downloading only what changed upstream), then puts new builds live under `/mirror/`: build directories first, the signed manifest after.
 
 ```bash
 ./deploy/deploy.sh                                # site + mirror
-MIRROR_SETS="geo landtiles" ./deploy/deploy.sh    # site + only those mirror sets
+MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh # site + only those mirror sets
 MIRROR=off ./deploy/deploy.sh                     # site only
 ```
 

@@ -1,11 +1,8 @@
 OpenStreetMap , © OpenStreetMap contributors
 
-landtiles.tar.gz contains information from OpenStreetMap, which is made available here under the
-Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/
-Attribution: © OpenStreetMap contributors, https://www.openstreetmap.org/copyright
+land-polygons-complete-4326.zip is an unmodified copy of the OpenStreetMap land polygons published by
+https://osmdata.openstreetmap.de (https://osmdata.openstreetmap.de/data/land-polygons.html).
 
-The tiles are a derivative database of the OpenStreetMap land polygons published by
-https://osmdata.openstreetmap.de (land-polygons-complete-4326): each polygon clipped to a one-degree
-cell and its coordinates rounded to 1/65535 of a degree, by internal/landtiles in the LocalGhost
-repository (https://github.com/LocalGhostDao). This derivative database is offered under the same
-licence, the ODbL 1.0; the method that produced it is that source code.
+It contains information from OpenStreetMap, which is made available here under the Open Database
+License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/
+Attribution: © OpenStreetMap contributors, https://www.openstreetmap.org/copyright

@@ -4,7 +4,7 @@
 # detach-signed with gpg by info@localghost.ai.
 #
 #   deploy/mirror/publish.sh                   # everything in mirror.conf
-#   deploy/mirror/publish.sh geo landtiles     # refresh those, keep the rest
+#   deploy/mirror/publish.sh geo landpolygons  # refresh those, keep the rest
 #
 # The scripts, conf and terms live here in deploy/mirror/ (never served). The mirror itself is built
 # into public/mirror/, where the builds and the manifest are gitignored and only index.html (the page
@@ -28,11 +28,9 @@
 # (LocalGhostDao/localghost), with tools/mirror_fetch.sh. The first run here exports the public key
 # to deploy/mirror/mirror-key.asc: commit it, and copy it to the server repo's tools/ too.
 #
-# Needs on this machine: curl, gpg with the info@localghost.ai secret key, sha256sum, flock, and for
-# the coastline unzip, GNU tar and the ghost-landtiles binary (built from the server repo:
-# `cd server && CGO_ENABLED=0 go build -o /usr/local/bin/ghost-landtiles ./cmd/ghost-landtiles`,
-# or GHOST_LANDTILES=/path/to/it). Cutting the world's coastline takes a few minutes and a couple of
-# GB of RAM, once per new coastline.
+# Needs on this machine: curl, gpg with the info@localghost.ai secret key, sha256sum and flock. The
+# mirror only proxies files: nothing is cut, converted or rebuilt here. Boxes do their own processing
+# (the coastline tiles, for one) from the files they fetch.
 set -eu
 umask 022
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -88,34 +86,6 @@ fetch() {
     echo "$_f"
 }
 
-# tiles <zip-url-or-path> , landtiles.tar.gz cut from OpenStreetMap's land polygons, cached by the
-# zip's hash (an unchanged coastline is not cut again, and packs to the same bytes)
-tiles() {
-    case "$1" in
-        http://*|https://*) _z="$(fetch "$1")" || return 1 ;;
-        *) _z="$1" ;;
-    esac
-    case "$_z" in *.tar.gz) echo "$_z"; return 0 ;; esac   # already cut elsewhere
-    _out="$CACHE/landtiles-lgt1-$(sha256sum "$_z" | cut -c1-16).tar.gz"
-    if [ ! -s "$_out" ]; then
-        _tiler="${GHOST_LANDTILES:-$(command -v ghost-landtiles || true)}"
-        if [ -z "$_tiler" ] || [ ! -x "$_tiler" ]; then
-            say "no ghost-landtiles: build it from the server repo (cd server && CGO_ENABLED=0 go build -o /usr/local/bin/ghost-landtiles ./cmd/ghost-landtiles) or set GHOST_LANDTILES"
-            return 1
-        fi
-        _w="$CACHE/landtiles-work"
-        rm -rf "$_w" && mkdir -p "$_w"
-        say "cutting the coastline into tiles (minutes, a couple of GB of RAM)"
-        unzip -p "$_z" '*land_polygons.shp' > "$_w/land_polygons.shp" || return 1
-        "$_tiler" "$_w/land_polygons.shp" "$_w/tiles" >&2 || return 1
-        tar --sort=name --mtime='2000-01-01 00:00Z' --owner=0 --group=0 --numeric-owner \
-            -C "$_w/tiles" -cf - . | gzip -n > "$_out.tmp" || return 1
-        mv -f "$_out.tmp" "$_out"
-        rm -rf "$_w"
-    fi
-    echo "$_out"
-}
-
 # godev <name> <file> , the file's SHA-256 is the one go.dev publishes for that name
 godev() {
     _want="$(curl -fsSL "$GODEV" | tr ',' '\n' | grep -A8 "\"filename\": \"$1\"" | grep '"sha256"' | head -1 | sed 's/.*"sha256": *"\([0-9a-f]*\)".*/\1/')"
@@ -169,7 +139,6 @@ while read -r set file tnames source opt; do
         grep -q 'EDIT-ME' "$TERMS/$t.txt" && die "$set/$file: $TERMS/$t.txt still says EDIT-ME , finish it first"
     done
     case "$source" in
-        landtiles:*) src="$(tiles "${source#landtiles:}")" || die "$set/$file: could not cut the coastline" ;;
         http://*|https://*) src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
         *) src="$source"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
     esac

@@ -21,7 +21,7 @@
   <line x1="80" y1="410" x2="1120" y2="410" stroke="#444444" stroke-width="1"/>
   <g font-family="monospace" font-size="17" fill="#a0a0a0">
     <text x="80" y="450"><tspan fill="#33ff00">3f9a…c21e</tspan>  /geo/allCountries.zip</text>
-    <text x="80" y="480"><tspan fill="#33ff00">b2bf…6b41</tspan>  /landtiles/landtiles.tar.gz</text>
+    <text x="80" y="480"><tspan fill="#33ff00">b2bf…6b41</tspan>  /landpolygons/land-polygons-complete-4326.zip</text>
     <text x="80" y="510"><tspan fill="#33ff00">6085…0ea2</tspan>  /go/go1.25.4.linux-amd64.tar.gz</text>
   </g>
   <text x="80" y="555" fill="#33ff00" font-family="monospace" font-size="18">gpg: Good signature from info@localghost.ai</text>

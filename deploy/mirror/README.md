@@ -1,8 +1,8 @@
 # deploy/mirror/ , the LocalGhost setup mirror (operator notes)
 
 What `https://www.localghost.ai/mirror/` serves: every file a LocalGhost box downloads once, at setup
-(GeoNames, Natural Earth, the OpenStreetMap coastline already cut into the map's tiles, the Go
-toolchain, and, once listed, a pinned llama.cpp and the model weights), with the terms each one is
+(GeoNames, Natural Earth, OpenStreetMap's land polygons, the Go toolchain, and, once listed, a
+pinned llama.cpp and the model weights), with the terms each one is
 published under. Boxes fetch it with `tools/mirror_fetch.sh` from the server repo
 (LocalGhostDao/localghost) and install nothing unless the gpg signature on `MANIFEST.txt` verifies
 against the key in that repo and every file's SHA-256 matches the manifest.
@@ -18,7 +18,7 @@ web root.
 
 ## Files
 
-- `publish.sh` , fetches or builds everything in `mirror.conf`, writes a new build directory, signs
+- `publish.sh` , fetches everything in `mirror.conf`, writes a new build directory, signs
   `MANIFEST.txt` with `gpg --local-user info@localghost.ai`.
 - `mirror.conf` , one line per file: `set file terms source [check=godev]`.
 - `terms/` , the terms each file is published under; copied beside it as `TERMS-<name>.txt`. A terms
@@ -30,13 +30,11 @@ web root.
 
 ## On the web server, once
 
-    sudo apt-get install -y curl gpg unzip          # GNU tar, flock, sha256sum are already there
-    # ghost-landtiles, from the server repo (cuts the coastline into tiles):
-    git clone https://github.com/LocalGhostDao/localghost /tmp/lg
-    cd /tmp/lg/server && CGO_ENABLED=0 go build -o /usr/local/bin/ghost-landtiles ./cmd/ghost-landtiles
+    sudo apt-get install -y curl gpg          # flock and sha256sum are already there
 
-No Go on the web server: build it anywhere (`GOOS=linux GOARCH=amd64 CGO_ENABLED=0`) and copy the
-binary up, or cut the tiles elsewhere and point the landtiles line at the finished `.tar.gz`.
+That's all. The mirror only proxies files, exactly as upstream publishes them. Nothing is cut or
+converted here: a box cuts OpenStreetMap's land polygons into its own coastline tiles
+(`cmd/ghost-landtiles` in the server repo).
 
 ## Publish
 
@@ -47,19 +45,18 @@ is swapped in, then builds the publish pruned are removed. A box never sees a ma
 files that aren't there yet.
 
     ./deploy/deploy.sh                                   # site + every set in mirror.conf
-    MIRROR_SETS="geo landtiles" ./deploy/deploy.sh       # site + only those sets
+    MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh    # site + only those sets
     MIRROR=off ./deploy/deploy.sh                        # site only
 
 Run it as the user whose gpg keyring holds the info@localghost.ai secret key (the same user that
-already signs the deploy manifest). The first run pulls about 1.5 GB and cuts the coastline (a few
-minutes, a couple of GB of RAM). After that a deploy only downloads what changed upstream and makes
+already signs the deploy manifest). The first run pulls every file once (about 1.5 GB). After that a deploy only downloads what changed upstream and makes
 no new build when nothing did. A failed publish never stops the site deploy; the last good build
 stays up. With the checkout and `/var/www` on the same filesystem the web root's copy is hard links,
 so the data takes its space on disk once.
 
 By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys:
 
-    deploy/mirror/publish.sh geo landtiles               # then ./deploy/deploy.sh to put it live
+    deploy/mirror/publish.sh geo landpolygons            # then ./deploy/deploy.sh to put it live
 
 ## Serving `/mirror/`
 
