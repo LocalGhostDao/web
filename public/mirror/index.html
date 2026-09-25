@@ -85,9 +85,18 @@
                 "@id": "https://www.localghost.ai/#website"
             },
             "about": [
-                { "@type": "Thing", "name": "Software supply chain" },
-                { "@type": "Thing", "name": "Signed downloads" },
-                { "@type": "Thing", "name": "Self-hosted AI setup" }
+                {
+                    "@type": "Thing",
+                    "name": "Software supply chain"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "Signed downloads"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "Self-hosted AI setup"
+                }
             ],
             "proficiencyLevel": "Expert"
         }
@@ -97,8 +106,18 @@
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.localghost.ai" },
-                { "@type": "ListItem", "position": 2, "name": "Setup Mirror", "item": "https://www.localghost.ai/mirror" }
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Setup Mirror",
+                    "item": "https://www.localghost.ai/mirror"
+                }
             ]
         }
         </script>
@@ -178,7 +197,7 @@
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
 
                 <p>
-                    Files come in sets, and a box asks for a set by name. Each set sits in its own folder with a <code>TERMS</code> file per licence and a <code>NOTICE.txt</code> that says which file is under which terms and where it came from.
+                    Files come in sets, and a box asks for a set by name. Each set sits in its own folder with a <code>TERMS</code> file per licence and a <code>NOTICE.txt</code> that says which file is under which terms and where it came from. The <code>geo</code> set has two sources, so it takes two rows.
                 </p>
 
                 <div class="mirror-table-wrap">
@@ -196,7 +215,7 @@
                             <tr>
                                 <td data-label="Set">geo</td>
                                 <td data-label="Files"><code>world.geojson</code> <code>world-50m.geojson</code> <code>world-110m.geojson</code></td>
-                                <td data-label="Where it comes from">Natural Earth's country boundaries at three scales (10m, 50m and 110m), renamed only. The base of the map.</td>
+                                <td data-label="Where it comes from">Natural Earth's country boundaries at three scales, renamed only (<code>world.geojson</code> is the 10m file, the other two carry their scale in the name). The base of the map.</td>
                                 <td data-label="Terms">Public domain<sup class="fn"><a href="#ref2">[2]</a></sup></td>
                             </tr>
                             <tr>
@@ -340,6 +359,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
             <a href="/about">ABOUT</a>
             <a href="/manifesto">MANIFESTO</a>
             <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/mirror">MIRROR</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/writing-guidelines">WRITING GUIDELINES</a>

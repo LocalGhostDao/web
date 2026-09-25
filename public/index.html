@@ -6,7 +6,7 @@
     
     <title>LocalGhost.ai | The Only Cloud is You - Private Local AI</title>
     <meta name="title" content="LocalGhost.ai | The Only Cloud is You - Private Local AI">
-    <meta name="description" content="Your AI, your data, your hardware. LocalGhost is a private server where AI runs locally, no cloud, no tracking, no subscriptions. Physics, not promises.">
+    <meta name="description" content="Your AI, your data, your hardware. LocalGhost is a private server where AI runs locally, no cloud, no tracking, no subscriptions. Code, not promises.">
     <meta name="keywords" content="local AI, privacy, self-hosted AI, private server, cypherpunk, decentralized, open source, no cloud, data sovereignty, private computing">
     <meta name="author" content="LocalGhost">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -17,7 +17,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.localghost.ai/">
     <meta property="og:title" content="LocalGhost.ai | The Only Cloud is You">
-    <meta property="og:description" content="Your AI, your data, your hardware. A private server where AI runs locally, no cloud, no tracking, no subscriptions. Physics, not promises.">
+    <meta property="og:description" content="Your AI, your data, your hardware. A private server where AI runs locally, no cloud, no tracking, no subscriptions. Code, not promises.">
     <meta property="og:image" content="https://www.localghost.ai/images/og-image.png">
     <meta property="og:image:alt" content="LocalGhost - The Only Cloud is You. Private local AI hardware.">
     <meta property="og:image:width" content="1200">
@@ -80,26 +80,26 @@
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "What is LocalGhost?",
+                "name": "Okay, but what actually IS it?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "LocalGhost is a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, and insert the two hardware security keys that come with it. Once connected, you access it through a local web interface. No cloud account, no login, just your box, your network, your data. It stores photos, journals, bank exports, health data, and more locally, running AI analysis entirely on your hardware. Think of it as a private server for your life, with an AI that works only for you."
+                    "text": "It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, and insert the two hardware security keys that come with it. That's the setup. Once connected, you access it through a local web interface (like http://ghost.local) when you're home, or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data. From there, you can sync anything to it, photos from your phone, journals, bank exports, health data, browser history, notes, voice memos, whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis entirely on your hardware. Think of it as a private server for your life, with an AI that works for you because it literally cannot work for anyone else."
                 }
             },
             {
                 "@type": "Question",
-                "name": "How do I get my data onto LocalGhost?",
+                "name": "How do I get my data onto it?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Multiple ways, a mobile app that automatically syncs photos, health data, location history, and notes, a browser extension for bookmarks and reading history, file drop via the web interface, API imports from services that offer data exports, and manual uploads for privacy purists. Everything syncs over your local network first, with an optional encrypted tunnel for remote access, never through external servers."
+                    "text": "Multiple ways, depending on what you're syncing. Mobile app. Automatically syncs photos, health data, location history, and notes in the background Browser extension. Captures bookmarks, reading history, and saved articles File drop. Drag and drop anything into the web interface, PDFs, exports, backups API imports. Connect to services that offer data exports (banks, fitness trackers, etc.) Manual uploads. For the privacy purists who want to move files by hand Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel directly to your box, never through our servers, because we don't have servers."
                 }
             },
             {
                 "@type": "Question",
-                "name": "What does the LocalGhost AI actually do?",
+                "name": "What does the AI actually do?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The AI runs locally on the box's NPU and performs automatic tagging and organization of photos, documents, and notes, pattern recognition to find correlations like how sleep affects spending, goal tracking with accountability based on actual data, honest reflection answering questions based on evidence, and powerful search to find anything you've saved. The key difference is that this AI has zero incentive to manipulate you, it can't sell you anything, show ads, or optimise for engagement."
+                    "text": "The AI runs locally on the box's NPU (Neural Processing Unit). It does several things. Tagging and organization. Automatically categorizes your photos, documents, and notes without you lifting a finger Pattern recognition. Finds correlations you'd never spot, like how your sleep affects your spending, or how your mood tracks with your exercise Goal tracking. You tell it what you're working toward, and it holds you accountable with actual data rather than vibes Honest reflection. Ask it questions about your life and it answers based on evidence rather than what you want to hear Search. Find anything you've ever saved, even if you forgot what you called it The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimize for \"engagement.\" It just tells you the truth."
                 }
             },
             {
@@ -107,23 +107,23 @@
                 "name": "Why do you call them daemons and not agents?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Because that's what they are. Daemon is the Unix word for a long-running background process that responds to events and requests, and it's been the word since the 1960s. sshd, systemd, cron are daemons. The LocalGhost fleet is the same kind of thing, processes that sit on your box, expose APIs, do their job, and stop. Agent has come to mean something else. In 2026 it's the industry's word for an LLM in a loop, where the model decides what to do next, composes its own tool calls, and the surrounding code is scaffolding for whatever it comes up with. LocalGhost daemons work the other way around. The daemon owns the control flow. It runs predefined steps in a defined order, and when it needs language work done, it calls a local LLM the same way another daemon would call Postgres. Sometimes it asks the model which of N predefined steps to run next, the model picks from a fixed menu, the daemon executes the choice. The model never writes the menu. A daemon that uses Postgres is still a daemon. A daemon that uses a local LLM is still a daemon. The model is a dependency, not the driver."
+                    "text": "Because that's what they are. Daemon is the Unix word for a long-running background process that responds to events and requests, and it's been the word since the 1960s. sshd, systemd, cron are daemons. The LocalGhost fleet is the same kind of thing, processes that sit on your box, expose APIs, do their job, and stop. Agent has come to mean something else. In 2026 it's the industry's word for an LLM in a loop, where the model decides what to do next, composes its own tool calls, and the surrounding code is scaffolding for whatever it comes up with. The whole pitch is that you don't enumerate the steps in advance. That's the architecture, and it's the architecture that carries the autonomy and trust-us framing. LocalGhost daemons work the other way around. The daemon owns the control flow. It runs predefined steps in a defined order, and when it needs language work done, it calls a local LLM the same way another daemon would call Postgres. Sometimes it asks the model which of N predefined steps to run next, the model picks from a fixed menu, the daemon executes the choice. The model never writes the menu. It never invents a step. It never gets handed the keys. A daemon that uses Postgres is still a daemon. A daemon that uses a local LLM is still a daemon. The model is a dependency, not the driver. The word matters because the connotations matter. Daemons are infrastructure. Agents are something you're asked to trust. LocalGhost is built so you don't have to."
                 }
             },
             {
                 "@type": "Question",
-                "name": "How does The Mist backup system work?",
+                "name": "How does \"The Mist\" backup system work?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The Mist is a peer-to-peer backup network. Your data gets encrypted with a key only you hold, then chopped into thousands of meaningless shards. These shards are distributed across other LocalGhost boxes, you store shards for others, they store yours. When you need data back, your box collects shards and reassembles them with your key. Nobody can read each other's shards. If your house burns down or LocalGhost goes bankrupt, your data survives. Uses Reed-Solomon encoding requiring only 50% of shards to reconstruct."
+                    "text": "The Mist is a peer-to-peer backup network. Here's the simple version. Step 1, shred. Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called \"shards.\" Each shard is meaningless on its own, like confetti from a shredded document. Step 2, scatter. Those shards get distributed across other LocalGhost boxes in the network. Your shards live on dozens of strangers' drives. Their shards live on yours. Step 3, rebuild. When you need your data back, your box collects the shards from the network and reassembles them. Only your encryption key can make sense of them. The beauty of it. The people storing your shards can't read them, they're encrypted and incomplete. You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist. If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. The network has no central point of failure. Technical note. This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. We use Reed-Solomon encoding so you only need around 50% of shards to reconstruct your data, making the system resilient even if half the network goes offline."
                 }
             },
             {
                 "@type": "Question",
-                "name": "How do LocalGhost boxes find each other without a central server?",
+                "name": "How do the boxes find each other without a central server?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Using distributed hash tables (DHT). Your box first contacts a bootstrap node (regular LocalGhost boxes run by volunteers), then never needs us again. Each box maintains a partial address book of other boxes with mathematically close IDs. To find data, you ask known boxes who's closest to the shard's ID, hopping 3-4 times to find anything, even in networks of millions of nodes. No central directory, the network is the directory. Uses Kademlia-style DHT like BitTorrent and IPFS."
+                    "text": "This is the magic of distributed hash tables (DHT). Here's how it works in plain English. The bootstrap problem. When your box first connects to the network, it needs to know at least one other box. We publish a small list of \"bootstrap nodes,\" these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. Your box contacts one of these to get introduced to the network. After that, it never needs us again. The address book. Every box on the network has a unique ID (a long random number). Each box maintains a partial \"address book\" of other boxes it knows about. But here's the clever bit, you don't need to know everyone. You just need to know boxes whose IDs are \"close\" to yours in the mathematical sense. The hop game. When you need to find a specific shard, you ask the boxes you know who's closest to this shard's ID. They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for, even in a network of millions. No phone book server. There's no central directory. The network is the directory. If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets. Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, and within a few asks you're at your destination. No map company required. Technical note. We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal."
                 }
             },
             {
@@ -131,34 +131,35 @@
                 "name": "What if I lose my encryption key?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Your data is gone forever, and that's the point. We cannot recover it because we never had access. Every LocalGhost ships with two FIDO2 hardware security keys. On setup, your master key is split between them using Shamir's Secret Sharing. Keep Key 1 with your box for daily use, and store Key 2 somewhere safe and separate (bank vault, trusted friend). Lose Key 1 and you can use Key 2 to generate a new pair. Lose both and it's game over. Sovereignty means responsibility."
+                    "text": "Then your data is gone, forever, and that's the point. We cannot recover your data because we never had access to it. There is no \"forgot password\" flow. There is no customer support ticket that can help you. The math doesn't care about your feelings. The good news. Every LocalGhost box ships with two hardware security keys. When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key and splits it between the two keys using Shamir's Secret Sharing, and neither key alone can decrypt anything. How to use them. Key 1. Keep this one with your box for daily use. Plug it in to unlock your data. Key 2. Store this somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is your recovery key. If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, Key 2 can restore everything to a new box. If you lose both keys, it's game over. Real ownership means real responsibility. Two keys. Two locations. No excuses. Technical note. The keys are FIDO2-compliant hardware tokens with secure elements. The master key never leaves the secure enclave, only the derived decryption keys are used at runtime. We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Can I access my LocalGhost box when I'm not home?",
+                "name": "Can I access my box when I'm not home?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. The box includes an encrypted VPN for remote access, your device connects directly to your box through an end-to-end encrypted tunnel, like being on your home network from anywhere. Traffic never touches external servers because we don't have any. Alternatively, enable Air-Gap Mode, which disables all remote access so the box only works on your home network. There is no option routing through our servers, we couldn't offer it if we wanted to."
+                    "text": "Yes. The box comes with an encrypted VPN that you can choose to enable for remote access. Option A, encrypted VPN (included). Every LocalGhost box ships with a built-in encrypted VPN. When enabled, your phone or laptop connects directly to your box over the internet through an end-to-end encrypted tunnel. It's like being on your home network, but from anywhere. Your traffic never touches our servers, because we don't have any. Option B, air-gap mode. For the truly paranoid, disable all remote access. The box only works when you're physically on your home network. When you leave, it's a black hole. When you return, it's there waiting. There is no Option C where your data goes through our servers. We don't have servers. We couldn't offer that option even if we wanted to."
                 }
             },
             {
                 "@type": "Question",
-                "name": "What happens if LocalGhost the company disappears?",
+                "name": "What happens if LocalGhost (the company) disappears?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Nothing. Your box keeps working. The software is open source, hardware uses standard parts, and The Mist network is decentralized with no license server to phone home to. If we go bankrupt, your box continues running, The Mist network keeps operating, someone else can fork the code, or you can maintain it yourself. We've deliberately designed ourselves out of the critical path, and your sovereignty doesn't depend on our survival."
+                    "text": "Nothing. Your box keeps working. The software is open source. The hardware is standard parts. The Mist network is decentralized. There is no license server to phone home to. There is no authentication service to validate your purchase. If we go bankrupt tomorrow, here's what that looks like. Your box continues running the last version you installed The Mist network continues operating (it doesn't need us) Someone else can fork the code and continue development You can maintain it yourself if you're technical We have deliberately designed ourselves out of the critical path. Your independence does not depend on our survival."
                 }
             },
             {
                 "@type": "Question",
-                "name": "Is LocalGhost legal?",
+                "name": "Is this legal?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. Running a private server at home is legal, encrypting your own data is legal, and storing backups on a peer-to-peer network is legal. We help you exercise your right to privacy, a right that's been quietly eroded by free services monetizing your data. If law enforcement comes with a warrant, compliance looks like this, we have no data, no logs, we don't know who uses our hardware, here's our open-source code, good luck. The architecture is the legal defence."
+                    "text": "Yes. Running a private server in your home is legal, encrypting your own data is legal, and storing backups on a peer-to-peer network is legal. We're not helping you hide anything from the law. We're helping you exercise your right to privacy, a right that exists in most democracies but has been quietly eroded by decades of \"free\" services that monetize your attention and data. If law enforcement comes to us with a warrant, we'll comply. Compliance looks like this. \"We have no data, no logs, and we don't know who uses our hardware. Here's our open-source code. Good luck.\" The architecture is the legal defence."
                 }
             }
-        ]
+        ],
+        "@id": "https://www.localghost.ai/#faq"
     }
     </script>
 
@@ -249,7 +250,7 @@
                         <span class="terminal-btn minimize" onclick="LocalGhost.terminalMinimize()" title="minimize"></span>
                         <span class="terminal-btn maximize" onclick="LocalGhost.terminalMaximize()" title="maximize"></span>
                     </div>
-                    <div class="terminal-title">ghost@localghostai: ~</div>
+                    <div class="terminal-title">ghost@localghost: ~</div>
                     <div class="terminal-title-spacer"></div>
                 </div>
                 <div class="terminal-body">
@@ -1105,7 +1106,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <button class="modal-close" onclick="LocalGhost.closeWaitlistModal()">&times;</button>
             <h3>&gt; STAY IN THE LOOP</h3>
             <p style="color: var(--text-dim); margin-bottom: 1.5rem;">
-                We don't want your email. We don't want your Twitter handle. We don't want to "keep in touch."
+                We don't want your email. We don't want your X handle. We don't want to "keep in touch."
             </p>
             <p style="color: var(--text); font-size: 0.95rem; margin-bottom: 2rem;">
                 We just don't want you to miss the launch.
@@ -1125,7 +1126,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         <div class="reminder-icon">📅</div>
                         <div class="reminder-content">
                             <div class="reminder-title">SET A REMINDER</div>
-                            <p class="reminder-desc">Add "Check LocalGhost.ai" to your calendar for May 2025.</p>
+                            <p class="reminder-desc">Add "Check LocalGhost.ai" to your calendar for a few months from now.</p>
                         </div>
                     </button>
                 </div>
@@ -1290,6 +1291,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <a href="/about">ABOUT</a>
             <a href="/manifesto">MANIFESTO</a>
             <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/mirror">MIRROR</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/writing-guidelines">WRITING GUIDELINES</a>

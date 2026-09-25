@@ -110,6 +110,16 @@ xml_escape() {
 # ============================================
 html_to_text() {
     local file="$1"
+    html_to_text_select "$file" | html_to_text_render
+}
+
+# html_to_text_body <file> , the markdown rules on a file that is already just body content
+html_to_text_body() {
+    cat "$1" | html_to_text_render
+}
+
+html_to_text_select() {
+    local file="$1"
 
     # Stage 1: extract only the content we care about.
     # Keep the page-header (for H1 and date) and the manifesto-text body.
@@ -141,7 +151,19 @@ html_to_text() {
 
         in_body && /<\/main>/ { in_body = 0; exit }
         in_body { print }
-    ' "$file" | \
+    ' "$file"
+}
+
+html_to_text_render() {
+    # Stage 1.5: put each table row, and each definition term with its value, on one line, so
+    # the row and pair rules below see them whole (source HTML puts every cell on its own line).
+    awk '
+        /<tr[ >]/ && !/<\/tr>/ { row = $0; inrow = 1; next }
+        inrow { sub(/^[ \t]+/, "", $0); row = row " " $0; if (/<\/tr>/) { print row; inrow = 0 } ; next }
+        /<dt[ >]/ && /<\/dt>[[:space:]]*$/ { dt = $0; indt = 1; next }
+        indt { sub(/^[ \t]+/, "", $0); print dt " " $0; indt = 0; next }
+        { print }
+    ' | \
     # Stage 2: transform structural elements into markdown.
     # Order matters: specific classes before generic tag stripping.
     sed -E '
@@ -166,6 +188,26 @@ html_to_text() {
 
         # List items
         s|<li[^>]*>|- |g
+
+        # Tables: one row per line, cells separated by " | ", header cells too
+        s#<th[^>]*>#| #g
+        s#</th># #g
+        s#<td[^>]*>#| #g
+        s#</td># #g
+        s#</tr>#|#g
+        s#<tr[^>]*>[[:space:]]*\|[[:space:]]*\|#|#g
+        s#<tr[^>]*>##g
+        s#<t(head|body|able)[^>]*>##g
+        s#</t(head|body|able)>##g
+        s#[[:space:]]*\|[[:space:]]*# | #g
+        s#^ \| $##
+        s#^ \| # | #
+
+        # Definition lists: "Term: value" per pair
+        s|<dt[^>]*>|\n|g
+        s|</dt>|: |g
+        s|<dd[^>]*>||g
+        s|</dd>|\n|g
 
         # Statement box pieces
         s|<p[^>]*class="[^"]*statement-label[^"]*"[^>]*>([^<]*)</p>||g
@@ -240,6 +282,25 @@ html_to_text() {
             blank = ($0 == "")
         }
     '
+}
+
+# home_to_text , the home page's content sections (manifesto, fleet, mist, economics, faq,
+# hardware) through the same markdown rules; the hero, the terminal and the game modals are skipped
+home_to_text() {
+    local file="$1"
+    awk '
+        /<section id="(manifesto|fleet|mist|economics|faq|hardware)"/ { keep = 1 }
+        keep && /<summary/ { insum = 1; q = ""; next }
+        insum && /<\/summary>/ { gsub(/<span class="faq-(icon|toggle)">[^<]*<\/span>/, "", q); gsub(/<[^>]*>/, "", q); gsub(/^[ \t]+|[ \t]+$/, "", q); print "<h3>" q "</h3>"; insum = 0; next }
+        insum { gsub(/^[ \t]+|[ \t]+$/, "", $0); q = q " " $0; next }
+        keep { print }
+        keep && /<\/section>/ { keep = 0; print "" }
+    ' "$file" | sed -E '
+        s#<details[^>]*>##g
+        s#</details>##g
+    ' > "$WORK_DIR/home_$$.html"
+    html_to_text_body "$WORK_DIR/home_$$.html"
+    rm -f "$WORK_DIR/home_$$.html"
 }
 
 # ============================================
@@ -703,7 +764,7 @@ LLMS_FILE="$DEST_DIR/llms.txt"
     cat << 'EOF'
 # LocalGhost.ai
 
-> LocalGhost is a local-first, privacy-focused AI platform built on cypherpunk principles. All inference and data storage runs on user-owned hardware with no cloud dependency. Fully open-source. The project started in December 2025 and is pre-release, in Phase 1 of its public roadmap, with architecture and daemon specs published and code being written in the open. Founder: Vlad Cealicu, former Co-Founder and CTO of CryptoCompare / CCData. The About page (https://www.localghost.ai/about) holds the canonical key facts and FAQ.
+> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. Pre-release: Phase 1 of the public roadmap, no software release and no hardware on sale as of September 2026. The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
 
 Key facts (canonical source https://www.localghost.ai/about)
 
@@ -712,22 +773,23 @@ Key facts (canonical source https://www.localghost.ai/about)
 - Founder: Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData (acquired by CoinDesk, October 2024)
 - Status: pre-release, Phase 1 of the public roadmap, no software release yet
 - Licence: MIT, source at https://github.com/LocalGhostDao/localghost
-- Pricing: no subscription, software free, pre-built boxes a one-time purchase at parts and assembly plus a 30% margin (price not yet set)
+- Pricing: no subscription, core software free and open source, pre-built boxes a one-time purchase at parts and assembly plus a 30% margin (price not yet set), optional future daemons as one-time packages
 - Contact: info@localghost.ai, X @localghostai, founder on X @vladcealicu
 
-The site has three primary sections: the Manifesto (the philosophical and technical argument for local-first AI), Hard Truths (a long-form essay series on tech, power, privacy, and the skills pipeline), and Build (the public roadmap and contribution guide). The tone is direct and opinionated. Posts are labelled SIGNAL, ALARM, or WINDOW to indicate certainty level.
+The site's sections: About (who builds it, key facts, FAQ), the Manifesto (why local-first), Why Local AI (the argument for running AI on your own hardware), Hard Truths (long-form essays, dated, with references), Build (the public roadmap and how to help), the Local-First Directory (other local-first AI tools) and the Setup Mirror (signed downloads for boxes). Essays are labelled SIGNAL, ALARM or WINDOW for the author's confidence level. British spelling throughout.
 
 ## Core
 
 EOF
 
-    for slug in about manifesto build hard-truths directory; do
+    for slug in about manifesto why-local-ai build directory hard-truths mirror/index; do
         src="$SRC_DIR/${slug}.html"
         [ ! -f "$src" ] && continue
         has_noindex "$src" && continue
         title=$(extract_title "$src")
         desc=$(extract_description "$src")
-        echo "- [${title}](${SITE_URL}/${slug}): ${desc}"
+        url="${slug%/index}"
+        echo "- [${title}](${SITE_URL}/${url}): ${desc}"
     done
 
     echo ""
@@ -757,7 +819,9 @@ EOF
 - [GitHub Organisation](https://github.com/LocalGhostDao): Source code, including the main localghost repository with README, SECURITY, and architecture docs.
 - [Brand Guidelines](${SITE_URL}/brand-guidelines): Visual identity, colour palette, typography.
 - [Writing Guidelines](${SITE_URL}/writing-guidelines): Editorial standards for the Hard Truths series.
-- [Setup Mirror](${SITE_URL}/mirror): The signed mirror LocalGhost boxes download their setup files from, what it carries, why it exists, and how a box verifies it.
+- [Giveaway](${SITE_URL}/giveaway): Three hand-built test units for people spreading the word about local AI (June 2026, still open at time of build).
+- [Atom feed](${SITE_URL}/feed.xml): Every Hard Truths essay, full text.
+- [Sitemap](${SITE_URL}/sitemap.xml): Every indexable page.
 - [llms-full.txt](${SITE_URL}/llms-full.txt): Full text of all published essays concatenated, for complete context ingestion.
 EOF
 } > "$LLMS_FILE"
@@ -796,16 +860,30 @@ EOF
         echo ""
     fi
 
-    MANIFESTO_FILE="$SRC_DIR/manifesto.html"
-    if [ -f "$MANIFESTO_FILE" ] && ! has_noindex "$MANIFESTO_FILE"; then
+    HOME_FILE="$SRC_DIR/index.html"
+    if [ -f "$HOME_FILE" ] && ! has_noindex "$HOME_FILE"; then
         echo "================================================================"
-        echo "# The Manifesto"
-        echo "URL: ${SITE_URL}/manifesto"
+        echo "# LocalGhost.ai, the home page (what it is, the daemon fleet, The Mist, the economics, FAQ, the hardware)"
+        echo "URL: ${SITE_URL}/"
         echo "================================================================"
         echo ""
-        html_to_text "$MANIFESTO_FILE"
+        home_to_text "$HOME_FILE"
         echo ""
     fi
+
+    for page in "manifesto|The Manifesto|manifesto" "why-local-ai|Why Local, Especially Local AI|why-local-ai" "mirror/index|The Setup Mirror|mirror"; do
+        IFS='|' read -r pslug ptitle purl <<< "$page"
+        PAGE_FILE="$SRC_DIR/${pslug}.html"
+        if [ -f "$PAGE_FILE" ] && ! has_noindex "$PAGE_FILE"; then
+            echo "================================================================"
+            echo "# ${ptitle}"
+            echo "URL: ${SITE_URL}/${purl}"
+            echo "================================================================"
+            echo ""
+            html_to_text "$PAGE_FILE"
+            echo ""
+        fi
+    done
 
     declare -a HT_POSTS
     while IFS= read -r -d '' post_file; do

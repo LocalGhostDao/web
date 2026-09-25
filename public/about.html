@@ -169,7 +169,7 @@
                         "@type": "Offer",
                         "price": "0",
                         "priceCurrency": "GBP",
-                        "description": "The software is free and MIT-licensed. Pre-built hardware is not on sale yet."
+                        "description": "The core software is free and MIT-licensed. Pre-built hardware is not on sale yet."
                     },
                     "softwareVersion": "pre-release (Phase 1)",
                     "url": "https://www.localghost.ai/about"
@@ -204,7 +204,7 @@
                     "name": "How much will LocalGhost cost?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "The software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). There is no subscription."
+                        "text": "The core software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). Future optional daemons may be sold as one-time packages, and there is no subscription."
                     }
                 },
                 {
@@ -244,7 +244,7 @@
                     "name": "Why daemons and not agents?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "A daemon owns the control flow and runs predefined steps, calling a local model the way it would call Postgres. An agent lets the model decide what to do next, which is the part LocalGhost is built so you don't have to trust."
+                        "text": "A daemon owns the control flow. It runs predefined steps in a fixed order and calls a local model the way it would call Postgres, so the model never decides what happens next. An agent is the other way round, the model chooses the next step and the code follows it. LocalGhost is built so you never have to trust a model with that choice."
                     }
                 },
                 {
@@ -252,7 +252,7 @@
                     "name": "What if I lose my hardware keys?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "If you lose one key, the second restores access and lets you make a new pair. If you lose both, the data is gone, because nobody else ever held a copy."
+                        "text": "Both keys are plugged in at setup. After that one stays with the box for daily use and the other is the recovery key, kept somewhere else, and it can restore your data to a new box and make a new pair. If you lose both, the data is gone, because nobody else ever held a copy."
                     }
                 },
                 {
@@ -353,7 +353,7 @@
 
                     <h3>The hardware</h3>
                     <p>
-                        LocalGhost runs on a NAS you already own or on a box we build and ship. The reference build as of June 2026 is a tower around a 12GB consumer GPU, about £1,130 in parts, and the development box runs Gemma 4 12B on a 12GB card at about 53 tokens per second (<a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>). Hardware ships after the software is stable.
+                        LocalGhost runs on a NAS you already own or, once hardware ships, on a box we build. The reference build as of June 2026 is a tower around a 12GB consumer GPU, about £1,130 in parts, and the development box runs Gemma 4 12B on a 12GB card at about 53 tokens per second (<a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>). Hardware ships after the software is stable.
                     </p>
 
                     <h3>The Local-First Directory</h3>
@@ -369,7 +369,7 @@
 
                     <h3>You pay once, or nothing</h3>
                     <p>
-                        ChatGPT Plus, Claude Pro and Google AI Pro each cost close to £20 a month in the UK, with power tiers around £80 to £160 and Google's top tier near £200 (June 2026 prices).<sup class="fn"><a href="#ref1">[1]</a></sup> LocalGhost has no subscription, the reference tower is about £1,130 once plus electricity, and you can build it yourself from the open specs and pay us nothing. For a heavy or multi-tool user the hardware pays for itself inside a year.
+                        ChatGPT Plus, Claude Pro and Google AI Pro each cost close to £20 a month in the UK, with power tiers around £80 to £160 and Google's top tier near £200 (June 2026 prices).<sup class="fn"><a href="#ref1">[1]</a></sup> LocalGhost has no subscription, the reference tower is about £1,130 once plus electricity, and you can build your own from the open code and pay us nothing. For a heavy or multi-tool user the hardware pays for itself inside a year, and for a single subscription in two to three.
                     </p>
 
                     <h3>No company holds your data, including us</h3>
@@ -389,7 +389,7 @@
 
                     <h3>Duress mode for the bored border agent</h3>
                     <p>
-                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, where VeraCrypt is stuck with a fixed two-volume design that Schafer and colleagues showed in 2017 leaves detectable traces.<sup class="fn"><a href="#ref4">[4]</a></sup> The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
+                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, whereas VeraCrypt is stuck with a fixed two-volume design that Schafer and colleagues showed in 2017 leaves detectable traces.<sup class="fn"><a href="#ref4">[4]</a></sup> The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
                     </p>
                 </section>
 
@@ -404,7 +404,7 @@
 
                     <ul class="icp-list">
                         <li>Individuals who want a personal AI with long-term memory and don't want a company holding that memory. LocalGhost is built for one person's life, not for governments or corporations.</li>
-                        <li>Heavy AI users paying for two or more of ChatGPT, Claude and Gemini (£40 to £200+ a month), for whom a one-off £1,130 box pays for itself inside a year.</li>
+                        <li>Heavy AI users paying for two or more of ChatGPT, Claude and Gemini. At £100 or more a month, a one-off £1,130 box pays for itself inside a year, and at £40 a month in about two and a half.</li>
                         <li>NAS and homelab owners who already run their own services on a UGREEN, Synology or Linux box and have, or can add, a 12GB GPU.</li>
                         <li>People who track their own finances, health and habits and want it all in one place they can query, in open formats they can take with them.</li>
                         <li>People who travel with sensitive data and want a duress option at the border that doesn't depend on a company's policy.</li>
@@ -423,7 +423,7 @@
 
                     <h3 id="vlad-cealicu">Vlad Cealicu, founder</h3>
                     <p>
-                        I was born in Romania in 1986, grew up on a military compound where my parents worked for the air force, moved to London in 2009 and started my software career in 2010. I co-founded CryptoCompare (later CCData) and spent twelve years building it as CTO, growing it to about seventy people and leading the work on CCCAGG, a crypto price index built from roughly three hundred exchanges and regulated under the UK Benchmark Regulation (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a>).<sup class="fn"><a href="#ref5">[5]</a></sup> CoinDesk acquired CCData in October 2024, I spent a year on the employee side, and I started LocalGhost in December 2025.<sup class="fn"><a href="#ref6">[6]</a></sup>
+                        I was born in Romania in 1986, grew up on a military compound where my parents worked for the air force, moved to London in 2009 and started my software career in 2010. I co-founded CryptoCompare (later CCData) and spent twelve years building it as CTO, growing it to about seventy people and leading the work on CCCAGG, a crypto price index built from roughly three hundred exchanges and regulated under the UK Benchmarks Regulation (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a>).<sup class="fn"><a href="#ref5">[5]</a></sup> CoinDesk acquired CCData in October 2024, I spent a year on the employee side, and I started LocalGhost in December 2025.<sup class="fn"><a href="#ref6">[6]</a></sup>
                     </p>
 
                     <h3>How LocalGhost started</h3>
@@ -461,7 +461,7 @@
 
                     <h3>Setting up a box</h3>
                     <p>
-                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which split the master key between them. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why). The files setup downloads (place names, the map's coastline, the Go toolchain) come from the signed <a href="/mirror">setup mirror</a> on this site, with each original source as the fallback.
+                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which together generate the master key. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why). The files setup downloads (place names, the map's coastline, the Go toolchain) come from the signed <a href="/mirror">setup mirror</a> on this site, with each original source as the fallback.
                     </p>
 
                     <h3>How long before it's useful</h3>
@@ -509,7 +509,7 @@
                         <dd>A fleet of local AI daemons that builds a private, long-term memory from your text, images, audio and personal data, running entirely on hardware you own with no cloud dependency</dd>
 
                         <dt>Pricing</dt>
-                        <dd>No subscription. The software is free. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, price not yet set. The June 2026 reference build is about £1,130 in parts.</dd>
+                        <dd>No subscription, ever. The core software is free and open source. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, price not yet set (the June 2026 reference build is about £1,130 in parts). Future optional daemons may be sold as one-time packages, and what you already have keeps working if you don't buy them.</dd>
 
                         <dt>Contract Terms</dt>
                         <dd>None. No subscription, no account, no licence server. What you buy keeps working whether or not you buy anything else.</dd>
@@ -557,7 +557,7 @@
 
                     <div class="faq-item">
                         <h3>How much will LocalGhost cost?</h3>
-                        <p>The software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). There is no subscription.</p>
+                        <p>The core software is free and MIT-licensed. Pre-built boxes will be a one-time purchase at parts and assembly plus a 30% margin, and the price isn't set yet (the June 2026 reference build is about £1,130 in parts). Future optional daemons may be sold as one-time packages, and there is no subscription.</p>
                     </div>
 
                     <div class="faq-item">
@@ -582,12 +582,12 @@
 
                     <div class="faq-item">
                         <h3>Why daemons and not agents?</h3>
-                        <p>A daemon owns the control flow and runs predefined steps, calling a local model the way it would call Postgres. An agent lets the model decide what to do next, which is the part LocalGhost is built so you don't have to trust.</p>
+                        <p>A daemon owns the control flow. It runs predefined steps in a fixed order and calls a local model the way it would call Postgres, so the model never decides what happens next. An agent is the other way round, the model chooses the next step and the code follows it. LocalGhost is built so you never have to trust a model with that choice.</p>
                     </div>
 
                     <div class="faq-item">
                         <h3>What if I lose my hardware keys?</h3>
-                        <p>If you lose one key, the second restores access and lets you make a new pair. If you lose both, the data is gone, because nobody else ever held a copy.</p>
+                        <p>Both keys are plugged in at setup. After that one stays with the box for daily use and the other is the recovery key, kept somewhere else, and it can restore your data to a new box and make a new pair. If you lose both, the data is gone, because nobody else ever held a copy.</p>
                     </div>
 
                     <div class="faq-item">
@@ -632,6 +632,7 @@
             <a href="/about">ABOUT</a>
             <a href="/manifesto">MANIFESTO</a>
             <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/mirror">MIRROR</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/writing-guidelines">WRITING GUIDELINES</a>
