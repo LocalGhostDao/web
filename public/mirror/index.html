@@ -252,7 +252,7 @@
                 </p>
 
                 <ol class="mirror-steps">
-                    <li>It downloads <code>MANIFEST.txt</code> and <code>MANIFEST.txt.asc</code> and verifies the signature against <code>tools/mirror-key.asc</code>, the public key committed in the server repo, in a throwaway gpg home so nothing in your own keyring is involved.</li>
+                    <li>It downloads <code>MANIFEST.txt</code> and <code>MANIFEST.txt.asc</code> and verifies the signature against <code>tools/mirror-key.asc</code>, a copy of this site's key pinned in the server repo (so it's never fetched from the same place as the manifest), in a throwaway gpg home so nothing in your own keyring is involved.</li>
                     <li>It requires the mirror's own header on the manifest, so another manifest signed by the same key (a release, or a deploy of this site) can't be passed off as a mirror manifest.</li>
                     <li>It refuses a build older than the last one that box used (the build name is kept in <code>/var/lib/ghost/mirror-build</code>), so an old manifest with a perfectly valid signature can't be replayed to roll a box back.</li>
                     <li>It downloads each file under a temporary name, resuming if the connection drops, and only gives it its real name once its SHA-256 matches the manifest.</li>
@@ -281,7 +281,7 @@
                 <h2 class="section-header">&gt; 5. CHECK IT YOURSELF</h2>
 
                 <p>
-                    You don't need a box to check any of this. The key is the one published at <a href="/.well-known/pgp-key.asc">/.well-known/pgp-key.asc</a>, the same key that signs every deploy of this site.
+                    You don't need a box to check any of this. The key is the one published at <a href="/.well-known/pgp-key.asc">/.well-known/pgp-key.asc</a>, the same key that signs every deploy of this site, with fingerprint <code>DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0</code>. The publish script refuses to sign the mirror with any other key.
                 </p>
 
 <pre class="cmd">curl -sO https://www.localghost.ai/mirror/MANIFEST.txt

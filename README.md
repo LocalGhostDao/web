@@ -54,7 +54,7 @@ gpgv --keyring "$TMPKEY" \
 rm "$TMPKEY"
 ```
 
-Boxes do this themselves with `tools/mirror_fetch.sh` in the server repo, against the key committed there as `tools/mirror-key.asc`.
+The mirror is signed with the same key as the site deploys (`/.well-known/pgp-key.asc`, fingerprint `DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0`), and `publish.sh` refuses to sign with any other. Boxes check it with `tools/mirror_fetch.sh` in the server repo, against a pinned copy of that key committed there as `tools/mirror-key.asc`.
 
 ---
 

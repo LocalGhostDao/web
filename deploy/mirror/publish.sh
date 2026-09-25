@@ -24,9 +24,12 @@
 # sets are hard-linked from the previous build (no copies); the last two builds are kept. The manifest
 # and its signature are the last thing written. Nothing changed upstream = no new build.
 #
-# Boxes check the signature against tools/mirror-key.asc in the LocalGhost server repo
-# (LocalGhostDao/localghost), with tools/mirror_fetch.sh. The first run here exports the public key
-# to deploy/mirror/mirror-key.asc: commit it, and copy it to the server repo's tools/ too.
+# The manifest is signed with the site's own key, the one published at
+# https://www.localghost.ai/.well-known/pgp-key.asc (public/.well-known/pgp-key.asc in this repo).
+# Before anything is downloaded, the signing key's fingerprint is checked against that file, so the
+# mirror can never be signed with a key the site doesn't publish. Boxes check the signature against
+# a pinned copy of that same key, tools/mirror-key.asc in the LocalGhost server repo
+# (LocalGhostDao/localghost), with tools/mirror_fetch.sh.
 #
 # Needs on this machine: curl, gpg with the info@localghost.ai secret key, sha256sum and flock. The
 # mirror only proxies files: nothing is cut, converted or rebuilt here. Boxes do their own processing
@@ -48,6 +51,18 @@ case "$ROOT/" in "$TOP"/*)
 esac
 mkdir -p "$ROOT"
 GPG_USER="${GHOST_MIRROR_GPG_USER:-info@localghost.ai}"
+PUBKEY="${GHOST_MIRROR_PUBKEY:-$HERE/../../public/.well-known/pgp-key.asc}"
+# the key that signs must be the key the site publishes
+_pub="$(gpg --batch --with-colons --import-options show-only --import "$PUBKEY" 2>/dev/null | awk -F: '$1=="fpr"{print $10; exit}')"
+_sec="$(gpg --batch --with-colons --list-secret-keys "$GPG_USER" 2>/dev/null | awk -F: '$1=="fpr"{print $10; exit}')"
+if [ -z "$_pub" ]; then
+    echo "!! cannot read the published key $PUBKEY" >&2
+    exit 1
+fi
+if [ "$_sec" != "$_pub" ]; then
+    echo "!! the secret key for $GPG_USER (${_sec:-none in this keyring}) is not the key published in $PUBKEY ($_pub) , not signing with it" >&2
+    exit 1
+fi
 CACHE="${GHOST_MIRROR_CACHE:-$HOME/.cache/localghost-mirror}"
 GODEV="${GHOST_MIRROR_GODEV_URL:-https://go.dev/dl/?mode=json&include=all}"
 KEEP="${GHOST_MIRROR_KEEP:-2}"
@@ -200,10 +215,3 @@ ls -1d "$ROOT"/[0-9]*T[0-9]*Z 2>/dev/null | sort | head -n "-$KEEP" | while read
     say "pruned $(basename "$old")"
 done
 
-# --- the key boxes check against ---
-if [ ! -s "$HERE/mirror-key.asc" ]; then
-    gpg --armor --export "$GPG_USER" > "$HERE/mirror-key.asc"
-    echo "> exported the public key to deploy/mirror/mirror-key.asc , commit it, and copy it to the SERVER repo as tools/mirror-key.asc"
-    echo "  and commit it there: boxes trust the key in their own repo"
-    gpg --fingerprint "$GPG_USER" 2>/dev/null | sed -n '2p' | sed 's/^ */  fingerprint: /'
-fi

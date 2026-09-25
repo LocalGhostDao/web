@@ -23,8 +23,11 @@ web root.
 - `mirror.conf` , one line per file: `set file terms source [check=godev]`.
 - `terms/` , the terms each file is published under; copied beside it as `TERMS-<name>.txt`. A terms
   file that still says `EDIT-ME` stops the publish of anything that uses it.
-- `mirror-key.asc` , the public key, exported by the first publish. Commit it here, and copy it to
-  the server repo as `tools/mirror-key.asc` and commit it there too.
+- No key file here. The mirror is signed with the site's key, the one already published at
+  `/.well-known/pgp-key.asc` (`public/.well-known/pgp-key.asc`), fingerprint
+  `DCE9 A3D1 4EB4 6197 1DD5  F393 706E 4194 F08A 09A0`. `publish.sh` checks the signing key against
+  that file before it downloads anything and refuses to sign with any other key. The server repo
+  pins a copy of it as `tools/mirror-key.asc`.
 - `public/mirror/<build>/`, `public/mirror/MANIFEST.txt`, `.asc` , written by `publish.sh`,
   gitignored. `public/mirror/index.html` , the page, in git.
 
