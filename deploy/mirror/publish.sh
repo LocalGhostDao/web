@@ -86,9 +86,14 @@ say() { echo "  $*" >&2; }
 die() { echo "!! $*" >&2; exit 1; }
 want() { [ -z "$SETS" ] && return 0; for s in $SETS; do [ "$s" = "$1" ] && return 0; done; return 1; }
 
+# cached <url> , where fetch keeps its copy of <url>
+cached() {
+    echo "$CACHE/dl-$(printf '%s' "$1" | sha256sum | cut -c1-16)-$(basename "${1%%\?*}")"
+}
+
 # fetch <url> , the cached copy's path; downloaded again only when upstream says it changed
 fetch() {
-    _f="$CACHE/dl-$(printf '%s' "$1" | sha256sum | cut -c1-16)-$(basename "${1%%\?*}")"
+    _f="$(cached "$1")"
     rm -f "$_f.tmp"
     if [ -s "$_f" ]; then
         curl -fsSL --retry 3 -R -z "$_f" -o "$_f.tmp" "$1" || return 1
@@ -99,6 +104,28 @@ fetch() {
     if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi   # a 304 writes nothing
     [ -s "$_f" ] || return 1
     echo "$_f"
+}
+
+# pinned <source> <sha256> <file> , a file whose SHA-256 is fixed in mirror.conf (check=sha256:...).
+# Downloaded (resuming a partial download) or copied into the cache once, checked, and from then on
+# never downloaded or hashed again: the cache name carries the hash. Used for big files that must not
+# change under us, like model weights.
+pinned() {
+    _p="$CACHE/pin-$2-$3"
+    if [ ! -s "$_p" ]; then
+        case "$1" in
+            http://*|https://*) say "downloading $1"; curl -fsSL --retry 3 -C - -o "$_p.tmp" "$1" || return 1 ;;
+            *) [ -f "$1" ] || return 1; cp "$1" "$_p.tmp" || return 1 ;;
+        esac
+        _got="$(sha256sum "$_p.tmp" | cut -d' ' -f1)"
+        if [ "$_got" != "$2" ]; then
+            rm -f "$_p.tmp"
+            say "$3 has sha256 $_got, mirror.conf pins $2"
+            return 1
+        fi
+        mv -f "$_p.tmp" "$_p"
+    fi
+    echo "$_p"
 }
 
 # godev <name> <file> , the file's SHA-256 is the one go.dev publishes for that name
@@ -115,7 +142,12 @@ terms() {
     [ -f "$_t" ] || return 1
     _first="$(head -1 "$_t")"
     case "$_first" in
-        "#fetch "*) _src="$(fetch "${_first#\#fetch }")" || return 1; cp "$_src" "$2" ;;
+        "#fetch "*)
+            # a licence text rarely changes: if its host is down, the copy fetched last time will do
+            _u="${_first#\#fetch }"
+            _src="$(fetch "$_u")" || _src="$(cached "$_u")"
+            [ -s "$_src" ] || return 1
+            cp "$_src" "$2" ;;
         *) cp "$_t" "$2" ;;
     esac
 }
@@ -153,10 +185,22 @@ while read -r set file tnames source opt; do
         [ -f "$TERMS/$t.txt" ] || die "$set/$file: no terms file $TERMS/$t.txt"
         grep -q 'EDIT-ME' "$TERMS/$t.txt" && die "$set/$file: $TERMS/$t.txt still says EDIT-ME , finish it first"
     done
-    case "$source" in
-        http://*|https://*) src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
-        *) src="$source"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
+    pin=""
+    case "${opt:-}" in
+        check=sha256:*)
+            pin="${opt#check=sha256:}"
+            case "$pin" in *[!0-9a-f]*|"") die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;; esac
+            [ "${#pin}" -eq 64 ] || die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;;
     esac
+    if [ -n "$pin" ]; then
+        src="$(pinned "$source" "$pin" "$file")" || die "$set/$file: could not get a copy matching its pinned sha256 from $source"
+        say "$file matches its pinned sha256"
+    else
+        case "$source" in
+            http://*|https://*) src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
+            *) src="$source"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
+        esac
+    fi
     if [ "${opt:-}" = "check=godev" ]; then
         godev "$file" "$src" || die "$set/$file does not match go.dev's published checksum , not publishing it"
         say "$file matches go.dev's checksum"

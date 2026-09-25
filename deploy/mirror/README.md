@@ -61,6 +61,24 @@ By hand, or from a weekly cron to keep GeoNames and the coastline fresh between 
 
     deploy/mirror/publish.sh geo landpolygons            # then ./deploy/deploy.sh to put it live
 
+## Models
+
+`models` is the build every box runs: Gemma 4 12B instruct `gemma-4-12b-it-Q4_K_M.gguf` and its
+vision projector `mmproj-F16.gguf`, as quantised and published by Unsloth
+(huggingface.co/unsloth/gemma-4-12b-it-GGUF, Apache 2.0), fetched with plain HTTPS (no account, no
+CLI) and pinned with `check=sha256:<hex>` in `mirror.conf`. A pinned file is downloaded once (about
+7.3 GB, resumable), checked, kept in the
+cache under its hash, and never fetched or hashed again, so later deploys cost nothing and a
+changed file upstream stops the publish instead of reaching a box.
+
+If Hugging Face isn't reachable, a copy you already have works: put it on the server and replace the
+URL in its line with the path. It's published only if its `sha256sum` matches the pin; a different
+hash is a different file, and then it needs its own line, its own pin and a terms file that says
+where it came from.
+
+EmbeddingGemma has its own `embeddings` set, commented out until `terms/gemma-terms.txt` holds the
+full Gemma Terms of Use.
+
 ## Serving `/mirror/`
 
 No mirror-specific nginx config: the page, the builds and the manifest sit in the web root and the

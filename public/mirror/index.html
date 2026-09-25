@@ -172,7 +172,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with three sets, <code>geo</code>, <code>landpolygons</code> and <code>go</code>. The pinned llama.cpp source and the model weights are already in the config but not published yet. The weights wait until the terms that have to travel with them are complete.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B). The pinned llama.cpp source and the EmbeddingGemma weights are in the config but not published yet.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -217,11 +217,17 @@
                                 <td data-label="Where it comes from">GitHub's source archive of one pinned commit of the inference engine. Not published yet.</td>
                                 <td data-label="Terms">MIT<sup class="fn"><a href="#ref5">[5]</a></sup></td>
                             </tr>
-                            <tr class="later">
+                            <tr>
                                 <td data-label="Set">models</td>
-                                <td data-label="Files">Gemma 4 12B (Q4_K_M) and its vision projector, EmbeddingGemma 300M</td>
-                                <td data-label="Where it comes from">GGUF conversions of Google's weights for llama.cpp. Not published yet.</td>
-                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup>, Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
+                                <td data-label="Files"><code>gemma-4-12b-it-Q4_K_M.gguf</code> <code>mmproj-F16.gguf</code></td>
+                                <td data-label="Where it comes from">Gemma 4 12B instruct (Q4_K_M) and its vision projector, the build every box runs, as quantised and published by Unsloth. Unmodified and pinned by SHA-256.</td>
+                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
+                            </tr>
+                            <tr class="later">
+                                <td data-label="Set">embeddings</td>
+                                <td data-label="Files">EmbeddingGemma 300M</td>
+                                <td data-label="Where it comes from">Google's embedding model, for search over your own notes. Not published yet.</td>
+                                <td data-label="Terms">Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
                             </tr>
                         </tbody>
                     </table>
@@ -230,7 +236,7 @@
                 <h2 class="section-header">&gt; 2. WHY A MIRROR</h2>
 
                 <p>
-                    Before this, setting up a box meant fetching from four different places on the day (GeoNames, GitHub, the OpenStreetMap data server and Google's Go downloads) and trusting each of them to be up, to serve the same bytes it served last week, and not to keep a record of who asked. Any one of the four being slow or down made setup slow or broken, and none of them owes a LocalGhost box anything.
+                    Before this, setting up a box meant fetching from five different places on the day (GeoNames, GitHub, the OpenStreetMap data server, Google's Go downloads and Hugging Face) and trusting each of them to be up, to serve the same bytes it served last week, and not to keep a record of who asked. Any one of the five being slow or down made setup slow or broken, and none of them owes a LocalGhost box anything.
                 </p>
 
                 <p>
@@ -238,7 +244,7 @@
                 </p>
 
                 <p>
-                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror will carry one commit, named in the file, and a new pin is a new file name that makes boxes rebuild.
+                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror will carry one commit, named in the file, and a new pin is a new file name that makes boxes rebuild. The model weights are pinned the same way, by SHA-256, so if a file ever changes upstream the publish stops instead of passing it on to a box.
                 </p>
 
                 <p>
@@ -301,7 +307,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 </p>
 
                 <p>
-                    Google released Gemma 4 under Apache 2.0 in April 2026.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use, which have to be handed to everyone who receives the model, in full, with its use restrictions intact.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish refuses a model until its terms file is complete, which is the main reason the weights aren't here yet.
+                    Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here are Unsloth's GGUF quantisation of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use, which have to be handed to everyone who receives the model, in full, with its use restrictions intact.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish refuses a model until its terms file is complete, which is why EmbeddingGemma isn't here yet.
                 </p>
 
                 <div class="credits">Map data © OpenStreetMap contributors. Made with Natural Earth. Place names from GeoNames.</div>
@@ -317,7 +323,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de, which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
                     <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
                     <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive. Source for the llama.cpp terms. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a></div>
-                    <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence. Source for the Gemma 4 terms. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a></div>
+                    <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF release of Gemma 4 12B instruct on Hugging Face, quantised from google/gemma-4-12B-it, which lists the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a> and <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a></div>
                     <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and require anyone redistributing the model to pass the terms on and keep the use restrictions in the Gemma Prohibited Use Policy in force. Source for the EmbeddingGemma terms. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a> and <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a></div>
                 </div>
 
