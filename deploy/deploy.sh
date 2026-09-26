@@ -2,6 +2,10 @@
 # Get the absolute path of the public directory
 SRC_DIR=$(realpath "$(dirname "$0")/../public")
 DEST_DIR="/var/www/localghost.ai/public"
+# Where the setup mirror's cache and builds live (gigabytes, so the big pool, not the root SSD).
+# The web root's /mirror becomes a symlink to $MIRROR_DATA/data. MIRROR_DATA=local keeps the old
+# layout instead (builds in public/mirror/ in this checkout, copied into the web root).
+MIRROR_DATA="${MIRROR_DATA:-/bulk/localghost/mirror}"
 TEMP_FILE="/tmp/lg_deploy_changes_$$"
 WORK_DIR="/tmp/lg_deploy_work_$$"
 SITE_URL="https://www.localghost.ai"
@@ -492,25 +496,31 @@ fi
 # 3.6 SETUP MIRROR
 # Every file a box downloads at setup, listed in
 # deploy/mirror/mirror.conf. publish.sh (next to
-# it, never served) builds it into public/mirror/,
-# where the builds and manifest are gitignored and
-# index.html documents the mirror. It re-downloads
-# only what changed upstream and makes no new
-# build when nothing did. Then it goes live in three steps so
-# a box never sees a manifest naming files that
-# aren't there yet:
-#   1. new build dirs are hard-linked into the web
-#      root (a copy if it's another filesystem);
-#      build dirs never change, so one that's
-#      already there is done
-#   2. the signed MANIFEST.txt pair is swapped in
-#   3. builds the publish pruned are removed
+# it, never served) fetches only what changed
+# upstream and makes no new build when nothing
+# did; the manifest is written last, so a box
+# never sees a manifest naming files that aren't
+# there yet.
+#
+# Normal layout (MIRROR_DATA, default
+# /bulk/localghost/mirror): cache and builds go
+# straight into $MIRROR_DATA/{cache,data} and the
+# web root's /mirror is a symlink to .../data, so
+# nothing is copied and nothing lands on the root
+# SSD. deploy/mirror/relocate.sh moves an older
+# layout there.
+#
+# MIRROR_DATA=local: builds in public/mirror/ in
+# this checkout (gitignored), then copied into the
+# web root, build dirs first, manifest after.
+#
 # The main rsync above and the deploy manifest
-# below skip the builds (gigabytes, own signature);
-# index.html goes live with the rest of the HTML.
-# Runs before the "no changes" exit, so every
-# deploy refreshes it. A failure never stops the
-# site deploy: the last good build stays up.
+# below skip the builds (gigabytes, own
+# signature); index.html goes live with the rest
+# of the HTML. Runs before the "no changes" exit,
+# so every deploy refreshes it. A failure never
+# stops the site deploy: the last good build stays
+# up.
 #   MIRROR=off ./deploy/deploy.sh           skip it
 #   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh
 # ============================================
@@ -521,63 +531,97 @@ MIRROR_SCRIPT="$(realpath "$(dirname "$0")/mirror/publish.sh" 2>/dev/null)"
 SRC_MIRROR="$SRC_DIR/mirror"
 DEST_MIRROR="$DEST_DIR/mirror"
 
-if [ "${MIRROR:-on}" = "off" ]; then
-    echo "  [—] Skipped (MIRROR=off)"
-elif [ ! -f "$MIRROR_SCRIPT" ]; then
-    echo "  [—] No deploy/mirror/publish.sh in this checkout"
-else
+mirror_publish() {
+    # $1 = data dir, $2 = cache dir (empty = publish.sh's default)
     # MIRROR_SETS is a space-separated list, split on purpose
     # shellcheck disable=SC2086
-    GHOST_MIRROR_DATA="$SRC_MIRROR" sh "$MIRROR_SCRIPT" ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
+    GHOST_MIRROR_DATA="$1" GHOST_MIRROR_CACHE="${2:-$HOME/.cache/localghost-mirror}" sh "$MIRROR_SCRIPT" ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
     if [ "${PIPESTATUS[0]}" -ne 0 ]; then
-        if [ -f "$DEST_MIRROR/MANIFEST.txt" ]; then
-            echo "  [✗] Mirror publish failed, build $(sed -n 's/^# Build: //p' "$DEST_MIRROR/MANIFEST.txt") is still served"
+        if [ -f "$1/MANIFEST.txt" ]; then
+            echo "  [✗] Mirror publish failed, build $(sed -n 's/^# Build: //p' "$1/MANIFEST.txt") is still served"
         else
             echo "  [✗] Mirror publish failed, nothing is published yet"
         fi
     fi
-fi
+}
 
-if [ "${MIRROR:-on}" != "off" ] && [ -f "$SRC_MIRROR/MANIFEST.txt" ] && [ -f "$SRC_MIRROR/MANIFEST.txt.asc" ]; then
-    mkdir -p "$DEST_MIRROR"
-    MIRROR_OK=true
+if [ "${MIRROR:-on}" = "off" ]; then
+    echo "  [—] Skipped (MIRROR=off)"
+elif [ ! -f "$MIRROR_SCRIPT" ]; then
+    echo "  [—] No deploy/mirror/publish.sh in this checkout"
+elif [ "$MIRROR_DATA" != "local" ]; then
+    # ---- normal layout: everything under $MIRROR_DATA, web root symlinked to it
+    if [ ! -d "$MIRROR_DATA" ] || [ ! -w "$MIRROR_DATA" ]; then
+        echo "  [✗] $MIRROR_DATA is missing or not writable, mirror skipped"
+        echo "      create it (sudo mkdir -p $MIRROR_DATA && sudo chown $USER $MIRROR_DATA), or run deploy/mirror/relocate.sh, or MIRROR_DATA=local"
+    else
+        mkdir -p "$MIRROR_DATA/data" "$MIRROR_DATA/cache"
+        chmod 755 "$MIRROR_DATA" "$MIRROR_DATA/data"
+        mirror_publish "$MIRROR_DATA/data" "$MIRROR_DATA/cache"
 
-    # 1. new build directories
-    for build in "$SRC_MIRROR"/[0-9]*T[0-9]*Z; do
-        [ -d "$build" ] || continue
-        name="$(basename "$build")"
-        [ -d "$DEST_MIRROR/$name" ] && continue
-        rm -rf "$DEST_MIRROR/.$name.tmp"
-        if cp -al "$build" "$DEST_MIRROR/.$name.tmp" 2>/dev/null || \
-           { rm -rf "$DEST_MIRROR/.$name.tmp"; cp -a "$build" "$DEST_MIRROR/.$name.tmp"; }; then
-            mv "$DEST_MIRROR/.$name.tmp" "$DEST_MIRROR/$name"
-            echo "  [+] MIRROR BUILD: $name"
+        # the web root's /mirror must be a symlink to the data dir
+        if [ -L "$DEST_MIRROR" ] && [ "$(readlink -f "$DEST_MIRROR")" = "$(readlink -f "$MIRROR_DATA/data")" ]; then
+            :
         else
-            rm -rf "$DEST_MIRROR/.$name.tmp"
-            MIRROR_OK=false
-            echo "  [✗] Could not copy mirror build $name"
+            if [ -d "$DEST_MIRROR" ] && [ ! -L "$DEST_MIRROR" ]; then
+                OLD_SIZE=$(du -sh "$DEST_MIRROR" 2>/dev/null | cut -f1)
+                rm -rf "$DEST_MIRROR"
+                echo "  [✗] PURGED: old mirror copy in the web root (${OLD_SIZE})"
+            fi
+            rm -f "$DEST_MIRROR"
+            ln -s "$MIRROR_DATA/data" "$DEST_MIRROR"
+            echo "  [→] $DEST_MIRROR -> $MIRROR_DATA/data"
         fi
-    done
-
-    # 2. the signed manifest, only once every build it names is in place
-    if [ "$MIRROR_OK" = true ] && \
-       { ! cmp -s "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/MANIFEST.txt" || \
-         ! cmp -s "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/MANIFEST.txt.asc"; }; then
-        cp "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/.MANIFEST.txt.tmp"
-        cp "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/.MANIFEST.txt.asc.tmp"
-        mv -f "$DEST_MIRROR/.MANIFEST.txt.tmp" "$DEST_MIRROR/MANIFEST.txt"
-        mv -f "$DEST_MIRROR/.MANIFEST.txt.asc.tmp" "$DEST_MIRROR/MANIFEST.txt.asc"
-        echo "  [↑] MIRROR MANIFEST: build $(sed -n 's/^# Build: //p' "$DEST_MIRROR/MANIFEST.txt")"
     fi
+else
+    # ---- local layout: build in the checkout, copy live in a safe order
+    mirror_publish "$SRC_MIRROR" ""
 
-    # 3. builds the publish pruned (the live manifest no longer names them)
-    if [ "$MIRROR_OK" = true ]; then
-        for build in "$DEST_MIRROR"/[0-9]*T[0-9]*Z; do
+    if [ -L "$DEST_MIRROR" ]; then
+        rm -f "$DEST_MIRROR"
+        echo "  [✗] removed the web root's mirror symlink (MIRROR_DATA=local)"
+    fi
+    if [ -f "$SRC_MIRROR/MANIFEST.txt" ] && [ -f "$SRC_MIRROR/MANIFEST.txt.asc" ]; then
+        mkdir -p "$DEST_MIRROR"
+        MIRROR_OK=true
+
+        # 1. new build directories
+        for build in "$SRC_MIRROR"/[0-9]*T[0-9]*Z; do
             [ -d "$build" ] || continue
-            [ -d "$SRC_MIRROR/$(basename "$build")" ] && continue
-            rm -rf "$build"
-            echo "  [✗] MIRROR PURGED: $(basename "$build")"
+            name="$(basename "$build")"
+            [ -d "$DEST_MIRROR/$name" ] && continue
+            rm -rf "$DEST_MIRROR/.$name.tmp"
+            if cp -al "$build" "$DEST_MIRROR/.$name.tmp" 2>/dev/null || \
+               { rm -rf "$DEST_MIRROR/.$name.tmp"; cp -a "$build" "$DEST_MIRROR/.$name.tmp"; }; then
+                mv "$DEST_MIRROR/.$name.tmp" "$DEST_MIRROR/$name"
+                echo "  [+] MIRROR BUILD: $name"
+            else
+                rm -rf "$DEST_MIRROR/.$name.tmp"
+                MIRROR_OK=false
+                echo "  [✗] Could not copy mirror build $name"
+            fi
         done
+
+        # 2. the signed manifest, only once every build it names is in place
+        if [ "$MIRROR_OK" = true ] && \
+           { ! cmp -s "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/MANIFEST.txt" || \
+             ! cmp -s "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/MANIFEST.txt.asc"; }; then
+            cp "$SRC_MIRROR/MANIFEST.txt" "$DEST_MIRROR/.MANIFEST.txt.tmp"
+            cp "$SRC_MIRROR/MANIFEST.txt.asc" "$DEST_MIRROR/.MANIFEST.txt.asc.tmp"
+            mv -f "$DEST_MIRROR/.MANIFEST.txt.tmp" "$DEST_MIRROR/MANIFEST.txt"
+            mv -f "$DEST_MIRROR/.MANIFEST.txt.asc.tmp" "$DEST_MIRROR/MANIFEST.txt.asc"
+            echo "  [↑] MIRROR MANIFEST: build $(sed -n 's/^# Build: //p' "$DEST_MIRROR/MANIFEST.txt")"
+        fi
+
+        # 3. builds the publish pruned (the live manifest no longer names them)
+        if [ "$MIRROR_OK" = true ]; then
+            for build in "$DEST_MIRROR"/[0-9]*T[0-9]*Z; do
+                [ -d "$build" ] || continue
+                [ -d "$SRC_MIRROR/$(basename "$build")" ] && continue
+                rm -rf "$build"
+                echo "  [✗] MIRROR PURGED: $(basename "$build")"
+            done
+        fi
     fi
 fi
 
@@ -1083,7 +1127,11 @@ MANIFEST_SIG="$DEST_DIR/ghost/deploy-manifest.txt.asc"
     echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo ""
     # the setup mirror's builds are signed separately (/mirror/MANIFEST.txt)
-    find "$DEST_DIR" -path "$DEST_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -type f ! -path "*/ghost/deploy-manifest*" -exec sha256sum {} \; | sed "s|$DEST_DIR||" | sort -k2
+    {
+        find "$DEST_DIR" -path "$DEST_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -type f ! -path "*/ghost/deploy-manifest*" -exec sha256sum {} \;
+        # /mirror may be a symlink onto the big pool; its page is still ours to sign
+        [ -f "$DEST_DIR/mirror/index.html" ] && sha256sum "$DEST_DIR/mirror/index.html"
+    } | sed "s|$DEST_DIR||" | sort -u -k2
 } > "$MANIFEST_FILE"
 
 gpg --batch --yes --armor --local-user info@localghost.ai --output "$MANIFEST_SIG" --detach-sign "$MANIFEST_FILE"

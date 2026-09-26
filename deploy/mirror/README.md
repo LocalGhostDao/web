@@ -10,11 +10,11 @@ against the key in that repo and every file's SHA-256 matches the manifest.
 The public explanation (what, why, how a box verifies it) is the page at
 [`/mirror`](https://www.localghost.ai/mirror), `public/mirror/index.html`. This file is the runbook.
 
-The scripts, conf, terms and public key live here in `deploy/`, so none of them is ever served. The
-mirror is built into `public/mirror/`: the builds and the signed manifest are gigabytes and
-`.gitignore` keeps them out of GitHub, while `index.html` is in git like any other page.
-`deploy/deploy.sh` runs the publish on the web server's checkout, then copies new builds into the live
-web root.
+The scripts, conf and terms live here in `deploy/`, so none of them is ever served. The data (the
+download cache and the builds, gigabytes) lives on the big pool, `/bulk/localghost/mirror/{cache,data}`,
+and the web root's `/mirror` is a symlink to `.../data`, so nothing is copied and nothing sits on the
+root SSD. `public/mirror/` in the repo holds only `index.html`, the page. `deploy/deploy.sh` runs the
+publish straight into the pool on every deploy.
 
 ## Files
 
@@ -28,12 +28,21 @@ web root.
   `DCE9 A3D1 4EB4 6197 1DD5  F393 706E 4194 F08A 09A0`. `publish.sh` checks the signing key against
   that file before it downloads anything and refuses to sign with any other key. The server repo
   pins a copy of it as `tools/mirror-key.asc`.
-- `public/mirror/<build>/`, `public/mirror/MANIFEST.txt`, `.asc` , written by `publish.sh`,
-  gitignored. `public/mirror/index.html` , the page, in git.
+- `relocate.sh` , one-off: moves an older layout (cache in `~/.cache`, builds in the checkout, a
+  copy in the web root) onto the pool and puts the symlink in place.
+- `/bulk/localghost/mirror/cache` , downloads and pinned files, kept so a deploy re-fetches nothing.
+- `/bulk/localghost/mirror/data/<build>/`, `MANIFEST.txt`, `.asc` , the published mirror. Builds are
+  hard links onto the cache, so each file is on disk once. `public/mirror/index.html` , the page, in git.
 
 ## On the web server, once
 
     sudo apt-get install -y curl gpg          # flock and sha256sum are already there
+    sudo mkdir -p /bulk/localghost/mirror && sudo chown "$USER" /bulk/localghost/mirror
+    # moving from the old layout (cache in ~/.cache, builds in the checkout and the web root):
+    deploy/mirror/relocate.sh                 # then ./deploy/deploy.sh
+
+nginx needs to read the pool: `/bulk` and `/bulk/localghost` must have `o+x`, the data dir is made
+755 by the deploy. nginx follows symlinks by default, so no config changes.
 
 That's all. The mirror only proxies files, exactly as upstream publishes them. Nothing is cut or
 converted here: a box cuts OpenStreetMap's land polygons into its own coastline tiles
@@ -41,11 +50,11 @@ converted here: a box cuts OpenStreetMap's land polygons into its own coastline 
 
 ## Publish
 
-Every `./deploy/deploy.sh` publishes the mirror into `public/mirror/`, before it checks whether the
-site changed, so a deploy always refreshes it. It then goes live in order: new build directories are
-hard-linked into the web root (copied if that's another filesystem), then the signed manifest pair
-is swapped in, then builds the publish pruned are removed. A box never sees a manifest that names
-files that aren't there yet.
+Every `./deploy/deploy.sh` publishes the mirror into `/bulk/localghost/mirror/data`, before it checks
+whether the site changed, so a deploy always refreshes it. `publish.sh` writes the build directory
+first and the signed manifest pair last, so a box never sees a manifest that names files that
+aren't there yet. `MIRROR_DATA=<dir>` uses another pool; `MIRROR_DATA=local` is the old layout
+(builds in `public/mirror/` in the checkout, copied into the web root).
 
     ./deploy/deploy.sh                                   # site + every set in mirror.conf
     MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh    # site + only those sets
@@ -54,12 +63,12 @@ files that aren't there yet.
 Run it as the user whose gpg keyring holds the info@localghost.ai secret key (the same user that
 already signs the deploy manifest). The first run pulls every file once (about 1.5 GB). After that a deploy only downloads what changed upstream and makes
 no new build when nothing did. A failed publish never stops the site deploy; the last good build
-stays up. With the checkout and `/var/www` on the same filesystem the web root's copy is hard links,
-so the data takes its space on disk once.
+stays up. The builds are hard links onto the cache, so every file is on the pool once.
 
 By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys:
 
-    deploy/mirror/publish.sh geo landpolygons            # then ./deploy/deploy.sh to put it live
+    GHOST_MIRROR_DATA=/bulk/localghost/mirror/data GHOST_MIRROR_CACHE=/bulk/localghost/mirror/cache \
+        deploy/mirror/publish.sh geo landpolygons        # live at once, the web root points here
 
 ## Models
 
@@ -94,9 +103,10 @@ What that gives, and what `deploy.sh` does around it:
   refuses to serve.
 - Every response carries the site's `Cache-Control: no-store`. curl on a box ignores it, and the
   manifest is always fresh.
-- `deploy.sh` puts `/mirror/` live itself (above) and keeps it out of its main `rsync --delete` and
-  out of the deploy manifest (so the builds aren't hashed on every deploy). Its robots.txt disallows
-  `/mirror/` (the builds and manifest) but not the page at `/mirror`, which is in the sitemap.
+- `deploy.sh` keeps `/mirror/` out of its main `rsync --delete` (so a deploy never touches the
+  symlink) and out of the deploy manifest apart from `index.html` (the builds carry their own
+  signature). Its robots.txt disallows `/mirror/` (the builds and manifest) but not the page at
+  `/mirror`, which is in the sitemap.
 - The bare domain redirects to www, so boxes should use `https://www.localghost.ai/mirror` or
   follow redirects (`curl -L`).
 

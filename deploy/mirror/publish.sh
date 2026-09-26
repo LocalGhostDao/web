@@ -6,12 +6,13 @@
 #   deploy/mirror/publish.sh                   # everything in mirror.conf
 #   deploy/mirror/publish.sh geo landpolygons  # refresh those, keep the rest
 #
-# The scripts, conf and terms live here in deploy/mirror/ (never served). The mirror itself is built
-# into public/mirror/, where the builds and the manifest are gitignored and only index.html (the page
-# that explains the mirror) is in git. deploy/deploy.sh runs this on every deploy, then copies new
-# builds into the web root (hard links, build dirs first, the signed manifest after).
-# GHOST_MIRROR_DATA=<dir> builds somewhere else; a dir inside the repo is refused unless git ignores
-# it, so the data (gigabytes) can never reach GitHub.
+# The scripts, conf and terms live here in deploy/mirror/ (never served). deploy/deploy.sh runs this
+# on every deploy with GHOST_MIRROR_DATA=/bulk/localghost/mirror/data and
+# GHOST_MIRROR_CACHE=/bulk/localghost/mirror/cache, and the web root's /mirror is a symlink to that
+# data dir, so a build goes live the moment its manifest is written and nothing is copied. Without
+# those variables it builds into public/mirror/ in this checkout (gitignored) and caches in
+# ~/.cache/localghost-mirror. A data dir inside the repo is refused unless git ignores it, so the
+# data (gigabytes) can never reach GitHub.
 #
 # Layout under the data dir:
 #   MANIFEST.txt, MANIFEST.txt.asc     the signed list: "<sha256>  /<build>/<set>/<file>", one per file
