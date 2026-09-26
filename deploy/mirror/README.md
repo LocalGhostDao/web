@@ -70,6 +70,19 @@ By hand, or from a weekly cron to keep GeoNames and the coastline fresh between 
     GHOST_MIRROR_DATA=/bulk/localghost/mirror/data GHOST_MIRROR_CACHE=/bulk/localghost/mirror/cache \
         deploy/mirror/publish.sh geo landpolygons        # live at once, the web root points here
 
+## Sets refreshed only by name (`manual`)
+
+A set marked `manual` in `mirror.conf` is left alone by a plain publish and by every deploy; each
+new build carries whatever the previous build had for it. It is refreshed only when named:
+
+    deploy/mirror/publish.sh roads        # in screen: an hour or more, every changed extract whole
+
+`roads` is the reason: Geofabrik republishes each continent extract every day, so a freshness check
+would find all 80 GB changed at every deploy. Refresh it about monthly. Builds are hard links onto
+the cache, so a refresh where Europe changed costs 33 GB until the older build is pruned, and one
+where nothing changed costs nothing. The manifest step hashes a file once and remembers the result
+by inode (`cache/sha256.cache`), so a deploy doesn't re-read 80 GB to sign the same files again.
+
 ## Models
 
 `models` is the build every box runs: Gemma 4 12B instruct `gemma-4-12b-it-Q4_K_M.gguf` and its
@@ -87,6 +100,12 @@ where it came from.
 
 EmbeddingGemma has its own `embeddings` set, commented out until `terms/gemma-terms.txt` holds the
 full Gemma Terms of Use.
+
+## Disk
+
+On the pool: the cache (every download once, the pinned weights, the road extracts, about 90 GB
+today) plus the last two builds, which are hard links onto it and cost only what changed between
+them. Nothing on the root SSD.
 
 ## Serving `/mirror/`
 

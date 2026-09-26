@@ -33,7 +33,7 @@ rm "$TMPKEY"
 
 ## 🪞 SETUP MIRROR
 
-`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, OpenStreetMap's land polygons, the Go toolchain, Gemma 4 12B as every box runs it, and later a pinned llama.cpp and EmbeddingGemma), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
+`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, OpenStreetMap's land polygons and Geofabrik's road extracts, the Go toolchain, Gemma 4 12B as every box runs it, and later a pinned llama.cpp and EmbeddingGemma), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
 
 The scripts, conf and terms live in [`deploy/mirror/`](deploy/mirror/README.md), never served. The data lives on the big pool, `/bulk/localghost/mirror`, and the web root's `/mirror` is a symlink to it, so nothing sits on the root SSD. [`public/mirror/index.html`](https://www.localghost.ai/mirror) explains what the mirror carries, why, and how a box verifies it. On every deploy `deploy.sh` runs the publish, downloading only what changed upstream, and a new build goes live the moment its signed manifest is written.
 

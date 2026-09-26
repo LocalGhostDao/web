@@ -521,6 +521,9 @@ fi
 # so every deploy refreshes it. A failure never
 # stops the site deploy: the last good build stays
 # up.
+# Sets marked "manual" in mirror.conf (roads, 80
+# GB, daily upstream) are not refreshed here;
+# deploy/mirror/publish.sh roads does that.
 #   MIRROR=off ./deploy/deploy.sh           skip it
 #   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh
 # ============================================

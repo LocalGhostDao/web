@@ -191,7 +191,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B). The pinned llama.cpp source and the EmbeddingGemma weights are in the config but not published yet.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code> followed a few days later. The pinned llama.cpp source and the EmbeddingGemma weights are in the config but not published yet.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -222,6 +222,12 @@
                                 <td data-label="Set">landpolygons</td>
                                 <td data-label="Files"><code>land-polygons-complete-4326.zip</code></td>
                                 <td data-label="Where it comes from">OpenStreetMap's land polygons from osmdata.openstreetmap.de, unmodified. The box cuts them into its map's coastline tiles.</td>
+                                <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">roads</td>
+                                <td data-label="Files"><code>europe-latest.osm.pbf</code> and the other seven continent extracts, named as Geofabrik names them</td>
+                                <td data-label="Where it comes from">OpenStreetMap's roads as Geofabrik's continent extracts, unmodified, about 80 GB in all and refreshed about monthly. A box only fetches the continents it's told to at setup, and cuts them into street tiles itself.</td>
                                 <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
                             </tr>
                             <tr>
@@ -259,7 +265,7 @@
                 </p>
 
                 <p>
-                    The mirror doesn't change anything it carries. OpenStreetMap's land polygons are published as osmdata makes them, and each box cuts them into the tiles its map reads, which takes a few minutes and a couple of GB of RAM on the box. Keeping the processing on the box means the web server only ever proxies files it has checked and signed, and anyone can compare a file here with the upstream copy byte for byte.
+                    The mirror doesn't change anything it carries. OpenStreetMap's land polygons are published as osmdata makes them, and each box cuts them into the tiles its map reads, which takes a few minutes and a couple of GB of RAM on the box. The road extracts work the same way, one continent at a time and only when the person setting up the box asks for streets, since Europe alone is 33 GB and cutting it takes hours. Keeping the processing on the box means the web server only ever proxies files it has checked and signed, and anyone can compare a file here with the upstream copy byte for byte.
                 </p>
 
                 <p>
@@ -322,14 +328,14 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
                 <p>
-                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons are an unmodified copy of the OpenStreetMap data published by osmdata.openstreetmap.de, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
                 </p>
 
                 <p>
                     Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here are Unsloth's GGUF quantisation of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use, which have to be handed to everyone who receives the model, in full, with its use restrictions intact.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish refuses a model until its terms file is complete, which is why EmbeddingGemma isn't here yet.
                 </p>
 
-                <div class="credits">Map data © OpenStreetMap contributors. Made with Natural Earth. Place names from GeoNames.</div>
+                <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH. Made with Natural Earth. Place names from GeoNames.</div>
 
                 <p>
                     Postgres and Redis still come from their own apt repositories at setup, and I haven't decided yet whether mirroring those is worth the work. If you maintain one of the sources above and want it handled differently, or you find a file here that doesn't match its manifest, email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->.
@@ -339,7 +345,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <div class="post-refs">
                     <div class="ref" id="ref1"><span class="n">[1]</span>GeoNames, the geographical database behind the <code>geo</code> set's place names, publishes its data dumps under the Creative Commons Attribution 4.0 licence. Source for the GeoNames terms. <a href="https://www.geonames.org/" target="_blank" rel="noopener">geonames.org</a> and <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by/4.0</a></div>
                     <div class="ref" id="ref2"><span class="n">[2]</span>Natural Earth's terms of use, which place all of its vector and raster data in the public domain. Source for the Natural Earth terms. The GeoJSON copies come from the natural-earth-vector repository on GitHub. <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">naturalearthdata.com/about/terms-of-use</a></div>
-                    <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de, which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
+                    <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de and the continent extracts published by Geofabrik GmbH, both of which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon and road terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> and <code>bin/ghost-roadtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://download.geofabrik.de/" target="_blank" rel="noopener">download.geofabrik.de</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
                     <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
                     <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive. Source for the llama.cpp terms. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a></div>
                     <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF release of Gemma 4 12B instruct on Hugging Face, quantised from google/gemma-4-12B-it, which lists the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a> and <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a></div>

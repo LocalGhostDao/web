@@ -38,6 +38,13 @@
 set -eu
 umask 022
 HERE="$(cd "$(dirname "$0")" && pwd)"
+# Where the data goes: GHOST_MIRROR_DATA, else the pool deploy.sh uses (MIRROR_DATA, default
+# /bulk/localghost/mirror) when it exists, else public/mirror/ in this checkout.
+MIRROR_DATA="${MIRROR_DATA:-/bulk/localghost/mirror}"
+if [ -z "${GHOST_MIRROR_DATA:-}" ] && [ -d "$MIRROR_DATA" ] && [ -w "$MIRROR_DATA" ]; then
+    GHOST_MIRROR_DATA="$MIRROR_DATA/data"
+    GHOST_MIRROR_CACHE="${GHOST_MIRROR_CACHE:-$MIRROR_DATA/cache}"
+fi
 ROOT="$(realpath -m "${GHOST_MIRROR_DATA:-$HERE/../../public/mirror}")"
 SETS="$*"
 CONF="${GHOST_MIRROR_CONF:-$HERE/mirror.conf}"
@@ -68,6 +75,7 @@ CACHE="${GHOST_MIRROR_CACHE:-$HOME/.cache/localghost-mirror}"
 GODEV="${GHOST_MIRROR_GODEV_URL:-https://go.dev/dl/?mode=json&include=all}"
 KEEP="${GHOST_MIRROR_KEEP:-2}"
 mkdir -p "$CACHE"
+touch "$CACHE/sha256.cache"
 exec 9>"$CACHE/publish.lock"      # one publish at a time (kept out of the web root)
 if ! flock -n 9; then
     echo "!! another publish is running (lock: $CACHE/publish.lock)" >&2
@@ -85,7 +93,9 @@ trap '[ "$PUBLISHED" = 1 ] || rm -rf "$NEW" "$ROOT/.MANIFEST.txt.tmp" "$ROOT/.MA
 
 say() { echo "  $*" >&2; }
 die() { echo "!! $*" >&2; exit 1; }
-want() { [ -z "$SETS" ] && return 0; for s in $SETS; do [ "$s" = "$1" ] && return 0; done; return 1; }
+# want <set> , is this set refreshed in this run? Named sets always; with no sets named, every set
+# except the ones marked "manual" in mirror.conf (they keep whatever the previous build had)
+want() { for s in $REFRESH; do [ "$s" = "$1" ] && return 0; done; return 1; }
 
 # cached <url> , where fetch keeps its copy of <url>
 cached() {
@@ -129,6 +139,21 @@ pinned() {
     echo "$_p"
 }
 
+# sha_cached <file> , "<sha256>  <file>", from $CACHE/sha256.cache when the file's device, inode,
+# size and mtime are already there. Build files are hard links onto cache files that never change
+# in place (a new download is a new inode), so the 80 GB road extracts are hashed once, not at
+# every publish.
+SHACACHE="$CACHE/sha256.cache"
+sha_cached() {
+    _k="$(stat -c '%d:%i:%s:%Y' "$1")"
+    _h="$(grep -m1 "^$_k " "$SHACACHE" 2>/dev/null | cut -d' ' -f2)"
+    if [ -z "$_h" ]; then
+        _h="$(sha256sum "$1" | cut -d' ' -f1)"
+        echo "$_k $_h" >> "$SHACACHE"
+    fi
+    echo "$_h  $1"
+}
+
 # godev <name> <file> , the file's SHA-256 is the one go.dev publishes for that name
 godev() {
     _want="$(curl -fsSL "$GODEV" | tr ',' '\n' | grep -A8 "\"filename\": \"$1\"" | grep '"sha256"' | head -1 | sed 's/.*"sha256": *"\([0-9a-f]*\)".*/\1/')"
@@ -156,9 +181,17 @@ terms() {
 # --- the sets this run refreshes ---
 grep -v '^[[:space:]]*#' "$CONF" | awk 'NF' > "$CACHE/conf.tmp"
 ALL="$(awk '{print $1}' "$CACHE/conf.tmp" | sort -u)"
+MANUAL="$(awk '{ for (i = 5; i <= NF; i++) if ($i == "manual") print $1 }' "$CACHE/conf.tmp" | sort -u)"
 for s in $SETS; do
     echo "$ALL" | grep -qx "$s" || die "no set '$s' in $CONF (it has: $(echo $ALL))"
 done
+if [ -n "$SETS" ]; then
+    REFRESH="$SETS"
+else
+    REFRESH="$ALL"
+    for m in $MANUAL; do REFRESH="$(echo "$REFRESH" | grep -vx "$m" || true)"; done
+    [ -n "$MANUAL" ] && say "manual sets kept as they are ($(echo $MANUAL)); name one to refresh it"
+fi
 
 PREV="$(sed -n 's/^# Build: //p' "$ROOT/MANIFEST.txt" 2>/dev/null | head -1)"
 if [ -n "$PREV" ] && [ -d "$ROOT/$PREV" ]; then
@@ -186,13 +219,18 @@ while read -r set file tnames source opt; do
         [ -f "$TERMS/$t.txt" ] || die "$set/$file: no terms file $TERMS/$t.txt"
         grep -q 'EDIT-ME' "$TERMS/$t.txt" && die "$set/$file: $TERMS/$t.txt still says EDIT-ME , finish it first"
     done
-    pin=""
-    case "${opt:-}" in
-        check=sha256:*)
-            pin="${opt#check=sha256:}"
-            case "$pin" in *[!0-9a-f]*|"") die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;; esac
-            [ "${#pin}" -eq 64 ] || die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;;
-    esac
+    pin=""; godev_check=""
+    for o in ${opt:-}; do
+        case "$o" in
+            check=sha256:*)
+                pin="${o#check=sha256:}"
+                case "$pin" in *[!0-9a-f]*|"") die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;; esac
+                [ "${#pin}" -eq 64 ] || die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;;
+            check=godev) godev_check=1 ;;
+            manual) ;;
+            *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, manual)" ;;
+        esac
+    done
     if [ -n "$pin" ]; then
         src="$(pinned "$source" "$pin" "$file")" || die "$set/$file: could not get a copy matching its pinned sha256 from $source"
         say "$file matches its pinned sha256"
@@ -202,7 +240,7 @@ while read -r set file tnames source opt; do
             *) src="$source"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
         esac
     fi
-    if [ "${opt:-}" = "check=godev" ]; then
+    if [ -n "$godev_check" ]; then
         godev "$file" "$src" || die "$set/$file does not match go.dev's published checksum , not publishing it"
         say "$file matches go.dev's checksum"
     fi
@@ -237,7 +275,9 @@ MAN="$ROOT/.MANIFEST.txt.tmp"
     echo "# Build: ${BUILD}"
     echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo ""
-    find "$NEW" -type f ! -name '.*' -exec sha256sum {} \; | sed "s|$ROOT||" | sort -k2
+    find "$NEW" -type f ! -name '.*' | sort | while read -r f; do
+        sha_cached "$f"
+    done | sed "s|$ROOT||" | sort -k2
 } > "$MAN"
 if [ -f "$ROOT/MANIFEST.txt" ] && [ "$(body "$MAN")" = "$(body "$ROOT/MANIFEST.txt")" ]; then
     echo "> nothing changed upstream , the mirror stays at build $PREV"

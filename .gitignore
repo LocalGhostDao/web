@@ -11,6 +11,7 @@ public/assets/podcast/should-not-possess.m4a
 *.shp
 *.lgt
 landtiles*.tar.gz
+*.osm.pbf
 land-polygons-complete-4326*
 allCountries.zip
 allCountries.txt
