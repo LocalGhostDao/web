@@ -1,10 +1,18 @@
 Gemma 4 , Google (weights) and Unsloth (GGUF quantisation)
 
-gemma-4-12b-it-Q4_K_M.gguf and mmproj-F16.gguf are unmodified copies of the GGUF files Unsloth
-published at https://huggingface.co/unsloth/gemma-4-12b-it-GGUF, converted and quantised by Unsloth
-from Google's Gemma 4 12B instruction-tuned weights (https://huggingface.co/google/gemma-4-12B-it).
-The Q4_K_M quantisation modifies the original weights (Apache 2.0, section 4(b)); the modification
-is Unsloth's, and LocalGhost changes nothing further.
+The Gemma 4 GGUF files on this mirror are unmodified copies of files Unsloth published on Hugging
+Face, converted and quantised by Unsloth from Google's Gemma 4 instruction-tuned weights. NOTICE.txt
+beside each file names the exact upstream file.
+
+  gemma-4-12b-it-Q4_K_M.gguf and mmproj-F16.gguf (set "models"), from
+  https://huggingface.co/unsloth/gemma-4-12b-it-GGUF, quantised from google/gemma-4-12B-it
+
+  gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf (set "phone"), from
+  https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF, quantised from Google's quantisation-aware
+  checkpoint google/gemma-4-E2B-it-qat-q4_0-unquantized
+
+The quantisations modify the original weights (Apache 2.0, section 4(b)); the modifications are
+Unsloth's, and LocalGhost changes nothing further.
 
 Gemma 4 is released by Google under the Apache License 2.0 (TERMS-apache-2.0.txt beside this file):
 https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html

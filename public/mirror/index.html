@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-09-24",
-            "dateModified": "2026-09-26",
+            "dateModified": "2026-09-27",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/mirror"
@@ -189,7 +189,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp) and <code>embeddings</code> (EmbeddingGemma) followed within the week. The manifest is the list that counts: a set is on the mirror when its files are in <code>MANIFEST.txt</code>.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week. The manifest is the list that counts: a set is on the mirror when its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -244,6 +244,12 @@
                                 <td data-label="Set">models</td>
                                 <td data-label="Files"><code>gemma-4-12b-it-Q4_K_M.gguf</code> <code>mmproj-F16.gguf</code></td>
                                 <td data-label="Where it comes from">Gemma 4 12B instruct (Q4_K_M) and its vision projector, the build every box runs, as quantised and published by Unsloth. Unmodified and pinned by SHA-256.</td>
+                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">phone</td>
+                                <td data-label="Files"><code>gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf</code></td>
+                                <td data-label="Where it comes from">Gemma 4 E2B instruct for the phone app, Unsloth's dynamic 2-bit quantisation of Google's quantisation-aware checkpoint, 2.2 GB. Unmodified and pinned by SHA-256. A phone fetches this set and nothing else.</td>
                                 <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
                             </tr>
                             <tr>
@@ -330,7 +336,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 </p>
 
                 <p>
-                    Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here are Unsloth's GGUF quantisation of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use (last modified 1 April 2026), which have to be handed to everyone who receives the model, in full, with its use restrictions intact, so the whole agreement sits beside the file as <code>TERMS-gemma-terms.txt</code>.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish leaves a model out until its terms file is complete.
+                    Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here, the 12B build every box runs and the E2B build for the phone, are Unsloth's GGUF quantisations of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use (last modified 1 April 2026), which have to be handed to everyone who receives the model, in full, with its use restrictions intact, so the whole agreement sits beside the file as <code>TERMS-gemma-terms.txt</code>.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish leaves a model out until its terms file is complete.
                 </p>
 
                 <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH. Made with Natural Earth. Place names from GeoNames.</div>
@@ -346,7 +352,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de and the continent extracts published by Geofabrik GmbH, both of which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon and road terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> and <code>bin/ghost-roadtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://download.geofabrik.de/" target="_blank" rel="noopener">download.geofabrik.de</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
                     <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
                     <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive, and its release v0.5.0 of 23 September 2026 (commit 7fe450e), one of the stable <code>vX.Y.Z</code> releases the project recommends for downstream distribution as against its <code>b</code>-numbered builds. Source for the llama.cpp terms and the pin. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a> and <a href="https://github.com/ggml-org/llama.cpp/releases/tag/v0.5.0" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp/releases/tag/v0.5.0</a></div>
-                    <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF release of Gemma 4 12B instruct on Hugging Face, quantised from google/gemma-4-12B-it, which lists the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a> and <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a></div>
+                    <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF releases on Hugging Face of Gemma 4 12B instruct, quantised from google/gemma-4-12B-it, and of Gemma 4 E2B instruct, quantised from Google's quantisation-aware checkpoint, both of which list the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a>, <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a> and <a href="https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF</a></div>
                     <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and whose section 3.1 requires anyone redistributing the model to give every recipient a copy of the agreement and keep the use restrictions in the Gemma Prohibited Use Policy in force, and the GGUF conversion of Google's quantisation-aware Q8_0 checkpoint published by the llama.cpp maintainers, which lists the SHA-256 of the file. Sources for the EmbeddingGemma terms and the pin. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a>, <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a> and <a href="https://huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF" target="_blank" rel="noopener">huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF</a></div>
                 </div>
 

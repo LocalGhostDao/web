@@ -63,8 +63,8 @@ aren't there yet. `MIRROR_DATA=<dir>` uses another pool; `MIRROR_DATA=local` is 
     MIRROR=off ./deploy/deploy.sh                        # site only
 
 Run it as the user whose gpg keyring holds the info@localghost.ai secret key (the same user that
-already signs the deploy manifest). The first run pulls every file once (about 9 GB, of which the
-Gemma 4 weights are 7.3 GB; `roads` is on its own, below). After that a deploy only downloads what
+already signs the deploy manifest). The first run pulls every file once (about 12 GB, of which the
+Gemma 4 weights are 9.5 GB; `roads` is on its own, below). After that a deploy only downloads what
 changed upstream and makes no new build when nothing did. A failed publish never stops the site deploy; the last good build
 stays up. The builds are hard links onto the cache, so every file is on the pool once.
 
@@ -123,6 +123,15 @@ If Hugging Face isn't reachable, a copy you already have works: put it on the se
 URL in its line with the path. It's published only if its `sha256sum` matches the pin; a different
 hash is a different file, and then it needs its own line, its own pin and a terms file that says
 where it came from.
+
+## Phone
+
+`phone` is Gemma 4 E2B instruct for the phone app, `gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf`, Unsloth's
+dynamic 2-bit quantisation of Google's quantisation-aware checkpoint
+(huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF, Apache 2.0, not gated, 2.2 GB), pinned like the
+12B. Its own set, so a phone fetches it and nothing else. The same repo has `mmproj-F16.gguf` (986
+MB) if the phone build ever does vision; the sha256 is in the comment above its line in
+`mirror.conf`.
 
 ## Embeddings
 
