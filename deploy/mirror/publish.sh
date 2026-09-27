@@ -5,6 +5,14 @@
 #
 #   deploy/mirror/publish.sh                   # everything in mirror.conf
 #   deploy/mirror/publish.sh geo landpolygons  # refresh those, keep the rest
+#   deploy/mirror/publish.sh --sign-later roads   # download and build, but don't sign: nothing goes
+#                                                 # live, no passphrase asked (an hour of downloads
+#                                                 # shouldn't end in a pinentry nobody is there for)
+#   deploy/mirror/publish.sh --sign               # sign the waiting build and put it live, any time
+#                                                 # later (a plain publish or a deploy does that too)
+#
+# With a terminal, every download shows curl's progress meter (size, speed, time left) and every file
+# hashed for the first time says so, so a long publish never looks stuck.
 #
 # The scripts, conf and terms live here in deploy/mirror/ (never served). deploy/deploy.sh runs this
 # on every deploy with GHOST_MIRROR_DATA=/bulk/localghost/mirror/data and
@@ -46,7 +54,20 @@ if [ -z "${GHOST_MIRROR_DATA:-}" ] && [ -d "$MIRROR_DATA" ] && [ -w "$MIRROR_DAT
     GHOST_MIRROR_CACHE="${GHOST_MIRROR_CACHE:-$MIRROR_DATA/cache}"
 fi
 ROOT="$(realpath -m "${GHOST_MIRROR_DATA:-$HERE/../../public/mirror}")"
-SETS="$*"
+SETS=""; MODE=publish; SIGN_LATER=""
+for a in "$@"; do
+    case "$a" in
+        --sign) MODE=sign ;;
+        --sign-later) SIGN_LATER=1 ;;
+        -*) echo "!! unknown option $a (this takes set names, --sign-later, or --sign)" >&2; exit 1 ;;
+        *) SETS="$SETS $a" ;;
+    esac
+done
+SETS="${SETS# }"
+[ "$MODE" = sign ] && [ -n "$SETS$SIGN_LATER" ] && { echo "!! --sign takes nothing else: it signs the build that is waiting" >&2; exit 1; }
+# curl: the progress meter (size, speed, time left) when someone is watching, quiet when a deploy
+# log is
+if [ -t 2 ]; then CURL="curl -fSL --retry 3"; else CURL="curl -fsSL --retry 3"; fi
 CONF="${GHOST_MIRROR_CONF:-$HERE/mirror.conf}"
 TERMS="$HERE/terms"
 TOP="$(git -C "$HERE" rev-parse --show-toplevel 2>/dev/null || (cd "$HERE/../.." && pwd))"
@@ -107,10 +128,14 @@ fetch() {
     _f="$(cached "$1")"
     rm -f "$_f.tmp"
     if [ -s "$_f" ]; then
-        curl -fsSL --retry 3 -R -z "$_f" -o "$_f.tmp" "$1" || return 1
+        # on a terminal, ask with a HEAD first, so an unchanged file doesn't print an empty meter
+        if [ -t 2 ] && [ "$(curl -fsSL --retry 3 -I -z "$_f" -o /dev/null -w '%{http_code}' "$1" 2>/dev/null)" = 304 ]; then
+            echo "$_f"; return 0
+        fi
+        $CURL -R -z "$_f" -o "$_f.tmp" "$1" || return 1
     else
         say "downloading $1"
-        curl -fsSL --retry 3 -R -o "$_f.tmp" "$1" || return 1
+        $CURL -R -o "$_f.tmp" "$1" || return 1
     fi
     if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi   # a 304 writes nothing
     [ -s "$_f" ] || return 1
@@ -125,7 +150,7 @@ pinned() {
     _p="$CACHE/pin-$2-$3"
     if [ ! -s "$_p" ]; then
         case "$1" in
-            http://*|https://*) say "downloading $1"; curl -fsSL --retry 3 -C - -o "$_p.tmp" "$1" || return 1 ;;
+            http://*|https://*) say "downloading $1"; $CURL -C - -o "$_p.tmp" "$1" || return 1 ;;
             *) [ -f "$1" ] || return 1; cp "$1" "$_p.tmp" || return 1 ;;
         esac
         _got="$(sha256sum "$_p.tmp" | cut -d' ' -f1)"
@@ -148,6 +173,8 @@ sha_cached() {
     _k="$(stat -c '%d:%i:%s:%Y' "$1")"
     _h="$(grep -m1 "^$_k " "$SHACACHE" 2>/dev/null | cut -d' ' -f2)"
     if [ -z "$_h" ]; then
+        # a big file is read once here, and that can take minutes on 33 GB: say so
+        [ "$(stat -c %s "$1")" -gt 268435456 ] && say "hashing ${1#$ROOT/} ($(du -h "$1" | cut -f1)), once"
         _h="$(sha256sum "$1" | cut -d' ' -f1)"
         echo "$_k $_h" >> "$SHACACHE"
     fi
@@ -177,6 +204,56 @@ terms() {
         *) cp "$_t" "$2" ;;
     esac
 }
+
+# --- the manifest, exactly as the releases do it ---
+PENDING="$ROOT/.MANIFEST.txt.unsigned"    # a build that is complete but not signed: not live
+write_manifest() { # <dir> <build> , the manifest for that build directory, on stdout
+    echo "# LocalGhost Mirror Manifest"
+    echo "# Build: $2"
+    echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    echo ""
+    find "$1" -type f ! -name '.*' | sort | while read -r f; do
+        sha_cached "$f"
+    done | sed "s|$ROOT||" | sort -k2
+}
+body() { # the manifest's file lines with the build directory taken out, to compare two builds
+    sed -n 's|^\([0-9a-f]\{64\}\)  /[^/]*/|\1  |p' "$1" | grep -v '/NOTICE.txt$' | sort -k2
+}
+go_live() { # <manifest tmp> <build> , sign it and put the pair in place: the moment a build goes live
+    gpg --batch --yes --armor --local-user "$GPG_USER" --output "$ROOT/.MANIFEST.txt.asc.tmp" --detach-sign "$1" \
+        || die "gpg could not sign as $GPG_USER"
+    # the pair, back to back; a box that reads between the two sees a signature that does not match
+    # and tries again a few seconds later (tools/mirror_fetch.sh)
+    mv -f "$1" "$ROOT/MANIFEST.txt"
+    mv -f "$ROOT/.MANIFEST.txt.asc.tmp" "$ROOT/MANIFEST.txt.asc"
+    rm -f "$PENDING"
+    PUBLISHED=1
+    echo "  [signed] MANIFEST.txt ($(grep -c "^[a-f0-9]" "$ROOT/MANIFEST.txt") files, build $2)"
+    echo "  [signed] MANIFEST.txt.asc"
+}
+prune() { # keep the last $KEEP builds
+    ls -1d "$ROOT"/[0-9]*T[0-9]*Z 2>/dev/null | sort | head -n "-$KEEP" | while read -r old; do
+        rm -rf "$old"
+        say "pruned $(basename "$old")"
+    done
+}
+
+# --- --sign: the build that --sign-later left waiting goes live now, and nothing is fetched ---
+if [ "$MODE" = sign ]; then
+    [ -f "$PENDING" ] || die "nothing is waiting to be signed (no build was made with --sign-later, or it went live already)"
+    WAITING="$(sed -n 's/^# Build: //p' "$PENDING" | head -1)"
+    if [ -z "$WAITING" ] || [ ! -d "$ROOT/$WAITING" ]; then
+        rm -f "$PENDING"
+        die "the unsigned build ${WAITING:-?} is gone; publish again"
+    fi
+    MAN="$ROOT/.MANIFEST.txt.tmp"
+    write_manifest "$ROOT/$WAITING" "$WAITING" > "$MAN"     # cheap: the hashes are cached by inode
+    [ "$(body "$MAN")" = "$(body "$PENDING")" ] || die "build $WAITING no longer matches the manifest written for it; publish again"
+    echo "> SIGNING build $WAITING"
+    go_live "$MAN" "$WAITING"
+    prune
+    exit 0
+fi
 
 # --- the sets this run refreshes ---
 grep -v '^[[:space:]]*#' "$CONF" | awk 'NF' > "$CACHE/conf.tmp"
@@ -232,7 +309,18 @@ done < "$CACHE/conf.tmp"
 SKIP="$(echo "$SKIP" | awk 'NF' | sort -u)"
 for s in $SKIP; do REFRESH="$(echo "$REFRESH" | grep -vx "$s" || true)"; done
 
-PREV="$(sed -n 's/^# Build: //p' "$ROOT/MANIFEST.txt" 2>/dev/null | head -1)"
+# the build this one starts from: the one waiting to be signed if there is one, else the live one
+PREV_MAN="$ROOT/MANIFEST.txt"
+if [ -f "$PENDING" ]; then
+    _w="$(sed -n 's/^# Build: //p' "$PENDING" | head -1)"
+    if [ -n "$_w" ] && [ -d "$ROOT/$_w" ]; then
+        PREV_MAN="$PENDING"
+        say "build $_w is complete but not signed; this publish starts from it"
+    else
+        rm -f "$PENDING"
+    fi
+fi
+PREV="$(sed -n 's/^# Build: //p' "$PREV_MAN" 2>/dev/null | head -1)"
 if [ -n "$PREV" ] && [ -d "$ROOT/$PREV" ]; then
     cp -al "$ROOT/$PREV" "$NEW"                    # hard links: the old build is never touched
 else
@@ -305,46 +393,42 @@ for s in $ALL; do
     fi
 done
 
-# --- the manifest, exactly as the releases do it ---
-body() { # the manifest's file lines with the build directory taken out, to compare two builds
-    sed -n 's|^\([0-9a-f]\{64\}\)  /[^/]*/|\1  |p' "$1" | grep -v '/NOTICE.txt$' | sort -k2
-}
+# --- the manifest, then the signature, or not yet ---
 MAN="$ROOT/.MANIFEST.txt.tmp"
-{
-    echo "# LocalGhost Mirror Manifest"
-    echo "# Build: ${BUILD}"
-    echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-    echo ""
-    find "$NEW" -type f ! -name '.*' | sort | while read -r f; do
-        sha_cached "$f"
-    done | sed "s|$ROOT||" | sort -k2
-} > "$MAN"
+write_manifest "$NEW" "$BUILD" > "$MAN"
 left_out() {
     if [ -n "$SKIP" ]; then
         echo "!! left out of the mirror until their lines are finished: $(echo $SKIP) (see above)" >&2
     fi
 }
-if [ -f "$ROOT/MANIFEST.txt" ] && [ "$(body "$MAN")" = "$(body "$ROOT/MANIFEST.txt")" ]; then
-    echo "> nothing changed upstream , the mirror stays at build $PREV"
+if [ -f "$PREV_MAN" ] && [ "$(body "$MAN")" = "$(body "$PREV_MAN")" ]; then
+    if [ "$PREV_MAN" = "$PENDING" ]; then
+        # nothing new since the build that is waiting: that one is the build to sign, not a copy of it
+        rm -rf "$NEW"
+        if [ -n "$SIGN_LATER" ]; then
+            echo "> nothing changed since build $PREV, which is complete and still waiting to be signed ($0 --sign)"
+        else
+            echo "> nothing changed since build $PREV, which was waiting to be signed"
+            write_manifest "$ROOT/$PREV" "$PREV" > "$MAN"
+            go_live "$MAN" "$PREV"
+            prune
+        fi
+    else
+        echo "> nothing changed upstream , the mirror stays at build $PREV"
+    fi
     left_out
     exit 0
 fi
-gpg --batch --yes --armor --local-user "$GPG_USER" --output "$ROOT/.MANIFEST.txt.asc.tmp" --detach-sign "$MAN" \
-    || die "gpg could not sign as $GPG_USER"
-# the pair, back to back; a box that reads between the two sees a signature that does not match and
-# tries again a few seconds later (tools/mirror_fetch.sh)
-mv -f "$MAN" "$ROOT/MANIFEST.txt"
-mv -f "$ROOT/.MANIFEST.txt.asc.tmp" "$ROOT/MANIFEST.txt.asc"
-PUBLISHED=1
-FILE_COUNT=$(grep -c "^[a-f0-9]" "$ROOT/MANIFEST.txt")
-echo "  [signed] MANIFEST.txt (${FILE_COUNT} files, build ${BUILD})"
-echo "  [signed] MANIFEST.txt.asc"
-
-# --- keep the last $KEEP builds ---
-ls -1d "$ROOT"/[0-9]*T[0-9]*Z 2>/dev/null | sort | head -n "-$KEEP" | while read -r old; do
-    rm -rf "$old"
-    say "pruned $(basename "$old")"
-done
+if [ -n "$SIGN_LATER" ]; then
+    mv -f "$MAN" "$PENDING"
+    PUBLISHED=1                                      # the build stays; it just isn't live
+    if [ "$PREV_MAN" = "$PENDING" ]; then rm -rf "${ROOT:?}/$PREV"; fi   # the one it replaces was never live
+    echo "> build $BUILD is complete and NOT live (unsigned). Sign it and put it live with:  $0 --sign"
+    left_out
+    exit 0
+fi
+go_live "$MAN" "$BUILD"
+if [ "$PREV_MAN" = "$PENDING" ]; then rm -rf "${ROOT:?}/$PREV"; fi       # the waiting build, never live, now folded in
+prune
 left_out
 exit 0
-

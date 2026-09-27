@@ -523,7 +523,9 @@ fi
 # up.
 # Sets marked "manual" in mirror.conf (roads, 80
 # GB, daily upstream) are not refreshed here;
-# deploy/mirror/publish.sh roads does that.
+# deploy/mirror/publish.sh --sign-later roads
+# does that, and a build left waiting by it is
+# folded in and signed by the next deploy.
 #   MIRROR=off ./deploy/deploy.sh           skip it
 #   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh
 # ============================================

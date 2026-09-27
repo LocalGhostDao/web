@@ -68,17 +68,40 @@ Gemma 4 weights are 7.3 GB; `roads` is on its own, below). After that a deploy o
 changed upstream and makes no new build when nothing did. A failed publish never stops the site deploy; the last good build
 stays up. The builds are hard links onto the cache, so every file is on the pool once.
 
-By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys:
+By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys (the pool
+is the default when it exists, so no variables are needed):
 
-    GHOST_MIRROR_DATA=/bulk/localghost/mirror/data GHOST_MIRROR_CACHE=/bulk/localghost/mirror/cache \
-        deploy/mirror/publish.sh geo landpolygons        # live at once, the web root points here
+    deploy/mirror/publish.sh geo landpolygons        # live at once, the web root points here
+
+## Long publishes: progress, and signing later
+
+On a terminal, every download shows curl's progress meter (size so far, speed, time left) and every
+file being hashed for the first time says so (`hashing roads/europe-latest.osm.pbf (33G), once`), so
+a publish never looks stuck. Piped into a deploy log it stays quiet.
+
+The signature is the last step and needs the key's passphrase, and an hour of downloads that ends in
+a pinentry nobody is there for is a wasted hour: the build is thrown away, only the cache keeps the
+downloads. So a long publish is two steps:
+
+    screen -S roads
+    deploy/mirror/publish.sh --sign-later roads    # downloads, builds, hashes; asks for nothing
+    # nothing is live yet. Any time later, in a minute or a day:
+    deploy/mirror/publish.sh --sign                # passphrase, signature, live
+
+`--sign-later` leaves the finished build in the pool with its manifest written but unsigned
+(`.MANIFEST.txt.unsigned`, a dotfile, never served); the live manifest still names the previous
+build, so boxes see nothing until `--sign`. `--sign` re-checks the build against that manifest (cheap,
+the hashes are cached) and puts the pair in place. A plain publish or a deploy that finds a build
+waiting starts from it and signs the result, so the waiting build is never lost or left behind; a
+second `--sign-later` replaces it.
 
 ## Sets refreshed only by name (`manual`)
 
 A set marked `manual` in `mirror.conf` is left alone by a plain publish and by every deploy; each
 new build carries whatever the previous build had for it. It is refreshed only when named:
 
-    deploy/mirror/publish.sh roads        # in screen: an hour or more, every changed extract whole
+    deploy/mirror/publish.sh --sign-later roads   # in screen: an hour or more, every changed extract whole
+    deploy/mirror/publish.sh --sign               # when it's done
 
 `roads` is the reason: Geofabrik republishes each continent extract every day, so a freshness check
 would find all 80 GB changed at every deploy. Refresh it about monthly. Builds are hard links onto
