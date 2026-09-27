@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-09-24",
-            "dateModified": "2026-09-24",
+            "dateModified": "2026-09-26",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/mirror"
@@ -135,8 +135,6 @@
             .mirror-table td:first-child { font-family: var(--font-mono); color: var(--terminal); white-space: nowrap; }
             .mirror-table code { display: block; border: none; background: none; padding: 0; margin: 0 0 0.2rem; font-size: 0.8rem; overflow-wrap: anywhere; }
             .mirror-table code, pre.cmd, .manifesto-text code { font-variant-ligatures: none; }
-            .mirror-table .later td { color: var(--text-dim); }
-            .mirror-table .later td:first-child { color: var(--text-dim); }
             @media (max-width: 640px) {
                 .mirror-table-wrap { border: none; }
                 .mirror-table, .mirror-table tbody, .mirror-table tr, .mirror-table td { display: block; width: 100%; }
@@ -191,7 +189,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code> followed a few days later. The pinned llama.cpp source and the EmbeddingGemma weights are in the config but not published yet.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp) and <code>embeddings</code> (EmbeddingGemma) followed within the week. The manifest is the list that counts: a set is on the mirror when its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -236,10 +234,10 @@
                                 <td data-label="Where it comes from">The official Go release, checked against go.dev's published SHA-256 before it's mirrored. Setup needs it before any Go exists on the box.</td>
                                 <td data-label="Terms">BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup></td>
                             </tr>
-                            <tr class="later">
+                            <tr>
                                 <td data-label="Set">llama</td>
-                                <td data-label="Files"><code>llama.cpp-&lt;commit&gt;.tar.gz</code></td>
-                                <td data-label="Where it comes from">GitHub's source archive of one pinned commit of the inference engine. Not published yet.</td>
+                                <td data-label="Files"><code>llama.cpp-v0.5.0-7fe450e.tar.gz</code></td>
+                                <td data-label="Where it comes from">GitHub's source archive of llama.cpp release v0.5.0, the inference engine, fetched by commit so the URL can't move. Every box builds this one; a new pin is a new file name.</td>
                                 <td data-label="Terms">MIT<sup class="fn"><a href="#ref5">[5]</a></sup></td>
                             </tr>
                             <tr>
@@ -248,10 +246,10 @@
                                 <td data-label="Where it comes from">Gemma 4 12B instruct (Q4_K_M) and its vision projector, the build every box runs, as quantised and published by Unsloth. Unmodified and pinned by SHA-256.</td>
                                 <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
                             </tr>
-                            <tr class="later">
+                            <tr>
                                 <td data-label="Set">embeddings</td>
-                                <td data-label="Files">EmbeddingGemma 300M</td>
-                                <td data-label="Where it comes from">Google's embedding model, for search over your own notes. Not published yet.</td>
+                                <td data-label="Files"><code>embeddinggemma-300m-qat-Q8_0.gguf</code></td>
+                                <td data-label="Where it comes from">EmbeddingGemma 300M, Google's embedding model, for search over your own notes. Google's quantisation-aware Q8_0 checkpoint as converted to GGUF by the llama.cpp maintainers. Unmodified and pinned by SHA-256.</td>
                                 <td data-label="Terms">Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
                             </tr>
                         </tbody>
@@ -269,7 +267,7 @@
                 </p>
 
                 <p>
-                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror will carry one commit, named in the file, and a new pin is a new file name that makes boxes rebuild. The model weights are pinned the same way, by SHA-256, so if a file ever changes upstream the publish stops instead of passing it on to a box.
+                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror carries one release, named in the file along with its commit, and a new pin is a new file name that makes boxes rebuild. The model weights are pinned the same way, by SHA-256, so if a file ever changes upstream the publish stops instead of passing it on to a box. Where the upstream publishes a checksum (go.dev, a Hugging Face file page) the pin is taken from there; GitHub publishes none for source archives, so the llama.cpp pin is the hash of the first copy the web server downloaded, read off the server and written into the config by hand.
                 </p>
 
                 <p>
@@ -332,7 +330,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 </p>
 
                 <p>
-                    Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here are Unsloth's GGUF quantisation of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use, which have to be handed to everyone who receives the model, in full, with its use restrictions intact.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish refuses a model until its terms file is complete, which is why EmbeddingGemma isn't here yet.
+                    Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here are Unsloth's GGUF quantisation of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use (last modified 1 April 2026), which have to be handed to everyone who receives the model, in full, with its use restrictions intact, so the whole agreement sits beside the file as <code>TERMS-gemma-terms.txt</code>.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish leaves a model out until its terms file is complete.
                 </p>
 
                 <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH. Made with Natural Earth. Place names from GeoNames.</div>
@@ -347,9 +345,9 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref2"><span class="n">[2]</span>Natural Earth's terms of use, which place all of its vector and raster data in the public domain. Source for the Natural Earth terms. The GeoJSON copies come from the natural-earth-vector repository on GitHub. <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">naturalearthdata.com/about/terms-of-use</a></div>
                     <div class="ref" id="ref3"><span class="n">[3]</span>The land polygons published by osmdata.openstreetmap.de and the continent extracts published by Geofabrik GmbH, both of which state that the data is copyright OpenStreetMap contributors and available under the Open Database License, and the ODbL 1.0 itself. Source for the land polygon and road terms. A box cuts the tiles with <code>cmd/ghost-landtiles</code> and <code>bin/ghost-roadtiles</code> in the LocalGhost repository. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>, <a href="https://download.geofabrik.de/" target="_blank" rel="noopener">download.geofabrik.de</a>, <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl/1-0</a> and <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a></div>
                     <div class="ref" id="ref4"><span class="n">[4]</span>The Go licence, a BSD 3-Clause licence, whose full text is also the LICENSE file inside every release tarball. Source for the Go terms. <a href="https://go.dev/LICENSE" target="_blank" rel="noopener">go.dev/LICENSE</a></div>
-                    <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive. Source for the llama.cpp terms. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a></div>
+                    <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive, and its release v0.5.0 of 23 September 2026 (commit 7fe450e), one of the stable <code>vX.Y.Z</code> releases the project recommends for downstream distribution as against its <code>b</code>-numbered builds. Source for the llama.cpp terms and the pin. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a> and <a href="https://github.com/ggml-org/llama.cpp/releases/tag/v0.5.0" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp/releases/tag/v0.5.0</a></div>
                     <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF release of Gemma 4 12B instruct on Hugging Face, quantised from google/gemma-4-12B-it, which lists the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a> and <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a></div>
-                    <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and require anyone redistributing the model to pass the terms on and keep the use restrictions in the Gemma Prohibited Use Policy in force. Source for the EmbeddingGemma terms. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a> and <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a></div>
+                    <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and whose section 3.1 requires anyone redistributing the model to give every recipient a copy of the agreement and keep the use restrictions in the Gemma Prohibited Use Policy in force, and the GGUF conversion of Google's quantisation-aware Q8_0 checkpoint published by the llama.cpp maintainers, which lists the SHA-256 of the file. Sources for the EmbeddingGemma terms and the pin. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a>, <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a> and <a href="https://huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF" target="_blank" rel="noopener">huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF</a></div>
                 </div>
 
             </div>

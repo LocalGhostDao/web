@@ -193,6 +193,45 @@ else
     [ -n "$MANUAL" ] && say "manual sets kept as they are ($(echo $MANUAL)); name one to refresh it"
 fi
 
+# --- lines that aren't finished yet: a terms file that still says EDIT-ME, or a pin still to be ---
+# --- taken (check=sha256:?). Their whole set is left out of this build, loudly, and the rest is  ---
+# --- published as usual, so an unfinished line never holds up the maps or the Go toolchain.      ---
+SKIP=""
+skip() { echo "$SKIP" | grep -qx "$1"; }
+while read -r set file tnames source opt; do
+    want "$set" || continue
+    skip "$set" && continue
+    for t in $(echo "$tnames" | tr ',' ' '); do
+        [ -f "$TERMS/$t.txt" ] || continue           # a missing file stops the publish, below
+        if grep -q 'EDIT-ME' "$TERMS/$t.txt"; then
+            say "!! $set is left out: $TERMS/$t.txt still says EDIT-ME (finish it, then publish again)"
+            SKIP="$SKIP
+$set"
+        fi
+    done
+    skip "$set" && continue
+    for o in ${opt:-}; do
+        [ "$o" = "check=sha256:?" ] || continue
+        # take the pin: the file is downloaded (or copied) once, hashed, and kept in the cache under
+        # that hash, so the publish that carries the pin finds it there and fetches nothing
+        case "$source" in *'<'*) die "$set/$file: the source still has a placeholder: $source" ;; esac
+        case "$source" in
+            http://*|https://*) _src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
+            *) _src="$source"; [ -f "$_src" ] || die "$set/$file: no such file $_src" ;;
+        esac
+        _h="$(sha256sum "$_src" | cut -d' ' -f1)"
+        [ -s "$CACHE/pin-$_h-$file" ] || ln -f "$_src" "$CACHE/pin-$_h-$file" 2>/dev/null || cp "$_src" "$CACHE/pin-$_h-$file"
+        say "!! $set is left out: $file is not pinned yet. As downloaded just now its SHA-256 is"
+        say "!!     $_h"
+        say "!!   so its line in mirror.conf wants  check=sha256:$_h  in place of  check=sha256:?"
+        say "!!   (the copy is kept in the cache under that hash; the next publish fetches nothing)"
+        SKIP="$SKIP
+$set"
+    done
+done < "$CACHE/conf.tmp"
+SKIP="$(echo "$SKIP" | awk 'NF' | sort -u)"
+for s in $SKIP; do REFRESH="$(echo "$REFRESH" | grep -vx "$s" || true)"; done
+
 PREV="$(sed -n 's/^# Build: //p' "$ROOT/MANIFEST.txt" 2>/dev/null | head -1)"
 if [ -n "$PREV" ] && [ -d "$ROOT/$PREV" ]; then
     cp -al "$ROOT/$PREV" "$NEW"                    # hard links: the old build is never touched
@@ -202,10 +241,11 @@ fi
 for s in $ALL; do
     want "$s" && rm -rf "${NEW:?}/$s"              # a refreshed set is rebuilt from the conf alone
 done
-# sets no longer in the conf are dropped
+# sets no longer in the conf are dropped, and so is a set whose lines aren't finished
 for d in "$NEW"/*/; do
     [ -d "$d" ] || continue
     echo "$ALL" | grep -qx "$(basename "$d")" || rm -rf "$d"
+    skip "$(basename "$d")" && rm -rf "$d"
 done
 
 echo "> PUBLISHING ${SETS:-every set} as build $BUILD"
@@ -279,8 +319,14 @@ MAN="$ROOT/.MANIFEST.txt.tmp"
         sha_cached "$f"
     done | sed "s|$ROOT||" | sort -k2
 } > "$MAN"
+left_out() {
+    if [ -n "$SKIP" ]; then
+        echo "!! left out of the mirror until their lines are finished: $(echo $SKIP) (see above)" >&2
+    fi
+}
 if [ -f "$ROOT/MANIFEST.txt" ] && [ "$(body "$MAN")" = "$(body "$ROOT/MANIFEST.txt")" ]; then
     echo "> nothing changed upstream , the mirror stays at build $PREV"
+    left_out
     exit 0
 fi
 gpg --batch --yes --armor --local-user "$GPG_USER" --output "$ROOT/.MANIFEST.txt.asc.tmp" --detach-sign "$MAN" \
@@ -299,4 +345,6 @@ ls -1d "$ROOT"/[0-9]*T[0-9]*Z 2>/dev/null | sort | head -n "-$KEEP" | while read
     rm -rf "$old"
     say "pruned $(basename "$old")"
 done
+left_out
+exit 0
 

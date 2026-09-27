@@ -1,8 +1,8 @@
 # deploy/mirror/ , the LocalGhost setup mirror (operator notes)
 
 What `https://www.localghost.ai/mirror/` serves: every file a LocalGhost box downloads once, at setup
-(GeoNames, Natural Earth, OpenStreetMap's land polygons, the Go toolchain, and, once listed, a
-pinned llama.cpp and the model weights), with the terms each one is
+(GeoNames, Natural Earth, OpenStreetMap's land polygons and road extracts, the Go toolchain, a
+pinned llama.cpp release, and the model weights), with the terms each one is
 published under. Boxes fetch it with `tools/mirror_fetch.sh` from the server repo
 (LocalGhostDao/localghost) and install nothing unless the gpg signature on `MANIFEST.txt` verifies
 against the key in that repo and every file's SHA-256 matches the manifest.
@@ -20,9 +20,11 @@ publish straight into the pool on every deploy.
 
 - `publish.sh` , fetches everything in `mirror.conf`, writes a new build directory, signs
   `MANIFEST.txt` with `gpg --local-user info@localghost.ai`.
-- `mirror.conf` , one line per file: `set file terms source [check=godev]`.
+- `mirror.conf` , one line per file: `set file terms source [check=godev] [check=sha256:<hex>]
+  [check=sha256:?] [manual]`.
 - `terms/` , the terms each file is published under; copied beside it as `TERMS-<name>.txt`. A terms
-  file that still says `EDIT-ME` stops the publish of anything that uses it.
+  file that still says `EDIT-ME` leaves its whole set out of the build until it's finished (see
+  "Unfinished lines" below).
 - No key file here. The mirror is signed with the site's key, the one already published at
   `/.well-known/pgp-key.asc` (`public/.well-known/pgp-key.asc`), fingerprint
   `DCE9 A3D1 4EB4 6197 1DD5  F393 706E 4194 F08A 09A0`. `publish.sh` checks the signing key against
@@ -61,8 +63,9 @@ aren't there yet. `MIRROR_DATA=<dir>` uses another pool; `MIRROR_DATA=local` is 
     MIRROR=off ./deploy/deploy.sh                        # site only
 
 Run it as the user whose gpg keyring holds the info@localghost.ai secret key (the same user that
-already signs the deploy manifest). The first run pulls every file once (about 1.5 GB). After that a deploy only downloads what changed upstream and makes
-no new build when nothing did. A failed publish never stops the site deploy; the last good build
+already signs the deploy manifest). The first run pulls every file once (about 9 GB, of which the
+Gemma 4 weights are 7.3 GB; `roads` is on its own, below). After that a deploy only downloads what
+changed upstream and makes no new build when nothing did. A failed publish never stops the site deploy; the last good build
 stays up. The builds are hard links onto the cache, so every file is on the pool once.
 
 By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys:
@@ -98,8 +101,41 @@ URL in its line with the path. It's published only if its `sha256sum` matches th
 hash is a different file, and then it needs its own line, its own pin and a terms file that says
 where it came from.
 
-EmbeddingGemma has its own `embeddings` set, commented out until `terms/gemma-terms.txt` holds the
-full Gemma Terms of Use.
+## Embeddings
+
+`embeddings` is EmbeddingGemma 300M for search over a box's own notes, as Google's quantisation-aware
+Q8_0 checkpoint converted to GGUF by the llama.cpp maintainers
+(huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF, 329 MB, not gated), pinned by the SHA-256
+on its file page. EmbeddingGemma is under the Gemma Terms of Use, not Apache 2.0, and section 3.1 of
+those terms says every recipient gets a copy of the whole agreement, so `terms/gemma-terms.txt` has
+to carry the full text: paste it from https://ai.google.dev/gemma/terms (all of it, title through the
+Appendix) under the "in full:" line and delete the `EDIT-ME` paragraph. Until then the set is left out
+of every build and the publish says so; nothing else waits for it.
+
+## llama.cpp
+
+`llama` is one source archive of the inference engine, so every box builds the same llama.cpp:
+release v0.5.0 (ggml-org's stable `vX.Y.Z` tags are the ones they recommend for downstream
+distribution; the `b`-number tags are the bleeding edge), commit
+`7fe450e19305b828c199d602c23a8337aaa1f03b`, fetched by commit so the URL can't move. GitHub publishes
+no checksum for source archives, so the line starts life as `check=sha256:?` (next section). To move
+the pin: new commit in the URL and the file name, `check=sha256:?` again, two publishes. The tarball
+unpacks into one directory named after the commit (`tar xzf ... --strip-components=1`).
+
+## Unfinished lines
+
+Two things can leave a line unfinished, and neither stops the rest of the mirror: the set is left out
+of the build, every publish says so (`!! <set> is left out: ...` and a summary line at the end), and
+the other sets are published as usual. A set that had been published before is dropped from the new
+build until its line is finished again.
+
+- A terms file that still says `EDIT-ME`.
+- `check=sha256:?`, a pin still to be taken. The publish downloads the file once, prints its SHA-256
+  and the exact `check=sha256:<hex>` to put on the line, and keeps the copy in the cache under that
+  hash. Paste the hash, publish again: the pinned publish finds the copy and downloads nothing. Use
+  it for upstreams that publish no checksum (a GitHub source archive); where upstream does (a
+  Hugging Face file page, go.dev), take the hash from there, so it's checked against something
+  other than the server's own download.
 
 ## Disk
 

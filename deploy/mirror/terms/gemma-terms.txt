@@ -1,8 +1,22 @@
 Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
 
-EDIT-ME: EmbeddingGemma is under the Gemma Terms of Use, not Apache 2.0, and whoever distributes it
-must give every recipient a copy of that agreement and keep its use restrictions (section 3.2, the
-Gemma Prohibited Use Policy at https://ai.google.dev/gemma/prohibited_use_policy) in force. Paste the
-full text of the Gemma Terms of Use below the first line (from https://ai.google.dev/gemma/terms, or
-the licence file that came with the model), then delete this EDIT-ME paragraph. The publish refuses
-the model until then.
+EmbeddingGemma 300M , Google (weights), converted to GGUF by the llama.cpp maintainers (ggml-org)
+
+embeddinggemma-300m-qat-Q8_0.gguf is an unmodified copy of the file ggml-org published at
+https://huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF, converted from Google's
+quantisation-aware Q8_0 checkpoint of EmbeddingGemma 300M
+(https://huggingface.co/google/embeddinggemma-300m-qat-q8_0-unquantized). The conversion to GGUF is
+ggml-org's; LocalGhost changes nothing further.
+
+Use of this file is subject to the use restrictions in Section 3.2 of the Gemma Terms of Use and to
+the Gemma Prohibited Use Policy, https://ai.google.dev/gemma/prohibited_use_policy. Anyone who
+passes the file on must pass these terms on with it, in full, with the use restrictions intact.
+
+The Gemma Terms of Use (last modified 1 April 2026), in full:
+
+EDIT-ME: paste the complete text of the Gemma Terms of Use below this paragraph, from
+https://ai.google.dev/gemma/terms (all of it, from the title and "Last modified" line through
+Section 4 and the Appendix), then delete this paragraph. Section 3.1 of the terms requires every
+third-party recipient to get a copy of the whole agreement, which is why the text has to be here and
+not a link. The publish leaves the embeddings set out of the mirror until this file no longer says
+EDIT-ME.
