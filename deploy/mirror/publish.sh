@@ -195,7 +195,7 @@ sha_cached() {
     _h="$(grep -m1 "^$_k " "$SHACACHE" 2>/dev/null | cut -d' ' -f2)"
     if [ -z "$_h" ]; then
         # a big file is read once here, and that can take minutes on 33 GB: say so
-        [ "$(stat -c %s "$1")" -gt 268435456 ] && say "hashing ${1#$ROOT/} ($(du -h "$1" | cut -f1)), once"
+        [ "$(stat -c %s "$1")" -gt 268435456 ] && say "hashing ${1#$ROOT/} ($(du -h --apparent-size "$1" | cut -f1)), once"
         _h="$(sha256sum "$1" | cut -d' ' -f1)"
         echo "$_k $_h" >> "$SHACACHE"
     fi
@@ -413,7 +413,7 @@ while read -r set file tnames source opt; do
     upstream="$source"
     case "$source" in /*|./*) upstream="(provided by LocalGhost)" ;; esac
     printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')" "$upstream" >> "$NEW/$set/NOTICE.txt"
-    say "$set/$file: $(du -h "$NEW/$set/$file" | cut -f1)"
+    say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
 done < "$CACHE/conf.tmp"
 for s in $ALL; do
     if want "$s" && [ -f "$NEW/$s/NOTICE.txt" ]; then

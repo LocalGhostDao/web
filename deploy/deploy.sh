@@ -345,7 +345,9 @@ trap "rm -rf '$TEMP_FILE' '$WORK_DIR'" EXIT
 echo "> DIFFERENTIAL ANALYSIS..."
 echo ""
 
-# 1. Sync static assets
+# 1. Sync static assets. '/mirror' without a trailing slash: in the web root it is a symlink to the
+# pool, and a pattern ending in / matches only directories, so '/mirror/' let --delete remove the
+# link at the start of every deploy (and /mirror/ 404'd until the mirror step put it back)
 ASSET_OUTPUT=$(rsync -av --checksum --delete \
     --exclude='*.html' \
     --exclude='*.css' \
@@ -356,7 +358,7 @@ ASSET_OUTPUT=$(rsync -av --checksum --delete \
     --exclude='feed.xml' \
     --exclude='robots.txt' \
     --exclude='ghost/deploy-manifest*' \
-    --exclude='/mirror/' \
+    --exclude='/mirror' \
     --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
 
