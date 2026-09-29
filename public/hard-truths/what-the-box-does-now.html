@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What the Box Does Now, and What Each Part Costs | LocalGhost.ai</title>
+    <meta name="description" content="One QR enrols the phone, mutual TLS behind a 503 wall, a TPM-sealed volume key, 30,408 photos captioned and mapped, and the price of every part of the box.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="keywords" content="LocalGhost, local AI, personal AI server, mutual TLS, QR enrolment, TPM sealed key, LUKS2, duress PIN, photo archive, Gemma 4, EmbeddingGemma, llama.cpp, reciprocal rank fusion, OpenStreetMap, Geofabrik, GeoNames, location history, self-hosted, Go daemons, signed mirror, encrypted volume, hardware watchdog, Debian 13, RTX 4070">
+    <meta name="category" content="AI, Architecture, Engineering">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/what-the-box-does-now">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/what-the-box-does-now">
+    <meta property="og:title" content="What the Box Does Now, and What Each Part Costs | LocalGhost Hard Truths">
+    <meta property="og:description" content="How a LocalGhost box works in September 2026. One QR enrols the phone, mutual TLS and a 503 wall, a volume key sealed to the TPM and released by a PIN, 30,408 photos captioned and mapped, a memory of each day, Greek on the lock screen, and the price of every part.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-what-the-box-does-now.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="What the Box Does Now, and What Each Part Costs, LocalGhost Hard Truths">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-09-29T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="LocalGhost">
+    <meta property="article:tag" content="local AI">
+    <meta property="article:tag" content="Gemma 4">
+    <meta property="article:tag" content="llama.cpp">
+    <meta property="article:tag" content="OpenStreetMap">
+    <meta property="article:tag" content="photo archive">
+    <meta property="article:tag" content="Go">
+    <meta property="article:tag" content="signed mirror">
+    <meta property="article:tag" content="mutual TLS">
+    <meta property="article:tag" content="TPM">
+    <meta property="article:reading_time" content="21">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghostai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="What the Box Does Now, and What Each Part Costs">
+    <meta name="twitter:description" content="One QR enrols the phone, mutual TLS behind a 503 wall, a TPM-sealed volume key, 30,408 photos captioned and mapped, and the price of every part of the box.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-what-the-box-does-now.png">
+    <meta name="twitter:image:alt" content="What the Box Does Now, and What Each Part Costs, LocalGhost Hard Truths">
+    <meta name="fediverse:creator" content="@vladcealicu">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "What the Box Does Now, and What Each Part Costs",
+        "description": "How a LocalGhost box works in September 2026. One QR enrols the phone, mutual TLS and a 503 wall, a volume key sealed to the TPM and released by a PIN, 30,408 photos captioned and mapped, a memory of each day, Greek on the lock screen, and the price of every part.",
+        "author": {
+            "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
+            "sameAs": [
+                "https://x.com/vladcealicu"
+            ]
+        },
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-09-29",
+        "dateModified": "2026-09-29",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/what-the-box-does-now"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-what-the-box-does-now.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "LocalGhost, local AI, personal AI server, mutual TLS, QR enrolment, TPM, photo archive, Gemma 4, EmbeddingGemma, llama.cpp, OpenStreetMap, location history, Go daemons, signed mirror",
+        "articleSection": "Hard Truths",
+        "wordCount": 5812,
+        "inLanguage": "en-GB",
+        "isPartOf": {
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/what-the-box-does-now"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "What the Box Does Now, and What Each Part Costs",
+                "item": "https://www.localghost.ai/hard-truths/what-the-box-does-now"
+            }
+        ]
+    }
+    </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    <style>
+        /* The command list in "Running it". Same look as inline code, block-sized.
+           Move into blog.css if another post needs it. */
+        .manifesto-text pre {
+            background: var(--void-lighter);
+            border: 1px solid var(--border);
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.78em;
+            line-height: 1.7;
+            color: var(--text);
+        }
+        .manifesto-text pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+            color: inherit;
+        }
+        .manifesto-text pre .c {
+            color: var(--text-dim);
+        }
+        .manifesto-text pre .g {
+            color: var(--terminal);
+        }
+        /* Key facts, the same look as the About page's list */
+        .key-facts {
+            display: grid;
+            grid-template-columns: 11rem 1fr;
+            border: 1px solid var(--border);
+            margin: 1.5rem 0 2rem;
+            background: var(--void-lighter);
+            overflow: hidden;
+        }
+        .key-facts > * { min-width: 0; overflow-wrap: anywhere; margin: 0; }
+        .key-facts dt, .key-facts dd { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); }
+        .key-facts dt {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--terminal);
+            border-right: 1px solid var(--border);
+        }
+        .key-facts dd { font-size: 0.9rem; line-height: 1.6; color: var(--text); }
+        .key-facts dd a { color: var(--terminal); }
+        .key-facts dt:last-of-type, .key-facts dd:last-of-type { border-bottom: none; }
+        @media (max-width: 768px) {
+            .key-facts { grid-template-columns: 1fr; }
+            .key-facts dt { border-right: none; border-bottom: none; padding-bottom: 0.2rem; }
+            .key-facts dd { padding-top: 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths" class="active">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+<main class="narrow">
+
+    <div class="page-header">
+        <div class="section-label">&gt; HARD_TRUTHS // POST_18 // SEP 2026</div>
+        <h1>What the Box Does Now, and What Each Part Costs</h1>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-09-29">29 September 2026</time></div>
+    </div>
+
+    <div class="manifesto-text">
+
+        <div class="statement-box">
+            <p class="statement-main">Every part of the box trades something away, and the price is written next to it.</p>
+        </div>
+
+        <p>
+            The box in my cupboard now holds 30,408 photos and 2,573 videos, draws where I have been along the streets I walked, writes a short account of each day, answers questions from my own archive plus a few web pages my phone read for it, and teaches me Greek on the lock screen. None of its daemons opens a connection to the internet. The phone is the only thing that talks to it, and the phone gets in with one secret it was shown once, on a screen. Most of what follows was built or rebuilt between 18 and 29 September 2026, and each part below ends with what it costs, because I would rather you read the price here than find it later. The trust model comes first, because everything after it is worthless if the wrong phone can ask.
+        </p>
+
+        <h2 class="section-header">&gt; 1. How a phone gets in</h2>
+
+        <p>
+            The box is its own certificate authority, an ECDSA P-256 key made at setup that signs two kinds of thing and nothing else, the box's own HTTPS server certificate and one client certificate per phone. Enrolment is a QR code in the terminal on the box, and scanning it is the whole enrolment. When the box shows the code it generates the phone's keypair itself, signs the client certificate with its CA, and puts into the code the certificate and its PKCS#8 private key (both raw DER, base64url) <a href="#ref-1" class="cite">[1]</a>, the box's host, port and name, and the SHA-256 fingerprint of the box's server certificate. That is 858 bytes. There is no CSR, no pairing code and no network exchange. The box records the certificate and never writes the key to disk, so the phone walks away with the only copy.
+        </p>
+
+        <p>
+            The 858 bytes cross as an animated code, and since 19 September the stream is erasure coded. The identity is split into eight data frames and four parity frames, any eight of the twelve rebuild it, so a missed frame costs one more frame instead of another lap. Each frame shows for one second and a clean first connect takes 8 to 12 seconds. The box stops showing frames after the first verified connection.
+        </p>
+
+        <p>
+            From then on the phone trusts the box by that pinned fingerprint alone. It doesn't use the CA for this and doesn't check the hostname, so the box can be a LAN address today and something else tomorrow and the phone doesn't care what it is called. On every call the phone presents its client certificate. nginx checks it against the box CA with <code>ssl_verify_client optional</code> <a href="#ref-2" class="cite">[2]</a>, passes the verdict inward, and secd makes the decision, so a missing or forged certificate gets the same 503 as everything else, including a well-formed request from a device the box never issued. On top of the certificate, the PIN unlock issues a session token that lasts two days.
+        </p>
+
+        <p>
+            The costs are the frames and the lack of an exit. The only secret in the QR is the phone's private key, which is what gets a request past the 503 wall, and anyone who records the frames (a camera over your shoulder, a terminal recording, scrollback) holds a valid device identity. They would still need the PIN to unlock the volume and get a session, but the key is not single-use. And there is no per-device revocation yet. nginx has no revocation list and device certificates are valid for ten years, so shutting out one phone today means a new CA and re-enrolling every phone. The smaller cost is the home-grown QR decoder on the phone, 1,200 lines I maintain myself, with one test for a code tilted by ten degrees that has failed since before any of this work. The test is right and the decoder is wrong, and neither has moved.
+        </p>
+
+        <h2 class="section-header">&gt; 2. Where the key lives</h2>
+
+        <p>
+            The archive sits on a LUKS2 volume and the volume key is sealed to the box's TPM <a href="#ref-3" class="cite">[3]</a>, through Google's go-tpm package, the one dependency outside the standard library that isn't a golang.org/x package. Sealed means the TPM hands the key back only to this board, in the boot state it measured when the key went in, so a disk pulled out of the box and put in another machine is ciphertext with no key on it anywhere. What releases the key is the PIN, typed in the phone app over the mutual TLS above. The PIN scheme is the one from <a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>, and the two FIDO2 hardware keys are for setup and recovery, not for the daily unlock.
+        </p>
+
+        <p>
+            Once open, the volume is mounted inside secd's private mount namespace. From the host it looks empty whether the box is locked or not, every daemon that needs it starts inside that namespace, and every tool reaches it through one door (section 12). Locking closes the volume, and everything except secd and nginx stops existing until the next PIN.
+        </p>
+
+        <p>
+            A box without a TPM (a software TPM, an older board, a virtual machine on someone's laptop) runs the same code path with the seal step missing. The volume key is then derived from the PIN alone, Argon2id as the Honeypot post describes <a href="#ref-4" class="cite">[4]</a>, and the health tool says so in plain words rather than pretending the seal is there. A box without hardware keys falls back the same way for setup, PIN only, and says that too.
+        </p>
+
+        <p>
+            The costs run in opposite directions. Without a TPM the PIN is the whole secret, and a short PIN under Argon2id is still a short PIN. With one, the key is married to a board, and a dead board means the recovery path (the hardware keys and the recovery key described on the <a href="/about">About page</a>) rather than a disk swap.
+        </p>
+
+        <h2 class="section-header">&gt; 3. The shape of it</h2>
+
+        <p>
+            A LocalGhost box is a Debian 13 machine with an RTX 4070 (12 GB of VRAM), that encrypted volume and a set of small Go daemons, each with one job. The card is the gaming card from <a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>, still in its Thunderbolt enclosure on the end of a USB-C cable, which is why it reports four PCIe lanes of sixteen. As far as I can tell that is the cable and not a fault, and it costs little, since the weights cross it once at load and then live in VRAM.
+        </p>
+
+        <p>
+            ghost.secd is the only thing that talks to the phone and answers 503 to anyone else. ghost.framed takes in photos, videos and location points. ghost.searchd indexes everything for search and runs the caption and tag queue. ghost.oracled runs the model through llama-server. ghost.synthd writes the memories and answers the chat. ghost.watchd supervises the rest and owns the health numbers. ghost.noted, ghost.voiced, ghost.tallyd and ghost.cued look after notes, voice memos, health data and the memories that surface before I ask.
+        </p>
+
+        <p>
+            The code is Go, the standard library plus go-tpm and three golang.org/x packages, with Postgres and Redis, llama.cpp for the model and a Kotlin app on the phone. All of it is MIT and on GitHub under <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener">LocalGhostDao</a>. The facts in one place, for the people and the crawlers who skim.
+        </p>
+
+        <dl class="key-facts">
+            <dt>Box</dt><dd>Debian 13, RTX 4070 (12 GB) in a Thunderbolt enclosure, LUKS2 volume with the key sealed to the TPM, mounted in secd's private mount namespace.</dd>
+            <dt>Daemons</dt><dd>ghost.secd, framed, searchd, oracled, synthd, watchd, noted, voiced, tallyd, cued. Go, standard library plus go-tpm and three golang.org/x packages. Postgres and Redis.</dd>
+            <dt>Transport</dt><dd>Mutual TLS to secd only. The box is its own CA (ECDSA P-256). The phone pins the server certificate's SHA-256 fingerprint. Anything else gets 503.</dd>
+            <dt>Enrolment</dt><dd>One animated QR, 858 bytes (client certificate, PKCS#8 key, host, port, name, server fingerprint), 8 data + 4 parity frames, one second each, 8 to 12 seconds. No CSR, no pairing code, no network exchange.</dd>
+            <dt>Unlock</dt><dd>A PIN typed in the phone app releases the TPM-sealed key and issues a two-day session token. FIDO2 keys for setup and recovery. No TPM or no hardware key means PIN only with Argon2id, and the health tool says so.</dd>
+            <dt>Models</dt><dd>Gemma 4 12B instruct Q4_K_M with its F16 vision projector on llama-server (llama.cpp v0.5.0). EmbeddingGemma 300M Q8_0 for search. Gemma 4 E2B UD-Q2_K_XL (2.2 GB) on the phone.</dd>
+            <dt>Search</dt><dd>Postgres full-text search and vector search, fused with reciprocal rank fusion. Web pages are read by the phone, never by the box.</dd>
+            <dt>Map data</dt><dd>OpenStreetMap land polygons, Geofabrik continent extracts (79 GB), GeoNames, Natural Earth, all cut into tiles on the box.</dd>
+            <dt>Archive</dt><dd>30,408 photos and 2,573 videos on 29 September 2026, each captioned, tagged into eleven categories and embedded.</dd>
+            <dt>Downloads</dt><dd>Everything from the signed <a href="/mirror">setup mirror</a>, key fingerprint DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0, pinned in the repository.</dd>
+            <dt>Internet</dt><dd>No daemon opens a connection. The phone runs the web searches and reads the pages.</dd>
+            <dt>Code</dt><dd>MIT, <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener">github.com/LocalGhostDao</a>.</dd>
+        </dl>
+
+        <h2 class="section-header">&gt; 4. The app</h2>
+
+        <p>
+            The phone side is one Kotlin app, no Google Play services, that talks to nothing but the box, apart from the search engine it queries on my behalf when a question needs the web. It started as a remote control and has become the whole front of the system, because the box has no screen and I want it that way. Box Status is the first screen, the pipeline panel from section 5 and every daemon's health from watchd. The map draws one day at a time as stays and moves (section 8). The chat answers from my archive, lists what it put into the prompt under every answer, runs the web round when the box asks for one, and carries a 2 GB model of its own for when the box is slow or absent (sections 6 and 7). On this day reads the day memories and the outings (section 9). Notes and voice memos go to noted and voiced, steps and sleep go to tallyd from the phone's health sync, a daily check-in records how the day felt, and cued pushes a memory before I ask for one. The location trail runs in the background, one fix every fifteen minutes plus whatever other apps ask for. And the lock screen teaches me languages, which is the part I like the most (section 10).
+        </p>
+
+        <p>
+            Everything the phone holds that matters is a copy of something on the box, except three things that live on the phone only. The private key from the QR. The Brave Search key, if I set one. And the location points the box has not acknowledged yet. The phone's model is downloaded from the box and checked against the hash the box states, never from the internet.
+        </p>
+
+        <p>
+            The cost is that the app is a lot of app. It is the map, the chat, the archive browser, a search client, a location logger, a health bridge, an inference runtime and a language tutor, and I am one person keeping it up with a box that changes every day. Each screen is small on purpose and the box does the thinking, but a bug in the app is a bug I find on a beach with no laptop.
+        </p>
+
+        <h2 class="section-header">&gt; 5. The archive pipeline</h2>
+
+
+        <p>
+            Every photo passes through the same stages. framed reads the EXIF from the first 256 KB of the file (it used to read 64 KB, and an Exif block can be 64 KB on its own, so the photos with the richest metadata were the ones that lost their dates and GPS <a href="#ref-5" class="cite">[5]</a>), pulls the location out of MP4 and MOV files, makes a preview and a thumbnail, and hands the frame to searchd. searchd asks the model to describe the image, turns the description into tags, files each tag under one of eleven categories (people, place, object, activity, food, animal, vehicle, nature, event, text, style) and embeds the text for search.
+        </p>
+
+        <p>
+            Each row records which version of the pipeline last touched it. When I change the pipeline I bump the number, and at the next start framed finds every row behind it and brings it up to date. The same stock-take runs every six hours and at every start, and its result is on the phone. Box Status opens with a panel that shows each stage as done, total, percentage and what is left, the pace over the last hour, and the reason when there is no pace.
+        </p>
+
+        <p>
+            The panel earned its place in September. One day it said 1,051 photos were undescribed and nothing was queued. The model had answered some captions without the section the parser looks for, and those jobs were marked done, so nothing would ever look at those photos again. On 29 September the same panel said 24,420 frames were behind the latest stage, most of them because a tag had no category, and a night of work had moved the category count by ten. The category step asked the model for a comma-separated list. An answer written one pair per line reached the parser as one long bad tag, nothing was saved, and the stock-take queued the same frames again at every pass while most of the backlog never came up. Both are fixed in the code, and I will know the second fix works when the panel starts to climb. A caption without its sections now fails loudly and is retried, a tag the model cannot place is filed as "other" so it is never asked about again, and the whole backlog is queued at once behind new photos instead of in front of them.
+        </p>
+
+        <p>
+            The cost is the model. On the GPU a caption takes a few seconds. On the CPU the same box manages about 24 photos an hour. A first import of a large library takes days either way, and the panel is there so the days are visible rather than suspicious.
+        </p>
+
+                <h2 class="section-header">&gt; 6. Search and chat</h2>
+
+
+        <p>
+            Search runs two legs at once, Postgres full-text search <a href="#ref-6" class="cite">[6]</a> and vector search over EmbeddingGemma 300M <a href="#ref-7" class="cite">[7]</a>, and fuses them with reciprocal rank fusion, the 2009 method from Cormack, Clarke and Büttcher that scores each result by one over its rank in each list, adds the scores up, and needs no tuning <a href="#ref-8" class="cite">[8]</a>. The chat uses the same search to put my own memories, photo descriptions and notes into the prompt, and the phone lists what was put there under every answer.
+        </p>
+
+        <p>
+            The box has no internet, so the phone does the web part. I type a question. The phone asks the box what the question needs, and the model answers with a stated need, the kind of answer it wants and up to three search queries. The phone runs two of them against DuckDuckGo, or against Brave Search with my own key <a href="#ref-9" class="cite">[9]</a>, reads the top pages with a small readability pass, and sends the paragraphs to the box. The box ranks every paragraph against the stated need with the embedder, keeps the best three per page, and writes the answer with each source numbered and dated. If what came back is thin, the box asks for the third query, the phone searches once more, and the question is answered in a second round. There is never a third.
+        </p>
+
+        <p>
+            The box also knows how fast it reads. It measures its own prompt speed, sizes the context to about twenty seconds of reading, trims the web pages to fit and tells me before the first word what it is doing ("reading 2,100 words on the CPU, about 35 seconds before the first word").
+        </p>
+
+        <p>
+            The cost is that my searches go to DuckDuckGo or Brave from my phone, the same as they would from any browser. The box never sees the internet and the search engine never sees my archive, but the search engine does see the query. The Brave key lives on the phone only.
+        </p>
+
+                <h2 class="section-header">&gt; 7. A model on the phone</h2>
+
+
+        <p>
+            The app carries llama.cpp and can run Gemma 4 E2B, a model of about two billion effective parameters in a 2-bit build of 2.2 GB <a href="#ref-10" class="cite">[10]</a>. The phone downloads it from the box, never from the internet, and checks it against the hash the box states.
+        </p>
+
+        <p>
+            It has two jobs. When the box's model runs on the CPU (a box without a card), reading five web pages would take the box minutes, so the phone's model reads each page into a few notes with a verbatim quote beside them, and the box writes the answer from the notes. Every number in a note has to appear in the page or the note is dropped. When there is no box at all (a boat, a flight, a dead router at home) the phone searches, reads and answers by itself. When the box is on its GPU it reads everything faster than the phone can start, so the phone stays out of it.
+        </p>
+
+        <p>
+            The costs are quality and battery. A 2-bit 2B model writes worse notes than the box, which is why the box is told to trust the quote over the notes. It reads maybe 70 to 150 tokens a second on a recent phone and it uses the battery while it does. And as of writing it has never run on my phone. The runtime builds from the same llama.cpp source tarball the box builds from, pinned by its SHA-256, and until I set that pin the APK builds without it, which is the APK I run today.
+        </p>
+
+                <h2 class="section-header">&gt; 8. The trail and the map</h2>
+
+
+        <p>
+            The phone takes one location fix every fifteen minutes with the operating system's own location service (no Google Play services), plus free copies of any fix another app asked for, which Android calls the passive provider <a href="#ref-11" class="cite">[11]</a>. A point is kept when I moved 25 metres or an hour passed, and it goes to the box in batches acknowledged by their timestamps, so a point stays on the phone until the box has it and is never sent twice.
+        </p>
+
+        <p>
+            A fix whose error radius is wider than 200 metres is a guess from a cell tower or a Wi-Fi network, and since the 29 September build such a fix never moves the trail. I learned that on Paxos. The phone kept latching onto towers on the mainland, 25 kilometres across the sea, and the map drew ferry crossings I never made, several a day, at speeds the ferry company would have envied. Four rules clean the points before they are drawn, and they are the same rules on the box and on the phone, tested against one shared file of cases. An impossible hop is dropped, so is a fast hop that comes straight back, so is a lone point reached and left at car speed between walking, and two or three points close together far away, reached and left at car speed between still points, are a distant tower and go too. The raw points stay in the database, only the drawing changes.
+        </p>
+
+        <p>
+            The map draws one day at a time, the newest first, and steps back through the days with an arrow. For the day shown the box tells the day as stays and moves. A stay is ten minutes or more within 100 metres, named after the beach or harbour or museum it is next to. A move on foot is drawn along the streets, routed on a walking graph the box built itself, and a move by road is drawn as a straight line between the fixes because that is all the points say.
+        </p>
+
+        <p>
+            The map itself is built on the box from public data, all of it fetched from the <a href="/mirror">setup mirror</a>. The coastline is OpenStreetMap's land polygons <a href="#ref-12" class="cite">[12]</a>, cut on the box into one-degree tiles the phone fetches only when it zooms in over them. The streets are Geofabrik's continent extracts, 79 GB of OpenStreetMap for the whole world <a href="#ref-13" class="cite">[13]</a>, cut on the box by a PBF reader I wrote with the standard library into major roads per degree and every named street per tenth of a degree. The place names are GeoNames, ranked so a country's name wins over a town's <a href="#ref-14" class="cite">[14]</a>. Africa took about four minutes to cut. Europe takes hours.
+        </p>
+
+        <p>
+            The costs are disk and time. The streets are 79 GB of downloads and a long first cut. The fourth trail rule has a price too, a drive shorter than one fifteen-minute gap each way, with a short stop at the far end, is not drawn. Days are cut at UTC midnight, which is an hour off in a London summer and more further east, and a local-day cut is not built. Lakes and rivers are not in the land polygons, so inland water still draws as land, which makes Lake Geneva a very flat field.
+        </p>
+
+                <h2 class="section-header">&gt; 9. Memories</h2>
+
+
+        <p>
+            synthd builds three kinds of memory without being asked.
+        </p>
+
+        <p>
+            An outing is a run of photos that starts after 36 hours of silence, or 30 kilometres from where the last run was, or after ten days. It gets a title from the place I photographed most and the dates, a set of cover photos spread over its days, the distance I moved and how far it was from home. Home is the five-kilometre cell with the most days of photos.
+        </p>
+
+        <p>
+            A day is one row per day in Postgres with a fact sheet (photos, places, tags, the route, steps and sleep from the phone's health sync, the check-in's feeling, note titles, the chats I started) and a short summary. On a box whose model runs on the CPU the summary is a template sentence. On the GPU the model writes one from the sheet and nothing else, and every number in the model's text has to appear in the sheet or the text is thrown away. A day is built again whenever its sheet changes, so a day grows richer as captions land over the following week. On this day reads these rows, so opening it never waits on the model.
+        </p>
+
+        <p>
+            The taste is what I photograph, ranked by how many different days a tag appears on rather than how many photos (a thousand photos of one wedding are one day). The box folds it onto thirteen kinds of place (beaches, harbours, old towns, museums and so on) and, when I ask the chat for something to do, ranks the places near my last fix from the GeoNames rows it already holds, and says why ("you photograph sea and beach on 78% of your days, new to you").
+        </p>
+
+        <p>
+            The cost is that a model wrote some of this. The number check stops invented figures. It cannot stop a wrong adjective. The template is always kept beside the model's text, and I can edit or delete any memory and the box leaves my version alone.
+        </p>
+
+                <h2 class="section-header">&gt; 10. Phrases on the lock screen</h2>
+
+        <p>
+            The smallest feature and the one I see most, because it lives where I look forty times a day. The app carries phrasebooks for eighteen languages, 696 phrases in all, and puts one card on the lock screen, so the phrase is there every time I pick the phone up to check the time. The card changes with the time of day (good morning at breakfast, the bill after dinner), it says the phrase aloud with the phone's own text-to-speech, and "got it" retires a card I know so the next one comes forward. Greek has 181 phrases in four levels and the card climbs a level once 60% of the one below is known. The feature is off until I land in a country with a pack, and then it asks once. Nothing about it touches the box or the internet, the phrasebooks ship inside the app.
+        </p>
+
+        <p>
+            The cost is that a model wrote the phrasebooks and no native speaker has reviewed them. Romanian is the only one I can check myself, and the Romanian is fine, which tells you nothing about the other seventeen. The emergency numbers came from memory and need checking against an official source before this goes near a store.
+        </p>
+
+        <h2 class="section-header">&gt; 11. The mirror, setup and updates</h2>
+
+
+        <p>
+            Everything the box downloads at setup comes from <a href="/mirror">www.localghost.ai/mirror</a> and nowhere else. The mirror publishes a list of SHA-256 hashes signed by the site's PGP key. The box has that key in the repository, pinned by its fingerprint (DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0), and never fetches it at the moment it checks a signature. A file is renamed into place only after its hash matches the signed list. If the mirror cannot be reached, setup says so and stops. The one exception is an environment variable an operator has to type, and each file fetched that way is printed as not coming from a signed list.
+        </p>
+
+        <p>
+            The sets on the mirror are Go, the llama.cpp source tarball the box builds from <a href="#ref-15" class="cite">[15]</a>, the chat and vision model with its projector, the embedder, the phone's model, GeoNames and Natural Earth, OpenStreetMap's land polygons and, when asked for, the road extracts. A box with no internet can read a copy of the mirror from a USB disk with the same checks.
+        </p>
+
+        <p>
+            <code>sudo ./tools/update.sh</code> brings a running box up to date with the mirror. It reads the signed list first, then for each set fetches only what is different. On its first run on my box it found the 12B model file 1,440 bytes short of the pinned one, a different upload under the same name, replaced it and restarted the model. That is the whole argument for the pin, in one number.
+        </p>
+
+        <p>
+            The costs are trust and reach. The whole chain rests on the site's key and on the web host staying up. A box refuses to install an older signed list than one it has already used, so a replayed list is caught, but a stolen key would not be. The Go modules for the build still come from proxy.golang.org, pinned by go.sum but not through the mirror, and the Postgres and Redis packages still come from the Debian and upstream apt repositories.
+        </p>
+
+                <h2 class="section-header">&gt; 12. Running it</h2>
+
+
+        <p>
+            The volume is mounted inside secd's private mount namespace, so from the host it looks empty whether the box is locked or not. Every tool reaches it through one door.
+        </p>
+
+<pre><code>sudo ./tools/redeploy.sh          <span class="c"># build, stage the daemons, restart secd (the box locks)</span>
+sudo ./tools/update.sh            <span class="c"># the data (maps, embedder, weights, phone model, engine)</span>
+sudo ./tools/health.sh            <span class="c"># every daemon, the pipeline, the engine, the map layers</span>
+sudo ./tools/gpu.sh               <span class="c"># is the model on the GPU, and if not, which layer failed</span>
+sudo ./tools/unwedge.sh           <span class="c"># a process stuck in the GPU driver, and what can be done</span>
+sudo ./tools/watchdog.sh --arm    <span class="c"># the board's hardware watchdog, fed by systemd</span>
+sudo ./tools/ns.sh                <span class="c"># a shell inside the namespace, standing on the volume</span>
+
+<span class="c"># stock-take now</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.framed converge
+<span class="c"># cut the streets</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.framed road-tiles
+<span class="c"># which points drew which line</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.framed trail day=2026-09-27
+<span class="c"># what is waiting, what is parked, and un-park the captions</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.searchd queue
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.searchd unpark kind=caption
+<span class="c"># one day's memory, and the engine, its speed, GPU or CPU</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.synthd days day=2026-09-27
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.oracled models</code></pre>
+
+        <h2 class="section-header">&gt; 13. What broke, and what it taught the box</h2>
+
+        <p>
+            On 23 September I ran the reset path of a new recovery script remotely, with nobody at home, and the box froze. It stayed frozen until the evening, when someone could press the button. When it came back the two 8 TB NVMe drives had swapped names, which Linux is allowed to do on any boot <a href="#ref-16" class="cite">[16]</a>, and secd tried to open the encrypted volume on the drive that holds a Bitcoin node. Opening failed without writing anything, which is my favourite sentence in this post. Since then the service names the disk by its permanent ID, secd tries every encrypted container with the key when the named one is wrong, the reset path refuses to act unless a hardware watchdog is armed or someone types that they can reach the power button, and the watchdog is armed, fed by systemd <a href="#ref-17" class="cite">[17]</a>. A hard lockup now resets the box within a minute and it comes back locked, waiting for my PIN.
+        </p>
+
+        <p>
+            On 18 September the map showed nothing and flew to Antarctica, where I have never been. Two fields in one Go struct shared the JSON name "lat", and Go's encoder drops both fields when two have the same name, with no error <a href="#ref-18" class="cite">[18]</a>, so every photo left the box without coordinates. On 26 September I found that secd had been reading the day tracks from a folder framed never wrote to. On 27 September, preparing every SQL statement in the code (246 of them) against a real Postgres showed that a brand new box could not be provisioned at all, because one index was created before its table. The map bug and the schema bug now have tests that would have caught them. The same week I found that ghost.cued, the daemon that surfaces a memory before I ask for it, had posted nothing since the day it was wired, because one path had the mount point in it twice. It posts now.
+        </p>
+
+        <div class="final-words">
+            What is not done, in one breath. The phone's model has not run on a phone, the phrasebooks are unreviewed, days are UTC days, two build-time dependencies still bypass the mirror, the fourth trail rule hides some short real drives, and the QR decoder has a failing test I understand but have not fixed. The next post is probably the phone's model running on a phone, or a decent account of why it doesn't.
+            <span class="small">[ localghost.ai // hard-truths ]</span>
+        </div>
+
+        <h2 class="section-header">&gt; REFERENCES</h2>
+
+        <p class="references" id="ref-1">
+            <strong>[1]</strong> RFC 5208, PKCS #8, Private-Key Information Syntax Specification, 2008. The DER structure the phone's private key travels in inside the QR code, before base64url encoding. Source for the key format named in the enrolment section. Text at <a href="https://www.rfc-editor.org/rfc/rfc5208" target="_blank" rel="noopener">rfc-editor.org/rfc/rfc5208</a>.
+        </p>
+
+        <p class="references" id="ref-2">
+            <strong>[2]</strong> nginx, ngx_http_ssl_module, the <code>ssl_verify_client</code> directive. With <code>optional</code>, nginx asks for a client certificate, verifies one if it is offered, and passes the result to the application instead of refusing the connection itself, which is what lets secd answer every unauthenticated request the same way. Source for the transport section. Docs at <a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_verify_client" target="_blank" rel="noopener">nginx.org/en/docs/http/ngx_http_ssl_module.html</a>.
+        </p>
+
+        <p class="references" id="ref-3">
+            <strong>[3]</strong> Trusted Computing Group, TPM 2.0 Library Specification. The sealing operation the box uses for its volume key, an object the TPM will unseal only when the platform's measured state matches the policy it was sealed under. Source for what "sealed" means in section 2. Specification at <a href="https://trustedcomputinggroup.org/resource/tpm-library-specification/" target="_blank" rel="noopener">trustedcomputinggroup.org</a>, and the Go package the box uses at <a href="https://github.com/google/go-tpm" target="_blank" rel="noopener">github.com/google/go-tpm</a>.
+        </p>
+
+        <p class="references" id="ref-4">
+            <strong>[4]</strong> RFC 9106, Argon2 Memory-Hard Function for Password Hashing and Proof-of-Work Applications, 2021. The key derivation a box without a TPM falls back to, PIN in, volume key out, the same derivation The Honeypot Under Your Desk describes for the duress scheme. Source for the fallback path. Text at <a href="https://www.rfc-editor.org/rfc/rfc9106" target="_blank" rel="noopener">rfc-editor.org/rfc/rfc9106</a>.
+        </p>
+
+        <p class="references" id="ref-5">
+            <strong>[5]</strong> Exif, the metadata format, as standardised by CIPA in DC-008 (version 2.32 in 2019, 3.0 in 2023). In a JPEG the Exif block sits in one APP1 marker segment, and a marker segment's two-byte length field caps it at 64 KB, so a photo with a big Exif block (a maker note, an embedded thumbnail, a long GPS record) can fill a 64 KB read before its own dates and coordinates are reached. Source for the 64 KB figure behind the 256 KB read. The constraint is stated plainly in the Exif article at <a href="https://en.wikipedia.org/wiki/Exif" target="_blank" rel="noopener">en.wikipedia.org/wiki/Exif</a>, which also links each version of the CIPA standard.
+        </p>
+
+        <p class="references" id="ref-6">
+            <strong>[6]</strong> PostgreSQL documentation, chapter 12, Full Text Search. The tsvector and tsquery machinery that is the first leg of the box's search. Source for the full-text leg. Docs at <a href="https://www.postgresql.org/docs/current/textsearch.html" target="_blank" rel="noopener">postgresql.org/docs/current/textsearch.html</a>.
+        </p>
+
+        <p class="references" id="ref-7">
+            <strong>[7]</strong> EmbeddingGemma, Google DeepMind, released September 2025. A 308M-parameter multilingual embedding model built for on-device use, which is the second leg of the box's search and the ranker for web paragraphs. The box runs the Q8_0 build from the setup mirror. Source for the embedder. Model page at <a href="https://ai.google.dev/gemma/docs/embeddinggemma" target="_blank" rel="noopener">ai.google.dev/gemma/docs/embeddinggemma</a>.
+        </p>
+
+        <p class="references" id="ref-8">
+            <strong>[8]</strong> Cormack, Clarke and Büttcher, 2009, "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods", SIGIR 2009. The two-line fusion method the box uses to merge the full-text and vector legs, one over (k plus rank) summed across lists, with k fixed at 60 in the paper's pilot and never changed. Source for the fusion. Paper at <a href="https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">cormack.uwaterloo.ca</a>.
+        </p>
+
+        <p class="references" id="ref-9">
+            <strong>[9]</strong> Brave Search API. The paid search endpoint the phone can use in place of DuckDuckGo's HTML results, with a key the phone holds and the box never sees. Source for the search options in the web round. Product page at <a href="https://brave.com/search/api/" target="_blank" rel="noopener">brave.com/search/api</a>.
+        </p>
+
+        <p class="references" id="ref-10">
+            <strong>[10]</strong> Gemma 4 E2B instruct, Google, in Unsloth's GGUF build of Google's quantisation-aware checkpoint, gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf, 2.19 GB, Apache 2.0. The phone's model, fetched from the setup mirror under its pinned SHA-256. Source for the model, its size and its licence. Repository at <a href="https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF</a>, and the Gemma 4 family and its Apache 2.0 release at <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com</a>.
+        </p>
+
+        <p class="references" id="ref-11">
+            <strong>[11]</strong> Android LocationManager, PASSIVE_PROVIDER. The provider that hands an app a copy of any location fix another app requested, without starting a fix of its own, which is where the trail's free points come from between the fifteen-minute fixes. Source for the passive provider. Reference at <a href="https://developer.android.com/reference/android/location/LocationManager#PASSIVE_PROVIDER" target="_blank" rel="noopener">developer.android.com</a>.
+        </p>
+
+        <p class="references" id="ref-12">
+            <strong>[12]</strong> OpenStreetMap land polygons, published by osmdata.openstreetmap.de under the Open Database License. The coastline the box cuts into one-degree tiles, and the reason lakes and rivers still draw as land, since the polygons are the land and only the land. Source for the coastline layer. Data page at <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de</a>.
+        </p>
+
+        <p class="references" id="ref-13">
+            <strong>[13]</strong> Geofabrik's OpenStreetMap continent extracts, eight PBF files republished daily under the Open Database License, about 79 GB in all in September 2026 with Europe the largest at 33 GB. The source of every street the box draws, fetched through the setup mirror and cut on the box. Source for the sizes and the cadence. Download server at <a href="https://download.geofabrik.de/" target="_blank" rel="noopener">download.geofabrik.de</a>.
+        </p>
+
+        <p class="references" id="ref-14">
+            <strong>[14]</strong> GeoNames feature codes. The classification the box ranks place names by (a country beats a region beats a town) and folds its thirteen kinds of place onto, under CC BY 4.0. Source for the place names and the ranking. Code list at <a href="https://www.geonames.org/export/codes.html" target="_blank" rel="noopener">geonames.org/export/codes.html</a>.
+        </p>
+
+        <p class="references" id="ref-15">
+            <strong>[15]</strong> llama.cpp by the ggml authors, MIT. The engine behind ghost.oracled and the phone app, built on the box from release v0.5.0 (commit 7fe450e), the one source tarball the setup mirror carries so every box runs the same build. Source for the engine and the pin. Repository at <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a>, the release at <a href="https://github.com/ggml-org/llama.cpp/releases/tag/v0.5.0" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp/releases/tag/v0.5.0</a>.
+        </p>
+
+        <p class="references" id="ref-16">
+            <strong>[16]</strong> Persistent block device naming, ArchWiki. Kernel names like nvme0n1 and nvme1n1 are handed out in the order devices are found on each boot, so two drives can swap names between boots, and the durable handles are the IDs and UUIDs under /dev/disk. Source for why secd now names its disk by ID. Article at <a href="https://wiki.archlinux.org/title/Persistent_block_device_naming" target="_blank" rel="noopener">wiki.archlinux.org</a>.
+        </p>
+
+        <p class="references" id="ref-17">
+            <strong>[17]</strong> systemd-system.conf, RuntimeWatchdogSec. The setting that has systemd open the board's hardware watchdog and feed it, so the board resets the machine if the kernel stops answering. Source for the watchdog the reset path now insists on. Manual at <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd-system.conf.html" target="_blank" rel="noopener">freedesktop.org</a>.
+        </p>
+
+        <p class="references" id="ref-18">
+            <strong>[18]</strong> Go, package encoding/json, the rules under Marshal. When several fields at the same nesting level share a JSON name and none wins by the tagging rules, "there are multiple fields, and all are ignored; no error occurs". Source for the Antarctica bug. Docs at <a href="https://pkg.go.dev/encoding/json#Marshal" target="_blank" rel="noopener">pkg.go.dev/encoding/json</a>.
+        </p>
+
+    </div>
+
+    <div class="post-nav">
+        <a href="/hard-truths/the-expensive-part" class="prev">
+            <div class="pn-label">← PREVIOUS POST</div>
+            <div class="pn-title">The Expensive Part Was Never the AI</div>
+        </a>
+        <a href="/hard-truths" class="next">
+            <div class="pn-label">ALL POSTS →</div>
+            <div class="pn-title">Hard Truths Index</div>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+    <p class="footer-quote">"Opening failed without writing anything, which is my favourite sentence in this post." // What the Box Does Now</p>
+</footer>
+
+</body>
+</html>
