@@ -17,6 +17,8 @@ allCountries.zip
 allCountries.txt
 go*.linux-*.tar.gz
 llama.cpp-*.tar.gz
+whisper.cpp-*.tar.gz
+ggml-*.bin
 # never a private key
 *.key
 secring.*

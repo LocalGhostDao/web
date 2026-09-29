@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-09-24",
-            "dateModified": "2026-09-27",
+            "dateModified": "2026-09-29",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/mirror"
@@ -189,7 +189,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week. The manifest is the list that counts: a set is on the mirror when its files are in <code>MANIFEST.txt</code>.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week, and <code>whisper</code> and <code>speech</code> (the engine and the model a box transcribes voice notes with) at the end of the month. The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -239,6 +239,18 @@
                                 <td data-label="Files"><code>llama.cpp-v0.5.0-7fe450e.tar.gz</code></td>
                                 <td data-label="Where it comes from">GitHub's source archive of llama.cpp release v0.5.0, the inference engine, fetched by commit so the URL can't move. Every box builds this one; a new pin is a new file name.</td>
                                 <td data-label="Terms">MIT<sup class="fn"><a href="#ref5">[5]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">whisper</td>
+                                <td data-label="Files"><code>whisper.cpp-v1.9.4-927cfce.tar.gz</code></td>
+                                <td data-label="Where it comes from">GitHub's source archive of whisper.cpp release v1.9.4, the speech engine, pinned the same way as llama.cpp. A box builds it to transcribe the voice notes in its daily check-in.</td>
+                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref8">[8]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">speech</td>
+                                <td data-label="Files"><code>ggml-large-v3-turbo-q5_0.bin</code></td>
+                                <td data-label="Where it comes from">OpenAI's Whisper large-v3-turbo, multilingual, in the whisper.cpp maintainers' ggml build quantised to q5_0, 574 MB. Unmodified and pinned by SHA-256.</td>
+                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref9">[9]</a></sup></td>
                             </tr>
                             <tr>
                                 <td data-label="Set">models</td>
@@ -300,7 +312,7 @@
                 <h2 class="section-header">&gt; 4. HOW IT'S BUILT</h2>
 
                 <p>
-                    The mirror is rebuilt on every deploy of this site, by a script that sits next to the deploy script in the <a href="https://github.com/LocalGhostDao/web">web repo</a> and is never served. It downloads a file again only when upstream says it changed, stops if the Go tarball doesn't match go.dev's checksum, and refuses to publish anything whose terms file isn't finished.
+                    The mirror is built by a script that sits next to the deploy script in the <a href="https://github.com/LocalGhostDao/web">web repo</a> and is never served. It runs on every deploy of this site, but it asks upstream for changes at most once a month, on the first deploy on or after the 1st. The other deploys that month publish only what the config added or changed (a new set, a new pin, an edited terms file) from the copies it already holds, and usually publish nothing at all, so a box sees a new build about once a month plus whenever a set is added. When it does ask, it downloads a file again only when upstream says it changed, stops if the Go tarball doesn't match go.dev's checksum, and leaves out any set whose terms file isn't finished. The road extracts are refreshed only by hand, about monthly.
                 </p>
 
                 <p>
@@ -332,7 +344,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
                 <p>
-                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup> and llama.cpp is MIT.<sup class="fn"><a href="#ref5">[5]</a></sup>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup>, and llama.cpp and whisper.cpp are MIT.<sup class="fn"><a href="#ref5">[5]</a></sup><sup class="fn"><a href="#ref8">[8]</a></sup> OpenAI released Whisper's code and weights under MIT too, and since the model file carries no licence of its own, the full MIT text with OpenAI's copyright line travels beside it.<sup class="fn"><a href="#ref9">[9]</a></sup>
                 </p>
 
                 <p>
@@ -354,6 +366,8 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref5"><span class="n">[5]</span>llama.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive, and its release v0.5.0 of 23 September 2026 (commit 7fe450e), one of the stable <code>vX.Y.Z</code> releases the project recommends for downstream distribution as against its <code>b</code>-numbered builds. Source for the llama.cpp terms and the pin. <a href="https://github.com/ggml-org/llama.cpp" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp</a> and <a href="https://github.com/ggml-org/llama.cpp/releases/tag/v0.5.0" target="_blank" rel="noopener">github.com/ggml-org/llama.cpp/releases/tag/v0.5.0</a></div>
                     <div class="ref" id="ref6"><span class="n">[6]</span>Google's Open Source Blog, 2 April 2026, the post on Gemma 4 and Apache 2.0, announcing Gemma 4 as the first Gemma models released under the OSI-approved Apache 2.0 licence, and Unsloth's GGUF releases on Hugging Face of Gemma 4 12B instruct, quantised from google/gemma-4-12B-it, and of Gemma 4 E2B instruct, quantised from Google's quantisation-aware checkpoint, both of which list the licence as Apache 2.0 and the SHA-256 of each file. Sources for the Gemma 4 terms and for the pins. <a href="https://opensource.googleblog.com/2026/03/gemma-4-expanding-the-gemmaverse-with-apache-20.html" target="_blank" rel="noopener">opensource.googleblog.com (Gemma 4 and Apache 2.0)</a>, <a href="https://huggingface.co/unsloth/gemma-4-12b-it-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-12b-it-GGUF</a> and <a href="https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF" target="_blank" rel="noopener">huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF</a></div>
                     <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and whose section 3.1 requires anyone redistributing the model to give every recipient a copy of the agreement and keep the use restrictions in the Gemma Prohibited Use Policy in force, and the GGUF conversion of Google's quantisation-aware Q8_0 checkpoint published by the llama.cpp maintainers, which lists the SHA-256 of the file. Sources for the EmbeddingGemma terms and the pin. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a>, <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a> and <a href="https://huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF" target="_blank" rel="noopener">huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF</a></div>
+                    <div class="ref" id="ref8"><span class="n">[8]</span>whisper.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive, and its release v1.9.4 of 11 September 2026 (commit 927cfce). Source for the whisper.cpp terms and the pin. <a href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp</a> and <a href="https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.4" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp/releases/tag/v1.9.4</a></div>
+                    <div class="ref" id="ref9"><span class="n">[9]</span>OpenAI's Whisper repository, whose README states that Whisper's code and model weights are released under the MIT licence (copyright 2022 OpenAI), the large-v3-turbo model card, which lists the licence as MIT and describes the model as large-v3 with the decoder cut from 32 layers to 4, and the whisper.cpp maintainers' ggml conversions on Hugging Face, which list the SHA-256 of each file. Sources for the Whisper terms and the pin. <a href="https://github.com/openai/whisper" target="_blank" rel="noopener">github.com/openai/whisper</a>, <a href="https://huggingface.co/openai/whisper-large-v3-turbo" target="_blank" rel="noopener">huggingface.co/openai/whisper-large-v3-turbo</a> and <a href="https://huggingface.co/ggerganov/whisper.cpp" target="_blank" rel="noopener">huggingface.co/ggerganov/whisper.cpp</a></div>
                 </div>
 
             </div>

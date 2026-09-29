@@ -33,13 +33,14 @@ rm "$TMPKEY"
 
 ## 🪞 SETUP MIRROR
 
-`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, OpenStreetMap's land polygons and Geofabrik's road extracts, the Go toolchain, one pinned release of llama.cpp, Gemma 4 12B as every box runs it, Gemma 4 E2B for the phone, and EmbeddingGemma), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
+`https://www.localghost.ai/mirror` carries every file a LocalGhost box downloads once at setup (GeoNames, Natural Earth, OpenStreetMap's land polygons and Geofabrik's road extracts, the Go toolchain, pinned releases of llama.cpp and whisper.cpp, Gemma 4 12B as every box runs it, Gemma 4 E2B for the phone, EmbeddingGemma, and Whisper large-v3-turbo for voice notes), each with the terms it's published under. It's signed the same way as the site: a sha256sum `MANIFEST.txt`, detach-signed with `gpg --local-user info@localghost.ai`.
 
-The scripts, conf and terms live in [`deploy/mirror/`](deploy/mirror/README.md), never served. The data lives on the big pool, `/bulk/localghost/mirror`, and the web root's `/mirror` is a symlink to it, so nothing sits on the root SSD. [`public/mirror/index.html`](https://www.localghost.ai/mirror) explains what the mirror carries, why, and how a box verifies it. On every deploy `deploy.sh` runs the publish, downloading only what changed upstream, and a new build goes live the moment its signed manifest is written.
+The scripts, conf and terms live in [`deploy/mirror/`](deploy/mirror/README.md), never served. The data lives on the big pool, `/bulk/localghost/mirror`, and the web root's `/mirror` is a symlink to it, so nothing sits on the root SSD. [`public/mirror/index.html`](https://www.localghost.ai/mirror) explains what the mirror carries, why, and how a box verifies it. On every deploy `deploy.sh` runs the publish, but it asks upstream for changes at most once a month (the first deploy on or after the 1st); the other deploys publish only what `mirror.conf` or the terms added or changed. A new build goes live the moment its signed manifest is written.
 
 ```bash
-./deploy/deploy.sh                                # site + mirror
-MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh # site + only those mirror sets
+./deploy/deploy.sh                                # site + mirror (upstream at most monthly)
+MIRROR=refresh ./deploy/deploy.sh                 # site + mirror, ask upstream now
+MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh # site + only those mirror sets, upstream now
 MIRROR=off ./deploy/deploy.sh                     # site only
 ```
 

@@ -10,12 +10,16 @@
 #                                                 # shouldn't end in a pinentry nobody is there for)
 #   deploy/mirror/publish.sh --sign               # sign the waiting build and put it live, any time
 #                                                 # later (a plain publish or a deploy does that too)
+#   deploy/mirror/publish.sh --monthly            # what deploy.sh runs: upstream is checked on the
+#                                                 # first run of each month (UTC) and never again that
+#                                                 # month; the other runs publish only what mirror.conf
+#                                                 # or terms/ added or changed, from the cache
 #
 # With a terminal, every download shows curl's progress meter (size, speed, time left) and every file
 # hashed for the first time says so, so a long publish never looks stuck.
 #
 # The scripts, conf and terms live here in deploy/mirror/ (never served). deploy/deploy.sh runs this
-# on every deploy with GHOST_MIRROR_DATA=/bulk/localghost/mirror/data and
+# (with --monthly) on every deploy with GHOST_MIRROR_DATA=/bulk/localghost/mirror/data and
 # GHOST_MIRROR_CACHE=/bulk/localghost/mirror/cache, and the web root's /mirror is a symlink to that
 # data dir, so a build goes live the moment its manifest is written and nothing is copied. Without
 # those variables it builds into public/mirror/ in this checkout (gitignored) and caches in
@@ -54,12 +58,13 @@ if [ -z "${GHOST_MIRROR_DATA:-}" ] && [ -d "$MIRROR_DATA" ] && [ -w "$MIRROR_DAT
     GHOST_MIRROR_CACHE="${GHOST_MIRROR_CACHE:-$MIRROR_DATA/cache}"
 fi
 ROOT="$(realpath -m "${GHOST_MIRROR_DATA:-$HERE/../../public/mirror}")"
-SETS=""; MODE=publish; SIGN_LATER=""
+SETS=""; MODE=publish; SIGN_LATER=""; MONTHLY=""
 for a in "$@"; do
     case "$a" in
         --sign) MODE=sign ;;
         --sign-later) SIGN_LATER=1 ;;
-        -*) echo "!! unknown option $a (this takes set names, --sign-later, or --sign)" >&2; exit 1 ;;
+        --monthly) MONTHLY=1 ;;
+        -*) echo "!! unknown option $a (this takes set names, --sign-later, --sign or --monthly)" >&2; exit 1 ;;
         *) SETS="$SETS $a" ;;
     esac
 done
@@ -102,6 +107,18 @@ if ! flock -n 9; then
     echo "!! another publish is running (lock: $CACHE/publish.lock)" >&2
     exit 1
 fi
+# --monthly: upstream is asked at most once a calendar month (UTC). The first run of the month (the
+# first deploy on or after the 1st) checks every set as usual and writes the date to
+# $CACHE/upstream-checked. Every other run that month is OFFLINE: a URL already in the cache is used as
+# it is, without asking upstream, so only lines new or changed in mirror.conf (a new set, a new pin, a
+# new URL) and edits under terms/ reach the network or make a new build. Named sets always go upstream.
+STAMP="$CACHE/upstream-checked"
+MONTH="$(date -u +%Y-%m)"
+LAST_CHECK="$(head -1 "$STAMP" 2>/dev/null || true)"
+OFFLINE=""
+if [ -n "$MONTHLY" ] && [ -z "$SETS" ] && [ "$MODE" = publish ]; then
+    case "$LAST_CHECK" in "$MONTH"-*) OFFLINE=1 ;; esac
+fi
 BUILD="$(date -u +%Y%m%dT%H%M%SZ)"
 while [ -e "$ROOT/$BUILD" ]; do   # two publishes in one second: a build directory is never reused
     sleep 1
@@ -123,10 +140,14 @@ cached() {
     echo "$CACHE/dl-$(printf '%s' "$1" | sha256sum | cut -c1-16)-$(basename "${1%%\?*}")"
 }
 
-# fetch <url> , the cached copy's path; downloaded again only when upstream says it changed
+# fetch <url> , the cached copy's path; downloaded again only when upstream says it changed, and
+# never asked at all in an OFFLINE run when the cache already has it
 fetch() {
     _f="$(cached "$1")"
     rm -f "$_f.tmp"
+    if [ -n "$OFFLINE" ] && [ -s "$_f" ]; then
+        echo "$_f"; return 0
+    fi
     if [ -s "$_f" ]; then
         # on a terminal, ask with a HEAD first, so an unchanged file doesn't print an empty meter
         if [ -t 2 ] && [ "$(curl -fsSL --retry 3 -I -z "$_f" -o /dev/null -w '%{http_code}' "$1" 2>/dev/null)" = 304 ]; then
@@ -134,7 +155,7 @@ fetch() {
         fi
         $CURL -R -z "$_f" -o "$_f.tmp" "$1" || return 1
     else
-        say "downloading $1"
+        say "downloading $1${OFFLINE:+ (new in mirror.conf)}"
         $CURL -R -o "$_f.tmp" "$1" || return 1
     fi
     if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi   # a 304 writes nothing
@@ -181,11 +202,15 @@ sha_cached() {
     echo "$_h  $1"
 }
 
-# godev <name> <file> , the file's SHA-256 is the one go.dev publishes for that name
+# godev <name> <file> , the file's SHA-256 is the one go.dev publishes for that name. A release's
+# checksum never changes, so a match is remembered ($CACHE/godev.ok) and not asked again.
+GODEV_OK="$CACHE/godev.ok"
 godev() {
+    _got="$(sha_cached "$2" | cut -d' ' -f1)"
+    grep -qx "$_got $1" "$GODEV_OK" 2>/dev/null && return 0
     _want="$(curl -fsSL "$GODEV" | tr ',' '\n' | grep -A8 "\"filename\": \"$1\"" | grep '"sha256"' | head -1 | sed 's/.*"sha256": *"\([0-9a-f]*\)".*/\1/')"
-    _got="$(sha256sum "$2" | cut -d' ' -f1)"
-    [ -n "$_want" ] && [ "$_want" = "$_got" ]
+    [ -n "$_want" ] && [ "$_want" = "$_got" ] || return 1
+    echo "$_got $1" >> "$GODEV_OK"
 }
 
 # terms <name> <dest> , a terms file into the build; "#fetch <url>" on its first line means the text
@@ -270,6 +295,10 @@ else
     [ -n "$MANUAL" ] && say "manual sets kept as they are ($(echo $MANUAL)); name one to refresh it"
 fi
 
+if [ -n "$OFFLINE" ]; then
+    echo "> upstream last checked $LAST_CHECK, next on the first deploy of next month; this run publishes only what mirror.conf or terms/ added or changed"
+fi
+
 # --- lines that aren't finished yet: a terms file that still says EDIT-ME, or a pin still to be ---
 # --- taken (check=sha256:?). Their whole set is left out of this build, loudly, and the rest is  ---
 # --- published as usual, so an unfinished line never holds up the maps or the Go toolchain.      ---
@@ -298,7 +327,7 @@ $set"
         esac
         _h="$(sha256sum "$_src" | cut -d' ' -f1)"
         [ -s "$CACHE/pin-$_h-$file" ] || ln -f "$_src" "$CACHE/pin-$_h-$file" 2>/dev/null || cp "$_src" "$CACHE/pin-$_h-$file"
-        say "!! $set is left out: $file is not pinned yet. As downloaded just now its SHA-256 is"
+        say "!! $set is left out: $file is not pinned yet. The copy in the cache has SHA-256"
         say "!!     $_h"
         say "!!   so its line in mirror.conf wants  check=sha256:$_h  in place of  check=sha256:?"
         say "!!   (the copy is kept in the cache under that hash; the next publish fetches nothing)"
@@ -392,6 +421,11 @@ for s in $ALL; do
         mv -f "$NEW/$s/.notice.tmp" "$NEW/$s/NOTICE.txt"
     fi
 done
+# every set was checked against upstream just now: that is this month's check, whatever happens next
+# (if the signature fails, the next run this month rebuilds the same thing from the cache)
+if [ -z "$OFFLINE" ] && [ -z "$SETS" ]; then
+    date -u +%Y-%m-%d > "$STAMP"
+fi
 
 # --- the manifest, then the signature, or not yet ---
 MAN="$ROOT/.MANIFEST.txt.tmp"
@@ -414,7 +448,11 @@ if [ -f "$PREV_MAN" ] && [ "$(body "$MAN")" = "$(body "$PREV_MAN")" ]; then
             prune
         fi
     else
-        echo "> nothing changed upstream , the mirror stays at build $PREV"
+        if [ -n "$OFFLINE" ]; then
+            echo "> nothing new in mirror.conf or terms/ , the mirror stays at build $PREV (upstream last checked $LAST_CHECK)"
+        else
+            echo "> nothing changed upstream , the mirror stays at build $PREV"
+        fi
     fi
     left_out
     exit 0

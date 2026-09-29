@@ -517,17 +517,26 @@ fi
 # The main rsync above and the deploy manifest
 # below skip the builds (gigabytes, own
 # signature); index.html goes live with the rest
-# of the HTML. Runs before the "no changes" exit,
-# so every deploy refreshes it. A failure never
-# stops the site deploy: the last good build stays
-# up.
+# of the HTML. Runs before the "no changes" exit.
+# A failure never stops the site deploy: the last
+# good build stays up.
+#
+# Upstream is checked once a month: the first
+# deploy on or after the 1st (UTC) asks every
+# upstream for changes, and every other deploy
+# that month publishes only what mirror.conf or
+# terms/ added or changed, from the cache, and
+# usually nothing (no new build, no passphrase).
+# The date of the last check is in
+# $MIRROR_DATA/cache/upstream-checked.
 # Sets marked "manual" in mirror.conf (roads, 80
 # GB, daily upstream) are not refreshed here;
 # deploy/mirror/publish.sh --sign-later roads
 # does that, and a build left waiting by it is
 # folded in and signed by the next deploy.
 #   MIRROR=off ./deploy/deploy.sh           skip it
-#   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh
+#   MIRROR=refresh ./deploy/deploy.sh       check upstream now, mid-month
+#   MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh   those sets, upstream, now
 # ============================================
 echo ""
 echo "> SETUP MIRROR..."
@@ -538,9 +547,12 @@ DEST_MIRROR="$DEST_DIR/mirror"
 
 mirror_publish() {
     # $1 = data dir, $2 = cache dir (empty = publish.sh's default)
-    # MIRROR_SETS is a space-separated list, split on purpose
+    # MIRROR_SETS is a space-separated list, split on purpose. Named sets and MIRROR=refresh go
+    # upstream now; otherwise --monthly, upstream at most once a month
+    local cadence="--monthly"
+    if [ -n "${MIRROR_SETS:-}" ] || [ "${MIRROR:-on}" = "refresh" ]; then cadence=""; fi
     # shellcheck disable=SC2086
-    GHOST_MIRROR_DATA="$1" GHOST_MIRROR_CACHE="${2:-$HOME/.cache/localghost-mirror}" sh "$MIRROR_SCRIPT" ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
+    GHOST_MIRROR_DATA="$1" GHOST_MIRROR_CACHE="${2:-$HOME/.cache/localghost-mirror}" sh "$MIRROR_SCRIPT" $cadence ${MIRROR_SETS:-} 2>&1 | sed -u 's/^/  /'
     if [ "${PIPESTATUS[0]}" -ne 0 ]; then
         if [ -f "$1/MANIFEST.txt" ]; then
             echo "  [✗] Mirror publish failed, build $(sed -n 's/^# Build: //p' "$1/MANIFEST.txt") is still served"

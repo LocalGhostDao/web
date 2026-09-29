@@ -1,0 +1,8 @@
+whisper.cpp , https://github.com/ggml-org/whisper.cpp
+
+The whisper.cpp tarball is an unmodified GitHub source archive of the release and commit in its file
+name (whisper.cpp-v1.9.4-927cfce.tar.gz is release v1.9.4, commit
+927cfce34f31707e17f2bff35c349632fb9e2c3a). It unpacks into one directory named after the commit.
+
+Copyright the ggml authors. MIT License; the full text, with its copyright line, is the LICENSE file
+inside the tarball.

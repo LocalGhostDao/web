@@ -1,9 +1,9 @@
 # deploy/mirror/ , the LocalGhost setup mirror (operator notes)
 
 What `https://www.localghost.ai/mirror/` serves: every file a LocalGhost box downloads once, at setup
-(GeoNames, Natural Earth, OpenStreetMap's land polygons and road extracts, the Go toolchain, a
-pinned llama.cpp release, and the model weights), with the terms each one is
-published under. Boxes fetch it with `tools/mirror_fetch.sh` from the server repo
+(GeoNames, Natural Earth, OpenStreetMap's land polygons and road extracts, the Go toolchain, pinned
+llama.cpp and whisper.cpp releases, and the model weights), with the terms each one is published
+under. Boxes fetch it with `tools/mirror_fetch.sh` from the server repo
 (LocalGhostDao/localghost) and install nothing unless the gpg signature on `MANIFEST.txt` verifies
 against the key in that repo and every file's SHA-256 matches the manifest.
 
@@ -14,7 +14,7 @@ The scripts, conf and terms live here in `deploy/`, so none of them is ever serv
 download cache and the builds, gigabytes) lives on the big pool, `/bulk/localghost/mirror/{cache,data}`,
 and the web root's `/mirror` is a symlink to `.../data`, so nothing is copied and nothing sits on the
 root SSD. `public/mirror/` in the repo holds only `index.html`, the page. `deploy/deploy.sh` runs the
-publish straight into the pool on every deploy.
+publish straight into the pool on every deploy, and asks upstream for changes at most once a month.
 
 ## Files
 
@@ -52,24 +52,46 @@ converted here: a box cuts OpenStreetMap's land polygons into its own coastline 
 
 ## Publish
 
-Every `./deploy/deploy.sh` publishes the mirror into `/bulk/localghost/mirror/data`, before it checks
-whether the site changed, so a deploy always refreshes it. `publish.sh` writes the build directory
-first and the signed manifest pair last, so a box never sees a manifest that names files that
-aren't there yet. `MIRROR_DATA=<dir>` uses another pool; `MIRROR_DATA=local` is the old layout
-(builds in `public/mirror/` in the checkout, copied into the web root).
+Every `./deploy/deploy.sh` runs `publish.sh --monthly` into `/bulk/localghost/mirror/data`, before it
+checks whether the site changed. `publish.sh` writes the build directory first and the signed
+manifest pair last, so a box never sees a manifest that names files that aren't there yet.
+`MIRROR_DATA=<dir>` uses another pool; `MIRROR_DATA=local` is the old layout (builds in
+`public/mirror/` in the checkout, copied into the web root).
 
-    ./deploy/deploy.sh                                   # site + every set in mirror.conf
-    MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh    # site + only those sets
+    ./deploy/deploy.sh                                   # site + mirror, upstream at most monthly
+    MIRROR=refresh ./deploy/deploy.sh                    # site + mirror, ask upstream now
+    MIRROR_SETS="geo landpolygons" ./deploy/deploy.sh    # site + only those sets, upstream now
     MIRROR=off ./deploy/deploy.sh                        # site only
 
+### Once a month
+
+GeoNames regenerates its dumps every day, so a mirror that asked upstream on every deploy made a new
+build (and asked for the key's passphrase) on nearly every deploy. `--monthly` asks upstream at most
+once a calendar month (UTC):
+
+- The first deploy on or after the 1st checks every set against upstream, as a plain publish does,
+  and writes the date to `cache/upstream-checked`.
+- Every other deploy that month is offline. A URL already in the cache is used as it is, without a
+  request, so only lines new or changed in `mirror.conf` (a new set, a new pin, a new URL) and edits
+  under `terms/` reach the network or make a new build. Most deploys print `nothing new in
+  mirror.conf or terms/` and don't touch the key.
+- The Go tarball's check against go.dev is remembered once it passes (`cache/godev.ok`), since a
+  release's checksum never changes.
+- Named sets (`MIRROR_SETS`, or `publish.sh geo`) and `MIRROR=refresh` always go upstream. A named
+  run doesn't move the monthly date; a full one does.
+- If the month's first run fails after its downloads (the signature, say), the date is already
+  written and the next deploy rebuilds the same thing from the cache and signs it.
+
+To force next deploy to go upstream, `rm /bulk/localghost/mirror/cache/upstream-checked`.
+
 Run it as the user whose gpg keyring holds the info@localghost.ai secret key (the same user that
-already signs the deploy manifest). The first run pulls every file once (about 12 GB, of which the
-Gemma 4 weights are 9.5 GB; `roads` is on its own, below). After that a deploy only downloads what
-changed upstream and makes no new build when nothing did. A failed publish never stops the site deploy; the last good build
+already signs the deploy manifest). The first run pulls every file once (about 12.5 GB, of which the
+model weights are 10 GB; `roads` is on its own, below). After that a monthly check only downloads
+what changed upstream and makes no new build when nothing did. A failed publish never stops the site deploy; the last good build
 stays up. The builds are hard links onto the cache, so every file is on the pool once.
 
-By hand, or from a weekly cron to keep GeoNames and the coastline fresh between deploys (the pool
-is the default when it exists, so no variables are needed):
+By hand, when one set needs to be fresher than the month (the pool is the default when it exists,
+so no variables are needed):
 
     deploy/mirror/publish.sh geo landpolygons        # live at once, the web root points here
 
@@ -143,6 +165,19 @@ those terms says every recipient gets a copy of the whole agreement, so `terms/g
 to carry the full text: paste it from https://ai.google.dev/gemma/terms (all of it, title through the
 Appendix) under the "in full:" line and delete the `EDIT-ME` paragraph. Until then the set is left out
 of every build and the publish says so; nothing else waits for it.
+
+## Speech
+
+`whisper` is the source archive of whisper.cpp, pinned exactly like llama.cpp: release v1.9.4, commit
+`927cfce34f31707e17f2bff35c349632fb9e2c3a`, fetched by commit, `check=sha256:?` until the first
+publish on the server prints the hash to paste. `speech` is the model a box transcribes the daily
+check-in's voice notes with, OpenAI's Whisper large-v3-turbo (multilingual) in the whisper.cpp
+maintainers' ggml build quantised to q5_0, `ggml-large-v3-turbo-q5_0.bin`
+(huggingface.co/ggerganov/whisper.cpp, 574 MB, MIT, not gated), pinned by the SHA-256 on its file
+page. Both are MIT; the model file carries no licence of its own, so `terms/openai-whisper.txt` has the
+full MIT text with OpenAI's copyright line. A box's `setup_whisper.sh` exits 3 ("not on the mirror
+yet") until both sets are in the manifest, keeps voice notes waiting, and transcribes the backlog
+after `sudo ./tools/update.sh speech`.
 
 ## llama.cpp
 
