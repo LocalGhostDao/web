@@ -35,7 +35,7 @@
     <meta property="article:tag" content="signed mirror">
     <meta property="article:tag" content="mutual TLS">
     <meta property="article:tag" content="TPM">
-    <meta property="article:reading_time" content="21">
+    <meta property="article:reading_time" content="23">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
@@ -88,7 +88,7 @@
         },
         "keywords": "LocalGhost, local AI, personal AI server, mutual TLS, QR enrolment, TPM, photo archive, Gemma 4, EmbeddingGemma, llama.cpp, OpenStreetMap, location history, Go daemons, signed mirror",
         "articleSection": "Hard Truths",
-        "wordCount": 5812,
+        "wordCount": 6214,
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/hard-truths#blog"
@@ -212,54 +212,81 @@
             <p class="statement-main">Every part of the box trades something away, and the price is written next to it.</p>
         </div>
 
+        <div class="podcast-player"
+             data-src="/assets/podcast/what-the-box-does-now.mp3"
+             data-title="What the Box Does Now, and What Each Part Costs"
+             data-album="EPISODE 18"
+             data-artwork="/images/og-what-the-box-does-now.png">
+            <div class="pp-meta">
+                <span><span class="pp-label">&gt; EPISODE 18</span> // OFFLINE-READY</span>
+                <span>NOTEBOOKLM AUDIO</span>
+            </div>
+            <div class="pp-controls">
+                <button class="pp-play" type="button" aria-label="Play podcast">
+                    <span class="pp-icon-play">&#9654;</span>
+                    <span class="pp-icon-pause">&#10074;&#10074;</span>
+                </button>
+                <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="pp-progress-bar"></div>
+                </div>
+                <span class="pp-time">00:00 / --:--</span>
+                <a class="pp-download" href="/assets/podcast/what-the-box-does-now.mp3" download aria-label="Download podcast">DOWNLOAD</a>
+            </div>
+            <audio preload="metadata" src="/assets/podcast/what-the-box-does-now.mp3"></audio>
+        </div>
+
         <p>
-            The box in my cupboard now holds 30,408 photos and 2,573 videos, draws where I have been along the streets I walked, writes a short account of each day, answers questions from my own archive plus a few web pages my phone read for it, and teaches me Greek on the lock screen. None of its daemons opens a connection to the internet. The phone is the only thing that talks to it, and the phone gets in with one secret it was shown once, on a screen. Most of what follows was built or rebuilt between 18 and 29 September 2026, and each part below ends with what it costs, because I would rather you read the price here than find it later. The trust model comes first, because everything after it is worthless if the wrong phone can ask.
+            On the morning of 29 September the Box Status panel on my phone said 24,420 frames were behind the latest stage of the pipeline and that a night of work had moved the number by ten. Ten days earlier the same panel had said 1,051 photos were undescribed and nothing was queued to describe them. Both times the panel was right and the box was wrong, and both stories are further down. Between those two mornings, 18 to 29 September 2026, most of what the box does was built or rebuilt, so this is the dev update, the whole thing in one place, with the price of each part written next to it. Every part trades something away and I'd rather you read that here than find it later.
+        </p>
+
+        <p>
+            What the box does now, in one go. It holds 30,408 photos and 2,573 videos, draws where I've been along the streets I walked, writes a short account of each day, answers questions from my own archive plus a few web pages my phone read for it, and teaches me Greek on the lock screen. None of its daemons opens a connection to the internet. The phone is the only thing that talks to it, and the phone gets in with one secret it was shown once, on a screen. That's the place to start, because everything after it is worthless if the wrong phone can ask.
         </p>
 
         <h2 class="section-header">&gt; 1. How a phone gets in</h2>
 
         <p>
-            The box is its own certificate authority, an ECDSA P-256 key made at setup that signs two kinds of thing and nothing else, the box's own HTTPS server certificate and one client certificate per phone. Enrolment is a QR code in the terminal on the box, and scanning it is the whole enrolment. When the box shows the code it generates the phone's keypair itself, signs the client certificate with its CA, and puts into the code the certificate and its PKCS#8 private key (both raw DER, base64url) <a href="#ref-1" class="cite">[1]</a>, the box's host, port and name, and the SHA-256 fingerprint of the box's server certificate. That is 858 bytes. There is no CSR, no pairing code and no network exchange. The box records the certificate and never writes the key to disk, so the phone walks away with the only copy.
+            I wanted enrolment to be one gesture, and it is. The box is its own certificate authority, an ECDSA P-256 key made at setup that signs two kinds of thing and nothing else, its own HTTPS server certificate and one client certificate per phone. Show the QR code in the terminal on the box, point the phone at it, done. What makes it one gesture is that the box generates the phone's keypair itself, signs the client certificate with its CA, and puts the lot into the code, the certificate and its PKCS#8 private key (both raw DER, base64url) <a href="#ref-1" class="cite">[1]</a>, the box's host, port and name, and the SHA-256 fingerprint of the box's server certificate. 858 bytes. The usual dance (the phone makes a key, sends a CSR, the box signs it, a pairing code on both screens to prove the two ends are looking at each other) is three network exchanges before there's anything to secure them with. Making the key on the box side and handing it over on a screen skips all of it. The box records the certificate and never writes the key to disk, so the phone walks away with the only copy.
         </p>
 
         <p>
-            The 858 bytes cross as an animated code, and since 19 September the stream is erasure coded. The identity is split into eight data frames and four parity frames, any eight of the twelve rebuild it, so a missed frame costs one more frame instead of another lap. Each frame shows for one second and a clean first connect takes 8 to 12 seconds. The box stops showing frames after the first verified connection.
+            The 858 bytes cross as an animated code rather than one dense one, and since 19 September the stream is erasure coded. The identity is split into eight data frames and four parity frames, any eight of the twelve rebuild it, so a missed frame costs one more frame instead of another lap. Each frame shows for one second and a clean first connect takes 8 to 12 seconds. The box stops showing frames after the first verified connection.
         </p>
 
         <p>
-            From then on the phone trusts the box by that pinned fingerprint alone. It doesn't use the CA for this and doesn't check the hostname, so the box can be a LAN address today and something else tomorrow and the phone doesn't care what it is called. On every call the phone presents its client certificate. nginx checks it against the box CA with <code>ssl_verify_client optional</code> <a href="#ref-2" class="cite">[2]</a>, passes the verdict inward, and secd makes the decision, so a missing or forged certificate gets the same 503 as everything else, including a well-formed request from a device the box never issued. On top of the certificate, the PIN unlock issues a session token that lasts two days.
+            From then on the phone trusts the box by that pinned fingerprint alone. It doesn't use the CA for this and it doesn't check the hostname, which sounds lazy and is the point. The box can be a LAN address today and a tunnel address tomorrow and the phone doesn't care what it's called, it cares what it is. On every call the phone presents its client certificate. nginx checks it against the box CA with <code>ssl_verify_client optional</code> <a href="#ref-2" class="cite">[2]</a> and passes the verdict inward, and secd makes the decision, so a missing or forged certificate gets the same 503 as everything else, including a well-formed request from a device the box never issued. A stranger scanning the box finds a web server having a bad day. On top of the certificate, the PIN unlock issues a session token that lasts two days.
         </p>
 
         <p>
-            The costs are the frames and the lack of an exit. The only secret in the QR is the phone's private key, which is what gets a request past the 503 wall, and anyone who records the frames (a camera over your shoulder, a terminal recording, scrollback) holds a valid device identity. They would still need the PIN to unlock the volume and get a session, but the key is not single-use. And there is no per-device revocation yet. nginx has no revocation list and device certificates are valid for ten years, so shutting out one phone today means a new CA and re-enrolling every phone. The smaller cost is the home-grown QR decoder on the phone, 1,200 lines I maintain myself, with one test for a code tilted by ten degrees that has failed since before any of this work. The test is right and the decoder is wrong, and neither has moved.
+            The price is the frames and the lack of an exit. The only secret in the QR is the phone's private key, which is what gets a request past the 503 wall, and anyone who records the frames (a camera over your shoulder, a terminal recording, scrollback) holds a valid device identity. They'd still need the PIN to unlock the volume and get a session, but the key isn't single-use. And there's no per-device revocation yet. nginx has no revocation list and device certificates are valid for ten years, so shutting out one phone today means a new CA and re-enrolling every phone. The smaller price is the home-grown QR decoder on the phone, 1,200 lines I maintain myself, with one test for a code tilted by ten degrees that has failed since before any of this work. The test is right and the decoder is wrong, and neither has moved.
         </p>
 
         <h2 class="section-header">&gt; 2. Where the key lives</h2>
 
         <p>
-            The archive sits on a LUKS2 volume and the volume key is sealed to the box's TPM <a href="#ref-3" class="cite">[3]</a>, through Google's go-tpm package, the one dependency outside the standard library that isn't a golang.org/x package. Sealed means the TPM hands the key back only to this board, in the boot state it measured when the key went in, so a disk pulled out of the box and put in another machine is ciphertext with no key on it anywhere. What releases the key is the PIN, typed in the phone app over the mutual TLS above. The PIN scheme is the one from <a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>, and the two FIDO2 hardware keys are for setup and recovery, not for the daily unlock.
+            The archive sits on a LUKS2 volume and the volume key is sealed to the box's TPM <a href="#ref-3" class="cite">[3]</a>, through Google's go-tpm, the one dependency outside the standard library that isn't a golang.org/x package. Sealed means the TPM hands the key back only to this board, in the boot state it measured when the key went in. Pull the disk and put it in another machine and what you have is ciphertext with no key on it anywhere, which is the property I wanted and the property that bites later (below). What releases the key is the PIN, typed in the phone app over the mutual TLS above. The PIN scheme is the one from <a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>, and the two FIDO2 hardware keys are for setup and recovery, not for the daily unlock.
         </p>
 
         <p>
-            Once open, the volume is mounted inside secd's private mount namespace. From the host it looks empty whether the box is locked or not, every daemon that needs it starts inside that namespace, and every tool reaches it through one door (section 12). Locking closes the volume, and everything except secd and nginx stops existing until the next PIN.
+            Once open, the volume is mounted inside secd's private mount namespace. From the host it looks empty whether the box is locked or not (ls on the mount point shows nothing), every daemon that needs it starts inside that namespace, and every tool reaches it through one door (section 12). Locking closes the volume, and everything except secd and nginx stops existing until the next PIN.
         </p>
 
         <p>
-            A box without a TPM (a software TPM, an older board, a virtual machine on someone's laptop) runs the same code path with the seal step missing. The volume key is then derived from the PIN alone, Argon2id as the Honeypot post describes <a href="#ref-4" class="cite">[4]</a>, and the health tool says so in plain words rather than pretending the seal is there. A box without hardware keys falls back the same way for setup, PIN only, and says that too.
+            A box without a TPM (a software TPM, an older board, a virtual machine on someone's laptop) runs the same code path with the seal step missing. The volume key is then derived from the PIN alone, Argon2id as the Honeypot post describes <a href="#ref-4" class="cite">[4]</a>, and the health tool says so in plain words rather than pretending the seal is there. A box without hardware keys falls back the same way for setup, PIN only, and says that too. I'd rather a box tell you it's weaker than refuse to run.
         </p>
 
         <p>
-            The costs run in opposite directions. Without a TPM the PIN is the whole secret, and a short PIN under Argon2id is still a short PIN. With one, the key is married to a board, and a dead board means the recovery path (the hardware keys and the recovery key described on the <a href="/about">About page</a>) rather than a disk swap.
+            The prices run in opposite directions. Without a TPM the PIN is the whole secret, and a short PIN under Argon2id is still a short PIN. With one, the key is married to a board, and a dead board means the recovery path (the hardware keys and the recovery key described on the <a href="/about">About page</a>) rather than a disk swap.
         </p>
 
         <h2 class="section-header">&gt; 3. The shape of it</h2>
 
         <p>
-            A LocalGhost box is a Debian 13 machine with an RTX 4070 (12 GB of VRAM), that encrypted volume and a set of small Go daemons, each with one job. The card is the gaming card from <a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>, still in its Thunderbolt enclosure on the end of a USB-C cable, which is why it reports four PCIe lanes of sixteen. As far as I can tell that is the cable and not a fault, and it costs little, since the weights cross it once at load and then live in VRAM.
+            A LocalGhost box is a Debian 13 machine with an RTX 4070 (12 GB of VRAM), that encrypted volume and a set of small Go daemons, each with one job. The card is the gaming card from <a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>, still in its Thunderbolt enclosure on the end of a USB-C cable, which is why it reports four PCIe lanes of sixteen. As far as I can tell that's the cable and not a fault, and it costs little, since the weights cross it once at load and then live in VRAM.
         </p>
 
         <p>
-            ghost.secd is the only thing that talks to the phone and answers 503 to anyone else. ghost.framed takes in photos, videos and location points. ghost.searchd indexes everything for search and runs the caption and tag queue. ghost.oracled runs the model through llama-server. ghost.synthd writes the memories and answers the chat. ghost.watchd supervises the rest and owns the health numbers. ghost.noted, ghost.voiced, ghost.tallyd and ghost.cued look after notes, voice memos, health data and the memories that surface before I ask.
+            ghost.secd is the only thing that talks to the phone and answers 503 to anyone else. ghost.framed takes in photos, videos and location points. ghost.searchd indexes everything for search and runs the caption and tag queue. ghost.oracled runs the model through llama-server. ghost.synthd writes the memories and answers the chat. ghost.watchd supervises the rest and owns the health numbers. ghost.noted, ghost.voiced, ghost.tallyd and ghost.cued look after notes, voice memos, health data and the memories that surface before I ask. One job each, and when one of them is wrong the name of the daemon is the name of the bug.
         </p>
 
         <p>
@@ -284,41 +311,39 @@
         <h2 class="section-header">&gt; 4. The app</h2>
 
         <p>
-            The phone side is one Kotlin app, no Google Play services, that talks to nothing but the box, apart from the search engine it queries on my behalf when a question needs the web. It started as a remote control and has become the whole front of the system, because the box has no screen and I want it that way. Box Status is the first screen, the pipeline panel from section 5 and every daemon's health from watchd. The map draws one day at a time as stays and moves (section 8). The chat answers from my archive, lists what it put into the prompt under every answer, runs the web round when the box asks for one, and carries a 2 GB model of its own for when the box is slow or absent (sections 6 and 7). On this day reads the day memories and the outings (section 9). Notes and voice memos go to noted and voiced, steps and sleep go to tallyd from the phone's health sync, a daily check-in records how the day felt, and cued pushes a memory before I ask for one. The location trail runs in the background, one fix every fifteen minutes plus whatever other apps ask for. And the lock screen teaches me languages, which is the part I like the most (section 10).
+            The phone side is one Kotlin app, no Google Play services, that talks to nothing but the box, apart from the search engine it queries on my behalf when a question needs the web. It started as a remote control and has turned into the whole front of the system, because the box has no screen and I want it that way. Box Status is the first screen, the pipeline panel from section 5 and every daemon's health from watchd. The map draws one day at a time as stays and moves (section 8). The chat answers from my archive, lists what it put into the prompt under every answer, runs the web round when the box asks for one, and carries a 2 GB model of its own for when the box is slow or absent (sections 6 and 7). On this day reads the day memories and the outings (section 9). Notes and voice memos go to noted and voiced, steps and sleep go to tallyd from the phone's health sync, a daily check-in records how the day felt, and cued pushes a memory before I ask for one. The location trail runs in the background, one fix every fifteen minutes plus whatever other apps ask for. And the lock screen teaches me languages, which is the part I like the most (section 10).
         </p>
 
         <p>
-            Everything the phone holds that matters is a copy of something on the box, except three things that live on the phone only. The private key from the QR. The Brave Search key, if I set one. And the location points the box has not acknowledged yet. The phone's model is downloaded from the box and checked against the hash the box states, never from the internet.
+            Everything the phone holds that matters is a copy of something on the box, except three things that live on the phone only. The private key from the QR. The Brave Search key, if I set one. And the location points the box hasn't acknowledged yet. The phone's model is downloaded from the box and checked against the hash the box states, never from the internet.
         </p>
 
         <p>
-            The cost is that the app is a lot of app. It is the map, the chat, the archive browser, a search client, a location logger, a health bridge, an inference runtime and a language tutor, and I am one person keeping it up with a box that changes every day. Each screen is small on purpose and the box does the thinking, but a bug in the app is a bug I find on a beach with no laptop.
+            What this costs is that the app is a lot of app. It's the map, the chat, the archive browser, a search client, a location logger, a health bridge, an inference runtime and a language tutor, and I'm one person keeping it up with a box that changes every day. Each screen is small on purpose and the box does the thinking, but a bug in the app is a bug I find on a beach with no laptop.
         </p>
 
         <h2 class="section-header">&gt; 5. The archive pipeline</h2>
 
-
         <p>
-            Every photo passes through the same stages. framed reads the EXIF from the first 256 KB of the file (it used to read 64 KB, and an Exif block can be 64 KB on its own, so the photos with the richest metadata were the ones that lost their dates and GPS <a href="#ref-5" class="cite">[5]</a>), pulls the location out of MP4 and MOV files, makes a preview and a thumbnail, and hands the frame to searchd. searchd asks the model to describe the image, turns the description into tags, files each tag under one of eleven categories (people, place, object, activity, food, animal, vehicle, nature, event, text, style) and embeds the text for search.
+            Every photo passes through the same stages, and the first stage is where the month's first bug lived. framed reads the EXIF from the first 256 KB of the file. It used to read 64 KB, and an Exif block can be 64 KB on its own <a href="#ref-5" class="cite">[5]</a>, so the photos with the richest metadata were the ones that arrived with no date and no place, which is the wrong photos to lose. It pulls the location out of MP4 and MOV files, makes a preview and a thumbnail, and hands the frame to searchd. searchd asks the model to describe the image, turns the description into tags, files each tag under one of eleven categories (people, place, object, activity, food, animal, vehicle, nature, event, text, style) and embeds the text for search.
         </p>
 
         <p>
-            Each row records which version of the pipeline last touched it. When I change the pipeline I bump the number, and at the next start framed finds every row behind it and brings it up to date. The same stock-take runs every six hours and at every start, and its result is on the phone. Box Status opens with a panel that shows each stage as done, total, percentage and what is left, the pace over the last hour, and the reason when there is no pace.
+            Each row records which version of the pipeline last touched it. When I change the pipeline I bump the number, and at the next start framed finds every row behind it and brings it up to date. The same stock-take runs every six hours and at every start, and its result is on the phone. Box Status opens with a panel that shows each stage as done, total, percentage and what is left, the pace over the last hour, and the reason when there is no pace. That panel is the one from the opening.
         </p>
 
         <p>
-            The panel earned its place in September. One day it said 1,051 photos were undescribed and nothing was queued. The model had answered some captions without the section the parser looks for, and those jobs were marked done, so nothing would ever look at those photos again. On 29 September the same panel said 24,420 frames were behind the latest stage, most of them because a tag had no category, and a night of work had moved the category count by ten. The category step asked the model for a comma-separated list. An answer written one pair per line reached the parser as one long bad tag, nothing was saved, and the stock-take queued the same frames again at every pass while most of the backlog never came up. Both are fixed in the code, and I will know the second fix works when the panel starts to climb. A caption without its sections now fails loudly and is retried, a tag the model cannot place is filed as "other" so it is never asked about again, and the whole backlog is queued at once behind new photos instead of in front of them.
+            The first time it earned its place it said 1,051 photos were undescribed and nothing was queued. The model had answered some captions without the section the parser looks for, and those jobs were marked done, so nothing would ever look at those photos again. The second time, on 29 September, it said 24,420 frames were behind the latest stage, most of them because a tag had no category, and a night of work had moved the category count by ten. The category step asked the model for a comma-separated list. An answer written one pair per line reached the parser as one long bad tag, nothing was saved, and the stock-take queued the same frames again at every pass while most of the backlog never came up. Both are fixed in the code, and I'll know the second fix works when the panel starts to climb. A caption without its sections now fails loudly and is retried, a tag the model can't place is filed as "other" so it's never asked about again, and the whole backlog is queued at once behind new photos instead of in front of them.
         </p>
 
         <p>
-            The cost is the model. On the GPU a caption takes a few seconds. On the CPU the same box manages about 24 photos an hour. A first import of a large library takes days either way, and the panel is there so the days are visible rather than suspicious.
+            All of this costs model time. On the GPU a caption is a few seconds. On the CPU the same box manages about 24 photos an hour, and a first import of a large library takes days either way, which is why the panel exists, so that the days are visible rather than suspicious.
         </p>
 
-                <h2 class="section-header">&gt; 6. Search and chat</h2>
-
+        <h2 class="section-header">&gt; 6. Search and chat</h2>
 
         <p>
-            Search runs two legs at once, Postgres full-text search <a href="#ref-6" class="cite">[6]</a> and vector search over EmbeddingGemma 300M <a href="#ref-7" class="cite">[7]</a>, and fuses them with reciprocal rank fusion, the 2009 method from Cormack, Clarke and Büttcher that scores each result by one over its rank in each list, adds the scores up, and needs no tuning <a href="#ref-8" class="cite">[8]</a>. The chat uses the same search to put my own memories, photo descriptions and notes into the prompt, and the phone lists what was put there under every answer.
+            Search runs two legs at once, Postgres full-text search <a href="#ref-6" class="cite">[6]</a> and vector search over EmbeddingGemma 300M <a href="#ref-7" class="cite">[7]</a>, and fuses them with reciprocal rank fusion, the 2009 method from Cormack, Clarke and Büttcher that scores each result by one over its rank in each list, adds the scores up, and needs no weight I'd have to guess <a href="#ref-8" class="cite">[8]</a>. The chat uses the same search to put my own memories, photo descriptions and notes into the prompt, and the phone lists what was put there under every answer, so when the answer is wrong I can see what it was wrong from.
         </p>
 
         <p>
@@ -326,41 +351,39 @@
         </p>
 
         <p>
-            The box also knows how fast it reads. It measures its own prompt speed, sizes the context to about twenty seconds of reading, trims the web pages to fit and tells me before the first word what it is doing ("reading 2,100 words on the CPU, about 35 seconds before the first word").
+            The box also knows how fast it reads. It measures its own prompt speed, sizes the context to about twenty seconds of reading, trims the web pages to fit and tells me before the first word what it's doing ("reading 2,100 words on the CPU, about 35 seconds before the first word"). I'd rather wait for a number than wait for nothing.
         </p>
 
         <p>
-            The cost is that my searches go to DuckDuckGo or Brave from my phone, the same as they would from any browser. The box never sees the internet and the search engine never sees my archive, but the search engine does see the query. The Brave key lives on the phone only.
+            What this costs is that my searches go to DuckDuckGo or Brave from my phone, the same as they would from any browser. The box never sees the internet and the search engine never sees my archive, but the search engine does see the query. The Brave key lives on the phone only.
         </p>
 
-                <h2 class="section-header">&gt; 7. A model on the phone</h2>
-
+        <h2 class="section-header">&gt; 7. A model on the phone</h2>
 
         <p>
             The app carries llama.cpp and can run Gemma 4 E2B, a model of about two billion effective parameters in a 2-bit build of 2.2 GB <a href="#ref-10" class="cite">[10]</a>. The phone downloads it from the box, never from the internet, and checks it against the hash the box states.
         </p>
 
         <p>
-            It has two jobs. When the box's model runs on the CPU (a box without a card), reading five web pages would take the box minutes, so the phone's model reads each page into a few notes with a verbatim quote beside them, and the box writes the answer from the notes. Every number in a note has to appear in the page or the note is dropped. When there is no box at all (a boat, a flight, a dead router at home) the phone searches, reads and answers by itself. When the box is on its GPU it reads everything faster than the phone can start, so the phone stays out of it.
+            It has two jobs. When the box's model runs on the CPU (a box without a card), reading five web pages would take the box minutes, so the phone's model reads each page into a few notes with a verbatim quote beside them, and the box writes the answer from the notes. Every number in a note has to appear in the page or the note is dropped. When there's no box at all (a boat, a flight, a dead router at home) the phone searches, reads and answers by itself. When the box is on its GPU it reads everything faster than the phone can start, so the phone stays out of it.
         </p>
 
         <p>
-            The costs are quality and battery. A 2-bit 2B model writes worse notes than the box, which is why the box is told to trust the quote over the notes. It reads maybe 70 to 150 tokens a second on a recent phone and it uses the battery while it does. And as of writing it has never run on my phone. The runtime builds from the same llama.cpp source tarball the box builds from, pinned by its SHA-256, and until I set that pin the APK builds without it, which is the APK I run today.
+            The prices are quality and battery. A 2-bit 2B model writes worse notes than the box, which is why the box is told to trust the quote over the notes. It reads maybe 70 to 150 tokens a second on a recent phone and it uses the battery while it does. And as of writing it has never run on my phone. The runtime builds from the same llama.cpp source tarball the box builds from, pinned by its SHA-256, and until I set that pin the APK builds without it, which is the APK I run today. So the most interesting feature in this post is one I haven't seen work, and I'd rather say that than imply otherwise.
         </p>
 
-                <h2 class="section-header">&gt; 8. The trail and the map</h2>
-
+        <h2 class="section-header">&gt; 8. The trail and the map</h2>
 
         <p>
             The phone takes one location fix every fifteen minutes with the operating system's own location service (no Google Play services), plus free copies of any fix another app asked for, which Android calls the passive provider <a href="#ref-11" class="cite">[11]</a>. A point is kept when I moved 25 metres or an hour passed, and it goes to the box in batches acknowledged by their timestamps, so a point stays on the phone until the box has it and is never sent twice.
         </p>
 
         <p>
-            A fix whose error radius is wider than 200 metres is a guess from a cell tower or a Wi-Fi network, and since the 29 September build such a fix never moves the trail. I learned that on Paxos. The phone kept latching onto towers on the mainland, 25 kilometres across the sea, and the map drew ferry crossings I never made, several a day, at speeds the ferry company would have envied. Four rules clean the points before they are drawn, and they are the same rules on the box and on the phone, tested against one shared file of cases. An impossible hop is dropped, so is a fast hop that comes straight back, so is a lone point reached and left at car speed between walking, and two or three points close together far away, reached and left at car speed between still points, are a distant tower and go too. The raw points stay in the database, only the drawing changes.
+            A fix whose error radius is wider than 200 metres is a guess from a cell tower or a Wi-Fi network, and since the 29 September build such a fix never moves the trail. I learned that on Paxos. The phone kept latching onto towers on the mainland, 25 kilometres across the sea, and the map drew ferry crossings I never made, several a day, at speeds the ferry company would have envied. Four rules clean the points before they're drawn, and they're the same rules on the box and on the phone, tested against one shared file of cases, because two implementations of "impossible" that disagree are worse than none. An impossible hop is dropped, so is a fast hop that comes straight back, so is a lone point reached and left at car speed between walking, and two or three points close together far away, reached and left at car speed between still points, are a distant tower and go too. The raw points stay in the database, only the drawing changes.
         </p>
 
         <p>
-            The map draws one day at a time, the newest first, and steps back through the days with an arrow. For the day shown the box tells the day as stays and moves. A stay is ten minutes or more within 100 metres, named after the beach or harbour or museum it is next to. A move on foot is drawn along the streets, routed on a walking graph the box built itself, and a move by road is drawn as a straight line between the fixes because that is all the points say.
+            The map draws one day at a time, the newest first, and steps back through the days with an arrow. For the day shown the box tells the day as stays and moves. A stay is ten minutes or more within 100 metres, named after the beach or harbour or museum it's next to. A move on foot is drawn along the streets, routed on a walking graph the box built itself, and a move by road is drawn as a straight line between the fixes because that's all the points say, and I'd rather draw what I know than guess a road.
         </p>
 
         <p>
@@ -368,18 +391,17 @@
         </p>
 
         <p>
-            The costs are disk and time. The streets are 79 GB of downloads and a long first cut. The fourth trail rule has a price too, a drive shorter than one fifteen-minute gap each way, with a short stop at the far end, is not drawn. Days are cut at UTC midnight, which is an hour off in a London summer and more further east, and a local-day cut is not built. Lakes and rivers are not in the land polygons, so inland water still draws as land, which makes Lake Geneva a very flat field.
+            The prices here are disk and time, and one rule that's too strict. The streets are 79 GB of downloads and a long first cut. The fourth trail rule hides a drive shorter than one fifteen-minute gap each way with a short stop at the far end, which is a real drive I sometimes make. Days are cut at UTC midnight, which is an hour off in a London summer and more further east, and a local-day cut isn't built. Lakes and rivers aren't in the land polygons, so inland water still draws as land, which makes Lake Geneva a very flat field.
         </p>
 
-                <h2 class="section-header">&gt; 9. Memories</h2>
-
+        <h2 class="section-header">&gt; 9. Memories</h2>
 
         <p>
             synthd builds three kinds of memory without being asked.
         </p>
 
         <p>
-            An outing is a run of photos that starts after 36 hours of silence, or 30 kilometres from where the last run was, or after ten days. It gets a title from the place I photographed most and the dates, a set of cover photos spread over its days, the distance I moved and how far it was from home. Home is the five-kilometre cell with the most days of photos.
+            An outing is a run of photos that starts after 36 hours of silence, or 30 kilometres from where the last run was, or after ten days. It gets a title from the place I photographed most and the dates, a set of cover photos spread over its days, the distance I moved and how far it was from home. Home is the five-kilometre cell with the most days of photos, which is a definition that survives moving house without anyone telling the box.
         </p>
 
         <p>
@@ -391,24 +413,23 @@
         </p>
 
         <p>
-            The cost is that a model wrote some of this. The number check stops invented figures. It cannot stop a wrong adjective. The template is always kept beside the model's text, and I can edit or delete any memory and the box leaves my version alone.
+            What this costs is that a model wrote some of it. The number check stops invented figures. It can't stop a wrong adjective. The template is always kept beside the model's text, and I can edit or delete any memory and the box leaves my version alone.
         </p>
 
-                <h2 class="section-header">&gt; 10. Phrases on the lock screen</h2>
+        <h2 class="section-header">&gt; 10. Phrases on the lock screen</h2>
 
         <p>
             The smallest feature and the one I see most, because it lives where I look forty times a day. The app carries phrasebooks for eighteen languages, 696 phrases in all, and puts one card on the lock screen, so the phrase is there every time I pick the phone up to check the time. The card changes with the time of day (good morning at breakfast, the bill after dinner), it says the phrase aloud with the phone's own text-to-speech, and "got it" retires a card I know so the next one comes forward. Greek has 181 phrases in four levels and the card climbs a level once 60% of the one below is known. The feature is off until I land in a country with a pack, and then it asks once. Nothing about it touches the box or the internet, the phrasebooks ship inside the app.
         </p>
 
         <p>
-            The cost is that a model wrote the phrasebooks and no native speaker has reviewed them. Romanian is the only one I can check myself, and the Romanian is fine, which tells you nothing about the other seventeen. The emergency numbers came from memory and need checking against an official source before this goes near a store.
+            What this costs is that a model wrote the phrasebooks and no native speaker has reviewed them. Romanian is the only one I can check myself, and the Romanian is fine, which tells you nothing about the other seventeen. The emergency numbers came from memory and need checking against an official source before this goes near a store.
         </p>
 
         <h2 class="section-header">&gt; 11. The mirror, setup and updates</h2>
 
-
         <p>
-            Everything the box downloads at setup comes from <a href="/mirror">www.localghost.ai/mirror</a> and nowhere else. The mirror publishes a list of SHA-256 hashes signed by the site's PGP key. The box has that key in the repository, pinned by its fingerprint (DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0), and never fetches it at the moment it checks a signature. A file is renamed into place only after its hash matches the signed list. If the mirror cannot be reached, setup says so and stops. The one exception is an environment variable an operator has to type, and each file fetched that way is printed as not coming from a signed list.
+            Everything the box downloads at setup comes from <a href="/mirror">www.localghost.ai/mirror</a> and nowhere else. The mirror publishes a list of SHA-256 hashes signed by the site's PGP key. The box has that key in the repository, pinned by its fingerprint (DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0), and never fetches it at the moment it checks a signature. A file is renamed into place only after its hash matches the signed list. If the mirror can't be reached, setup says so and stops. The one exception is an environment variable an operator has to type, and each file fetched that way is printed as not coming from a signed list.
         </p>
 
         <p>
@@ -416,18 +437,17 @@
         </p>
 
         <p>
-            <code>sudo ./tools/update.sh</code> brings a running box up to date with the mirror. It reads the signed list first, then for each set fetches only what is different. On its first run on my box it found the 12B model file 1,440 bytes short of the pinned one, a different upload under the same name, replaced it and restarted the model. That is the whole argument for the pin, in one number.
+            <code>sudo ./tools/update.sh</code> brings a running box up to date with the mirror. It reads the signed list first, then for each set fetches only what is different. On its first run on my box it found the 12B model file 1,440 bytes short of the pinned one, a different upload under the same name, replaced it and restarted the model. That's the whole argument for the pin, in one number.
         </p>
 
         <p>
-            The costs are trust and reach. The whole chain rests on the site's key and on the web host staying up. A box refuses to install an older signed list than one it has already used, so a replayed list is caught, but a stolen key would not be. The Go modules for the build still come from proxy.golang.org, pinned by go.sum but not through the mirror, and the Postgres and Redis packages still come from the Debian and upstream apt repositories.
+            The prices are trust and reach. The whole chain rests on the site's key and on the web host staying up. A box refuses to install an older signed list than one it has already used, so a replayed list is caught, but a stolen key wouldn't be. The Go modules for the build still come from proxy.golang.org, pinned by go.sum but not through the mirror, and the Postgres and Redis packages still come from the Debian and upstream apt repositories.
         </p>
 
-                <h2 class="section-header">&gt; 12. Running it</h2>
-
+        <h2 class="section-header">&gt; 12. Running it</h2>
 
         <p>
-            The volume is mounted inside secd's private mount namespace, so from the host it looks empty whether the box is locked or not. Every tool reaches it through one door.
+            The volume is mounted inside secd's private mount namespace, so from the host it looks empty whether the box is locked or not. Every tool reaches it through one door, and these are the ones I ran this month.
         </p>
 
 <pre><code>sudo ./tools/redeploy.sh          <span class="c"># build, stage the daemons, restart secd (the box locks)</span>
@@ -454,15 +474,15 @@ sudo ./tools/ns.sh ./bin/ghost-cli ghost.oracled models</code></pre>
         <h2 class="section-header">&gt; 13. What broke, and what it taught the box</h2>
 
         <p>
-            On 23 September I ran the reset path of a new recovery script remotely, with nobody at home, and the box froze. It stayed frozen until the evening, when someone could press the button. When it came back the two 8 TB NVMe drives had swapped names, which Linux is allowed to do on any boot <a href="#ref-16" class="cite">[16]</a>, and secd tried to open the encrypted volume on the drive that holds a Bitcoin node. Opening failed without writing anything, which is my favourite sentence in this post. Since then the service names the disk by its permanent ID, secd tries every encrypted container with the key when the named one is wrong, the reset path refuses to act unless a hardware watchdog is armed or someone types that they can reach the power button, and the watchdog is armed, fed by systemd <a href="#ref-17" class="cite">[17]</a>. A hard lockup now resets the box within a minute and it comes back locked, waiting for my PIN.
+            On 23 September I ran the reset path of a new recovery script remotely, with nobody at home, which is the only time anyone ever runs a reset path, and the box froze. It stayed frozen until the evening, when someone could press the button. When it came back the two 8 TB NVMe drives had swapped names, which Linux is allowed to do on any boot <a href="#ref-16" class="cite">[16]</a>, and secd tried to open the encrypted volume on the drive that holds a Bitcoin node. Opening failed without writing anything, which is my favourite sentence in this post. Since then the service names the disk by its permanent ID, secd tries every encrypted container with the key when the named one is wrong, the reset path refuses to act unless a hardware watchdog is armed or someone types that they can reach the power button, and the watchdog is armed, fed by systemd <a href="#ref-17" class="cite">[17]</a>. A hard lockup now resets the box within a minute and it comes back locked, waiting for my PIN.
         </p>
 
         <p>
-            On 18 September the map showed nothing and flew to Antarctica, where I have never been. Two fields in one Go struct shared the JSON name "lat", and Go's encoder drops both fields when two have the same name, with no error <a href="#ref-18" class="cite">[18]</a>, so every photo left the box without coordinates. On 26 September I found that secd had been reading the day tracks from a folder framed never wrote to. On 27 September, preparing every SQL statement in the code (246 of them) against a real Postgres showed that a brand new box could not be provisioned at all, because one index was created before its table. The map bug and the schema bug now have tests that would have caught them. The same week I found that ghost.cued, the daemon that surfaces a memory before I ask for it, had posted nothing since the day it was wired, because one path had the mount point in it twice. It posts now.
+            On 18 September the map showed nothing and flew to Antarctica, where I have never been. Two fields in one Go struct shared the JSON name "lat", and Go's encoder drops both fields when two have the same name, with no error <a href="#ref-18" class="cite">[18]</a>, so every photo left the box without coordinates. On 26 September I found that secd had been reading the day tracks from a folder framed never wrote to. On 27 September, preparing every SQL statement in the code (246 of them) against a real Postgres showed that a brand new box couldn't be provisioned at all, because one index was created before its table, which my box never noticed because my box was never new. The map bug and the schema bug now have tests that would have caught them. The same week I found that ghost.cued, the daemon that surfaces a memory before I ask for it, had posted nothing since the day it was wired, because one path had the mount point in it twice. It posts now.
         </p>
 
         <div class="final-words">
-            What is not done, in one breath. The phone's model has not run on a phone, the phrasebooks are unreviewed, days are UTC days, two build-time dependencies still bypass the mirror, the fourth trail rule hides some short real drives, and the QR decoder has a failing test I understand but have not fixed. The next post is probably the phone's model running on a phone, or a decent account of why it doesn't.
+            The list of what isn't done. The phone's model has not run on a phone, the phrasebooks are unreviewed, days are UTC days, two build-time dependencies still bypass the mirror, the fourth trail rule hides some short real drives, there is no way to revoke one phone without re-enrolling all of them, and the QR decoder has a failing test I understand but have not fixed. The next post is probably the phone's model running on a phone, or a decent account of why it doesn't.
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
@@ -569,6 +589,8 @@ sudo ./tools/ns.sh ./bin/ghost-cli ghost.oracled models</code></pre>
         </div>
     <p class="footer-quote">"Opening failed without writing anything, which is my favourite sentence in this post." // What the Box Does Now</p>
 </footer>
+
+<script src="/js/blog-player.js" defer></script>
 
 </body>
 </html>
