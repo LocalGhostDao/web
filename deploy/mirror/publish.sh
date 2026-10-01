@@ -149,23 +149,14 @@ fetch() {
         echo "$_f"; return 0
     fi
     if [ -s "$_f" ]; then
-        if [ -n "${QUIET:-}" ]; then
-            curl -fsSL --retry 3 -R -z "$_f" -o "$_f.tmp" "$1" || return 1
-            if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi
-            echo "$_f"; return 0
-        fi
         # on a terminal, ask with a HEAD first, so an unchanged file doesn't print an empty meter
         if [ -t 2 ] && [ "$(curl -fsSL --retry 3 -I -z "$_f" -o /dev/null -w '%{http_code}' "$1" 2>/dev/null)" = 304 ]; then
             echo "$_f"; return 0
         fi
         $CURL -R -z "$_f" -o "$_f.tmp" "$1" || return 1
     else
-        if [ -n "${QUIET:-}" ]; then
-            curl -fsSL --retry 3 -R -o "$_f.tmp" "$1" || return 1
-        else
-            say "downloading $1${OFFLINE:+ (new in mirror.conf)}"
-            $CURL -R -o "$_f.tmp" "$1" || return 1
-        fi
+        say "downloading $1${OFFLINE:+ (new in mirror.conf)}"
+        $CURL -R -o "$_f.tmp" "$1" || return 1
     fi
     if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi   # a 304 writes nothing
     [ -s "$_f" ] || return 1
@@ -384,6 +375,11 @@ SKIP=""
 skip() { echo "$SKIP" | grep -qx "$1"; }
 while read -r set file tnames source opt; do
     want "$set" || continue
+    case " ${opt:-} " in *" listed "*)
+        # the lines of one list share their terms and options: check the first, skip the rest
+        [ "$set|$tnames" = "${_pp_last:-}" ] && continue
+        _pp_last="$set|$tnames" ;;
+    esac
     skip "$set" && continue
     for t in $(echo "$tnames" | tr ',' ' '); do
         [ -f "$TERMS/$t.txt" ] || continue           # a missing file stops the publish, below
@@ -446,10 +442,81 @@ for d in "$NEW"/*/; do
 done
 
 echo "> PUBLISHING ${SETS:-every set} as build $BUILD"
+
+# --- listed files (the elevation tiles) are fetched first, $PAR at a time, with progress. They    ---
+# --- don't change within an upstream release, so one already in $CACHE/list/<set>/ is never asked ---
+# --- about again (to take a new release, delete that directory). Stopping and running again loses ---
+# --- nothing: what was downloaded stays.                                                         ---
+LISTDIR="$CACHE/list"
+PAR="${GHOST_MIRROR_PARALLEL:-8}"
+: > "$CACHE/list.want"
+while read -r set file tnames source opt; do
+    case " ${opt:-} " in *" listed "*) ;; *) continue ;; esac
+    want "$set" || continue
+    echo "$set $file $source" >> "$CACHE/list.want"
+done < "$CACHE/conf.tmp"
+if [ -s "$CACHE/list.want" ]; then
+    for s in $(awk '{ print $1 }' "$CACHE/list.want" | sort -u); do mkdir -p "$LISTDIR/$s"; done
+    # copies an older publish.sh kept under its own cache names (dl-<hash>-<file>) move over
+    ls "$CACHE" | grep '^dl-[0-9a-f]\{16\}-' > "$CACHE/dl.names" || true
+    awk 'NR == FNR { n = $0; sub(/^dl-[0-9a-f]+-/, "", n); old[n] = $0; next }
+         ($2 in old) { print old[$2], $1 "/" $2 }' "$CACHE/dl.names" "$CACHE/list.want" \
+    | while read -r _o _n; do [ -s "$LISTDIR/$_n" ] || mv -f "$CACHE/$_o" "$LISTDIR/$_n"; done
+    while read -r _s _f _u; do
+        [ -s "$LISTDIR/$_s/$_f" ] || echo "$_u $LISTDIR/$_s/$_f"
+    done < "$CACHE/list.want" > "$CACHE/list.todo"
+    _total="$(grep -c . "$CACHE/list.want")"
+    _todo="$(grep -c . "$CACHE/list.todo" || true)"
+    if [ "$_todo" -gt 0 ]; then
+        say "$_todo of $_total listed files to download, $PAR at a time"
+        _count() { find "$LISTDIR" -type f ! -name '*.tmp' | wc -l; }
+        _base="$(_count)"; _t0="$(date +%s)"; _last=0
+        xargs -P "$PAR" -L 1 sh -c 'curl -fsSL --retry 5 --retry-delay 3 -R -o "$2.tmp" "$1" && mv -f "$2.tmp" "$2" || { rm -f "$2.tmp"; echo "  !! failed: $1" >&2; }' _ < "$CACHE/list.todo" &
+        _xp=$!
+        while kill -0 "$_xp" 2>/dev/null; do
+            sleep 5
+            _done=$(( $(_count) - _base )); _el=$(( $(date +%s) - _t0 ))
+            _eta=""; [ "$_done" -gt 0 ] && _eta=", about $(( (_todo - _done) * _el / _done / 60 )) min left"
+            if [ -t 2 ]; then
+                printf '\r  %s/%s downloaded (%s%%)%s   ' "$_done" "$_todo" $((_done * 100 / _todo)) "$_eta" >&2
+            elif [ $((_el - _last)) -ge 60 ]; then
+                _last=$_el; say "$_done/$_todo downloaded$_eta"
+            fi
+        done
+        wait "$_xp" || true
+        [ -t 2 ] && echo >&2
+        _miss=0
+        while read -r _u _p; do [ -s "$_p" ] || _miss=$((_miss + 1)); done < "$CACHE/list.todo"
+        [ "$_miss" -eq 0 ] || die "$_miss of $_todo listed files could not be downloaded; run it again, the rest are kept"
+        say "all $_total listed files are in the cache"
+    fi
+fi
+
 while read -r set file tnames source opt; do
     want "$set" || continue
     case "$file" in
         .*|*[!A-Za-z0-9._+-]*) die "line for $set: bad file name '$file'" ;;
+    esac
+    case " ${opt:-} " in *" listed "*)
+        # fast path: one terms check per list, then a hard link and a NOTICE line per file
+        if [ "$set|$tnames" != "${_ml_last:-}" ]; then
+            for t in $(echo "$tnames" | tr ',' ' '); do
+                [ -f "$TERMS/$t.txt" ] || die "$set/$file: no terms file $TERMS/$t.txt"
+                grep -q 'EDIT-ME' "$TERMS/$t.txt" && die "$set/$file: $TERMS/$t.txt still says EDIT-ME , finish it first"
+            done
+            mkdir -p "$NEW/$set"
+            for t in $(echo "$tnames" | tr ',' ' '); do
+                [ -f "$NEW/$set/TERMS-$t.txt" ] || terms "$t" "$NEW/$set/TERMS-$t.txt" || die "$set/$file: could not get terms $t"
+            done
+            _ml_terms="$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')"
+            _ml_last="$set|$tnames"
+        fi
+        ln -f "$LISTDIR/$set/$file" "$NEW/$set/$file" 2>/dev/null || cp "$LISTDIR/$set/$file" "$NEW/$set/$file" \
+            || die "$set/$file: not in $LISTDIR/$set"
+        printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$_ml_terms" "$source" >> "$NEW/$set/NOTICE.txt"
+        LISTED_N=$((${LISTED_N:-0} + 1))
+        [ $((LISTED_N % 5000)) -ne 0 ] || say "$set: $LISTED_N files linked into the build"
+        continue ;;
     esac
     case "$source" in *'<'*) die "$set/$file: the source still has a placeholder: $source" ;; esac
     for t in $(echo "$tnames" | tr ',' ' '); do
@@ -470,7 +537,6 @@ while read -r set file tnames source opt; do
             *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, check=sumfile, list=<url>, manual)" ;;
         esac
     done
-    QUIET="$listed"          # a listed set is tens of thousands of files: progress, not a line each
     url="$source"
     case "$source" in http://*|https://*)
         url="$(resolve "$source")" || die "$set/$file: nothing upstream matches $source" ;;
@@ -514,14 +580,8 @@ while read -r set file tnames source opt; do
     upstream="$url"
     case "$source" in /*|./*) upstream="(provided by LocalGhost)" ;; esac
     printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')" "$upstream" >> "$NEW/$set/NOTICE.txt"
-    if [ -n "$listed" ]; then
-        LISTED_N=$((${LISTED_N:-0} + 1))
-        [ $((LISTED_N % 1000)) -ne 0 ] || say "$set: $LISTED_N files so far"
-    else
-        say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
-    fi
+    say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
 done < "$CACHE/conf.tmp"
-QUIET=""
 [ -z "${LISTED_N:-}" ] || say "listed files in this build: $LISTED_N"
 for s in $ALL; do
     if want "$s" && [ -f "$NEW/$s/NOTICE.txt" ]; then

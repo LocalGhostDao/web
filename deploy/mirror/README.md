@@ -181,6 +181,11 @@ refreshed. It is `manual` and on the order of 100 GB (the first run's last line 
     deploy/mirror/publish.sh --sign-later elevation    # in screen, once
     deploy/mirror/publish.sh --sign
 
+The tiles are downloaded 8 at a time (`GHOST_MIRROR_PARALLEL=16` for more) before the build, with a
+progress line and an estimate, into `cache/list/elevation/`. A tile already there is never asked
+about again, since tiles don't change within a Copernicus release; to take a new release, delete that
+directory. Stopping a run and starting it again loses nothing.
+
 The licence asks that everyone who receives the data is bound by it, so the licence PDF is a file in
 the set. A box fetches only the tiles it needs.
 
