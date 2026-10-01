@@ -1,0 +1,8 @@
+IANA time zone database (tzdata) , https://www.iana.org/time-zones
+
+tzdata-latest.tar.gz is an unmodified copy of the data distribution IANA publishes at
+https://data.iana.org/time-zones/tzdata-latest.tar.gz; the version it holds is in the file "version"
+inside it. IANA also publishes a detached signature beside it (tzdata-latest.tar.gz.asc).
+
+The tz database is in the public domain. From its LICENSE file: "Unless specified below, all files in
+the tz code and data are hereby placed in the public domain."

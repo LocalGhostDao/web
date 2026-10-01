@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-09-24",
-            "dateModified": "2026-09-29",
+            "dateModified": "2026-10-01",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/mirror"
@@ -189,7 +189,7 @@
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week, and <code>whisper</code> and <code>speech</code> (the engine and the model a box transcribes voice notes with) at the end of the month. The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
+                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week, and <code>whisper</code> and <code>speech</code> (the engine and the model a box transcribes voice notes with) at the end of the month. October added <code>tz</code> (time zones), <code>elevation</code> (the Copernicus DEM) and <code>wikipedia</code> (English Wikipedia, searchable offline). The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -227,6 +227,18 @@
                                 <td data-label="Files"><code>europe-latest.osm.pbf</code> and the other seven continent extracts, named as Geofabrik names them</td>
                                 <td data-label="Where it comes from">OpenStreetMap's roads as Geofabrik's continent extracts, unmodified, about 80 GB in all and refreshed about monthly. A box only fetches the continents it's told to at setup, and cuts them into street tiles itself.</td>
                                 <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">tz</td>
+                                <td data-label="Files"><code>timezones-with-oceans-1970.geojson.zip</code> <code>tzdata-latest.tar.gz</code></td>
+                                <td data-label="Where it comes from">The time zone boundaries of the world, oceans included, from timezone-boundary-builder, and IANA's time zone rules. A box uses them to cut a day at local midnight wherever the photo was taken.</td>
+                                <td data-label="Terms">ODbL 1.0 and public domain<sup class="fn"><a href="#ref10">[10]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">elevation</td>
+                                <td data-label="Files">about 26,000 <code>Copernicus_DSM_COG_30_*.tif</code> tiles, <code>tileList.txt</code>, the licence</td>
+                                <td data-label="Where it comes from">The Copernicus DEM GLO-90, the height of the world's land every 90 metres, one tile per degree, unmodified. Refreshed only by hand, and a box takes only the tiles it needs, for hillshading and the climb on a walk.</td>
+                                <td data-label="Terms">Copernicus DEM licence<sup class="fn"><a href="#ref11">[11]</a></sup></td>
                             </tr>
                             <tr>
                                 <td data-label="Set">go</td>
@@ -269,6 +281,12 @@
                                 <td data-label="Files"><code>embeddinggemma-300m-qat-Q8_0.gguf</code></td>
                                 <td data-label="Where it comes from">EmbeddingGemma 300M, Google's embedding model, for search over your own notes. Google's quantisation-aware Q8_0 checkpoint as converted to GGUF by the llama.cpp maintainers. Unmodified and pinned by SHA-256.</td>
                                 <td data-label="Terms">Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <td data-label="Set">wikipedia</td>
+                                <td data-label="Files"><code>wikipedia_en_all_nopic.zim</code></td>
+                                <td data-label="Where it comes from">English Wikipedia without pictures, as Kiwix packages it, about 60 GB with its own full-text index, checked against the SHA-256 Kiwix publishes. The newest dump is taken by hand every month or two. A box searches it to answer questions without the web.</td>
+                                <td data-label="Terms">CC BY-SA 4.0<sup class="fn"><a href="#ref12">[12]</a></sup></td>
                             </tr>
                         </tbody>
                     </table>
@@ -344,14 +362,14 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
                 <p>
-                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup>, and llama.cpp and whisper.cpp are MIT.<sup class="fn"><a href="#ref5">[5]</a></sup><sup class="fn"><a href="#ref8">[8]</a></sup> OpenAI released Whisper's code and weights under MIT too, and since the model file carries no licence of its own, the full MIT text with OpenAI's copyright line travels beside it.<sup class="fn"><a href="#ref9">[9]</a></sup>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup>, and llama.cpp and whisper.cpp are MIT.<sup class="fn"><a href="#ref5">[5]</a></sup><sup class="fn"><a href="#ref8">[8]</a></sup> OpenAI released Whisper's code and weights under MIT too, and since the model file carries no licence of its own, the full MIT text with OpenAI's copyright line travels beside it.<sup class="fn"><a href="#ref9">[9]</a></sup> The time zone boundaries are OpenStreetMap data under the ODbL and IANA's time zone rules are in the public domain.<sup class="fn"><a href="#ref10">[10]</a></sup> The Copernicus DEM is free to copy and redistribute under its own licence, which asks that everyone who receives it is bound by the same terms, so the licence itself is a file in the set.<sup class="fn"><a href="#ref11">[11]</a></sup> Wikipedia's text is CC BY-SA 4.0, written by its contributors and packaged by Kiwix.<sup class="fn"><a href="#ref12">[12]</a></sup>
                 </p>
 
                 <p>
                     Google released Gemma 4 under Apache 2.0 in April 2026. The Gemma 4 files here, the 12B build every box runs and the E2B build for the phone, are Unsloth's GGUF quantisations of Google's weights, published under the same licence, and the mirror carries them byte for byte.<sup class="fn"><a href="#ref6">[6]</a></sup> EmbeddingGemma is still under the Gemma Terms of Use (last modified 1 April 2026), which have to be handed to everyone who receives the model, in full, with its use restrictions intact, so the whole agreement sits beside the file as <code>TERMS-gemma-terms.txt</code>.<sup class="fn"><a href="#ref7">[7]</a></sup> The publish leaves a model out until its terms file is complete.
                 </p>
 
-                <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH. Made with Natural Earth. Place names from GeoNames.</div>
+                <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH, time zone boundaries by timezone-boundary-builder. Made with Natural Earth. Place names from GeoNames. Elevation © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved. Encyclopaedia text from Wikipedia, CC BY-SA 4.0.</div>
 
                 <p>
                     Postgres and Redis still come from their own apt repositories at setup, and I haven't decided yet whether mirroring those is worth the work. If you maintain one of the sources above and want it handled differently, or you find a file here that doesn't match its manifest, email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->.
@@ -368,6 +386,9 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref7"><span class="n">[7]</span>The Gemma Terms of Use, which cover EmbeddingGemma (its model card lists the licence as Gemma) and whose section 3.1 requires anyone redistributing the model to give every recipient a copy of the agreement and keep the use restrictions in the Gemma Prohibited Use Policy in force, and the GGUF conversion of Google's quantisation-aware Q8_0 checkpoint published by the llama.cpp maintainers, which lists the SHA-256 of the file. Sources for the EmbeddingGemma terms and the pin. <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener">ai.google.dev/gemma/terms</a>, <a href="https://huggingface.co/google/embeddinggemma-300m" target="_blank" rel="noopener">huggingface.co/google/embeddinggemma-300m</a> and <a href="https://huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF" target="_blank" rel="noopener">huggingface.co/ggml-org/embeddinggemma-300m-qat-q8_0-GGUF</a></div>
                     <div class="ref" id="ref8"><span class="n">[8]</span>whisper.cpp by the ggml authors, released under the MIT licence, whose full text is the LICENSE file inside the source archive, and its release v1.9.4 of 11 September 2026 (commit 927cfce). Source for the whisper.cpp terms and the pin. <a href="https://github.com/ggml-org/whisper.cpp" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp</a> and <a href="https://github.com/ggml-org/whisper.cpp/releases/tag/v1.9.4" target="_blank" rel="noopener">github.com/ggml-org/whisper.cpp/releases/tag/v1.9.4</a></div>
                     <div class="ref" id="ref9"><span class="n">[9]</span>OpenAI's Whisper repository, whose README states that Whisper's code and model weights are released under the MIT licence (copyright 2022 OpenAI), the large-v3-turbo model card, which lists the licence as MIT and describes the model as large-v3 with the decoder cut from 32 layers to 4, and the whisper.cpp maintainers' ggml conversions on Hugging Face, which list the SHA-256 of each file. Sources for the Whisper terms and the pin. <a href="https://github.com/openai/whisper" target="_blank" rel="noopener">github.com/openai/whisper</a>, <a href="https://huggingface.co/openai/whisper-large-v3-turbo" target="_blank" rel="noopener">huggingface.co/openai/whisper-large-v3-turbo</a> and <a href="https://huggingface.co/ggerganov/whisper.cpp" target="_blank" rel="noopener">huggingface.co/ggerganov/whisper.cpp</a></div>
+                    <div class="ref" id="ref10"><span class="n">[10]</span>timezone-boundary-builder by Evan Siroky, which builds the world's time zone boundaries from OpenStreetMap and publishes them under the ODbL, with a "since 1970" build that merges zones whose clocks have agreed since 1970, and the IANA time zone database, whose files are placed in the public domain. Sources for the <code>tz</code> set and its terms. <a href="https://github.com/evansiroky/timezone-boundary-builder" target="_blank" rel="noopener">github.com/evansiroky/timezone-boundary-builder</a> and <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">iana.org/time-zones</a></div>
+                    <div class="ref" id="ref11"><span class="n">[11]</span>The Copernicus DEM, a global elevation model at 30 and 90 metres from the TanDEM-X mission, on the AWS Registry of Open Data, and the Copernicus Data Space Ecosystem's licence document for COP-DEM, which grants reproduction, distribution and communication to the public free of charge, gives the attribution text, and asks that subsequent users are bound by the same obligations. Sources for the <code>elevation</code> set and its terms. <a href="https://registry.opendata.aws/copernicus-dem/" target="_blank" rel="noopener">registry.opendata.aws/copernicus-dem</a> and <a href="https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM" target="_blank" rel="noopener">dataspace.copernicus.eu (COP-DEM)</a></div>
+                    <div class="ref" id="ref12"><span class="n">[12]</span>Kiwix, which packages Wikipedia as ZIM files with a full-text index and publishes the SHA-256 of each beside it, and Wikipedia's licence, CC BY-SA 4.0 for its text. Sources for the <code>wikipedia</code> set and its terms. <a href="https://download.kiwix.org/zim/wikipedia/" target="_blank" rel="noopener">download.kiwix.org/zim/wikipedia</a> and <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by-sa/4.0</a></div>
                 </div>
 
             </div>

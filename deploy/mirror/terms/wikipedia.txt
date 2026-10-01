@@ -1,0 +1,16 @@
+Wikipedia , English, as packaged by Kiwix (https://www.kiwix.org)
+
+The .zim file in this set is an unmodified copy of the ZIM Kiwix publishes at
+https://download.kiwix.org/zim/wikipedia/ (NOTICE.txt beside this file names the exact dated file),
+checked against the SHA-256 Kiwix publishes beside it. ZIM files are built by the openZIM project
+from Wikipedia and can be read with Kiwix (kiwix-serve, kiwix-desktop, the Kiwix apps).
+
+The text of Wikipedia is written by Wikipedia's contributors and is available under the Creative
+Commons Attribution-ShareAlike 4.0 International licence, https://creativecommons.org/licenses/by-sa/4.0/
+(and, for most of it, also under the GNU Free Documentation Licence). Each article's history of
+contributors is at https://en.wikipedia.org/ under that article's "View history". If you share or
+adapt the text, credit Wikipedia and its contributors, link the licence, and share adaptations under
+the same licence. Wikipedia's terms: https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use
+
+A build "with pictures" (maxi) also carries images, each under the licence shown on its own
+description page on Wikimedia Commons or Wikipedia.

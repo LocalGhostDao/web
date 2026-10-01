@@ -1,0 +1,11 @@
+timezone-boundary-builder , https://github.com/evansiroky/timezone-boundary-builder
+
+timezones-with-oceans-1970.geojson.zip is an unmodified copy of the release asset of that name, built
+by Evan Siroky's timezone-boundary-builder from OpenStreetMap data. NOTICE.txt beside this file names
+the URL it came from; the release it belongs to is the latest at the time of this build.
+
+Contains information from OpenStreetMap (© OpenStreetMap contributors, https://www.openstreetmap.org/copyright),
+made available under the Open Database License (ODbL) 1.0,
+https://opendatacommons.org/licenses/odbl/1-0/
+The data in this file is a database under the same licence. If you publicly use it, or a database
+derived from it, you must attribute it as above and keep any adapted database under the ODbL.

@@ -149,14 +149,23 @@ fetch() {
         echo "$_f"; return 0
     fi
     if [ -s "$_f" ]; then
+        if [ -n "${QUIET:-}" ]; then
+            curl -fsSL --retry 3 -R -z "$_f" -o "$_f.tmp" "$1" || return 1
+            if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi
+            echo "$_f"; return 0
+        fi
         # on a terminal, ask with a HEAD first, so an unchanged file doesn't print an empty meter
         if [ -t 2 ] && [ "$(curl -fsSL --retry 3 -I -z "$_f" -o /dev/null -w '%{http_code}' "$1" 2>/dev/null)" = 304 ]; then
             echo "$_f"; return 0
         fi
         $CURL -R -z "$_f" -o "$_f.tmp" "$1" || return 1
     else
-        say "downloading $1${OFFLINE:+ (new in mirror.conf)}"
-        $CURL -R -o "$_f.tmp" "$1" || return 1
+        if [ -n "${QUIET:-}" ]; then
+            curl -fsSL --retry 3 -R -o "$_f.tmp" "$1" || return 1
+        else
+            say "downloading $1${OFFLINE:+ (new in mirror.conf)}"
+            $CURL -R -o "$_f.tmp" "$1" || return 1
+        fi
     fi
     if [ -s "$_f.tmp" ]; then mv -f "$_f.tmp" "$_f"; else rm -f "$_f.tmp"; fi   # a 304 writes nothing
     [ -s "$_f" ] || return 1
@@ -213,6 +222,38 @@ godev() {
     echo "$_got $1" >> "$GODEV_OK"
 }
 
+# resolve <source> , the URL to fetch. A source whose last part has a * in it names the newest of a
+# dated series (wikipedia_en_all_nopic_*.zim): the directory listing is read and the last match in
+# sort order wins. The answer is remembered in $CACHE/resolved, so an OFFLINE run uses the file it
+# already has instead of asking upstream.
+RESOLVED="$CACHE/resolved"
+resolve() {
+    case "${1##*/}" in *'*'*) ;; *) echo "$1"; return 0 ;; esac
+    _prev="$(awk -v g="$1" '$1 == g { u = $2 } END { print u }' "$RESOLVED" 2>/dev/null || true)"
+    if [ -n "$OFFLINE" ] && [ -n "$_prev" ]; then echo "$_prev"; return 0; fi
+    _dir="${1%/*}/"
+    _re="$(printf '%s' "${1##*/}" | sed 's/[.]/\\./g; s/[*]/[^"\/]*/g')"
+    _name="$(curl -fsSL --retry 3 "$_dir" 2>/dev/null | grep -o "href=\"\([^\"]*/\)\{0,1\}$_re\"" | sed 's/^href="//; s/"$//; s|.*/||' | sort | tail -1)"
+    if [ -z "$_name" ]; then
+        [ -n "$_prev" ] || return 1
+        say "could not list $_dir, keeping ${_prev##*/}"
+        echo "$_prev"; return 0
+    fi
+    [ "$_dir$_name" = "$_prev" ] || echo "$1 $_dir$_name" >> "$RESOLVED"
+    echo "$_dir$_name"
+}
+
+# sumfile <url> <file> , the file's SHA-256 is the one upstream publishes beside it at <url>.sha256
+# (download.kiwix.org does this for every ZIM). A match is remembered ($CACHE/sums.ok).
+SUMS_OK="$CACHE/sums.ok"
+sumfile() {
+    _got="$(sha_cached "$2" | cut -d' ' -f1)"
+    grep -qx "$_got $1" "$SUMS_OK" 2>/dev/null && return 0
+    _want="$(curl -fsSL --retry 3 "$1.sha256" 2>/dev/null | awk '{ print $1; exit }')"
+    [ -n "$_want" ] && [ "$_want" = "$_got" ] || return 1
+    echo "$_got $1" >> "$SUMS_OK"
+}
+
 # terms <name> <dest> , a terms file into the build; "#fetch <url>" on its first line means the text
 # comes from that URL (cached like any download)
 terms() {
@@ -237,8 +278,23 @@ write_manifest() { # <dir> <build> , the manifest for that build directory, on s
     echo "# Build: $2"
     echo "# Signed: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
     echo ""
-    find "$1" -type f ! -name '.*' | sort | while read -r f; do
-        sha_cached "$f"
+    # one find and one pass over the hash cache (the elevation set alone is tens of thousands of
+    # files, and a lookup per file would read the cache once per file); only new inodes are hashed.
+    # The key is the same as sha_cached's: device:inode:size:mtime
+    find "$1" -type f ! -name '.*' -printf '%D:%i:%s:%T@ %p\n' \
+    | awk -v cache="$SHACACHE" '
+        BEGIN { while ((getline l < cache) > 0) { split(l, a, " "); h[a[1]] = a[2] } }
+        { k = $1; sub(/\.[0-9]*$/, "", k); p = substr($0, length($1) + 2)
+          if (k in h) print h[k] "  " p; else print "? " k " " p }' \
+    | while read -r _a _b _c; do
+        if [ "$_a" = "?" ]; then
+            [ "$(stat -c %s "$_c")" -gt 268435456 ] && say "hashing ${_c#$ROOT/} ($(du -h --apparent-size "$_c" | cut -f1)), once"
+            _h="$(sha256sum "$_c" | cut -d' ' -f1)"
+            echo "$_b $_h" >> "$SHACACHE"
+            echo "$_h  $_c"
+        else
+            echo "$_a  $_b"
+        fi
     done | sed "s|$ROOT||" | sort -k2
 }
 body() { # the manifest's file lines with the build directory taken out, to compare two builds
@@ -299,6 +355,28 @@ if [ -n "$OFFLINE" ]; then
     echo "> upstream last checked $LAST_CHECK, next on the first deploy of next month; this run publishes only what mirror.conf or terms/ added or changed"
 fi
 
+# --- list=<url>: one line in mirror.conf stands for every name in a list upstream publishes (the ---
+# --- Copernicus DEM's tileList.txt, 26,000 tiles). {name} in the file and the source is replaced ---
+# --- by each name. Only sets this run refreshes are expanded, so a manual set costs nothing.     ---
+if grep -q 'list=' "$CACHE/conf.tmp"; then
+    : > "$CACHE/conf.exp"
+    while read -r set file tnames source opt; do
+        _list=""
+        for o in ${opt:-}; do case "$o" in list=*) _list="${o#list=}" ;; esac; done
+        if [ -z "$_list" ] || ! want "$set"; then
+            echo "$set $file $tnames $source ${opt:-}" >> "$CACHE/conf.exp"
+            continue
+        fi
+        _lf="$(fetch "$_list")" || die "$set: could not get the list $_list"
+        _rest="$(for o in ${opt:-}; do case "$o" in list=*) ;; *) printf '%s ' "$o" ;; esac; done)"
+        tr -d '\r' < "$_lf" | awk -v s="$set" -v f="$file" -v t="$tnames" -v u="$source" -v r="$_rest" '
+            NF && $1 ~ /^[A-Za-z0-9._+-]+$/ { ff = f; uu = u; gsub(/\{name\}/, $1, ff); gsub(/\{name\}/, $1, uu)
+                                            print s, ff, t, uu, r "listed" }' >> "$CACHE/conf.exp"
+        say "$set: $(grep -c . "$_lf") names in ${_list##*/}"
+    done < "$CACHE/conf.tmp"
+    mv -f "$CACHE/conf.exp" "$CACHE/conf.tmp"
+fi
+
 # --- lines that aren't finished yet: a terms file that still says EDIT-ME, or a pin still to be ---
 # --- taken (check=sha256:?). Their whole set is left out of this build, loudly, and the rest is  ---
 # --- published as usual, so an unfinished line never holds up the maps or the Go toolchain.      ---
@@ -322,7 +400,9 @@ $set"
         # that hash, so the publish that carries the pin finds it there and fetches nothing
         case "$source" in *'<'*) die "$set/$file: the source still has a placeholder: $source" ;; esac
         case "$source" in
-            http://*|https://*) _src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
+            http://*|https://*)
+                _url="$(resolve "$source")" || die "$set/$file: nothing upstream matches $source"
+                _src="$(fetch "$_url")" || die "$set/$file: download failed: $_url" ;;
             *) _src="$source"; [ -f "$_src" ] || die "$set/$file: no such file $_src" ;;
         esac
         _h="$(sha256sum "$_src" | cut -d' ' -f1)"
@@ -376,26 +456,47 @@ while read -r set file tnames source opt; do
         [ -f "$TERMS/$t.txt" ] || die "$set/$file: no terms file $TERMS/$t.txt"
         grep -q 'EDIT-ME' "$TERMS/$t.txt" && die "$set/$file: $TERMS/$t.txt still says EDIT-ME , finish it first"
     done
-    pin=""; godev_check=""
+    pin=""; godev_check=""; sum_check=""; listed=""
     for o in ${opt:-}; do
         case "$o" in
+            check=sumfile) sum_check=1 ;;
+            listed) listed=1 ;;
             check=sha256:*)
                 pin="${o#check=sha256:}"
                 case "$pin" in *[!0-9a-f]*|"") die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;; esac
                 [ "${#pin}" -eq 64 ] || die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;;
             check=godev) godev_check=1 ;;
             manual) ;;
-            *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, manual)" ;;
+            *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, check=sumfile, list=<url>, manual)" ;;
         esac
     done
+    QUIET="$listed"          # a listed set is tens of thousands of files: progress, not a line each
+    url="$source"
+    case "$source" in http://*|https://*)
+        url="$(resolve "$source")" || die "$set/$file: nothing upstream matches $source" ;;
+    esac
     if [ -n "$pin" ]; then
-        src="$(pinned "$source" "$pin" "$file")" || die "$set/$file: could not get a copy matching its pinned sha256 from $source"
+        src="$(pinned "$url" "$pin" "$file")" || die "$set/$file: could not get a copy matching its pinned sha256 from $url"
         say "$file matches its pinned sha256"
     else
-        case "$source" in
-            http://*|https://*) src="$(fetch "$source")" || die "$set/$file: download failed: $source" ;;
-            *) src="$source"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
+        case "$url" in
+            http://*|https://*) src="$(fetch "$url")" || die "$set/$file: download failed: $url" ;;
+            *) src="$url"; [ -f "$src" ] || die "$set/$file: no such file $src" ;;
         esac
+    fi
+    if [ -n "$sum_check" ]; then
+        sumfile "$url" "$src" || die "$set/$file does not match the SHA-256 published at $url.sha256 , not publishing it"
+        say "$file matches ${url##*/}.sha256"
+    fi
+    if [ "$url" != "$source" ]; then
+        # a dated series moved on: the older copy leaves the cache (builds keep their hard links
+        # until they are pruned)
+        _old="$(awk -v g="$source" -v u="$url" '$1 == g && $2 != u { print $2 }' "$RESOLVED" 2>/dev/null | sort -u || true)"
+        if [ -n "$_old" ]; then
+            for _o in $_old; do rm -f "$(cached "$_o")"; say "${_o##*/} superseded by ${url##*/}, dropped from the cache"; done
+            awk -v g="$source" -v u="$url" '!($1 == g && $2 != u)' "$RESOLVED" > "$RESOLVED.tmp"
+            mv -f "$RESOLVED.tmp" "$RESOLVED"
+        fi
     fi
     if [ -n "$godev_check" ]; then
         godev "$file" "$src" || die "$set/$file does not match go.dev's published checksum , not publishing it"
@@ -410,11 +511,18 @@ while read -r set file tnames source opt; do
     for t in $(echo "$tnames" | tr ',' ' '); do
         [ -f "$NEW/$set/TERMS-$t.txt" ] || terms "$t" "$NEW/$set/TERMS-$t.txt" || die "$set/$file: could not get terms $t"
     done
-    upstream="$source"
+    upstream="$url"
     case "$source" in /*|./*) upstream="(provided by LocalGhost)" ;; esac
     printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')" "$upstream" >> "$NEW/$set/NOTICE.txt"
-    say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
+    if [ -n "$listed" ]; then
+        LISTED_N=$((${LISTED_N:-0} + 1))
+        [ $((LISTED_N % 1000)) -ne 0 ] || say "$set: $LISTED_N files so far"
+    else
+        say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
+    fi
 done < "$CACHE/conf.tmp"
+QUIET=""
+[ -z "${LISTED_N:-}" ] || say "listed files in this build: $LISTED_N"
 for s in $ALL; do
     if want "$s" && [ -f "$NEW/$s/NOTICE.txt" ]; then
         { echo "LocalGhost mirror, build $BUILD , set '$s'. Each file below is published under the terms named."; echo ""; cat "$NEW/$s/NOTICE.txt"; } > "$NEW/$s/.notice.tmp"

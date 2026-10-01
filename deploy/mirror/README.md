@@ -21,7 +21,8 @@ publish straight into the pool on every deploy, and asks upstream for changes at
 - `publish.sh` , fetches everything in `mirror.conf`, writes a new build directory, signs
   `MANIFEST.txt` with `gpg --local-user info@localghost.ai`.
 - `mirror.conf` , one line per file: `set file terms source [check=godev] [check=sha256:<hex>]
-  [check=sha256:?] [manual]`.
+  [check=sha256:?] [check=sumfile] [list=<url>] [manual]`. A `*` in a source's last part means the
+  newest of a dated series, and `list=` makes one line stand for every name in an upstream list.
 - `terms/` , the terms each file is published under; copied beside it as `TERMS-<name>.txt`. A terms
   file that still says `EDIT-ME` leaves its whole set out of the build until it's finished (see
   "Unfinished lines" below).
@@ -166,6 +167,35 @@ to carry the full text: paste it from https://ai.google.dev/gemma/terms (all of 
 Appendix) under the "in full:" line and delete the `EDIT-ME` paragraph. Until then the set is left out
 of every build and the publish says so; nothing else waits for it.
 
+## Time zones, elevation, Wikipedia
+
+`tz` is timezone-boundary-builder's "with oceans, since 1970" boundaries (ODbL, 46 MB) and IANA's
+tzdata (public domain), both from stable "latest" URLs, so the monthly check takes a new release by
+itself. A box uses them to cut days at local midnight.
+
+`elevation` is the Copernicus DEM GLO-90, about 26,000 one-degree tiles. It is one line in
+`mirror.conf` with `list=` pointing at upstream's `tileList.txt`, expanded only when the set is
+refreshed. It is `manual` and on the order of 100 GB (the first run's last line says how many files;
+`du -sh --apparent-size` on the build says how big), so:
+
+    deploy/mirror/publish.sh --sign-later elevation    # in screen, once
+    deploy/mirror/publish.sh --sign
+
+The licence asks that everyone who receives the data is bound by it, so the licence PDF is a file in
+the set. A box fetches only the tiles it needs.
+
+`wikipedia` is English Wikipedia without pictures as Kiwix packages it (around 60 GB, its own
+full-text index inside). The source ends in `wikipedia_en_all_nopic_*.zim`, so a named publish reads
+Kiwix's directory listing and takes the newest dump, checks it against the `.sha256` Kiwix publishes
+beside it (`check=sumfile`), and drops the older dump from the cache (the previous build keeps its
+hard link until it is pruned). `manual`, so it moves only when you say:
+
+    deploy/mirror/publish.sh --sign-later wikipedia    # every month or two
+    deploy/mirror/publish.sh --sign
+
+The lines for the version with pictures (about twice the size) and the introductions-only version
+(a few GB, sized for a phone) are in `mirror.conf`, commented out.
+
 ## Speech
 
 `whisper` is the source archive of whisper.cpp, pinned exactly like llama.cpp: release v1.9.4, commit
@@ -206,9 +236,11 @@ build until its line is finished again.
 
 ## Disk
 
-On the pool: the cache (every download once, the pinned weights, the road extracts, about 90 GB
-today) plus the last two builds, which are hard links onto it and cost only what changed between
-them. Nothing on the root SSD.
+On the pool: the cache (every download once, the pinned weights, the road extracts, the elevation
+tiles and the current Wikipedia dump, on the order of 260 GB with everything published) plus the last
+two builds, which are hard links onto it and cost only what changed between them. A new Wikipedia
+dump costs its size again until the build that still holds the old one is pruned. Nothing on the root
+SSD.
 
 ## Serving `/mirror/`
 
