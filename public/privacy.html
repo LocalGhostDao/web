@@ -145,7 +145,7 @@
             <div class="manifesto-text">
 
                 <p class="page-lede">
-                    What this website, the setup mirror and the LocalGhost software do with information about you. The website and the mirror keep no record of your visit, and the software keeps your data on your own box and asks the internet only for public things.
+                    What this website, the setup mirror and the LocalGhost software do with information about you. The website and the mirror keep no record of your visit. The software keeps your data on your own box and asks the internet only for public things, and the phone sends a search's words or a rounded position for the weather only when you ask.
                 </p>
 
                 <p>
@@ -186,11 +186,17 @@
                 </ul>
 
                 <p>
-                    It never asks for a map tile, and it never sends a location, a photo or a note. The phone talks to your box and nothing else, except when a question needs the web. Then the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the query and never your archive. The phone also reads the mirror's manifest once a day on Wi-Fi to see whether there's a new release.
+                    The box never asks for a map tile, and it never sends a location, a photo or a note. The phone talks to your box and nothing else, apart from three things.
                 </p>
 
+                <ul class="plain-list">
+                    <li>When a question needs the web, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive.</li>
+                    <li>When you ask about the weather without naming a place, the phone sends its position, rounded to two decimal places (about a kilometre), to Open-Meteo for the forecast. Open-Meteo needs no account and no key, so the request carries the rounded position and nothing that says who you are.</li>
+                    <li>Once a day on Wi-Fi it reads the mirror's manifest to see whether there's a new release.</li>
+                </ul>
+
                 <p>
-                    The box keeps what you keep. Every memory can be edited or deleted from the phone, and the box never writes over your version. A wipe PIN destroys the volume's key, after which nothing on the disk can be read. The full list is in the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1 release notes</a> under "What leaves the box", and <a href="/setup#network">Set Up a Box</a> says the same from the operator's side.
+                    The box keeps what you keep. Every memory can be edited or deleted from the phone, and the box never writes over your version. A wipe PIN destroys the volume's key, after which nothing on the disk can be read. The full list is in the <a href="https://github.com/LocalGhostDao/localghost#readme">repository's README</a> under "What leaves the box", and <a href="/setup#network">Set Up a Box</a> says the same from the operator's side.
                 </p>
 
                 <h2 class="section-header">&gt; 4. CHANGES</h2>

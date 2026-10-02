@@ -91,7 +91,7 @@
                 "name": "Okay, but what actually IS it?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, and insert the two hardware security keys that come with it. That's the setup. Once connected, you access it through a local web interface (like http://ghost.local) when you're home, or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data. From there, you can sync anything to it, photos from your phone, journals, bank exports, health data, browser history, notes, voice memos, whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis entirely on your hardware. Think of it as a private server for your life, with an AI that works for you because it literally cannot work for anyone else."
+                    "text": "Today it's software you run on a machine of your own, a Debian 13 computer with a TPM and a spare disk, much faster with an NVIDIA card, and an Android app that's the only way in. Set Up a Box has the whole setup. You install the app, run the guided setup on the box, scan the QR it draws and unlock with your PIN. There's no cloud account, no login page and no web interface. From there the phone syncs your photos, videos, location trail, health data, notes and voice notes to the box. The box keeps them on an encrypted volume, describes and tags them with models running on its own hardware, and gives them back on the phone as days, places, memories and answers. A small, silent box we build and sell, with the same software and nothing else to set up, is the plan. Nothing is on sale yet."
                 }
             },
             {
@@ -99,7 +99,7 @@
                 "name": "How do I get my data onto it?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Multiple ways, depending on what you're syncing. Mobile app. Automatically syncs photos, health data, location history, and notes in the background Browser extension. Captures bookmarks, reading history, and saved articles File drop. Drag and drop anything into the web interface, PDFs, exports, backups API imports. Connect to services that offer data exports (banks, fitness trackers, etc.) Manual uploads. For the privacy purists who want to move files by hand Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel directly to your box, never through our servers, because we don't have servers."
+                    "text": "The phone app. Photos, videos, the location trail, Health Connect data, notes, voice notes and the daily check-in, synced in the background Text and email. Files dropped into ghost.noted's inbox on the box, emails saved as .eml included Not built yet. A browser extension, and imports of bank, fitness and other exports through ghost.tallyd's parsers Everything goes straight from the phone to your box, over your home network or through your own domain, never through our servers, because we don't have any that hold your data."
                 }
             },
             {
@@ -107,7 +107,7 @@
                 "name": "What does the AI actually do?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The AI runs locally on the box, on its GPU when it has one and its CPU when it doesn't. It does several things. Tagging and organization. Automatically categorizes your photos, documents, and notes without you lifting a finger Pattern recognition. Finds correlations you'd never spot, like how your sleep affects your spending, or how your mood tracks with your exercise Goal tracking. You tell it what you're working toward, and it holds you accountable with actual data rather than vibes Honest reflection. Ask it questions about your life and it answers based on evidence rather than what you want to hear Search. Find anything you've ever saved, even if you forgot what you called it The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimize for \"engagement.\" It just tells you the truth."
+                    "text": "The models run on the box, on its GPU when it has one and its CPU when it doesn't (Gemma 4 12B for descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.2 they do these things. Describing and tagging. Every photo gets a description and tags in eleven categories, so you can find it later by what's in it Days and memories. A short story of each day from the photos, the trail, the health data and the check-in, the places you keep going back to, and facts from your notes and chats, each one yours to edit or delete Search and chat. Ask about your own life and it answers from your archive, with the sources it used listed under the answer Noticing. Once a day it writes up a habit or a change from the last few weeks, kept only when every number in it came from your data Arguing back. ghost.shadowd, the critic, runs its first detector. Correlations like sleep against spending wait for the bank and fitness parsers The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimise for \"engagement.\" It just tells you the truth."
                 }
             },
             {
@@ -123,7 +123,7 @@
                 "name": "How does \"The Mist\" backup system work?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The Mist is a peer-to-peer backup network. Here's the simple version. Step 1, shred. Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called \"shards.\" Each shard is meaningless on its own, like confetti from a shredded document. Step 2, scatter. Those shards get distributed across other LocalGhost boxes in the network. Your shards live on dozens of strangers' drives. Their shards live on yours. Step 3, rebuild. When you need your data back, your box collects the shards from the network and reassembles them. Only your encryption key can make sense of them. The beauty of it. The people storing your shards can't read them, they're encrypted and incomplete. You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist. If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. The network has no central point of failure. Technical note. This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. We use Reed-Solomon encoding so you only need around 50% of shards to reconstruct your data, making the system resilient even if half the network goes offline."
+                    "text": "Not built yet. The Mist is the last phase of the roadmap and no code for it exists. This is the design. The Mist is a peer-to-peer backup network. Here's the simple version. Step 1, shred. Your data gets encrypted with a key only you hold. Then it gets chopped into thousands of tiny pieces called \"shards.\" Each shard is meaningless on its own, like confetti from a shredded document. Step 2, scatter. Those shards get distributed across other LocalGhost boxes in the network. Your shards live on dozens of strangers' drives. Their shards live on yours. Step 3, rebuild. When you need your data back, your box collects the shards from the network and reassembles them. Only your encryption key can make sense of them. The beauty of it. The people storing your shards can't read them, they're encrypted and incomplete. You can't read theirs either. Nobody knows whose data they're holding. The network doesn't even know you exist. If your house burns down, your data survives. If LocalGhost goes bankrupt, your data survives. The network has no central point of failure. Technical note. This uses erasure coding similar to how Ethereum's PeerDAS works for data availability sampling. We use Reed-Solomon encoding so you only need around 50% of shards to reconstruct your data, making the system resilient even if half the network goes offline."
                 }
             },
             {
@@ -131,7 +131,7 @@
                 "name": "How do the boxes find each other without a central server?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "This is the magic of distributed hash tables (DHT). Here's how it works in plain English. The bootstrap problem. When your box first connects to the network, it needs to know at least one other box. We publish a small list of \"bootstrap nodes,\" these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. Your box contacts one of these to get introduced to the network. After that, it never needs us again. The address book. Every box on the network has a unique ID (a long random number). Each box maintains a partial \"address book\" of other boxes it knows about. But here's the clever bit, you don't need to know everyone. You just need to know boxes whose IDs are \"close\" to yours in the mathematical sense. The hop game. When you need to find a specific shard, you ask the boxes you know who's closest to this shard's ID. They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for, even in a network of millions. No phone book server. There's no central directory. The network is the directory. If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets. Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, and within a few asks you're at your destination. No map company required. Technical note. We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal."
+                    "text": "Not built yet. The Mist is the last phase of the roadmap and no code for it exists. This is the design. This is the magic of distributed hash tables (DHT). Here's how it works in plain English. The bootstrap problem. When your box first connects to the network, it needs to know at least one other box. We publish a small list of \"bootstrap nodes,\" these are just regular LocalGhost boxes run by volunteers who've agreed to be discoverable. Your box contacts one of these to get introduced to the network. After that, it never needs us again. The address book. Every box on the network has a unique ID (a long random number). Each box maintains a partial \"address book\" of other boxes it knows about. But here's the clever bit, you don't need to know everyone. You just need to know boxes whose IDs are \"close\" to yours in the mathematical sense. The hop game. When you need to find a specific shard, you ask the boxes you know who's closest to this shard's ID. They point you to someone closer. You ask that box the same question. Within 3-4 hops, you've found what you're looking for, even in a network of millions. No phone book server. There's no central directory. The network is the directory. If any box goes offline, the others route around it automatically. The more boxes join, the more resilient it gets. Think of it like asking for directions in a city with no street signs. You ask a local, they point you to someone who knows better, and within a few asks you're at your destination. No map company required. Technical note. We use a Kademlia-style DHT, the same algorithm that powers BitTorrent and IPFS. Node distance is calculated using XOR on node IDs. Each node maintains k-buckets of peers at exponentially increasing distances, giving O(log n) lookup time. The protocol is UDP-based for speed, with optional QUIC tunneling for NAT traversal."
                 }
             },
             {
@@ -139,7 +139,7 @@
                 "name": "What if I lose my encryption key?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Then your data is gone, forever, and that's the point. We cannot recover your data because we never had access to it. There is no \"forgot password\" flow. There is no customer support ticket that can help you. The math doesn't care about your feelings. The good news. Every LocalGhost box ships with two hardware security keys. When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key and splits it between the two keys using Shamir's Secret Sharing, and neither key alone can decrypt anything. How to use them. Key 1. Keep this one with your box for daily use. Plug it in to unlock your data. Key 2. Store this somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is your recovery key. If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, Key 2 can restore everything to a new box. If you lose both keys, it's game over. Real ownership means real responsibility. Two keys. Two locations. No excuses. Technical note. The keys are FIDO2-compliant hardware tokens with secure elements. The master key never leaves the secure enclave, only the derived decryption keys are used at runtime. We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key."
+                    "text": "Then your data is gone, and that's by design. We never had access to it, so there's no \"forgot password\" flow and no support ticket that can bring it back. Today, in wisp 0.0.2. The volume key is sealed to your box's TPM, or wrapped by your PIN on a machine without one, and there's no recovery path yet. A dead board or a forgotten PIN loses the archive on that disk, so keep the originals of anything you can't lose somewhere else as well. The design, not built yet. Boxes we sell are meant to come with two hardware security keys. At setup you plug both in, and the box makes the master key and splits it between them with Shamir's Secret Sharing, so neither key alone can decrypt anything. Key 1. Kept with the box for daily use. Key 2. Kept somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is the recovery key. If you lose Key 1, Key 2 makes a new pair. If your house burns down with the box and Key 1 inside, Key 2 restores everything to a new box. If you lose both, it's game over. Technical note. The planned keys are FIDO2 hardware tokens with secure elements. The master key never leaves the secure element and only derived keys are used at runtime, with a 2-of-2 split and an optional 2-of-3 mode with a third key."
                 }
             },
             {
@@ -155,7 +155,7 @@
                 "name": "What happens if LocalGhost (the company) disappears?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Nothing. Your box keeps working. The software is open source. The hardware is standard parts. The Mist network is decentralized. There is no license server to phone home to. There is no authentication service to validate your purchase. If we go bankrupt tomorrow, here's what that looks like. Your box continues running the last version you installed The Mist network continues operating (it doesn't need us) Someone else can fork the code and continue development You can maintain it yourself if you're technical Everything a box downloads is on the signed setup mirror, and anyone can copy it and host it, or keep it on a USB disk We have deliberately designed ourselves out of the critical path. Your independence does not depend on our survival."
+                    "text": "Nothing. Your box keeps working. The software is open source. The hardware is standard parts. The Mist, once it exists, is designed with no centre. There is no license server to phone home to. There is no authentication service to validate your purchase. If we go bankrupt tomorrow, here's what that looks like. Your box continues running the last version you installed The Mist, once it exists, keeps running without us, since it has no central server Someone else can fork the code and continue development You can maintain it yourself if you're technical Everything a box downloads is on the signed setup mirror, and anyone can copy it and host it, or keep it on a USB disk We have deliberately designed ourselves out of the critical path. Your independence does not depend on our survival."
                 }
             },
             {
@@ -527,6 +527,10 @@
             <div class="section-header">&gt; SECTION_03</div>
             <h2>SURVIVAL PROTOCOL: "THE MIST"</h2>
 
+            <p style="color: var(--text-dim);">
+                Not built yet. The Mist is the last phase of the <a href="/build" style="color: var(--terminal);">roadmap</a>, and this is its design.
+            </p>
+
             <p>
                 We do not have a server. If we go bankrupt tomorrow, your data survives.
                 LocalGhost relies on a Distributed Hash Table (DHT).
@@ -702,9 +706,9 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <h2>FREQUENTLY ASKED QUESTIONS</h2>
 
             <p>
-                Some of these answers describe LocalGhost as it's designed for v1.0. What the current release,
+                Where an answer describes something that isn't built yet, it says so. What the current release,
                 <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2" style="color: var(--terminal);">wisp 0.0.2</a>, does today is on the
-                <a href="/about" style="color: var(--terminal);">About page</a> and in its release notes, and where they differ, those win.
+                <a href="/about" style="color: var(--terminal);">About page</a> and in its release notes.
             </p>
 
             <div class="faq-list">
@@ -716,20 +720,19 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                     </summary>
                     <div class="faq-answer">
                         <p>
-                            It's a small, silent box that sits on your desk or shelf. You plug it into power, connect it to your Wi-Fi, 
-                            and insert the two hardware security keys that come with it. That's the setup.
+                            Today it's software you run on a machine of your own, a Debian 13 computer with a TPM and a spare disk,
+                            much faster with an NVIDIA card, and an Android app that's the only way in. <a href="/setup">Set Up a Box</a>
+                            has the whole setup. You install the app, run the guided setup on the box, scan the QR it draws and unlock
+                            with your PIN. There's no cloud account, no login page and no web interface.
                         </p>
                         <p>
-                            Once connected, you access it through a local web interface (like <code>http://ghost.local</code>) when you're home, 
-                            or through a secure tunnel when you're away. No cloud account. No login. Just your box, your network, your data.
+                            From there the phone syncs your photos, videos, location trail, health data, notes and voice notes to the box.
+                            The box keeps them on an encrypted volume, describes and tags them with models running on its own hardware,
+                            and gives them back on the phone as days, places, memories and answers.
                         </p>
                         <p>
-                            From there, you can sync anything to it, photos from your phone, journals, bank exports, health data, browser history, 
-                            notes, voice memos, whatever you want to track. The box stores it all locally, tags it, indexes it, and runs AI analysis 
-                            entirely on your hardware.
-                        </p>
-                        <p style="color: var(--terminal);">
-                            Think of it as a private server for your life, with an AI that works for you because it literally cannot work for anyone else.
+                            A small, silent box we build and sell, with the same software and nothing else to set up, is the plan.
+                            Nothing is on sale yet.
                         </p>
                     </div>
                 </details>
@@ -741,17 +744,14 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         <span class="faq-toggle">+</span>
                     </summary>
                     <div class="faq-answer">
-                        <p>Multiple ways, depending on what you're syncing.</p>
                         <ul class="faq-list-items">
-                            <li><strong>Mobile app.</strong> Automatically syncs photos, health data, location history, and notes in the background</li>
-                            <li><strong>Browser extension.</strong> Captures bookmarks, reading history, and saved articles</li>
-                            <li><strong>File drop.</strong> Drag and drop anything into the web interface, PDFs, exports, backups</li>
-                            <li><strong>API imports.</strong> Connect to services that offer data exports (banks, fitness trackers, etc.)</li>
-                            <li><strong>Manual uploads.</strong> For the privacy purists who want to move files by hand</li>
+                            <li><strong>The phone app.</strong> Photos, videos, the location trail, Health Connect data, notes, voice notes and the daily check-in, synced in the background</li>
+                            <li><strong>Text and email.</strong> Files dropped into ghost.noted's inbox on the box, emails saved as .eml included</li>
+                            <li><strong>Not built yet.</strong> A browser extension, and imports of bank, fitness and other exports through ghost.tallyd's parsers</li>
                         </ul>
                         <p>
-                            Everything syncs over your local network first. If you enable remote access, it goes through an encrypted tunnel 
-                            directly to your box, never through our servers, because we don't have servers.
+                            Everything goes straight from the phone to your box, over your home network or through your own domain,
+                            never through our servers, because we don't have any that hold your data.
                         </p>
                     </div>
                 </details>
@@ -764,17 +764,18 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                     </summary>
                     <div class="faq-answer">
                         <p>
-                            The AI runs locally on the box, on its GPU when it has one and its CPU when it doesn't. It does several things.
+                            The models run on the box, on its GPU when it has one and its CPU when it doesn't (Gemma 4 12B for
+                            descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.2 they do these things.
                         </p>
                         <ul class="faq-list-items">
-                            <li><strong>Tagging and organization.</strong> Automatically categorizes your photos, documents, and notes without you lifting a finger</li>
-                            <li><strong>Pattern recognition.</strong> Finds correlations you'd never spot, like how your sleep affects your spending, or how your mood tracks with your exercise</li>
-                            <li><strong>Goal tracking.</strong> You tell it what you're working toward, and it holds you accountable with actual data rather than vibes</li>
-                            <li><strong>Honest reflection.</strong> Ask it questions about your life and it answers based on evidence rather than what you want to hear</li>
-                            <li><strong>Search.</strong> Find anything you've ever saved, even if you forgot what you called it</li>
+                            <li><strong>Describing and tagging.</strong> Every photo gets a description and tags in eleven categories, so you can find it later by what's in it</li>
+                            <li><strong>Days and memories.</strong> A short story of each day from the photos, the trail, the health data and the check-in, the places you keep going back to, and facts from your notes and chats, each one yours to edit or delete</li>
+                            <li><strong>Search and chat.</strong> Ask about your own life and it answers from your archive, with the sources it used listed under the answer</li>
+                            <li><strong>Noticing.</strong> Once a day it writes up a habit or a change from the last few weeks, kept only when every number in it came from your data</li>
+                            <li><strong>Arguing back.</strong> ghost.shadowd, the critic, runs its first detector. Correlations like sleep against spending wait for the bank and fitness parsers</li>
                         </ul>
                         <p style="color: var(--terminal);">
-                            The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimize for "engagement." It just tells you the truth.
+                            The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimise for "engagement." It just tells you the truth.
                         </p>
                     </div>
                 </details>
@@ -811,6 +812,10 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         <span class="faq-toggle">+</span>
                     </summary>
                     <div class="faq-answer">
+                        <p>
+                            <strong>Not built yet.</strong> The Mist is the last phase of the roadmap and no code for it exists. This is the design.
+                        </p>
+
                         <p>
                             The Mist is a peer-to-peer backup network. Here's the simple version.
                         </p>
@@ -849,6 +854,10 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         <span class="faq-toggle">+</span>
                     </summary>
                     <div class="faq-answer">
+                        <p>
+                            <strong>Not built yet.</strong> The Mist is the last phase of the roadmap and no code for it exists. This is the design.
+                        </p>
+
                         <p>
                             This is the magic of distributed hash tables (DHT). Here's how it works in plain English.
                         </p>
@@ -890,35 +899,31 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                     </summary>
                     <div class="faq-answer">
                         <p>
-                            Then your data is gone, forever, and that's the point.
+                            Then your data is gone, and that's by design. We never had access to it, so there's no "forgot password"
+                            flow and no support ticket that can bring it back.
                         </p>
                         <p>
-                            We cannot recover your data because we never had access to it. There is no "forgot password" flow. 
-                            There is no customer support ticket that can help you. The math doesn't care about your feelings.
+                            <strong>Today, in wisp 0.0.2.</strong> The volume key is sealed to your box's TPM, or wrapped by your PIN on a
+                            machine without one, and there's no recovery path yet. A dead board or a forgotten PIN loses the archive on
+                            that disk, so keep the originals of anything you can't lose somewhere else as well.
                         </p>
                         <p>
-                            <strong>The good news.</strong> Every LocalGhost box ships with <strong>two hardware security keys</strong>. 
-                            When you first set up the box, you plug both keys in simultaneously. The box generates your master encryption key 
-                            and splits it between the two keys using Shamir's Secret Sharing, and neither key alone can decrypt anything.
-                        </p>
-                        <p>
-                            <strong>How to use them.</strong>
+                            <strong>The design, not built yet.</strong> Boxes we sell are meant to come with <strong>two hardware security keys</strong>.
+                            At setup you plug both in, and the box makes the master key and splits it between them with Shamir's Secret
+                            Sharing, so neither key alone can decrypt anything.
                         </p>
                         <ul class="faq-list-items">
-                            <li><strong>Key 1.</strong> Keep this one with your box for daily use. Plug it in to unlock your data.</li>
-                            <li><strong>Key 2.</strong> Store this somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is your recovery key.</li>
+                            <li><strong>Key 1.</strong> Kept with the box for daily use.</li>
+                            <li><strong>Key 2.</strong> Kept somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is the recovery key.</li>
                         </ul>
                         <p>
-                            If you lose Key 1, you can use Key 2 to generate a new pair. If your house burns down with both the box and Key 1 inside, 
-                            Key 2 can restore everything to a new box. If you lose both keys, it's game over.
-                        </p>
-                        <p style="color: var(--warning);">
-                            Real ownership means real responsibility. Two keys. Two locations. No excuses.
+                            If you lose Key 1, Key 2 makes a new pair. If your house burns down with the box and Key 1 inside, Key 2
+                            restores everything to a new box. If you lose both, it's game over.
                         </p>
                         <p class="faq-technical">
-                            <strong>Technical note.</strong> The keys are FIDO2-compliant hardware tokens with secure elements. 
-                            The master key never leaves the secure enclave, only the derived decryption keys are used at runtime. 
-                            We use 2-of-2 Shamir's Secret Sharing for the split, with an optional 2-of-3 mode if you purchase an additional backup key.
+                            <strong>Technical note.</strong> The planned keys are FIDO2 hardware tokens with secure elements. The master key
+                            never leaves the secure element and only derived keys are used at runtime, with a 2-of-2 split and an optional
+                            2-of-3 mode with a third key.
                         </p>
                     </div>
                 </details>
@@ -962,7 +967,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                             Nothing. Your box keeps working.
                         </p>
                         <p>
-                            The software is open source. The hardware is standard parts. The Mist network is decentralized. 
+                            The software is open source. The hardware is standard parts. The Mist, once it exists, is designed with no centre. 
                             There is no license server to phone home to. There is no authentication service to validate your purchase.
                         </p>
                         <p>
@@ -970,7 +975,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                         </p>
                         <ul class="faq-list-items">
                             <li>Your box continues running the last version you installed</li>
-                            <li>The Mist network continues operating (it doesn't need us)</li>
+                            <li>The Mist, once it exists, keeps running without us, since it has no central server</li>
                             <li>Someone else can fork the code and continue development</li>
                             <li>You can maintain it yourself if you're technical</li>
                             <li>Everything a box downloads is on the signed <a href="/mirror">setup mirror</a>, and anyone can copy it and host it, or keep it on a USB disk</li>
@@ -1013,6 +1018,11 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
         <section id="hardware">
             <div class="section-header">&gt; SECTION_06</div>
             <h2>THE BLACK BOX</h2>
+
+            <p style="color: var(--text-dim);">
+                Planned, and nothing is on sale. The spec below is the design and will change before launch. Today
+                LocalGhost runs on a machine of your own, and <a href="/setup" style="color: var(--terminal);">Set Up a Box</a> says how.
+            </p>
 
             <p>
                 We do not manufacture silicon. We do not print circuit boards in a secret facility.
