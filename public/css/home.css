@@ -247,6 +247,8 @@
     background: var(--void);
     padding: 1.5rem;
     min-height: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
 .daemon-card.placeholder {
@@ -286,6 +288,27 @@
     line-height: 1.6;
     color: var(--text);
     opacity: 0.8;
+}
+
+.daemon-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--terminal);
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.daemon-status::before {
+    content: '\25CF\00A0';
+}
+
+.daemon-status.planned {
+    color: var(--text-dim);
+}
+
+.daemon-status.planned::before {
+    content: '\25CB\00A0';
 }
 
 /* ===========================================

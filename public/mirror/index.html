@@ -6,7 +6,7 @@
 
         <title>Setup Mirror, Signed Box Downloads | LocalGhost.ai</title>
         <meta name="title" content="Setup Mirror, Signed Box Downloads | LocalGhost.ai">
-        <meta name="description" content="Everything a LocalGhost box downloads, signed. Maps, time zones, elevation, engines, models and English Wikipedia, with their terms and how a box checks them.">
+        <meta name="description" content="Everything a LocalGhost box downloads, signed. Maps, heights, engines, models, Wikipedia and its own releases, with their terms and how a box checks them.">
         <meta name="keywords" content="LocalGhost mirror, setup mirror, signed downloads, sha256 manifest, gpg signature, GeoNames, Natural Earth, OpenStreetMap land polygons, self-hosted AI setup">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -16,7 +16,7 @@
         <meta property="og:type" content="article">
         <meta property="og:url" content="https://www.localghost.ai/mirror">
         <meta property="og:title" content="The LocalGhost Setup Mirror">
-        <meta property="og:description" content="Everything a LocalGhost box downloads, from maps and time zones to models and English Wikipedia, published with its terms and listed in a signed manifest.">
+        <meta property="og:description" content="Everything a LocalGhost box downloads, from maps and models to English Wikipedia and its own releases, published with its terms and listed in a signed manifest.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-mirror.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
@@ -34,7 +34,7 @@
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/mirror">
         <meta name="twitter:title" content="The LocalGhost Setup Mirror">
-        <meta name="twitter:description" content="Everything a LocalGhost box downloads, from maps and time zones to models and English Wikipedia, published with its terms and listed in a signed manifest.">
+        <meta name="twitter:description" content="Everything a LocalGhost box downloads, from maps and models to English Wikipedia and its own releases, published with its terms and listed in a signed manifest.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-mirror.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -52,7 +52,7 @@
             "@context": "https://schema.org",
             "@type": "TechArticle",
             "headline": "The LocalGhost Setup Mirror",
-            "description": "What the signed setup mirror carries (maps, time zones, elevation, engines, models and English Wikipedia) and under which terms, why it exists, and how a LocalGhost box checks every file it downloads from it.",
+            "description": "What the signed setup mirror carries (maps, time zones, elevation, engines, models, English Wikipedia and LocalGhost's own releases) and under which terms, why it exists, and how a LocalGhost box checks every file it downloads from it.",
             "image": "https://www.localghost.ai/images/og-mirror.png",
             "author": {
                 "@type": "Person",
@@ -194,7 +194,7 @@
                 </p>
 
                 <p>
-                    It carries thirteen sets. A box needs about 10 GB of them to set itself up, and most of that is the chat model. Three sets are big and optional, the road extracts (79 GB), the elevation tiles (around 100 GB) and English Wikipedia (around 60 GB), and a box takes only the parts it asks for, one continent of roads or the tiles around the places it has been. The mirror started in September 2026 with four sets and grew to thirteen by October. The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
+                    It carries fourteen sets, thirteen of public data and engines and one of LocalGhost's own releases. A box needs about 12 GB of them to set itself up, and most of that is the chat model. Three sets are big and optional, the road extracts (79 GB), the elevation tiles (around 100 GB) and English Wikipedia (around 60 GB), and a box takes only the parts it asks for, one continent of roads or the tiles around the places it has been. The mirror started in September 2026 with four sets and grew to fourteen by October, the last of them the first release, wisp 0.0.1, on 2 October. The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
@@ -297,6 +297,13 @@
                                 <td data-label="Where it comes from">English Wikipedia without pictures, as Kiwix packages it, with its own full-text index, checked against the SHA-256 Kiwix publishes. A box searches it to answer questions without the web.</td>
                                 <td data-label="Terms">CC BY-SA 4.0<sup class="fn"><a href="#ref12">[12]</a></sup></td>
                             </tr>
+                            <tr class="group"><th colspan="4">Releases</th></tr>
+                            <tr>
+                                <td data-label="Set">server<span class="set-meta">39 MB<br>per release</span></td>
+                                <td data-label="Files"><code>localghost-server-0.0.1-linux-amd64.tar.gz</code> <code>RELEASE.txt</code> <code>NOTES.md</code></td>
+                                <td data-label="Where it comes from">LocalGhost's own releases, starting with wisp 0.0.1 on 2 October 2026, copied from the GitHub release and pinned by the SHA-256 GitHub shows beside each file. The phone offers this set as an update, and the box checks it like any other set before it runs it.</td>
+                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref13">[13]</a></sup></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -337,7 +344,11 @@
                 </ol>
 
                 <p>
-                    If the mirror can't be reached or a check fails, setup says so and stops. The one way round that is an environment variable an operator has to type, and every file fetched that way is printed as not coming from a signed list. A box with no internet at all can read a copy of this mirror from a USB disk, with the same checks, and <code>GHOST_MIRROR=&lt;url&gt;</code> points a box at a copy you host yourself. <code>sudo ./tools/update.sh</code> on a running box reads the signed list first, then fetches only what changed.
+                    If the mirror can't be reached or a check fails, setup says so and stops. The one way round that is an environment variable an operator has to type, and every file fetched that way is printed as not coming from a signed list. A box with no internet at all can read a copy of this mirror from a USB disk, with the same checks, and <code>GHOST_MIRROR=&lt;url&gt;</code> points a box at a copy you host yourself. <code>sudo ./tools/update.sh</code> on a running box reads the signed list first, then fetches only what changed. <a href="/setup">Set Up a Box</a> goes through the whole setup in order, mirror included.
+                </p>
+
+                <p>
+                    The box's own software arrives the same way. The phone reads this manifest once a day on Wi-Fi and says when the <code>server</code> set holds a newer release ("wisp 0.0.1 is out"). DEPLOY downloads the set on the phone and hands it to the box, which runs the same <code>mirror_fetch.sh</code> over the local copy, so the signature is checked against the key the box already holds and every file against the manifest. The box keeps the previous build and goes back to it by itself if the first unlock onto the new one fails or a critical daemon keeps falling over in its first ten minutes. Releases are signed by the site key alone for now, the same key that signs this site and the rest of the mirror, and a separate offline release key is planned.<sup class="fn"><a href="#ref13">[13]</a></sup>
                 </p>
 
                 <h2 class="section-header">&gt; 4. HOW IT'S BUILT</h2>
@@ -347,7 +358,7 @@
                 </p>
 
                 <p>
-                    The three big sets are refreshed only by hand. The road extracts change every day upstream, so they're taken about once a month. The elevation tiles are one line in the config that stands for every name in the tile list Copernicus publishes, and they don't change between Copernicus releases, so they're downloaded once. Wikipedia is the newest dump in Kiwix's directory at the time, checked against the SHA-256 Kiwix publishes beside it, and the older dump leaves the cache when a newer one arrives.
+                    The three big sets are refreshed only by hand. The road extracts change every day upstream, so they're taken about once a month. The elevation tiles are one line in the config that stands for every name in the tile list Copernicus publishes, and they don't change between Copernicus releases, so they're downloaded once. Wikipedia is the newest dump in Kiwix's directory at the time, checked against the SHA-256 Kiwix publishes beside it, and the older dump leaves the cache when a newer one arrives. A release in the <code>server</code> set is pinned to the SHA-256 GitHub shows beside each of its files, and since a release builds reproducibly from its tag, anyone can cut the same version from the repo and compare the bytes.
                 </p>
 
                 <p>
@@ -379,7 +390,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
                 <p>
-                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup>, and llama.cpp and whisper.cpp are MIT.<sup class="fn"><a href="#ref5">[5]</a></sup><sup class="fn"><a href="#ref8">[8]</a></sup> OpenAI released Whisper's code and weights under MIT too, and since the model file carries no licence of its own, the full MIT text with OpenAI's copyright line travels beside it.<sup class="fn"><a href="#ref9">[9]</a></sup> The time zone boundaries are OpenStreetMap data under the ODbL and IANA's time zone rules are in the public domain.<sup class="fn"><a href="#ref10">[10]</a></sup> The Copernicus DEM is free to copy and redistribute under its own licence, which asks that everyone who receives it is bound by the same terms, so the licence itself is a file in the set.<sup class="fn"><a href="#ref11">[11]</a></sup> Wikipedia's text is CC BY-SA 4.0, written by its contributors and packaged by Kiwix.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                    Every file is published under the terms it came with, and those terms travel with it in the same folder. GeoNames data is CC BY 4.0.<sup class="fn"><a href="#ref1">[1]</a></sup> Natural Earth is in the public domain.<sup class="fn"><a href="#ref2">[2]</a></sup> The land polygons and the road extracts are unmodified copies of OpenStreetMap data, published by osmdata.openstreetmap.de and by Geofabrik, under the Open Database License, and the code a box cuts them with is in the LocalGhost repository.<sup class="fn"><a href="#ref3">[3]</a></sup> Go is BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup>, and llama.cpp and whisper.cpp are MIT.<sup class="fn"><a href="#ref5">[5]</a></sup><sup class="fn"><a href="#ref8">[8]</a></sup> OpenAI released Whisper's code and weights under MIT too, and since the model file carries no licence of its own, the full MIT text with OpenAI's copyright line travels beside it.<sup class="fn"><a href="#ref9">[9]</a></sup> The time zone boundaries are OpenStreetMap data under the ODbL and IANA's time zone rules are in the public domain.<sup class="fn"><a href="#ref10">[10]</a></sup> The Copernicus DEM is free to copy and redistribute under its own licence, which asks that everyone who receives it is bound by the same terms, so the licence itself is a file in the set.<sup class="fn"><a href="#ref11">[11]</a></sup> Wikipedia's text is CC BY-SA 4.0, written by its contributors and packaged by Kiwix.<sup class="fn"><a href="#ref12">[12]</a></sup> LocalGhost's own releases are MIT, with the licence beside them as <code>TERMS-localghost-mit.txt</code>.<sup class="fn"><a href="#ref13">[13]</a></sup>
                 </p>
 
                 <p>
@@ -406,6 +417,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                     <div class="ref" id="ref10"><span class="n">[10]</span>timezone-boundary-builder by Evan Siroky, which builds the world's time zone boundaries from OpenStreetMap and publishes them under the ODbL, with a "since 1970" build that merges zones whose clocks have agreed since 1970, and the IANA time zone database, whose files are placed in the public domain. Sources for the <code>tz</code> set and its terms. <a href="https://github.com/evansiroky/timezone-boundary-builder" target="_blank" rel="noopener">github.com/evansiroky/timezone-boundary-builder</a> and <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener">iana.org/time-zones</a></div>
                     <div class="ref" id="ref11"><span class="n">[11]</span>The Copernicus DEM, a global elevation model at 30 and 90 metres from the TanDEM-X mission, on the AWS Registry of Open Data, and the Copernicus Data Space Ecosystem's licence document for COP-DEM, which grants reproduction, distribution and communication to the public free of charge, gives the attribution text, and asks that subsequent users are bound by the same obligations. Sources for the <code>elevation</code> set and its terms. <a href="https://registry.opendata.aws/copernicus-dem/" target="_blank" rel="noopener">registry.opendata.aws/copernicus-dem</a> and <a href="https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM" target="_blank" rel="noopener">dataspace.copernicus.eu (COP-DEM)</a></div>
                     <div class="ref" id="ref12"><span class="n">[12]</span>Kiwix, which packages Wikipedia as ZIM files with a full-text index and publishes the SHA-256 of each beside it, and Wikipedia's licence, CC BY-SA 4.0 for its text. Sources for the <code>wikipedia</code> set and its terms. <a href="https://download.kiwix.org/zim/wikipedia/" target="_blank" rel="noopener">download.kiwix.org/zim/wikipedia</a> and <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by-sa/4.0</a></div>
+                    <div class="ref" id="ref13"><span class="n">[13]</span>LocalGhost wisp 0.0.1, the first release, tag <code>v0.0.1</code> (commit 5354b9b) of 2 October 2026, MIT, whose notes describe how the phone takes a release from this mirror, how the box checks and rolls it back, and how <code>tools/cut_release.sh</code> builds the same bytes again from the tag, and list the known gaps, the site key signing releases alone among them. Source for the <code>server</code> set. <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost/releases/tag/v0.0.1</a></div>
                 </div>
 
             </div>
@@ -421,6 +433,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
             <a href="/about">ABOUT</a>
             <a href="/manifesto">MANIFESTO</a>
             <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
             <a href="/mirror">MIRROR</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>

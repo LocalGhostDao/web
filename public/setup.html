@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Set Up a Box, From Debian to a Phone That Unlocks It | LocalGhost.ai</title>
+        <meta name="title" content="Set Up a Box, From Debian to a Phone That Unlocks It | LocalGhost.ai">
+        <meta name="description" content="How to set up LocalGhost on your own Debian machine and build the Android app, in the order the scripts expect, with what each step does and costs.">
+        <meta name="keywords" content="LocalGhost setup, self-hosted AI server, Debian 13, TPM sealed LUKS2, mTLS phone enrolment, llama.cpp CUDA build, Android app build, local-first AI">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <link rel="canonical" href="https://www.localghost.ai/setup">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="https://www.localghost.ai/setup">
+        <meta property="og:title" content="Set Up a LocalGhost Box">
+        <meta property="og:description" content="From a bare Debian install to a phone that unlocks the box, in the order the scripts expect, with the reason for each step and what it costs.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-setup.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+        <meta property="article:published_time" content="2026-10-02T00:00:00Z">
+        <meta property="article:author" content="Vlad Cealicu">
+        <meta property="article:section" content="Infrastructure">
+        <meta property="article:tag" content="setup">
+        <meta property="article:tag" content="self-hosting">
+        <meta property="article:tag" content="local-first">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/setup">
+        <meta name="twitter:title" content="Set Up a LocalGhost Box">
+        <meta name="twitter:description" content="From a bare Debian install to a phone that unlocks the box, in the order the scripts expect, with the reason for each step and what it costs.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-setup.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "TechArticle",
+            "headline": "Set Up a LocalGhost Box",
+            "description": "How to set up the LocalGhost server on a Debian 13 machine with a TPM and a spare disk, build and install the Android app, enrol the phone with one QR code and bring in the models and maps from the signed setup mirror, in the order the repository's scripts expect.",
+            "image": "https://www.localghost.ai/images/og-setup.png",
+            "author": {
+                "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                "name": "Vlad Cealicu",
+                "url": "https://www.localghost.ai/about#vlad-cealicu",
+                "sameAs": [
+                    "https://x.com/vladcealicu"
+                ]
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.localghost.ai/#organization",
+                "name": "LocalGhost",
+                "url": "https://www.localghost.ai",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.localghost.ai/images/logo.png"
+                }
+            },
+            "datePublished": "2026-10-02",
+            "dateModified": "2026-10-02",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "https://www.localghost.ai/setup"
+            },
+            "url": "https://www.localghost.ai/setup",
+            "inLanguage": "en-GB",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            },
+            "about": [
+                {
+                    "@type": "Thing",
+                    "name": "Self-hosted AI"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "Full-disk encryption with a TPM"
+                },
+                {
+                    "@type": "Thing",
+                    "name": "Mutual TLS"
+                }
+            ],
+            "dependencies": "Debian 13 (x86-64), TPM 2.0 or the software seal tier, a whole spare disk, nginx, optional NVIDIA GPU with the CUDA toolkit, Android 15 or newer",
+            "proficiencyLevel": "Expert"
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "Set up a LocalGhost box",
+            "description": "From a bare Debian 13 install to a phone that unlocks the box.",
+            "url": "https://www.localghost.ai/setup",
+            "supply": [
+                { "@type": "HowToSupply", "name": "x86-64 machine running Debian 13" },
+                { "@type": "HowToSupply", "name": "TPM 2.0, firmware TPM accepted" },
+                { "@type": "HowToSupply", "name": "A whole spare disk for the encrypted volume" },
+                { "@type": "HowToSupply", "name": "Android 15 or newer phone" },
+                { "@type": "HowToSupply", "name": "Optional NVIDIA GPU" }
+            ],
+            "tool": [
+                { "@type": "HowToTool", "name": "Android Studio, or Debian with the repository's Android setup script" },
+                { "@type": "HowToTool", "name": "USB cable with USB debugging on the phone" }
+            ],
+            "step": [
+                { "@type": "HowToStep", "position": 1, "name": "Prepare the machine", "url": "https://www.localghost.ai/setup#step-1", "text": "Enable the firmware TPM, install Debian 13 with sudo, git, make and nginx, install the NVIDIA driver and CUDA toolkit if there is a card, and clone the repository at the release tag v0.0.1, or main, as the user who will build it." },
+                { "@type": "HowToStep", "position": 2, "name": "Build and install the app", "url": "https://www.localghost.ai/setup#step-2", "text": "Build the Android app with gradlew installDebug and install it on the phone before the box draws its enrolment QR." },
+                { "@type": "HowToStep", "position": 3, "name": "Build the engine and fetch the model", "url": "https://www.localghost.ai/setup#step-3", "text": "From the server folder, run sudo ./tools/setup_llama.sh before provisioning, to build llama-server (with CUDA when nvcc is found) and stage Gemma 4 12B, its vision projector and EmbeddingGemma from the signed mirror." },
+                { "@type": "HowToStep", "position": 4, "name": "Run the guided setup", "url": "https://www.localghost.ai/setup#step-4", "text": "Run sudo ./tools/setup.sh with your user. It installs Postgres, Redis and Go, builds the binaries, asks for the disk, the seal tier and the PINs, and provisions the box after a dry run and a typed confirmation, then draws the enrolment QR." },
+                { "@type": "HowToStep", "position": 5, "name": "Scan the QR, then unlock", "url": "https://www.localghost.ai/setup#step-5", "text": "Scan the animated QR with the app as soon as it appears, since scanning is enrolment, clear the terminal, and unlock with the main PIN from the app." },
+                { "@type": "HowToStep", "position": 6, "name": "Bring the rest in", "url": "https://www.localghost.ai/setup#step-6", "text": "Run sudo ./tools/update.sh for maps, speech and the phone model, bundle the database runtimes onto the volume, and check everything with sudo ./tools/health.sh." },
+                { "@type": "HowToStep", "position": 7, "name": "Day to day", "url": "https://www.localghost.ai/setup#step-7", "text": "Take new releases from the phone with DEPLOY (the box checks them and rolls back by itself), use redeploy.sh for code built from git and update.sh for new data, and arm the hardware watchdog." }
+            ]
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Set Up a Box",
+                    "item": "https://www.localghost.ai/setup"
+                }
+            ]
+        }
+        </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <style>
+            .setup-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
+            .need-table-wrap { margin: 1.5rem 0; border: 1px solid var(--border); }
+            .need-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
+            .need-table th, .need-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .need-table tr:last-child th, .need-table tr:last-child td { border-bottom: none; }
+            .need-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; width: 8.5rem; }
+            .need-table code { border: none; background: none; padding: 0; font-size: 0.82rem; overflow-wrap: anywhere; }
+            @media (max-width: 640px) {
+                .need-table, .need-table tbody, .need-table tr, .need-table th, .need-table td { display: block; width: 100%; }
+                .need-table th { border-bottom: none; padding-bottom: 0.15rem; }
+                .need-table td { padding-top: 0; }
+            }
+            .step { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1.1rem 1.2rem 0.4rem; margin: 1.75rem 0; }
+            .step h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); letter-spacing: 0.04em; margin: 0 0 0.75rem; }
+            .step h3 .who { color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.1em; margin-left: 0.5rem; white-space: nowrap; }
+            .step pre.cmd { background: var(--void); }
+            .stage-list { margin: 1rem 0 1.25rem 1.25rem; }
+            .stage-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
+            .stage-list li::marker { color: var(--terminal); font-family: var(--font-mono); font-size: 0.85em; }
+            pre.cmd { background: var(--void-lighter); border: 1px solid var(--border); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.1rem 0 1.4rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); font-variant-ligatures: none; }
+            pre.cmd .c { color: var(--text-dim); }
+            pre.flow { border-left-color: var(--terminal-dim); line-height: 1.55; }
+            .manifesto-text code { font-variant-ligatures: none; overflow-wrap: anywhere; }
+            .rule { border: 1px dashed var(--terminal); padding: 0.9rem 1rem; margin: 1.5rem 0; font-size: 0.95rem; line-height: 1.7; }
+            .rule strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--terminal); font-weight: 500; display: block; margin-bottom: 0.35rem; }
+            .post-refs { margin-top: 1.5rem; }
+            .post-refs .ref { color: var(--text-dim); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1rem; overflow-wrap: anywhere; }
+            .post-refs .ref .n { color: var(--terminal); margin-right: 0.4rem; }
+            .post-refs .ref a { color: var(--terminal); }
+            sup.fn { line-height: 0; }
+            sup.fn a { color: var(--terminal); text-decoration: none; font-size: 0.85em; }
+            sup.fn a:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; SETUP</div>
+                <h1>Set Up a Box</h1>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-10-02">2 October 2026</time></div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="setup-lede">
+                    This is how to put LocalGhost on a machine you own, from a bare Debian install to a phone that unlocks it. It's the procedure I follow on my own box, taken from the scripts in the server repo, in the order they expect them and with the reason for each step. The first release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a>, came out on 2 October 2026. Build from its tag for the release, or from <code>main</code> for what I run the day I run it.
+                </p>
+
+                <p>
+                    Every step is a script you can read before you run it, and the ones that destroy anything ask you to type a word first. Setup takes an afternoon, most of it downloads and compiling. A large photo library then takes the box a few days to describe and index, and the phone shows how far it has got. There's one rule about order (step 2) and one cost you should know about before you start, which is that there is no recovery path yet (section 5).
+                </p>
+
+                <h2 class="section-header" id="need">&gt; 1. WHAT YOU NEED</h2>
+
+                <div class="need-table-wrap">
+                    <table class="need-table">
+                        <tbody>
+                            <tr>
+                                <th>Machine</th>
+                                <td>An x86-64 computer running Debian 13, with a terminal on it for the first run, since the enrolment code is drawn there. Mine is a Debian 13 box on a home network, and the Go toolchain the mirror carries is the <code>linux-amd64</code> build.</td>
+                            </tr>
+                            <tr>
+                                <th>TPM</th>
+                                <td>TPM 2.0, and a firmware TPM is fine (Intel PTT, AMD fTPM), switched on in the BIOS. <code>ls /dev/tpm*</code> should list <code>/dev/tpmrm0</code>. A machine without one can run the software tier, with the price in section 5.</td>
+                            </tr>
+                            <tr>
+                                <th>Data disk</th>
+                                <td>A whole disk for the encrypted volume, separate from the one Debian is on. Setup turns the entire disk into one LUKS2 container with no partition table, so everything on it goes. Size it for your photo library plus about 10 GB of models and maps, and more if you want streets (Europe alone is 33 GB to download).</td>
+                            </tr>
+                            <tr>
+                                <th>GPU</th>
+                                <td>Optional. An NVIDIA card with its driver and the CUDA toolkit installed, which you do yourself. Mine is an RTX 4070 with 12 GB, which holds the 12B model and its vision projector. Without a card everything runs on the CPU, and the same box describes about 24 photos an hour.<sup class="fn"><a href="#ref6">[6]</a></sup></td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>Android 15 or newer (the app's minimum SDK is 35), no Google Play services needed.</td>
+                            </tr>
+                            <tr>
+                                <th>App build</th>
+                                <td>A computer to build the app on, Windows with Android Studio or Debian with the repo's setup script, and a USB cable. I build on Windows and the release builds are made on Debian.</td>
+                            </tr>
+                            <tr>
+                                <th>Network</th>
+                                <td>Internet during setup, for the signed setup mirror (about 12 GB), the Debian, PostgreSQL and Redis apt repositories, and the Go module proxy. To reach the box away from home you also need a domain whose A record points at your public IP and your router forwarding TCP 443 to the box. On the home network it works without either.</td>
+                            </tr>
+                            <tr>
+                                <th>Two PINs</th>
+                                <td>A main PIN, and a wipe PIN if you want one. They must be different. The wipe PIN destroys everything on the volume and then shows the same unlock progress a real unlock would.<sup class="fn"><a href="#ref7">[7]</a></sup></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 class="section-header" id="order">&gt; 2. THE ORDER</h2>
+
+                <p>
+                    Seven steps, all from the <a href="https://github.com/LocalGhostDao/localghost">localghost repository</a>, where the server lives in <code>server/</code> and the phone app in <code>app/android/</code>.<sup class="fn"><a href="#ref1">[1]</a></sup>
+                </p>
+
+                <div class="rule">
+                    <strong>THE ONE RULE ABOUT ORDER</strong>
+                    Build the app and install it on the phone before the box draws its enrolment QR. The QR holds the phone's certificate and private key, so it's a credential, and it should be scanned the moment it appears and then cleared from the screen, not left up while Gradle runs.
+                </div>
+
+                <div class="step" id="step-1">
+                    <h3>STEP 1. PREPARE THE MACHINE <span class="who">// BIOS, ROOT</span></h3>
+                    <p>
+                        Switch on the firmware TPM in the BIOS and install Debian 13. Then install the four things the scripts expect to find, and if there's an NVIDIA card, its driver and the CUDA toolkit. LocalGhost installs neither of those, and the engine build looks for <code>nvcc</code> under <code>/usr/local/cuda*/bin</code> and builds for the CPU when it doesn't find one. Clone the repo as your own login user, the one with sudo. That user becomes the service user, which builds and owns the code, and the daemons later run as a separate user that can't log in.
+                    </p>
+<pre class="cmd"><span class="c"># /dev/tpmrm0 should be there</span>
+ls /dev/tpm*
+
+<span class="c"># as root</span>
+apt install sudo git make nginx
+
+<span class="c"># as your login user, the release, wisp 0.0.1</span>
+git clone --branch v0.0.1 https://github.com/LocalGhostDao/localghost.git
+
+<span class="c"># or the newest code instead</span>
+git clone https://github.com/LocalGhostDao/localghost.git</pre>
+                </div>
+
+                <div class="step" id="step-2">
+                    <h3>STEP 2. BUILD THE APP AND INSTALL IT <span class="who">// YOUR COMPUTER, PHONE</span></h3>
+                    <p>
+                        On Windows, install Android Studio (it brings JDK 21) and in its SDK Manager tick Android API 37 and 36, Build-Tools 36.0.0, NDK 28.2.13676358 and CMake 3.22.1, the versions the build pins. Put the repo in a path without spaces, turn on USB debugging on the phone, plug it in and run <code>gradlew.bat installDebug</code> in <code>app\android</code>. On Debian, one script installs the same toolchain.<sup class="fn"><a href="#ref3">[3]</a></sup>
+                    </p>
+<pre class="cmd">app/android/tools/debian_setup.sh
+source ~/.localghost_android_env
+adb devices                          <span class="c"># the phone should be listed</span>
+cd app/android &amp;&amp; ./gradlew installDebug</pre>
+                    <p>
+                        The app carries its own small model for when the box is slow or out of reach, and the engine behind it is the same llama.cpp source the box builds. The build fetches that tarball from the setup mirror and refuses it unless its SHA-256 matches the pin in <code>app/src/main/cpp/CMakeLists.txt</code>. With no internet, put <code>llamaTarball=&lt;path&gt;</code> in <code>local.properties</code>. To check, open MODELS in the app. The top line should say "runtime in this build (llama.cpp v0.5.0-…)", and if it says the build carries no model runtime, the pin is empty and the app works without a model of its own.
+                    </p>
+                    <p>
+                        That's a debug build, which is fine for your own phone. Release builds are signed and published with their hashes, and <code>app/android/VERIFY.md</code> explains how to rebuild one and get the same bytes.<sup class="fn"><a href="#ref4">[4]</a></sup>
+                    </p>
+                </div>
+
+                <div class="step" id="step-3">
+                    <h3>STEP 3. BUILD THE ENGINE AND FETCH THE MODEL <span class="who">// THE BOX, SUDO</span></h3>
+                    <p>
+                        Before the box is provisioned, build llama.cpp's <code>llama-server</code> and fetch the weights. The script builds the pinned llama.cpp release from the mirror, with CUDA when it finds <code>nvcc</code>, into the repo's <code>bin/</code>, where provisioning picks it up along with the daemons. It fetches Gemma 4 12B with its vision projector and the EmbeddingGemma embedder, checks each file against <code>tools/model.pins</code> and stages them on the system disk, and the first unlock moves them onto the encrypted volume.
+                    </p>
+<pre class="cmd">cd localghost/server
+
+<span class="c"># from the mirror, 7.7 GB</span>
+sudo ./tools/setup_llama.sh
+
+<span class="c"># or from files you already have, still checked</span>
+sudo ./tools/setup_llama.sh --models /media/usb</pre>
+                    <p>
+                        The CUDA build targets compute capability 8.9, the RTX 40 series, and that flag is written into the script, so a card from another generation means changing <code>CMAKE_CUDA_ARCHITECTURES</code> in <code>setup_llama.sh</code> first. If you run it after provisioning instead, the setup in step 4 reminds you, and the script prints how to put the engine onto a volume that already exists.
+                    </p>
+                </div>
+
+                <div class="step" id="step-4">
+                    <h3>STEP 4. RUN THE GUIDED SETUP <span class="who">// THE BOX, SUDO</span></h3>
+                    <p>
+                        One command walks the rest of the server setup, and it changes nothing on the data disk until you've typed the word it asks for.<sup class="fn"><a href="#ref2">[2]</a></sup>
+                    </p>
+<pre class="cmd">sudo ./tools/setup.sh &lt;your-user&gt;</pre>
+                    <ol class="stage-list">
+                        <li><strong>Packages.</strong> Postgres 18 with pgvector and Redis 8 from their own apt repositories, Go 1.25.4 from the mirror if the machine doesn't have it, checked against the signed manifest, then <code>cryptsetup</code> and <code>tpm2-tools</code>. It loads <code>dm_crypt</code>, lets your user reach the TPM through the <code>tss</code> group, adds a narrow sudo rule for managing the <code>ghost.secd</code> unit, and writes <code>/etc/ghost/ghost.env</code>. On a machine that had no database before, the Postgres and Redis services the packages start on their own are masked, because the box runs private instances inside the encrypted volume, on their own ports. Databases the machine already runs for other things are left alone.</li>
+                        <li><strong>Checks.</strong> As your user, in a fresh login so the new group counts, it confirms that the packages, the TPM, the state folder and the sudo rule all work for you.</li>
+                        <li><strong>Build.</strong> <code>make box</code>, as your user, builds every daemon and tool into <code>bin/</code>.</li>
+                        <li><strong>Disk.</strong> It lists the disks and you give it one. Use the <code>/dev/disk/by-id/</code> name, since names like <code>nvme0n1</code> can swap between boots.<sup class="fn"><a href="#ref8">[8]</a></sup> It shows the model, size and serial number and asks you to type <code>YES</code>, plus <code>WIPEIT</code> if the disk already holds a LUKS container and <code>IUNDERSTAND</code> if anything on it is mounted.</li>
+                        <li><strong>Seal and name.</strong> The seal tier, <code>tpm</code> for a real box or <code>software</code> for a machine without one, and the domain, left blank for the home network only.</li>
+                        <li><strong>Provision.</strong> It creates <code>ghostd</code>, the user the daemons run as (no password, no shell), runs <code>ghost-setup</code> as a dry run that touches nothing, and asks you to type <code>APPLY</code>. The apply asks for the main PIN and the wipe PIN on the terminal, formats the disk, makes the box its own certificate authority, writes the nginx site and the systemd unit, starts <code>ghost.secd</code> and draws the QR.</li>
+                    </ol>
+                </div>
+
+                <div class="step" id="step-5">
+                    <h3>STEP 5. SCAN THE QR, THEN UNLOCK <span class="who">// PHONE</span></h3>
+                    <p>
+                        Scan it with the app as soon as it appears. Scanning is the enrolment, with no code to type, no confirmation and no network call. The code is 858 bytes split over twelve frames, the phone's certificate and private key, the box's address, its name and the fingerprint of its server certificate, and any eight frames rebuild it, so a clean scan takes 8 to 12 seconds.<sup class="fn"><a href="#ref6">[6]</a></sup> The box stops showing frames after the first verified connection. Then clear the terminal and its scrollback, because anyone with a recording of those frames holds a working device identity (they'd still need the PIN).
+                    </p>
+                    <p>
+                        Unlock with the main PIN from the app. The box unseals its key, opens the volume, takes in the weights from step 3 and starts the fleet, and Box Status on the phone fills in.
+                    </p>
+<pre class="cmd"><span class="c"># the engine is up, on the GPU or the CPU</span>
+sudo ./tools/ns.sh ./bin/ghost-cli ghost.oracled status
+
+<span class="c"># a new QR, for a second phone or a missed scan</span>
+sudo ./bin/ghost-qr --ca /etc/ghost/ca --host &lt;host&gt;</pre>
+                    <p>
+                        The app trusts the box by that fingerprint, not by its name. If the box sits behind a router without NAT hairpinning, the domain won't reach the box from inside your own network, so use the LAN address as the host and keep the domain for outside. Enrolment doesn't need the domain at all, and you can leave it blank at setup and add it later.
+                    </p>
+                </div>
+
+                <div class="step" id="step-6">
+                    <h3>STEP 6. BRING THE REST IN <span class="who">// THE BOX, UNLOCKED</span></h3>
+                    <p>
+                        Everything else the box uses comes from the same mirror with the same checks, in one command, and the rest of the block finishes the job.
+                    </p>
+<pre class="cmd"><span class="c"># maps, embedder, weights, phone model, engine, speech</span>
+sudo ./tools/update.sh
+
+<span class="c"># streets, one continent at a time</span>
+sudo GHOST_GEO_ROADS=europe-latest.osm.pbf ./tools/update.sh maps
+
+<span class="c"># as your user, the database runtimes onto the volume</span>
+./tools/bundle_db_runtime.sh /var/lib/ghost/mnt/slot0 --verify
+
+<span class="c"># every daemon, the pipeline, the engine, the map layers</span>
+sudo ./tools/health.sh
+
+<span class="c"># tpm, or software</span>
+sudo grep GHOST_SEAL_MODE /var/lib/ghost/seal.env</pre>
+                    <p>
+                        <code>update.sh</code> fetches only what differs from the signed list. The maps step imports the place names and cuts the coastline into tiles in the background, the speech step builds whisper.cpp and fetches its model, and voice notes start transcribing within a minute. The phone step sets the model the app offers under MODELS, and the phone downloads it from the box, never from the internet, and checks it against the hash the box states. Streets are opt-in because they're big. Africa takes about four minutes to cut and Europe takes hours. <code>bundle_db_runtime.sh</code> copies the Postgres and Redis runtimes onto the encrypted volume and tests them there, so the system disk can stop carrying database software. If the model turns out to be on the CPU when you expected the GPU, <code>sudo ./tools/gpu.sh</code> says which layer failed.
+                    </p>
+                    <p>
+                        Then turn on sync in the app. Photos, videos, the location trail and Health Connect data start flowing, and Box Status shows each pipeline stage as done, total and pace.
+                    </p>
+                </div>
+
+                <div class="step" id="step-7">
+                    <h3>STEP 7. DAY TO DAY <span class="who">// THE BOX</span></h3>
+<pre class="cmd"><span class="c"># code from git, builds and restarts secd, so the box locks</span>
+git pull &amp;&amp; sudo ./tools/redeploy.sh
+
+<span class="c"># new data from the mirror</span>
+sudo ./tools/update.sh
+
+<span class="c"># a hung box resets itself and comes back locked</span>
+sudo ./tools/watchdog.sh --arm
+
+<span class="c"># a shell inside the namespace, standing on the volume</span>
+sudo ./tools/ns.sh
+
+<span class="c"># the box's privacy settings, encrypted swap included</span>
+sudo ./tools/privacy_check.sh</pre>
+                    <p>
+                        Releases reach the box through the phone. Once a day on Wi-Fi the app reads the mirror's signed list, and when a newer release is there it says so ("wisp 0.0.1 is out"). DEPLOY, under SETTINGS and SERVER, downloads the release and hands it to the box, which checks the signature and every hash with the same verifier setup used, keeps the previous build and switches to the new one. It goes back by itself if the first unlock onto the new build fails or a critical daemon keeps falling over in its first ten minutes, and ROLL BACK sits beside DEPLOY.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                    </p>
+                    <p>
+                        A redeploy from git is for code you've built yourself. It restarts <code>ghost.secd</code>, which locks the box, and you unlock again from the phone. New daemon binaries wait in a staging folder on the system disk and move onto the volume at that unlock. Arm the watchdog on any box you can't walk up to. Mine froze once while I was away and stayed frozen until someone could press the button.<sup class="fn"><a href="#ref6">[6]</a></sup>
+                    </p>
+                </div>
+
+                <h2 class="section-header" id="how">&gt; 3. HOW IT FITS TOGETHER</h2>
+
+                <p>
+                    Only two processes serve LocalGhost from the unencrypted system disk, nginx and <code>ghost.secd</code>, and <code>ghost.secd</code> is the only LocalGhost unit systemd starts. nginx holds port 443 and checks the phone's client certificate against the box's own certificate authority with <code>ssl_verify_client optional</code>, then passes the verdict to secd, which answers 503 to anything without a valid certificate.<sup class="fn"><a href="#ref9">[9]</a></sup> A stranger scanning the box finds a web server that seems to be down.
+                </p>
+
+<pre class="cmd flow">phone ─ mTLS ─▶ nginx :443 ─▶ ghost.secd     <span class="c">system disk</span>
+                              │
+         PIN ─▶ TPM unseals the key ─▶ LUKS2 opens
+                              │  <span class="c">in secd's private namespace</span>
+                              ├── postgres, redis   <span class="c">on the volume</span>
+                              └── ghost.watchd
+                                   ├── framed, searchd, synthd, cued
+                                   ├── noted, voiced, tallyd, shadowd
+                                   └── oracled ── llama-server</pre>
+
+                <p>
+                    When the right PIN arrives, secd unseals the volume key from the TPM, opens the LUKS2 container and mounts it inside its own private mount namespace, so from the host the mount point looks empty whether the box is locked or not.<sup class="fn"><a href="#ref10">[10]</a></sup> It then starts Postgres and Redis from the volume and <code>ghost.watchd</code>, which starts each daemon from the volume's <code>bin/</code>, restarts any that fall over and keeps their logs. The model runs as a private <code>llama-server</code> child of <code>ghost.oracled</code> on a loopback port, and the embedder as one of <code>ghost.searchd</code>, with the weights read from the volume. Locking runs the same steps in reverse, and everything except secd and nginx stops existing until the next PIN. The <a href="/#fleet">daemons and their jobs</a> are on the home page.
+                </p>
+
+                <p>
+                    On the system disk, <code>/etc/ghost</code> holds the box's settings and its certificate authority, <code>/var/lib/ghost</code> holds the seal, the staging folders and the mount point, and <code>/opt/localghost/bin</code> holds secd and the operator tools. Everything else, the archive, the databases, the models, the logs and the daemons themselves, is on the volume.
+                </p>
+
+                <h2 class="section-header" id="network">&gt; 4. WHAT THE BOX TALKS TO</h2>
+
+                <p>
+                    During setup, the box downloads from three kinds of place. Everything it can get from the <a href="/mirror">setup mirror</a> comes from there, signed and checked against a key pinned in the repo, and if the mirror can't be reached, setup says so and stops.<sup class="fn"><a href="#ref5">[5]</a></sup> A box with no internet at all can read a copy of the mirror from a USB disk with <code>GHOST_MIRROR=file:///media/usb/mirror</code>. The Go modules for the build come from proxy.golang.org, pinned by <code>go.sum</code>, and the packages from Debian's, PostgreSQL's and Redis's own apt repositories.
+                </p>
+
+                <p>
+                    After setup, the phone is the only thing that talks to the box, and the box asks the internet only for public things, with nothing of yours in the request. <code>ghost.tallyd</code> reads prices from the exchanges and the ECB itself, every minute. News feeds come from the phone while it's on Wi-Fi and from the box when the phone is away. A coin's page reads the coin's own website, Wikipedia's API is asked only by a box without its own copy of Wikipedia, and updates come from the mirror. The phone runs the web searches and reads the pages, and the box gets the paragraphs. Never a map tile, a location, a photo or a note.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                </p>
+
+                <h2 class="section-header" id="costs">&gt; 5. WHAT IT COSTS</h2>
+
+                <p>
+                    There's no recovery path yet. On the <code>tpm</code> tier the volume key is sealed to this board's TPM, in the boot state it measured, and nothing else holds a copy, so a dead board or a forgotten PIN means the archive on that disk is gone. The two hardware keys described on the <a href="/about">About page</a> aren't part of setup yet. Until they are, keep the originals of anything you can't lose somewhere else as well.
+                </p>
+
+                <p>
+                    The <code>software</code> tier wraps the key under Argon2id of the PIN in <code>/var/lib/ghost/seal.env</code>, so someone with the raw disk and that file can guess PINs offline with nothing to stop them, and a short PIN under Argon2id is still a short PIN.<sup class="fn"><a href="#ref11">[11]</a></sup> It's for machines without a TPM, and <code>health.sh</code> says which tier a box is on rather than letting you assume.
+                </p>
+
+                <p>
+                    The box's certificate authority key sits on the system disk, so root on the box, or someone holding that disk, could make a phone certificate, and the PIN would be the only gate left. secd also trusts a certificate header passed to it on its loopback port, so on a box that runs other services, those services can reach it without a certificate. Both are on the security list in the release notes, and until they're fixed, run nothing on the box you don't trust. Releases are signed by the same site key as the mirror, and a separate offline release key is planned. There's no per-device revocation. Phone certificates are valid for ten years and nginx has no revocation list, so shutting out one phone today means a new certificate authority and enrolling every phone again. The QR is a credential while it's on screen, as step 5 says. A first import of a large library takes days on a GPU and longer on a CPU. And this is pre-release software that changes every day on my box first, so read each script before you run it and let the dry runs do their job. <a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> goes through each part with what it costs, and what broke on the way.
+                </p>
+
+                <p>
+                    If a step here doesn't match what the script does on your machine, the script is right and this page is late. Email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off--> or open an issue, and I'll fix whichever one is wrong.
+                </p>
+
+                <h2 class="section-header">&gt; REFERENCES</h2>
+                <div class="post-refs">
+                    <div class="ref" id="ref1"><span class="n">[1]</span>The LocalGhost repository, MIT, with the Go server in <code>server/</code> (the standard library plus go-tpm and three golang.org/x packages) and the Kotlin app in <code>app/android/</code>, and <code>server/tools/README.md</code>, which lists every tool and the bring-up order this page follows, including the rule about installing the app before the QR. Source for the order and the commands. <a href="https://github.com/LocalGhostDao/localghost" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost</a> and <a href="https://github.com/LocalGhostDao/localghost/blob/main/server/tools/README.md" target="_blank" rel="noopener">server/tools/README.md</a></div>
+                    <div class="ref" id="ref2"><span class="n">[2]</span><code>server/tools/setup.sh</code>, the guided setup, which runs as root, builds as the service user with <code>sudo -u</code>, and asks for a typed word before the disk step and before the apply. With <code>install_db.sh</code>, <code>server_setup_root.sh</code> and <code>server_setup_user.sh</code> beside it, the source for the six stages in step 4. <a href="https://github.com/LocalGhostDao/localghost/blob/main/server/tools/setup.sh" target="_blank" rel="noopener">server/tools/setup.sh</a></div>
+                    <div class="ref" id="ref3"><span class="n">[3]</span><code>app/android/BUILDING.md</code>, the app's build guide for Windows and Debian, with the pinned SDK, NDK and CMake versions, the <code>local.properties</code> key for an offline llama.cpp tarball and the release script's variables. Source for step 2. <a href="https://github.com/LocalGhostDao/localghost/blob/main/app/android/BUILDING.md" target="_blank" rel="noopener">app/android/BUILDING.md</a></div>
+                    <div class="ref" id="ref4"><span class="n">[4]</span><code>app/android/VERIFY.md</code>, how a published APK is built, signed with a detached signature by info@localghost.ai and checked by rebuilding it from the same commit with the toolchain recorded in the build environment file. Source for the release builds in step 2. <a href="https://github.com/LocalGhostDao/localghost/blob/main/app/android/VERIFY.md" target="_blank" rel="noopener">app/android/VERIFY.md</a></div>
+                    <div class="ref" id="ref5"><span class="n">[5]</span>The LocalGhost setup mirror, its signed manifest, its sets and their terms, and <code>server/tools/mirror_fetch.sh</code>, which checks the manifest against the key fingerprint pinned in the repo (DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0) and each file against its SHA-256 before giving it its real name. Source for what the box downloads and how. <a href="/mirror">localghost.ai/mirror</a></div>
+                    <div class="ref" id="ref6"><span class="n">[6]</span>What the Box Does Now, and What Each Part Costs, Hard Truths, 29 September 2026, the dev update on the box this page is written from, with the enrolment QR in section 1, the CPU speed in section 5, the map cutting times in section 8 and the frozen box in section 13. Source for the figures from my own box. <a href="/hard-truths/what-the-box-does-now">localghost.ai/hard-truths/what-the-box-does-now</a></div>
+                    <div class="ref" id="ref7"><span class="n">[7]</span>The Honeypot Under Your Desk, Hard Truths, on why a box under duress should erase rather than hide, and why a wipe has to look like an ordinary unlock to whoever is watching. Source for the wipe PIN. <a href="/hard-truths/honeypot">localghost.ai/hard-truths/honeypot</a></div>
+                    <div class="ref" id="ref8"><span class="n">[8]</span>Persistent block device naming, ArchWiki. Kernel names like <code>nvme0n1</code> are handed out in the order devices are found on each boot, and the stable handles are the IDs under <code>/dev/disk/by-id</code>. Source for the disk advice in step 4. <a href="https://wiki.archlinux.org/title/Persistent_block_device_naming" target="_blank" rel="noopener">wiki.archlinux.org/title/Persistent_block_device_naming</a></div>
+                    <div class="ref" id="ref9"><span class="n">[9]</span>nginx, <code>ngx_http_ssl_module</code>, the <code>ssl_verify_client</code> directive. With <code>optional</code>, nginx asks for a client certificate, verifies it if one is offered and passes the result on instead of refusing the connection itself, which is what lets secd answer every unauthenticated request with the same 503. Source for section 3. <a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_verify_client" target="_blank" rel="noopener">nginx.org/en/docs/http/ngx_http_ssl_module.html</a></div>
+                    <div class="ref" id="ref10"><span class="n">[10]</span>Trusted Computing Group, TPM 2.0 Library Specification, the sealing operation the box uses for its volume key, an object the TPM unseals only when the platform's measured state matches the policy it was sealed under, and Google's go-tpm, the Go package the box uses to talk to it. Source for what "sealed" means here. <a href="https://trustedcomputinggroup.org/resource/tpm-library-specification/" target="_blank" rel="noopener">trustedcomputinggroup.org</a> and <a href="https://github.com/google/go-tpm" target="_blank" rel="noopener">github.com/google/go-tpm</a></div>
+                    <div class="ref" id="ref11"><span class="n">[11]</span>RFC 9106, Argon2 Memory-Hard Function for Password Hashing and Proof-of-Work Applications, 2021. The key derivation the software tier wraps the volume key with, which makes each guess expensive but puts no limit on how many guesses there are. Source for the software tier's cost. <a href="https://www.rfc-editor.org/rfc/rfc9106" target="_blank" rel="noopener">rfc-editor.org/rfc/rfc9106</a></div>
+                    <div class="ref" id="ref12"><span class="n">[12]</span>LocalGhost wisp 0.0.1, the first release, tag <code>v0.0.1</code> of 2 October 2026, and its notes, which describe how the phone takes a release from the mirror and how the box checks it and rolls it back, list what leaves the box, and name the known gaps (the certificate authority key on the system disk, the trusted header on the loopback port, releases signed by the site key alone, no Mist and no decoy volume yet). Source for step 7 and sections 4 and 5. <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost/releases/tag/v0.0.1</a></div>
+                </div>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/mirror" class="back-link">[ ← SETUP MIRROR ]</a>
+                <a href="/build" class="back-link">[ THE ROADMAP → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+        </div>
+            <p class="footer-quote">"Read each script before you run it. They're short, and they ask before they break anything." // Set Up a Box</p>
+        </footer>
+
+    </body>
+</html>

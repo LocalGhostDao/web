@@ -224,6 +224,27 @@ no checksum for source archives, so the line starts life as `check=sha256:?` (ne
 the pin: new commit in the URL and the file name, `check=sha256:?` again, two publishes. The tarball
 unpacks into one directory named after the commit (`tar xzf ... --strip-components=1`).
 
+## Releases (`server`)
+
+`server` is LocalGhost's own release, the set the phone offers as an update ("wisp 0.0.1 is out",
+DEPLOY under SETTINGS › SERVER). Its three files are the GitHub release's, unmodified, each pinned by
+the SHA-256 GitHub shows beside the asset: the bundle (`localghost-server-<version>-linux-amd64.tar.gz`,
+the daemons and operator tools, `tools/mirror_fetch.sh` and the pinned key), `RELEASE.txt` (version,
+name, commit, date, `bundle=`, the changes, which the phone shows before downloading) and `NOTES.md`.
+The release's own `NOTICE.txt` and `SHA256SUMS` are left out on purpose: the set's `NOTICE.txt` is
+the mirror's (a file of the same name would collide), and the signed manifest already carries every
+hash. `terms/localghost-mit.txt` is the repo's LICENSE with a short header.
+
+The box verifies the set with the release's own `mirror_fetch.sh` over a `file://` copy the phone hands
+it, against the key it already holds, then unpacks the bundle and keeps the previous build for a
+rollback. Tested on 2 October 2026: a scratch publish of wisp 0.0.1 signed with a throwaway key, then
+the bundled `mirror_fetch.sh server` against it, all five files matched.
+
+A new release is three lines replaced in `mirror.conf`: the new file name in the bundle line, the tag
+in all three URLs, and the three pins from the release page (or `sha256sum` of a copy you cut
+yourself with `tools/cut_release.sh <version>`, which gives the same bytes). A plain deploy publishes
+it, since a changed line is fetched even in a month whose upstream check has already run.
+
 ## Unfinished lines
 
 Two things can leave a line unfinished, and neither stops the rest of the mirror: the set is left out

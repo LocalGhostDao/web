@@ -403,113 +403,111 @@
             <h2>THE FLEET: LOCAL DAEMONS</h2>
 
             <p>
-                At least ten daemons run locally on the hardware, each handling a specific job
-                from ingesting data and building the memory layer to keeping backups alive
-                and <a href="/hard-truths/dictator-brain" style="color: var(--terminal);">challenging your own thinking</a>. No cloud callbacks. No external dependencies.
-                Just processes on your box, working for you.
+                Eleven daemons ship in the first release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1" style="color: var(--terminal);">wisp 0.0.1</a>, ten of them doing their whole
+                job every day and ghost.shadowd with its first detector, and one more is still to be written.
+                Each is a small Go program with one job, so when one of them is wrong, the name of the daemon
+                is the name of the bug. Apart from ghost.secd, they all live on the encrypted volume and exist
+                only while it&rsquo;s unlocked. Nothing of yours leaves the box. What it asks the internet for is
+                public, from prices on the exchanges to the news when your phone is away and its own maps,
+                models and releases from the signed mirror. <a href="/setup" style="color: var(--terminal);">Set one up yourself.</a>
             </p>
 
             <div class="fleet-grid">
                 <div class="daemon-card">
-                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/noted/README.md" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.noted</a></div>
-                    <div class="daemon-type">TEXT INGESTION</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.secd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.secd</a></div>
+                    <div class="daemon-type">FRONT DOOR &amp; KEYS</div>
                     <div class="daemon-desc">
-                        Pulls text from upstream sources or accepts pushes from external agents. Archives
-                        canonical copies locally. Runs local LLM extraction to produce journal entries that
-                        the rest of the fleet builds on.
+                        The only daemon on the unencrypted disk and the only one the phone talks to. It checks the phone&rsquo;s certificate and answers 503 to everyone else, unseals the volume key from the TPM when the right PIN arrives, and mounts the archive where only the fleet can see it. A wipe PIN erases everything and looks like an ordinary unlock. <a href="/hard-truths/honeypot" style="color: var(--terminal);">Why encryption alone isn&rsquo;t enough.</a>
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/framed/README.md" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.framed</a></div>
-                    <div class="daemon-type">IMAGE INGESTION</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.watchd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.watchd</a></div>
+                    <div class="daemon-type">SUPERVISOR &amp; HEALTH</div>
                     <div class="daemon-desc">
-                        Pulls images from upstream sources or accepts pushes. Archives canonical copies.
-                        Runs local vision models and OCR to produce structured descriptions that flow
-                        through ghost.noted. No thumbnails sent anywhere.
+                        Started by secd once the volume is open. It starts the rest of the fleet, restarts whatever falls over, keeps the logs, and owns every health number the phone shows, from CPU, memory and GPU to how far each stage of the photo pipeline has got. The only daemon that can read every other daemon&rsquo;s metrics.
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/voiced/README.md" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.voiced</a></div>
-                    <div class="daemon-type">AUDIO INGESTION</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.framed/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.framed</a></div>
+                    <div class="daemon-type">PHOTOS, VIDEOS &amp; PLACES</div>
                     <div class="daemon-desc">
-                        Pulls audio recordings from upstream sources or accepts pushes. Archives canonical
-                        copies. Runs local transcription with speaker separation where supported. Transcripts
-                        flow through ghost.noted.
+                        Takes in photos, videos and location points from the phone. It keeps each original byte for byte, reads its date and place, makes the previews, cleans the location trail and tells each day as stays and moves, drawn along the streets on maps the box cuts itself from public data.
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/tallyd/README.md" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.tallyd</a></div>
-                    <div class="daemon-type">METRICS AGGREGATION</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.searchd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.searchd</a></div>
+                    <div class="daemon-type">SEARCH &amp; DESCRIPTIONS</div>
                     <div class="daemon-desc">
-                        Imports structured data, bank exports, health logs, screen time, git commits.
-                        Normalizes formats. Builds time-series you can query.
+                        Asks the model to describe every photo, files each tag under one of eleven categories, and keeps one index over originals, journal entries and memories. Search runs Postgres full-text and EmbeddingGemma vectors side by side and merges the two with reciprocal rank fusion.
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/synthd/README.md" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.synthd</a></div>
-                    <div class="daemon-type">MEMORY LAYER</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.oracled/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.oracled</a></div>
+                    <div class="daemon-type">THE MODEL</div>
                     <div class="daemon-desc">
-                        Consumes journal entries, clusters them into memories, rolls memories into episodes
-                        across time windows, resolves entities, maintains the queue of decisions the system
-                        cannot make alone, serves memory queries to the app.
+                        The box&rsquo;s inference broker. It queues every request for the model, questions ahead of background work, and runs Gemma 4 12B with its vision projector through llama.cpp, as a private child on a loopback port, on the GPU when there is one. Changing the model is a config change, and no other daemon notices.
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
                 </div>
                 <div class="daemon-card">
-                    <div class="daemon-name">ghost.cued</div>
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.synthd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.synthd</a></div>
+                    <div class="daemon-type">MEMORIES &amp; CHAT</div>
+                    <div class="daemon-desc">
+                        Writes a short account of every day, groups photos into outings, learns what you like to photograph, and answers the chat from your own archive with what it used listed under every answer. It also groups the news into stories, writes the day&rsquo;s brief and two digests, and writes a page for each coin. <a href="/hard-truths/how-memory-gets-made" style="color: var(--terminal);">How a memory gets made.</a>
+                    </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.cued/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.cued</a></div>
                     <div class="daemon-type">SITUATIONAL RETRIEVAL</div>
                     <div class="daemon-desc">
-                        Watches the current moment through the phone-to-box feed. Decides when a memory is
-                        worth surfacing. Reads ranked candidates from ghost.synthd, applies situational
-                        ranking on top, surfaces the right memory at the right moment or stays silent.
-                        Ships in v0.2.
-                        <a href="/hard-truths/before-you-ask" style="color: var(--terminal);">Why retrieval isn't enough.</a>
+                        Decides when a memory is worth surfacing before you ask for it, and stays silent the rest of the time. A morning reflection from a year ago, or a place nearby that matches what you photograph, sent to the phone as a notification you can answer. <a href="/hard-truths/before-you-ask" style="color: var(--terminal);">Why retrieval isn&rsquo;t enough.</a>
                     </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.noted/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.noted</a></div>
+                    <div class="daemon-type">TEXT</div>
+                    <div class="daemon-desc">
+                        Takes in notes and emails dropped into its inbox, keeps the originals, and writes each one into the journal the rest of the fleet builds memories from. Chats go into the journal too, once they&rsquo;ve been quiet for ten minutes.
+                    </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.voiced/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.voiced</a></div>
+                    <div class="daemon-type">VOICE NOTES</div>
+                    <div class="daemon-desc">
+                        Keeps the voice notes the phone records, at the daily check-in or any time, and transcribes them on the box with whisper.cpp. The transcript goes into the journal and the audio never leaves for a speech service.
+                    </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.tallyd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.tallyd</a></div>
+                    <div class="daemon-type">HEALTH DATA &amp; PRICES</div>
+                    <div class="daemon-desc">
+                        Takes steps, sleep, heart rate and the rest from the phone&rsquo;s Health Connect a day at a time. It also prices the top hundred coins every minute from its own blend of seven exchanges, and BTC, ETH and SOL every five seconds, keeps the ECB&rsquo;s table and the price history, and computes CRYPTO50, the fifty largest weighted by volume.
+                    </div>
+                    <div class="daemon-status">RUNS EVERY DAY</div>
+                </div>
+                <div class="daemon-card">
+                    <div class="daemon-name"><a href="https://github.com/LocalGhostDao/localghost/blob/main/server/cmd/ghost.shadowd/main.go" style="color: inherit; text-decoration: none; border-bottom: 1px solid var(--terminal);">ghost.shadowd</a></div>
+                    <div class="daemon-type">ADVERSARIAL MIRROR</div>
+                    <div class="daemon-desc">
+                        A separate daemon whose job is to challenge your thinking instead of confirming it. Its charter lists 28 patterns to watch for. The first detector is live, and it says so plainly when your weekly messages to the box double past sixty. <a href="/hard-truths/dictator-brain" style="color: var(--terminal);">Why this matters.</a>
+                    </div>
+                    <div class="daemon-status planned">STUB, FIRST DETECTOR LIVE</div>
                 </div>
                 <div class="daemon-card">
                     <div class="daemon-name">ghost.mistd</div>
-                    <div class="daemon-type">BACKUP &amp; ENCRYPTION</div>
+                    <div class="daemon-type">BACKUP &amp; THE MIST</div>
                     <div class="daemon-desc">
-                        Handles encryption, sharding, and P2P distribution to The Mist network.
-                        Manages key derivation. Coordinates shard recovery on restore.
+                        Not written yet. Encrypted, sharded backups spread across other people&rsquo;s boxes, so a house fire or a dead board doesn&rsquo;t end the archive, with recovery coordinated from your own keys. It belongs to the last phase of the roadmap, <a href="#mist" style="color: var(--terminal);">The Mist</a>.
                     </div>
-                </div>
-                <div class="daemon-card">
-                    <div class="daemon-name">ghost.shadowd</div>
-                    <div class="daemon-type">ADVERSARIAL MIRROR</div>
-                    <div class="daemon-desc">
-                        A structurally separate daemon that challenges your thinking instead of
-                        confirming it. Scores drift between memory-enabled responses and cold reads,
-                        surfaces counterarguments when the gap gets too wide.
-                        <a href="/hard-truths/dictator-brain" style="color: var(--terminal);">Why this matters.</a>
-                    </div>
-                </div>
-                <div class="daemon-card">
-                    <div class="daemon-name">ghost.secd</div>
-                    <div class="daemon-type">DURESS &amp; ENCRYPTION</div>
-                    <div class="daemon-desc">
-                        Handles encryption, key management, presence verification, the multi-PIN duress flow,
-                        and the purge. Configure as many PINs as you want, each opening a different volume
-                        or triggering destruction, with no metadata anywhere on the box revealing how many exist.
-                        <a href="/hard-truths/honeypot" style="color: var(--terminal);">Why encryption alone isn't enough.</a>
-                    </div>
-                </div>
-                <div class="daemon-card">
-                    <div class="daemon-name">ghost.watchd</div>
-                    <div class="daemon-type">SYSTEM HEALTH</div>
-                    <div class="daemon-desc">
-                        Watches the rest of the fleet. Liveness checks, queue depths, archive sizes,
-                        overnight pass status, resource usage. Surfaces anomalies to the app layer and
-                        writes structured health data to disk. The only daemon with read access to every
-                        other daemon's metrics.
-                    </div>
-                </div>
-                <div class="daemon-card placeholder hide-mobile">
-                    <div class="daemon-name">&nbsp;</div>
-                    <div class="daemon-type">&nbsp;</div>
-                </div>
-                <div class="daemon-card placeholder hide-mobile">
-                    <div class="daemon-name">&nbsp;</div>
-                    <div class="daemon-type">&nbsp;</div>
+                    <div class="daemon-status planned">PLANNED, PHASE 5</div>
                 </div>
             </div>
         </section>
@@ -1053,13 +1051,13 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                 <div class="hardware-option">
                     <h3>OPTION B: THE SCAVENGER</h3>
                     <p>
-                        We haven't published a part list yet, we're still testing configurations.
-                        But if you're the type who doesn't wait for instructions, the OS will be open source.
-                        Grab any ARM64 board with an NPU, flash the image, and figure it out.
-                        We love hackers. We love engineers. Show us what you build.
+                        Don't wait for us. The software runs today on a Debian 13 machine with a TPM and
+                        a spare disk, faster with an NVIDIA card, and the app builds from the same repo.
+                        The setup page has what you need, the order to do it in, and what each step costs,
+                        from a bare install to a phone that unlocks the box. Show us what you build.
                     </p>
                     <div class="hardware-price">COST, YOUR TIME + PARTS</div>
-                    <a href="https://github.com/LocalGhostDao" class="hardware-btn ghost">[ WATCH THE REPO ]</a>
+                    <a href="/setup" class="hardware-btn ghost">[ SET UP A BOX → ]</a>
                 </div>
             </div>
         </section>
@@ -1292,6 +1290,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
             <a href="/about">ABOUT</a>
             <a href="/manifesto">MANIFESTO</a>
             <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
             <a href="/mirror">MIRROR</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>

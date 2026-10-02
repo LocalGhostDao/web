@@ -238,6 +238,10 @@ html_to_text_render() {
         s|<h1[^>]*>([^<]*)</h1>|\n# \1\n|g
         s|<p[^>]*class="[^"]*subtitle[^"]*"[^>]*>([^<]*)</p>|\1\n|g
 
+        # Code blocks: fenced (before the <p> rule, which would eat <pre>), so the whitespace pass below keeps their indentation
+        s|<pre[^>]*>|\n```\n|g
+        s|</pre>|\n```\n|g
+
         # Paragraph and line breaks
         s|</p>|\n\n|g
         s|<p[^>]*>||g
@@ -274,6 +278,9 @@ html_to_text_render() {
     ' | \
     # Stage 3: collapse whitespace.
     awk '
+        # inside a fenced code block, keep the indentation and the blank lines
+        /^[ \t]*```[ \t]*$/ { print "```"; infence = !infence; blank = 0; next }
+        infence { sub(/[ \t]+$/, "", $0); print; next }
         {
             # Strip leading whitespace (source HTML is indented)
             sub(/^[ \t]+/, "", $0)
@@ -827,25 +834,25 @@ LLMS_FILE="$DEST_DIR/llms.txt"
     cat << 'EOF'
 # LocalGhost.ai
 
-> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. Pre-release, Phase 2 of the public roadmap as of October 2026: the core daemons run every day on the development box, with no tagged software release and no hardware on sale yet. The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
+> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. Phase 2 of the public roadmap as of October 2026: the first software release, wisp 0.0.1, came out on 2 October 2026, the core daemons run every day on the development box, and no hardware is on sale yet. The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
 
 Key facts (canonical source https://www.localghost.ai/about)
 
 - Company: LocalGhost (LocalGhost.ai), an open-source, local-first personal AI system (software and hardware)
 - Founded: December 2025, London, United Kingdom
 - Founder: Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData (acquired by CoinDesk, October 2024)
-- Status: pre-release, Phase 2 of the public roadmap, core daemons running every day on the development box, no tagged software release yet
+- Status: Phase 2 of the public roadmap, first software release wisp 0.0.1 (2 October 2026, https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1), core daemons running every day on the development box, no hardware on sale yet
 - Licence: MIT, source at https://github.com/LocalGhostDao/localghost
 - Pricing: no subscription, core software free and open source, pre-built boxes a one-time purchase at parts and assembly plus a 30% margin (price not yet set), optional future daemons as one-time packages
 - Contact: info@localghost.ai, X @localghostai, founder on X @vladcealicu
 
-The site's sections: About (who builds it, key facts, FAQ), the Manifesto (why local-first), Why Local AI (the argument for running AI on your own hardware), Hard Truths (long-form essays, dated, with references), Build (the public roadmap and how to help), the Local-First Directory (other local-first AI tools) and the Setup Mirror (signed downloads for boxes). Essays are labelled SIGNAL, ALARM or WINDOW for the author's confidence level. British spelling throughout.
+The site's sections: About (who builds it, key facts, FAQ), the Manifesto (why local-first), Why Local AI (the argument for running AI on your own hardware), Hard Truths (long-form essays, dated, with references), Build (the public roadmap and how to help), the Local-First Directory (other local-first AI tools), Set Up a Box (how to install LocalGhost on your own Debian machine and build the phone app, step by step) and the Setup Mirror (signed downloads for boxes). Essays are labelled SIGNAL, ALARM or WINDOW for the author's confidence level. British spelling throughout.
 
 ## Core
 
 EOF
 
-    for slug in about manifesto why-local-ai build directory hard-truths mirror/index; do
+    for slug in about manifesto why-local-ai build directory hard-truths setup mirror/index; do
         src="$SRC_DIR/${slug}.html"
         [ ! -f "$src" ] && continue
         has_noindex "$src" && continue
@@ -934,7 +941,7 @@ EOF
         echo ""
     fi
 
-    for page in "manifesto|The Manifesto|manifesto" "why-local-ai|Why Local, Especially Local AI|why-local-ai" "mirror/index|The Setup Mirror|mirror"; do
+    for page in "manifesto|The Manifesto|manifesto" "why-local-ai|Why Local, Especially Local AI|why-local-ai" "setup|Set Up a Box|setup" "mirror/index|The Setup Mirror|mirror"; do
         IFS='|' read -r pslug ptitle purl <<< "$page"
         PAGE_FILE="$SRC_DIR/${pslug}.html"
         if [ -f "$PAGE_FILE" ] && ! has_noindex "$PAGE_FILE"; then
