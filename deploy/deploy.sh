@@ -834,25 +834,27 @@ LLMS_FILE="$DEST_DIR/llms.txt"
     cat << 'EOF'
 # LocalGhost.ai
 
-> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. Phase 2 of the public roadmap as of October 2026: the first software release, wisp 0.0.1, came out on 2 October 2026, the core daemons run every day on the development box, and no hardware is on sale yet. The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
+> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry; nothing of the user's leaves the box, which asks the internet only for public data (prices from exchanges and the ECB, news feeds, map data, Wikipedia, its own updates from the signed mirror). Not an agent tool: the box has no public API or MCP server and answers only its enrolled phone over mutual TLS. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. Phase 2 of the public roadmap as of October 2026: the first software release, wisp 0.0.1 (the server and a signed Android app), came out on 2 October 2026, the core daemons run every day on the development box, and no hardware is on sale yet. The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
 
 Key facts (canonical source https://www.localghost.ai/about)
 
-- Company: LocalGhost (LocalGhost.ai), an open-source, local-first personal AI system (software and hardware)
+- Company: LocalGhost.ai Ltd, trading as LocalGhost, registered in England and Wales, company number 17213100 (https://find-and-update.company-information.service.gov.uk/company/17213100), incorporated 12 May 2026; an open-source, local-first personal AI system (software and hardware)
 - Founded: December 2025, London, United Kingdom
 - Founder: Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData (acquired by CoinDesk, October 2024)
-- Status: Phase 2 of the public roadmap, first software release wisp 0.0.1 (2 October 2026, https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1), core daemons running every day on the development box, no hardware on sale yet
+- Status: Phase 2 of the public roadmap, first software release wisp 0.0.1, the server and a signed Android app (2 October 2026, https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1), core daemons running every day on the development box, no hardware on sale yet
 - Licence: MIT, source at https://github.com/LocalGhostDao/localghost
 - Pricing: no subscription, core software free and open source, pre-built boxes a one-time purchase at parts and assembly plus a 30% margin (price not yet set), optional future daemons as one-time packages
 - Contact: info@localghost.ai, X @localghostai, founder on X @vladcealicu
+- Security: https://www.localghost.ai/.well-known/security.txt and SECURITY.md in the repository (72-hour acknowledgement, 14-day response, 90-day disclosure)
+- Known gaps at wisp 0.0.1: the box's certificate authority key sits on the system disk, secd trusts a client-certificate header on its loopback port, releases are signed by the site key alone, device certificates last ten years with no per-device revocation, no recovery path, no decoy volume, no Mist backup
 
-The site's sections: About (who builds it, key facts, FAQ), the Manifesto (why local-first), Why Local AI (the argument for running AI on your own hardware), Hard Truths (long-form essays, dated, with references), Build (the public roadmap and how to help), the Local-First Directory (other local-first AI tools), Set Up a Box (how to install LocalGhost on your own Debian machine and build the phone app, step by step) and the Setup Mirror (signed downloads for boxes). Essays are labelled SIGNAL, ALARM or WINDOW for the author's confidence level. British spelling throughout.
+The site's sections: About (who builds it, key facts, FAQ), the Manifesto (why local-first), Why Local AI (the argument for running AI on your own hardware), Hard Truths (long-form essays, dated, with references), Build (the public roadmap and how to help), the Local-First Directory (other local-first AI tools), Set Up a Box (how to install LocalGhost on your own Debian machine and the signed phone app, step by step), the Setup Mirror (signed downloads for boxes), the Changelog (dated releases and mirror changes), the Status page (the website and the mirror, with incident history), and the Privacy and Terms pages. Essays are labelled SIGNAL, ALARM or WINDOW for the author's confidence level. British spelling throughout.
 
 ## Core
 
 EOF
 
-    for slug in about manifesto why-local-ai build directory hard-truths setup mirror/index; do
+    for slug in about manifesto why-local-ai build directory hard-truths setup mirror/index changelog status privacy terms; do
         src="$SRC_DIR/${slug}.html"
         [ ! -f "$src" ] && continue
         has_noindex "$src" && continue

@@ -77,6 +77,13 @@
                     "@type": "Organization",
                     "@id": "https://www.localghost.ai/#organization",
                     "name": "LocalGhost",
+                    "legalName": "LocalGhost.ai Ltd",
+                    "identifier": {
+                        "@type": "PropertyValue",
+                        "propertyID": "Companies House company number",
+                        "value": "17213100",
+                        "url": "https://find-and-update.company-information.service.gov.uk/company/17213100"
+                    },
                     "alternateName": "LocalGhost.ai",
                     "url": "https://www.localghost.ai",
                     "logo": "https://www.localghost.ai/images/logo.png",
@@ -157,7 +164,7 @@
                     "@id": "https://www.localghost.ai/#software",
                     "name": "LocalGhost",
                     "applicationCategory": "UtilitiesApplication",
-                    "operatingSystem": "Linux",
+                    "operatingSystem": "Linux (the box), Android 15 or later (the app)",
                     "license": "https://opensource.org/licenses/MIT",
                     "codeRepository": "https://github.com/LocalGhostDao/localghost",
                     "isAccessibleForFree": true,
@@ -191,7 +198,7 @@
                     "name": "What is LocalGhost?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing leaves the box unless you send it, and there's no cloud account."
+                        "text": "LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing of yours leaves the box, it asks the internet only for public things like prices, news and map data, and there's no cloud account."
                     }
                 },
                 {
@@ -215,7 +222,7 @@
                     "name": "Does LocalGhost need an internet connection?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "No. Inference, storage and memory all run on the box, and you can run it fully air-gapped. Remote access goes through an encrypted tunnel straight to your box, and backups to The Mist are optional."
+                        "text": "Not to work. Inference, storage and memory all run on the box, and setup can come from a copy of the signed mirror on a USB disk. With a connection the box fetches public things (prices, news when the phone is away, its own updates), and you reach it from outside through your own domain and port 443 with the phone's certificate. The Mist backups aren't built yet."
                     }
                 },
                 {
@@ -223,7 +230,7 @@
                     "name": "Which AI models does LocalGhost run?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Open-weight models through llama.cpp on your own GPU, and the development box currently runs Gemma 4 12B and Gemma 4 E4B. The model is a swappable dependency, so you can move to Llama, Qwen or Mistral and check the swap against a personal test suite."
+                        "text": "Open-weight models through llama.cpp on your own hardware. The box runs Gemma 4 12B with its vision projector for captions and chat, EmbeddingGemma 300M for search and Whisper large-v3-turbo for voice notes, and the phone carries Gemma 4 E2B for when the box is away. The model is a swappable dependency, a config change in ghost.oracled, so you can move to Llama, Qwen or Mistral."
                     }
                 },
                 {
@@ -239,7 +246,7 @@
                     "name": "What happens to my data if LocalGhost shuts down?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, and The Mist has no central server to switch off."
+                        "text": "Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, a copy of the signed mirror on your own disk still sets up a box, and nothing on the box calls home to us."
                     }
                 },
                 {
@@ -255,7 +262,7 @@
                     "name": "What if I lose my hardware keys?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Both keys are plugged in at setup. After that one stays with the box for daily use and the other is the recovery key, kept somewhere else, and it can restore your data to a new box and make a new pair. If you lose both, the data is gone, because nobody else ever held a copy."
+                        "text": "In wisp 0.0.1 there are no hardware keys yet. The volume key is sealed to the box's TPM, or wrapped by your PIN on a machine without one, and there's no recovery path, so a dead board or a forgotten PIN means the archive on that disk is gone. Keep the originals of anything you can't lose somewhere else as well. The v1.0 design is two FIDO2 keys, one with the box and one kept elsewhere that can restore your data to a new box."
                     }
                 },
                 {
@@ -263,7 +270,7 @@
                     "name": "Who is behind LocalGhost?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X."
+                        "text": "LocalGhost.ai Ltd (company number 17213100, registered in England and Wales), founded and run by Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X."
                     }
                 },
                 {
@@ -271,7 +278,7 @@
                     "name": "How can I help?",
                     "acceptedAnswer": {
                         "@type": "Answer",
-                        "text": "Star or watch the repo, write tallyd parsers for the exports you use, or try to break the security model once builds exist. The Build page lists the gaps, and donations in ETH go to zerocool.eth."
+                        "text": "Star or watch the repo, try wisp 0.0.1 on a machine of your own and report what breaks, try to break the security model (SECURITY.md says how to report it), or write tallyd parsers for the exports you use. The Build page lists the gaps, and donations in ETH go to zerocool.eth."
                     }
                 }
             ]
@@ -302,7 +309,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; ABOUT</div>
                 <h1>About LocalGhost</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-09-23">23 September 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-02">2 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -312,7 +319,7 @@
                 </p>
 
                 <p>
-                    LocalGhost started in December 2025 and is in Phase 2 of the <a href="/build">public roadmap</a>. The daemons for notes, voice memos, photos and video, location, health data, search and chat run every day on my own box in London, with a phone app as the front end, and the code is in the open on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a> (<a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> has the details and the price of each part). The first software release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a>, came out on 2 October 2026, and no hardware is on sale yet. I wrote this page so that people (and the models they ask) get the facts right about what exists today and what doesn't.
+                    LocalGhost started in December 2025 and is in Phase 2 of the <a href="/build">public roadmap</a>. The daemons for notes, voice memos, photos and video, location, health data, search and chat run every day on my own box in London, with a phone app as the front end, and the code is in the open on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a> (<a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> has the details and the price of each part). The first software release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a>, came out on 2 October 2026, the server and a signed Android app, and no hardware is on sale yet. I wrote this page so that people (and the models they ask) get the facts right about what exists today and what doesn't.
                 </p>
 
                 <!-- ========== WHAT IT DOES ========== -->
@@ -321,42 +328,42 @@
                     <h2>What LocalGhost does</h2>
 
                     <p>
-                        LocalGhost is a fleet of small Go daemons, each with one job, running on a box on your desk or on a NAS you already own. At least ten are specified so far, and the <a href="/#fleet">full fleet</a> is on the home page. Here they are grouped by what they do for you.
+                        LocalGhost is a fleet of small Go daemons, each with one job, running on a machine of your own with a phone app as the only way in. Eleven daemons ship in <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a> and one more, ghost.mistd, is still to be written. The <a href="/#fleet">full fleet</a> is on the home page, and here they are grouped by what they do for you, with what is built kept apart from what is planned.
                     </p>
 
                     <h3>Capture from what you already make <span class="daemon">// ghost.noted · ghost.framed · ghost.voiced</span></h3>
                     <p>
-                        The three ingestion daemons take in text, images and audio from your phone and other sources, keep a canonical copy on your disk, and run local models to turn each item into a journal entry that the rest of the fleet builds on. Audio sits in a RAM buffer for seconds to minutes and is destroyed once it's transcribed, so the people you talk to don't end up in a recording you own (the reasoning is in <a href="/hard-truths/overhears">What the Ghost Owes the People It Overhears</a>).
+                        ghost.framed takes in the photos, videos and location trail from your phone, keeps every original as it was, and has the model describe and tag each one. ghost.noted takes in notes, emails and the evening check-in, and ghost.voiced keeps the voice notes you record and transcribes them on the box with whisper.cpp. Each item becomes a journal entry the rest of the fleet builds on. Always-on listening isn't built, and when it is, audio is meant to sit in a RAM buffer and be destroyed once it's transcribed, so the people you talk to don't end up in a recording you own (the reasoning is in <a href="/hard-truths/overhears">What the Ghost Owes the People It Overhears</a>).
                     </p>
 
                     <h3>A memory layer modelled on how yours works <span class="daemon">// ghost.synthd</span></h3>
                     <p>
-                        ghost.synthd clusters journal entries into memories and rolls memories into episodes over days and months, loosely copying what the brain does overnight. When it can't decide what matters it asks you, with three buttons (yes, no, and don't ask again), and compression never deletes the originals. The design is in <a href="/hard-truths/how-memory-gets-made">How Memory Gets Made</a>.
+                        ghost.synthd distils your chats, notes and voice notes into memories, writes a short story of each day from the photos, the trail, the health data and the check-in, counts the places you keep going back to, groups photos into outings, and once a day notices a habit or a change in the last few weeks. Text the model writes is kept only when every number in it came from the facts it was given, you can edit or delete any memory, and the originals are never deleted. Rolling memories up into episodes over months is the design in <a href="/hard-truths/how-memory-gets-made">How Memory Gets Made</a> and isn't built yet.
                     </p>
 
                     <h3>The numbers of your life <span class="daemon">// ghost.tallyd</span></h3>
                     <p>
-                        ghost.tallyd imports structured data such as bank exports, holdings, heart rate, sleep stages, screen time and git commits into Postgres and builds time series you can query. The parsers are open on GitHub and your data exports in JSON, CSV and OFX where it applies. This is where a question like how your sleep tracks your spending gets answered (<a href="/hard-truths/integration-tax">The Integration Tax</a> explains why this part can't live with a company).
+                        ghost.tallyd takes the phone's Health Connect data (steps, sleep, heart rate, exercise) a day at a time, and keeps prices for the top hundred coins and the ECB's exchange rates, which the box fetches from public sources. Bank exports, holdings, screen time and git commits are the parsers still to be written, and they're where a question like how your sleep tracks your spending would be answered (<a href="/hard-truths/integration-tax">The Integration Tax</a> explains why this part can't live with a company).
                     </p>
 
                     <h3>Recall before you ask <span class="daemon">// ghost.cued</span></h3>
                     <p>
-                        ghost.cued watches the current moment through the phone-to-box feed and decides when a memory is worth surfacing, or stays quiet. It's planned for v0.2 and needs ghost.synthd working first, see <a href="/hard-truths/before-you-ask">Before You Ask</a>.
+                        ghost.cued decides when a memory is worth surfacing before you ask for it, and stays quiet the rest of the time. In wisp 0.0.1 it sends a morning reflection on an old memory and a place nearby that suits what you like to photograph, see <a href="/hard-truths/before-you-ask">Before You Ask</a>.
                     </p>
 
                     <h3>A critic that argues back <span class="daemon">// ghost.shadowd</span></h3>
                     <p>
-                        ghost.shadowd is a separate daemon on a different model whose job is to challenge what the rest of the fleet tells you. It runs detectors for the 28 manipulation patterns catalogued in <a href="/hard-truths/should-not-possess">A Ghost Should Not Possess</a> and flags when answers built on your memory drift too far from a cold read. I've committed to not shipping LocalGhost without it running.
+                        ghost.shadowd is a separate daemon whose job is to challenge what the rest of the fleet tells you. Its charter is the 28 manipulation patterns catalogued in <a href="/hard-truths/should-not-possess">A Ghost Should Not Possess</a>. In wisp 0.0.1 it runs with its first detector, which says so plainly when you're talking to the box twice as much as you were, and the other 27 and the cold-read comparison are still to come. I've committed to not calling LocalGhost finished without them.
                     </p>
 
                     <h3>Encryption, duress and backup <span class="daemon">// ghost.secd · ghost.mistd · ghost.watchd</span></h3>
                     <p>
-                        ghost.secd handles encryption (LUKS2, Argon2id and AES-256-GCM, unlocked with two FIDO2 hardware keys) and a multi-PIN duress flow where each PIN opens a different volume or triggers the purge (<a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>). ghost.mistd encrypts, shards and spreads your backups across other LocalGhost boxes in The Mist, where around half the shards are enough to rebuild your data. ghost.watchd checks the health of the rest of the fleet and is the only daemon that can read everyone else's metrics.
+                        ghost.secd is the only daemon the phone talks to. The archive sits on a LUKS2 volume whose key is sealed to the box's TPM, or wrapped by the PIN with Argon2id on a machine without one, and the phone's PIN unlocks it over mutual TLS with a certificate the box issued at enrolment. Wrong PINs slow down and then lock out, and a wipe PIN destroys the key while looking like an ordinary unlock (<a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>). More PINs with decoy volumes, and the two FIDO2 hardware keys for setup and recovery, are the v1.0 design and aren't built. ghost.mistd, which will encrypt, shard and spread your backups across other LocalGhost boxes in The Mist, isn't written yet. ghost.watchd starts the rest of the fleet, restarts what falls over and is the only daemon that can read everyone else's metrics.
                     </p>
 
                     <h3>The hardware</h3>
                     <p>
-                        LocalGhost runs on a NAS you already own or, once hardware ships, on a box we build. The reference build as of June 2026 is a tower around a 12GB consumer GPU, about £1,130 in parts, and the development box runs Gemma 4 12B on a 12GB card at about 53 tokens per second (<a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>). Hardware ships after the software is stable.
+                        Today LocalGhost runs on a Debian 13 machine you already own, with a TPM and a spare disk for the encrypted volume, and much faster with an NVIDIA card (<a href="/setup">Set Up a Box</a> has the list). Once hardware ships it will also run on a box we build. The reference build as of June 2026 is a tower around a 12GB consumer GPU, about £1,130 in parts, and the development box runs Gemma 4 12B on a 12GB card at about 53 tokens per second (<a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>). Hardware ships after the software is stable.
                     </p>
 
                     <h3>The Local-First Directory</h3>
@@ -377,22 +384,22 @@
 
                     <h3>No company holds your data, including us</h3>
                     <p>
-                        ChatGPT, Gemini and Claude keep their memory of you on the provider's servers, under terms the provider can change. LocalGhost has no servers, no accounts and no telemetry, so there is nothing for us to sell, lose in a breach or hand over when a warrant arrives. What the model learns about you stays on your disk in open formats, which is the export button I went looking for when I left ChatGPT and couldn't find (<a href="/hard-truths/model-trap">The Model Trap</a>).
+                        ChatGPT, Gemini and Claude keep their memory of you on the provider's servers, under terms the provider can change. LocalGhost has no servers that hold your data, no accounts and no telemetry, so there is nothing for us to sell, lose in a breach or hand over when a warrant arrives. The box asks the internet only for public things (prices, news, map data and its own updates), never with anything of yours in the request, and the <a href="/privacy">privacy</a> page lists each one. What the model learns about you stays on your disk in open formats, which is the export button I went looking for when I left ChatGPT and couldn't find (<a href="/hard-truths/model-trap">The Model Trap</a>).
                     </p>
 
                     <h3>It keeps working if we disappear</h3>
                     <p>
-                        LocalGhost is MIT-licensed, runs on standard parts, and has no licence server, auth service or remote kill switch. If the company folds, your box keeps running the version you installed, The Mist keeps working without us, and anyone can fork the code. Compare Limitless (formerly Rewind), which joined Meta in December 2025, switched off screen and audio capture in its Rewind app on 19 December 2025, and deleted the accounts of its EU and UK users.<sup class="fn"><a href="#ref2">[2]</a></sup>
+                        LocalGhost is MIT-licensed, runs on standard parts, and has no licence server, auth service or remote kill switch. If the company folds, your box keeps running the version you installed, a copy of the signed setup mirror on your own disk still works, and anyone can fork the code. The Mist, once it exists, is designed to need no central server either. Compare Limitless (formerly Rewind), which joined Meta in December 2025, switched off screen and audio capture in its Rewind app on 19 December 2025, and deleted the accounts of its EU and UK users.<sup class="fn"><a href="#ref2">[2]</a></sup>
                     </p>
 
                     <h3>It's built to disagree with you</h3>
                     <p>
-                        Jain and colleagues (2025) found that assistants grow more agreeable the more they remember about a user, and in their tests Gemini 2.5 Pro's agreement sycophancy rose 45% with memory switched on.<sup class="fn"><a href="#ref3">[3]</a></sup> As far as I know no cloud assistant ships a component whose job is to argue with you, because disagreement looks like a bad session in an engagement metric. ghost.shadowd is that component, with 28 detectors and a cold-read arbiter running on a separate, swappable model (<a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>).
+                        Jain and colleagues (2025) found that assistants grow more agreeable the more they remember about a user, and in their tests Gemini 2.5 Pro's agreement sycophancy rose 45% with memory switched on.<sup class="fn"><a href="#ref3">[3]</a></sup> As far as I know no cloud assistant ships a component whose job is to argue with you, because disagreement looks like a bad session in an engagement metric. ghost.shadowd is that component, designed around 28 detectors and a cold-read arbiter on a separate, swappable model, and its first detector runs in wisp 0.0.1 (<a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>).
                     </p>
 
                     <h3>Duress mode for the bored border agent</h3>
                     <p>
-                        Most disk encryption assumes nobody will ever make you unlock the device. ghost.secd lets you set as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, whereas VeraCrypt is stuck with a fixed two-volume design that Schafer and colleagues showed in 2017 leaves detectable traces.<sup class="fn"><a href="#ref4">[4]</a></sup> The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
+                        Most disk encryption assumes nobody will ever make you unlock the device. In wisp 0.0.1 ghost.secd has a main PIN and a wipe PIN, and the wipe destroys the key while the phone shows the same unlock it always shows, so whoever is watching sees nothing unusual. The v1.0 design goes further, as many PINs as you want, each opening its own volume or wiping the box, with no metadata showing how many exist, whereas VeraCrypt is stuck with a fixed two-volume design that Schafer and colleagues showed in 2017 leaves detectable traces.<sup class="fn"><a href="#ref4">[4]</a></sup> The v1.0 threat model is the bored border agent and the person with a wrench, not a nation-state forensic lab.
                     </p>
                 </section>
 
@@ -445,7 +452,7 @@
                         <a href="https://www.linkedin.com/company/localghost-ai/" target="_blank" rel="noopener"><span>LOCALGHOST ON LINKEDIN</span>linkedin.com/company/localghost-ai</a>
                         <a href="https://github.com/orgs/LocalGhostDao/repositories" target="_blank" rel="noopener"><span>REPOSITORIES</span>LocalGhostDao/repositories</a>
                         <a href="https://x.com/vladcealicu" target="_blank" rel="noopener"><span>VLAD ON X</span>@vladcealicu</a>
-                        <!--email_off--><a href="mailto:info@localghost.ai"><span>EMAIL</span>info@localghost.ai</a><!--/email_off-->
+                        <a href="mailto:info@localghost.ai"><span>EMAIL</span>info@localghost.ai</a>
                         <a href="/.well-known/pgp-key.asc"><span>PGP KEY</span>/.well-known/pgp-key.asc</a>
                         <a href="https://github.com/LocalGhostDao" target="_blank" rel="noopener"><span>GITHUB ORG</span>github.com/LocalGhostDao</a>
                         <a href="/feed.xml"><span>ATOM FEED</span>/feed.xml</a>
@@ -459,12 +466,12 @@
 
                     <h3>Talking to us</h3>
                     <p>
-                        Email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->. You'll be talking to me, there's no ticketing system and no auto-reply, and I don't promise a response time. Bugs and code discussion belong on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a>, and public conversation happens on X and LinkedIn.
+                        Email <a href="mailto:info@localghost.ai">info@localghost.ai</a>. You'll be talking to me, there's no ticketing system and no auto-reply, and I don't promise a response time. Bugs and code discussion belong on <a href="https://github.com/LocalGhostDao/localghost">GitHub</a>, and public conversation happens on X and LinkedIn.
                     </p>
 
                     <h3>Setting up a box</h3>
                     <p>
-                        Plug the box into power, connect it to your network and insert both FIDO2 keys, which together generate the master key. Then open <code>ghost.local</code> in a browser, install the companion app on your phone and let it pair over your home network, with an encrypted tunnel straight to the box for when you're away. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why). The files setup downloads (place names, the map's coastline, the Go toolchain) come from the signed <a href="/mirror">setup mirror</a> on this site, with each original source as the fallback.
+                        On your own machine, <a href="/setup">Set Up a Box</a> has every step in order. Install the signed app on your phone, run the guided setup on the box, scan the QR it draws (scanning is the enrolment, the phone gets its own certificate from the box) and unlock with your PIN. There's no account, no onboarding questionnaire and no personality test (<a href="/hard-truths/day-one">Day One</a> explains why). Everything setup downloads comes from the signed <a href="/mirror">setup mirror</a> on this site, and if the mirror can't be reached, setup stops rather than fall back to anywhere else. A box we build will come set up the same way.
                     </p>
 
                     <h3>How long before it's useful</h3>
@@ -474,7 +481,7 @@
 
                     <h3>When you can get one</h3>
                     <p>
-                        Software releases are named after ghosts, from wisp through poltergeist. The first, wisp 0.0.1, came out on 2 October 2026, so you can <a href="/setup">set it up yourself</a> on a machine of your own today. Hardware ships after the software is stable. There's no date for that yet, and I'd rather not guess one. There's no mailing list either, so watching the <a href="https://github.com/LocalGhostDao/localghost">repo</a> is the most reliable way to see when something lands.
+                        Software releases are named after ghosts, from wisp through poltergeist. The first, wisp 0.0.1, came out on 2 October 2026, so you can <a href="/setup">set it up yourself</a> on a machine of your own today and put the signed app on your phone. Hardware ships after the software is stable. There's no date for that yet, and I'd rather not guess one. There's no mailing list either, so watching the <a href="https://github.com/LocalGhostDao/localghost">repo</a> is the most reliable way to see when something lands.
                     </p>
                 </section>
 
@@ -485,16 +492,16 @@
 
                     <dl class="key-facts">
                         <dt>Company Name</dt>
-                        <dd>LocalGhost (LocalGhost.ai)</dd>
+                        <dd>LocalGhost.ai Ltd, trading as LocalGhost, a private limited company registered in England and Wales, company number <a href="https://find-and-update.company-information.service.gov.uk/company/17213100">17213100</a>, incorporated on 12 May 2026</dd>
 
                         <dt>Type</dt>
                         <dd>Open-source, local-first personal AI system (software and hardware)</dd>
 
                         <dt>Status</dt>
-                        <dd>Phase 2 of the <a href="/build">public roadmap</a>. The first software release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a>, came out on 2 October 2026, the core daemons run every day on the development box, and no hardware is on sale yet.</dd>
+                        <dd>Phase 2 of the <a href="/build">public roadmap</a>. The first software release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1</a>, the server and a signed Android app, came out on 2 October 2026, the core daemons run every day on the development box, and no hardware is on sale yet.</dd>
 
                         <dt>Founded</dt>
-                        <dd>December 2025</dd>
+                        <dd>December 2025 (the project), 12 May 2026 (the company)</dd>
 
                         <dt>Founder</dt>
                         <dd><a href="#vlad-cealicu">Vlad Cealicu</a>, former co-founder and CTO of CryptoCompare / CCData</dd>
@@ -518,7 +525,7 @@
                         <dd>None. No subscription, no account, no licence server. What you buy keeps working whether or not you buy anything else.</dd>
 
                         <dt>Services</dt>
-                        <dd>Text, image and audio ingestion, a personal memory layer, personal metrics, situational recall, an adversarial critic daemon, encryption with duress PINs, peer-to-peer encrypted backup (The Mist), a signed <a href="/mirror">setup mirror</a>, and the <a href="/directory">Local-First Directory</a></dd>
+                        <dd>Photo, video, trail, note, voice and health ingestion, a personal memory layer, prices and personal metrics, situational recall, an adversarial critic daemon (first detector), an encrypted volume with a TPM-sealed key and a wipe PIN, a signed <a href="/mirror">setup mirror</a> and the <a href="/directory">Local-First Directory</a>. Still planned are more duress PINs with decoy volumes, hardware-key recovery and peer-to-peer encrypted backup (The Mist)</dd>
 
                         <dt>Licence</dt>
                         <dd>MIT, source at <a href="https://github.com/LocalGhostDao/localghost">github.com/LocalGhostDao/localghost</a></dd>
@@ -550,7 +557,7 @@
 
                     <div class="faq-item">
                         <h3>What is LocalGhost?</h3>
-                        <p>LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing leaves the box unless you send it, and there's no cloud account.</p>
+                        <p>LocalGhost is an open-source personal AI system that runs on hardware you own and builds a long-term memory from your notes, photos, audio and data. Nothing of yours leaves the box, it asks the internet only for public things like prices, news and map data, and there's no cloud account.</p>
                     </div>
 
                     <div class="faq-item">
@@ -565,12 +572,12 @@
 
                     <div class="faq-item">
                         <h3>Does LocalGhost need an internet connection?</h3>
-                        <p>No. Inference, storage and memory all run on the box, and you can run it fully air-gapped. Remote access goes through an encrypted tunnel straight to your box, and backups to The Mist are optional.</p>
+                        <p>Not to work. Inference, storage and memory all run on the box, and setup can come from a copy of the signed mirror on a USB disk. With a connection the box fetches public things (prices, news when the phone is away, its own updates), and you reach it from outside through your own domain and port 443 with the phone's certificate. The Mist backups aren't built yet.</p>
                     </div>
 
                     <div class="faq-item">
                         <h3>Which AI models does LocalGhost run?</h3>
-                        <p>Open-weight models through llama.cpp on your own GPU, and the development box currently runs Gemma 4 12B and Gemma 4 E4B. The model is a swappable dependency, so you can move to Llama, Qwen or Mistral and check the swap against a personal test suite.</p>
+                        <p>Open-weight models through llama.cpp on your own hardware. The box runs Gemma 4 12B with its vision projector for captions and chat, EmbeddingGemma 300M for search and Whisper large-v3-turbo for voice notes, and the phone carries Gemma 4 E2B for when the box is away. The model is a swappable dependency, a config change in ghost.oracled, so you can move to Llama, Qwen or Mistral.</p>
                     </div>
 
                     <div class="faq-item">
@@ -580,7 +587,7 @@
 
                     <div class="faq-item">
                         <h3>What happens to my data if LocalGhost shuts down?</h3>
-                        <p>Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, and The Mist has no central server to switch off.</p>
+                        <p>Nothing happens to it. Your box keeps running the version you installed, the code stays on GitHub under MIT, a copy of the signed mirror on your own disk still sets up a box, and nothing on the box calls home to us.</p>
                     </div>
 
                     <div class="faq-item">
@@ -590,17 +597,17 @@
 
                     <div class="faq-item">
                         <h3>What if I lose my hardware keys?</h3>
-                        <p>Both keys are plugged in at setup. After that one stays with the box for daily use and the other is the recovery key, kept somewhere else, and it can restore your data to a new box and make a new pair. If you lose both, the data is gone, because nobody else ever held a copy.</p>
+                        <p>In wisp 0.0.1 there are no hardware keys yet. The volume key is sealed to the box's TPM, or wrapped by your PIN on a machine without one, and there's no recovery path, so a dead board or a forgotten PIN means the archive on that disk is gone. Keep the originals of anything you can't lose somewhere else as well. The v1.0 design is two FIDO2 keys, one with the box and one kept elsewhere that can restore your data to a new box.</p>
                     </div>
 
                     <div class="faq-item">
                         <h3>Who is behind LocalGhost?</h3>
-                        <p>Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X.</p>
+                        <p>LocalGhost.ai Ltd (company number <a href="https://find-and-update.company-information.service.gov.uk/company/17213100">17213100</a>, registered in England and Wales), founded and run by Vlad Cealicu, a London-based engineer who co-founded CryptoCompare / CCData and was its CTO for twelve years. He builds LocalGhost in the open with AI tooling, and you can reach him at info@localghost.ai or @vladcealicu on X.</p>
                     </div>
 
                     <div class="faq-item">
                         <h3>How can I help?</h3>
-                        <p>Star or watch the repo, write tallyd parsers for the exports you use, or try to break the security model once builds exist. The Build page lists the gaps, and donations in ETH go to zerocool.eth.</p>
+                        <p>Star or watch the repo, try wisp 0.0.1 on a machine of your own and report what breaks, try to break the security model (SECURITY.md says how to report it), or write tallyd parsers for the exports you use. The Build page lists the gaps, and donations in ETH go to zerocool.eth.</p>
                     </div>
                 </section>
 
@@ -637,11 +644,15 @@
             <a href="/why-local-ai">WHY LOCAL AI</a>
             <a href="/setup">SETUP</a>
             <a href="/mirror">MIRROR</a>
+            <a href="/changelog">CHANGELOG</a>
+            <a href="/status">STATUS</a>
             <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
             <a href="/brand-guidelines">BRAND GUIDELINES</a>
             <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/privacy">PRIVACY</a>
+            <a href="/terms">TERMS</a>
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
-            <!--email_off--><a href="mailto:info@localghost.ai">CONTACT</a><!--/email_off-->
+            <a href="mailto:info@localghost.ai">CONTACT</a>
         </div>
             <p class="footer-quote">"We cannot sell your data because we do not have it." // About LocalGhost</p>
         </footer>

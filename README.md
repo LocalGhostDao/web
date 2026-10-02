@@ -1,5 +1,7 @@
 # > LOCALGHOST: THE TERMINAL
 
+[![LocalGhost on Anchor Terminal](https://www.anchorterminal.com/badges/localghost.svg)](https://www.anchorterminal.com/tools/localghost)
+
 ```
 ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
 │ HTML/CSS/JS     │ │ DEPENDENCIES: 0 │ │ TRACKING: OFF   │ │ LICENSE: MIT    │
@@ -78,8 +80,12 @@ We don't use React. We don't use Tailwind. We don't use npm.
 | Page | Path | Description |
 |------|------|-------------|
 | **Terminal** | `/` | Main interface. Interactive CLI with hidden commands. |
-| **Set Up a Box** | `/setup` | How to set up LocalGhost on your own Debian machine and build the app, in the order the server repo's scripts expect. |
+| **Set Up a Box** | `/setup` | How to set up LocalGhost on your own Debian machine and install the signed app, in the order the server repo's scripts expect. |
 | **Setup Mirror** | `/mirror` | What the signed setup mirror carries, why, and how boxes verify it. |
+| **Changelog** | `/changelog` | Dated releases of the box and the app, and the mirror's sets. |
+| **Status** | `/status` | The website and the mirror, updated by hand, with an incident history. |
+| **Privacy** | `/privacy` | What the site, the mirror and the software do with information about you. |
+| **Terms** | `/terms` | The licences for the software, the mirror and the site. |
 | **About** | `/about` | Who builds LocalGhost, what exists today, key facts and FAQ. |
 | **Manifesto** | `/manifesto` | "Why We Build" — the philosophical foundation. |
 | **Cypherpunk** | `/cypherpunk` | The 1993 Cypherpunk's Manifesto (source material). |

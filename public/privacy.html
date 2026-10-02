@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Privacy, What Leaves and What Stays | LocalGhost.ai</title>
+        <meta name="title" content="Privacy, What Leaves and What Stays | LocalGhost.ai">
+        <meta name="description" content="What the LocalGhost website, setup mirror and software do with information about you. No access logs, no cookies, no telemetry, and your data stays on your box.">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <link rel="canonical" href="https://www.localghost.ai/privacy">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.localghost.ai/privacy">
+        <meta property="og:title" content="Privacy, LocalGhost">
+        <meta property="og:description" content="No access logs, no cookies, no analytics, no telemetry. What the box asks the internet for, and what it never sends.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+        <meta property="article:modified_time" content="2026-10-02T00:00:00Z">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/privacy">
+        <meta name="twitter:title" content="Privacy, LocalGhost">
+        <meta name="twitter:description" content="No access logs, no cookies, no analytics, no telemetry. What the box asks the internet for, and what it never sends.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Privacy",
+            "headline": "Privacy",
+            "description": "What the LocalGhost website, setup mirror and software do with information about you. No access logs, no cookies, no telemetry, and your data stays on your box.",
+            "url": "https://www.localghost.ai/privacy",
+            "inLanguage": "en-GB",
+            "datePublished": "2026-10-02",
+            "dateModified": "2026-10-02",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.localghost.ai/#organization",
+                "name": "LocalGhost",
+                "url": "https://www.localghost.ai"
+            },
+            "author": {
+                "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                "name": "Vlad Cealicu",
+                "url": "https://www.localghost.ai/about#vlad-cealicu"
+            },
+            "image": "https://www.localghost.ai/images/og-localghost.png"
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Privacy",
+                    "item": "https://www.localghost.ai/privacy"
+                }
+            ]
+        }
+        </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <style>
+            .page-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
+            .manifesto-text code { font-variant-ligatures: none; overflow-wrap: anywhere; }
+            .plain-list { margin: 1rem 0 1.5rem 1.25rem; }
+            .plain-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
+            .plain-list li::marker { color: var(--terminal); }
+            .entry { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1rem 1.2rem 0.3rem; margin: 1.5rem 0; }
+            .entry h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); margin: 0 0 0.25rem; letter-spacing: 0.03em; }
+            .status-now { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; border: 1px solid var(--terminal); padding: 1rem 1.2rem; margin: 1.5rem 0; font-family: var(--font-mono); }
+            .status-dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--terminal); box-shadow: 0 0 10px var(--terminal); flex: none; }
+            .status-word { color: var(--terminal); letter-spacing: 0.12em; font-size: 0.9rem; }
+            .status-when { color: var(--text-dim); font-size: 0.75rem; margin-left: auto; }
+            .status-now.degraded { border-color: #ffbd2e; } .status-now.degraded .status-dot { background: #ffbd2e; box-shadow: 0 0 10px #ffbd2e; } .status-now.degraded .status-word { color: #ffbd2e; }
+            .status-now.down { border-color: #ff5f56; } .status-now.down .status-dot { background: #ff5f56; box-shadow: 0 0 10px #ff5f56; } .status-now.down .status-word { color: #ff5f56; }
+            .status-table-wrap { border: 1px solid var(--border); margin: 1.5rem 0; }
+            .status-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
+            .status-table th, .status-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .status-table tr:last-child th, .status-table tr:last-child td { border-bottom: none; }
+            .status-table th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; }
+            .status-table td.ok, .status-table td.degraded, .status-table td.down { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+            .status-table td.ok { color: var(--terminal); } .status-table td.degraded { color: #ffbd2e; } .status-table td.down { color: #ff5f56; }
+            .status-table code { border: none; background: none; padding: 0; font-size: 0.82rem; }
+            @media (max-width: 640px) { .status-table, .status-table tbody, .status-table tr, .status-table th, .status-table td { display: block; width: 100%; } .status-table th, .status-table td { border-bottom: none; padding: 0.3rem 0.85rem; } .status-table tr { border-bottom: 1px solid var(--border); padding: 0.5rem 0; } .status-when { margin-left: 0; } }
+            .entry .when { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-dim); display: block; margin-bottom: 0.75rem; }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; PRIVACY</div>
+                <h1>Privacy</h1>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-02">2 October 2026</time></div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="page-lede">
+                    What this website, the setup mirror and the LocalGhost software do with information about you. The website and the mirror keep no record of your visit, and the software keeps your data on your own box and asks the internet only for public things.
+                </p>
+
+                <p>
+                    LocalGhost.ai Ltd (company number <a href="https://find-and-update.company-information.service.gov.uk/company/17213100">17213100</a>, registered in England and Wales) runs this website and the mirror and is responsible for them under UK data protection law. The software runs on your hardware, so for what it holds you're the one in charge, and the company never receives it.
+                </p>
+
+                <h2 class="section-header">&gt; 1. THIS WEBSITE</h2>
+
+                <ul class="plain-list">
+                    <li>The site is served by nginx from a server I run, with access logging switched off for every page and every file, the mirror included. Nothing records your IP address, the pages you read or when you read them. The error log is kept at the critical level only, for faults in the server itself.</li>
+                    <li>There are no cookies, no analytics, no tracking pixels and no third-party scripts or fonts on the site. The one exception is a small dice game under <code>/random</code>, which loads its fonts from Google Fonts, so Google sees that one request if you open it.</li>
+                    <li>Two games keep a high score and a player name in your browser's local storage, and the playlist can keep tracks in your browser's cache so they play offline. All of it stays in your browser, and clearing the site's data there removes it.</li>
+                    <li>If you email <a href="mailto:info@localghost.ai">info@localghost.ai</a>, I read it and keep it in my mailbox to reply, and it isn't used for anything else or shared with anyone.</li>
+                    <li>The links to GitHub, X and LinkedIn are ordinary links. Once you follow one, that service's own policy applies.</li>
+                </ul>
+
+                <h2 class="section-header">&gt; 2. THE SETUP MIRROR</h2>
+
+                <p>
+                    The <a href="/mirror">setup mirror</a> runs on the same server with the same logging switched off, so a box that downloads its maps, models or a release leaves no record here. Every file on it is a public copy of something published elsewhere, and a box sends nothing but the request for the file.
+                </p>
+
+                <h2 class="section-header">&gt; 3. THE SOFTWARE</h2>
+
+                <p>
+                    Nothing of yours leaves the box. Your photos, videos, location trail, notes, voice notes, health data, chats and memories live on the box's encrypted volume and nowhere else, and I never receive any of it, since there's no server of mine for it to go to. There's no account, no telemetry, and no analytics or crash-reporting library in the server or the app. When the app records a crash, it writes it to the phone's own log, and it goes nowhere from there.
+                </p>
+
+                <p>
+                    The box asks the internet for public things only, and nothing of yours is in the request.
+                </p>
+
+                <ul class="plain-list">
+                    <li>Prices from the exchanges and the ECB's exchange rates, fetched by the box.</li>
+                    <li>News feeds, fetched by the phone while it's on Wi-Fi and by the box when the phone is away.</li>
+                    <li>Maps, models and releases from the setup mirror, checked against its signed manifest.</li>
+                    <li>A coin's own website for its page, and Wikipedia's API only on a box without its own copy of Wikipedia.</li>
+                </ul>
+
+                <p>
+                    It never asks for a map tile, and it never sends a location, a photo or a note. The phone talks to your box and nothing else, except when a question needs the web. Then the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the query and never your archive. The phone also reads the mirror's manifest once a day on Wi-Fi to see whether there's a new release.
+                </p>
+
+                <p>
+                    The box keeps what you keep. Every memory can be edited or deleted from the phone, and the box never writes over your version. A wipe PIN destroys the volume's key, after which nothing on the disk can be read. The full list is in the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">wisp 0.0.1 release notes</a> under "What leaves the box", and <a href="/setup#network">Set Up a Box</a> says the same from the operator's side.
+                </p>
+
+                <h2 class="section-header">&gt; 4. CHANGES</h2>
+
+                <p>
+                    When any of this changes, this page changes with a new date at the top, and the change goes in the <a href="/changelog">changelog</a>. Questions go to <a href="mailto:info@localghost.ai">info@localghost.ai</a>.
+                </p>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/terms" class="back-link">[ ← TERMS ]</a>
+                <a href="/changelog" class="back-link">[ CHANGELOG → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="/changelog">CHANGELOG</a>
+            <a href="/status">STATUS</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/privacy">PRIVACY</a>
+            <a href="/terms">TERMS</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <a href="mailto:info@localghost.ai">CONTACT</a>
+        </div>
+            <p class="footer-quote">"Nothing of yours leaves the box, and this site keeps no record of your visit." // Privacy</p>
+        </footer>
+
+    </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
+        <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, starting with wisp 0.0.1, and the sets on the setup mirror.">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <link rel="canonical" href="https://www.localghost.ai/changelog">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.localghost.ai/changelog">
+        <meta property="og:title" content="Changelog, LocalGhost">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, starting with wisp 0.0.1 on 2 October 2026, and the sets on the setup mirror.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+        <meta property="article:modified_time" content="2026-10-02T00:00:00Z">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/changelog">
+        <meta name="twitter:title" content="Changelog, LocalGhost">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, starting with wisp 0.0.1 on 2 October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Changelog",
+            "headline": "Changelog",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, starting with wisp 0.0.1, and the sets on the setup mirror.",
+            "url": "https://www.localghost.ai/changelog",
+            "inLanguage": "en-GB",
+            "datePublished": "2026-10-02",
+            "dateModified": "2026-10-02",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.localghost.ai/#organization",
+                "name": "LocalGhost",
+                "url": "https://www.localghost.ai"
+            },
+            "author": {
+                "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                "name": "Vlad Cealicu",
+                "url": "https://www.localghost.ai/about#vlad-cealicu"
+            },
+            "image": "https://www.localghost.ai/images/og-localghost.png"
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Changelog",
+                    "item": "https://www.localghost.ai/changelog"
+                }
+            ]
+        }
+        </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <style>
+            .page-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
+            .manifesto-text code { font-variant-ligatures: none; overflow-wrap: anywhere; }
+            .plain-list { margin: 1rem 0 1.5rem 1.25rem; }
+            .plain-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
+            .plain-list li::marker { color: var(--terminal); }
+            .entry { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1rem 1.2rem 0.3rem; margin: 1.5rem 0; }
+            .entry h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); margin: 0 0 0.25rem; letter-spacing: 0.03em; }
+            .status-now { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; border: 1px solid var(--terminal); padding: 1rem 1.2rem; margin: 1.5rem 0; font-family: var(--font-mono); }
+            .status-dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--terminal); box-shadow: 0 0 10px var(--terminal); flex: none; }
+            .status-word { color: var(--terminal); letter-spacing: 0.12em; font-size: 0.9rem; }
+            .status-when { color: var(--text-dim); font-size: 0.75rem; margin-left: auto; }
+            .status-now.degraded { border-color: #ffbd2e; } .status-now.degraded .status-dot { background: #ffbd2e; box-shadow: 0 0 10px #ffbd2e; } .status-now.degraded .status-word { color: #ffbd2e; }
+            .status-now.down { border-color: #ff5f56; } .status-now.down .status-dot { background: #ff5f56; box-shadow: 0 0 10px #ff5f56; } .status-now.down .status-word { color: #ff5f56; }
+            .status-table-wrap { border: 1px solid var(--border); margin: 1.5rem 0; }
+            .status-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
+            .status-table th, .status-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .status-table tr:last-child th, .status-table tr:last-child td { border-bottom: none; }
+            .status-table th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; }
+            .status-table td.ok, .status-table td.degraded, .status-table td.down { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+            .status-table td.ok { color: var(--terminal); } .status-table td.degraded { color: #ffbd2e; } .status-table td.down { color: #ff5f56; }
+            .status-table code { border: none; background: none; padding: 0; font-size: 0.82rem; }
+            @media (max-width: 640px) { .status-table, .status-table tbody, .status-table tr, .status-table th, .status-table td { display: block; width: 100%; } .status-table th, .status-table td { border-bottom: none; padding: 0.3rem 0.85rem; } .status-table tr { border-bottom: 1px solid var(--border); padding: 0.5rem 0; } .status-when { margin-left: 0; } }
+            .entry .when { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-dim); display: block; margin-bottom: 0.75rem; }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; CHANGELOG</div>
+                <h1>Changelog</h1>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-02">2 October 2026</time></div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="page-lede">
+                    Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
+                </p>
+
+                <div class="entry" id="wisp-0.0.1">
+                    <h3>wisp 0.0.1, the first release</h3>
+                    <span class="when">2 OCTOBER 2026 // TAG v0.0.1 // COMMIT 86ee41c</span>
+                    <p>
+                        The server for linux-amd64, built reproducibly from the tag, and the Android app, signed with the app's own key (certificate SHA-256 <code>3dcc5e35…f0cdf4</code>, in full on <a href="/setup#step-2">Set Up a Box</a>). Both are on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">GitHub release</a> and on the setup mirror as the <code>server</code> and <code>app</code> sets. From this release on, a box takes new releases from the phone (DEPLOY), checks them against the mirror's signed manifest and rolls back by itself if the new build fails its first unlock.
+                    </p>
+                    <p>
+                        Eleven daemons ship in it, ten doing their whole job and ghost.shadowd with its first detector. The known gaps at release are the certificate authority's key on the system disk, a trusted header on secd's loopback port, releases signed by the site key alone, no per-device revocation, no recovery path, and no Mist, mail or decoy volume yet.
+                    </p>
+                </div>
+
+                <div class="entry" id="setup-page">
+                    <h3>Set Up a Box, and the mirror's release sets</h3>
+                    <span class="when">2 OCTOBER 2026</span>
+                    <p>
+                        <a href="/setup">Set Up a Box</a> goes up, the whole setup in the order the server repo's scripts expect, from a bare Debian install to a phone that unlocks the box. The mirror gains the <code>server</code> and <code>app</code> sets, fifteen sets in all.
+                    </p>
+                </div>
+
+                <div class="entry" id="site-trust-pages">
+                    <h3>Status, privacy, terms and security.txt</h3>
+                    <span class="when">2 OCTOBER 2026</span>
+                    <p>
+                        The site gains a <a href="/status">status page</a> with an incident history, <a href="/privacy">privacy</a> and <a href="/terms">terms</a> pages naming LocalGhost.ai Ltd (company number 17213100), and an RFC 9116 <a href="/.well-known/security.txt">security.txt</a>. The About page now keeps what wisp 0.0.1 does apart from what's planned for v1.0.
+                    </p>
+                </div>
+
+                <div class="entry" id="mirror-knowledge">
+                    <h3>Time zones, heights and Wikipedia on the mirror</h3>
+                    <span class="when">BY 2 OCTOBER 2026</span>
+                    <p>
+                        The mirror adds the world's time zone boundaries and IANA's rules (<code>tz</code>), the Copernicus DEM at 90 metres (<code>elevation</code>) and English Wikipedia as a Kiwix ZIM (<code>wikipedia</code>). The last two are refreshed by hand because of their size. Upstream is now checked at most once a month.
+                    </p>
+                </div>
+
+                <div class="entry" id="mirror-speech">
+                    <h3>Speech on the mirror</h3>
+                    <span class="when">29 SEPTEMBER 2026</span>
+                    <p>
+                        whisper.cpp v1.9.4 (<code>whisper</code>), pinned like llama.cpp, and Whisper large-v3-turbo (<code>speech</code>), for transcribing the voice notes of the daily check-in on the box.
+                    </p>
+                </div>
+
+                <div class="entry" id="mirror-launch">
+                    <h3>The setup mirror</h3>
+                    <span class="when">24 SEPTEMBER 2026</span>
+                    <p>
+                        The <a href="/mirror">setup mirror</a> goes up with a SHA-256 manifest signed by the site key, starting with GeoNames and Natural Earth (<code>geo</code>), OpenStreetMap's land polygons, the Go toolchain and the Gemma 4 12B weights. Over the following days it adds llama.cpp v0.5.0, EmbeddingGemma, the phone's model and Geofabrik's road extracts, and boxes stop falling back to upstream sources.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/setup" class="back-link">[ ← SET UP A BOX ]</a>
+                <a href="/mirror" class="back-link">[ SETUP MIRROR → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="/changelog">CHANGELOG</a>
+            <a href="/status">STATUS</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/privacy">PRIVACY</a>
+            <a href="/terms">TERMS</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <a href="mailto:info@localghost.ai">CONTACT</a>
+        </div>
+            <p class="footer-quote">"A dated list of what changed, so nobody has to guess." // Changelog</p>
+        </footer>
+
+    </body>
+</html>

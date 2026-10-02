@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Status of the Website and Setup Mirror | LocalGhost.ai</title>
+        <meta name="title" content="Status of the Website and Setup Mirror | LocalGhost.ai">
+        <meta name="description" content="The state of the LocalGhost website and setup mirror, updated by hand, with an incident history. A box keeps running whatever this page says.">
+        <meta name="author" content="Vlad Cealicu">
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+        <link rel="canonical" href="https://www.localghost.ai/status">
+        <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://www.localghost.ai/status">
+        <meta property="og:title" content="Status, LocalGhost">
+        <meta property="og:description" content="The state of the LocalGhost website and setup mirror, with an incident history.">
+        <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:site_name" content="LocalGhost.ai">
+        <meta property="og:locale" content="en_GB">
+        <meta property="article:modified_time" content="2026-10-02T00:00:00Z">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@localghostai">
+        <meta name="twitter:creator" content="@vladcealicu">
+        <meta name="twitter:url" content="https://www.localghost.ai/status">
+        <meta name="twitter:title" content="Status, LocalGhost">
+        <meta name="twitter:description" content="The state of the LocalGhost website and setup mirror, with an incident history.">
+        <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
+
+        <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+        <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48x48.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <meta name="theme-color" content="#111111">
+        <meta name="msapplication-TileColor" content="#111111">
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Status",
+            "headline": "Status",
+            "description": "The state of the LocalGhost website and setup mirror, updated by hand, with an incident history. A box keeps running whatever this page says.",
+            "url": "https://www.localghost.ai/status",
+            "inLanguage": "en-GB",
+            "datePublished": "2026-10-02",
+            "dateModified": "2026-10-02",
+            "isPartOf": {
+                "@id": "https://www.localghost.ai/#website"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.localghost.ai/#organization",
+                "name": "LocalGhost",
+                "url": "https://www.localghost.ai"
+            },
+            "author": {
+                "@type": "Person",
+                "@id": "https://www.localghost.ai/about#vlad-cealicu",
+                "name": "Vlad Cealicu",
+                "url": "https://www.localghost.ai/about#vlad-cealicu"
+            },
+            "image": "https://www.localghost.ai/images/og-localghost.png"
+        }
+        </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.localghost.ai"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Status",
+                    "item": "https://www.localghost.ai/status"
+                }
+            ]
+        }
+        </script>
+        <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="stylesheet" href="/css/base.css">
+        <link rel="stylesheet" href="/css/pages.css">
+        <link rel="stylesheet" href="/css/manifesto.css">
+        <style>
+            .page-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
+            .manifesto-text code { font-variant-ligatures: none; overflow-wrap: anywhere; }
+            .plain-list { margin: 1rem 0 1.5rem 1.25rem; }
+            .plain-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
+            .plain-list li::marker { color: var(--terminal); }
+            .entry { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1rem 1.2rem 0.3rem; margin: 1.5rem 0; }
+            .entry h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); margin: 0 0 0.25rem; letter-spacing: 0.03em; }
+            .status-now { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; border: 1px solid var(--terminal); padding: 1rem 1.2rem; margin: 1.5rem 0; font-family: var(--font-mono); }
+            .status-dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--terminal); box-shadow: 0 0 10px var(--terminal); flex: none; }
+            .status-word { color: var(--terminal); letter-spacing: 0.12em; font-size: 0.9rem; }
+            .status-when { color: var(--text-dim); font-size: 0.75rem; margin-left: auto; }
+            .status-now.degraded { border-color: #ffbd2e; } .status-now.degraded .status-dot { background: #ffbd2e; box-shadow: 0 0 10px #ffbd2e; } .status-now.degraded .status-word { color: #ffbd2e; }
+            .status-now.down { border-color: #ff5f56; } .status-now.down .status-dot { background: #ff5f56; box-shadow: 0 0 10px #ff5f56; } .status-now.down .status-word { color: #ff5f56; }
+            .status-table-wrap { border: 1px solid var(--border); margin: 1.5rem 0; }
+            .status-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
+            .status-table th, .status-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .status-table tr:last-child th, .status-table tr:last-child td { border-bottom: none; }
+            .status-table th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; }
+            .status-table td.ok, .status-table td.degraded, .status-table td.down { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+            .status-table td.ok { color: var(--terminal); } .status-table td.degraded { color: #ffbd2e; } .status-table td.down { color: #ff5f56; }
+            .status-table code { border: none; background: none; padding: 0; font-size: 0.82rem; }
+            @media (max-width: 640px) { .status-table, .status-table tbody, .status-table tr, .status-table th, .status-table td { display: block; width: 100%; } .status-table th, .status-table td { border-bottom: none; padding: 0.3rem 0.85rem; } .status-table tr { border-bottom: 1px solid var(--border); padding: 0.5rem 0; } .status-when { margin-left: 0; } }
+            .entry .when { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-dim); display: block; margin-bottom: 0.75rem; }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+        <main class="narrow">
+            <div class="page-header">
+                <div class="section-label">&gt; STATUS</div>
+                <h1>Status</h1>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-02">2 October 2026</time></div>
+            </div>
+
+            <div class="manifesto-text">
+
+                <p class="page-lede">
+                    The state of the two things LocalGhost.ai Ltd runs, this website and the setup mirror. This page is updated by hand, so it says what I know, and an incident goes in the history below with its times and what caused it.
+                </p>
+
+                <div class="status-now">
+                    <span class="status-dot"></span>
+                    <span class="status-word">ALL SYSTEMS OPERATIONAL</span>
+                    <span class="status-when">as of <time datetime="2026-10-02">2 October 2026</time></span>
+                </div>
+
+                <div class="status-table-wrap">
+                    <table class="status-table">
+                        <tbody>
+                            <tr><th>Website</th><td><code>www.localghost.ai</code>, the pages, the feed, <code>llms.txt</code></td><td class="ok">operational</td></tr>
+                            <tr><th>Setup mirror</th><td><code>www.localghost.ai/mirror</code>, the signed manifest and the files a box sets itself up from</td><td class="ok">operational</td></tr>
+                            <tr><th>Releases</th><td>the <code>server</code> and <code>app</code> sets on the mirror, and the copies on GitHub</td><td class="ok">operational</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    A LocalGhost box runs on its owner's hardware, so no outage here stops a box that's already set up. A box needs the mirror only to set itself up and to take updates, and a copy of the mirror on a USB disk does both with the same checks. GitHub's own state is at <a href="https://www.githubstatus.com/">githubstatus.com</a>.
+                </p>
+
+                <h2 class="section-header">&gt; INCIDENT HISTORY</h2>
+
+                <!-- New incidents go at the top, one div each:
+                <div class="entry" id="incident-YYYY-MM-DD">
+                    <h3>What went wrong, in a few words</h3>
+                    <span class="when">2 OCTOBER 2026, 14:05 TO 14:40 UTC // WEBSITE</span>
+                    <p>What people saw, what caused it, and what changed so it doesn't happen again.</p>
+                </div>
+                While it's ongoing, set the line above to MAJOR OUTAGE or DEGRADED (class "down" or "degraded")
+                and the component's cell to the same. -->
+
+                <p>
+                    No incidents recorded since this page started on 2 October 2026.
+                </p>
+
+                <p>
+                    If something here looks down and this page doesn't say so, email <a href="mailto:info@localghost.ai">info@localghost.ai</a>.
+                </p>
+
+            </div>
+
+            <div class="link-row">
+                <a href="/changelog" class="back-link">[ ← CHANGELOG ]</a>
+                <a href="/mirror" class="back-link">[ SETUP MIRROR → ]</a>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="/changelog">CHANGELOG</a>
+            <a href="/status">STATUS</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/privacy">PRIVACY</a>
+            <a href="/terms">TERMS</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <a href="mailto:info@localghost.ai">CONTACT</a>
+        </div>
+            <p class="footer-quote">"Updated by hand, so it says what I know." // Status</p>
+        </footer>
+
+    </body>
+</html>

@@ -1,0 +1,16 @@
+LocalGhost app , https://github.com/LocalGhostDao/localghost (app/android)
+
+The app set is LocalGhost's Android app, copied unmodified from the GitHub release of the same tag,
+and the detached GPG signature the site key (info@localghost.ai) made over it. The APK is signed with
+the app's own keystore; its signing certificate's SHA-256 is
+
+  3D:CC:5E:35:71:80:36:A2:6C:F3:63:73:EE:53:E7:9F:51:2B:F0:2D:97:F7:01:70:52:99:6D:55:DD:F0:CD:F4
+
+and app/android/VERIFY.md in the repository says how to rebuild it from the tag and compare.
+
+What is inside and under which terms:
+- LocalGhost's own code, MIT (TERMS-localghost-mit.txt).
+- AndroidX, Jetpack Compose, CameraX and the Kotlin standard library, Apache License 2.0
+  (TERMS-apache-2.0.txt); each library's own LICENSE.txt is also inside the APK under META-INF.
+- llama.cpp by the ggml authors, compiled into lib/arm64-v8a/liblocalghost_llm.so for the phone's
+  own model, MIT (copyright the ggml authors).

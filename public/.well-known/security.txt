@@ -1,0 +1,8 @@
+# LocalGhost security contact (RFC 9116). The policy is SECURITY.md in the repository:
+# acknowledgement within 72 hours, a response within 14 days, 90-day coordinated disclosure.
+Contact: mailto:info@localghost.ai
+Expires: 2027-10-01T00:00:00Z
+Encryption: https://www.localghost.ai/.well-known/pgp-key.asc
+Preferred-Languages: en, ro
+Canonical: https://www.localghost.ai/.well-known/security.txt
+Policy: https://github.com/LocalGhostDao/localghost/blob/main/SECURITY.md
