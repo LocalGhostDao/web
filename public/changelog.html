@@ -6,7 +6,7 @@
 
         <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
         <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
-        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, starting with wisp 0.0.1, and the sets on the setup mirror.">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.2, and the sets on the setup mirror.">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/changelog">
@@ -15,7 +15,7 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/changelog">
         <meta property="og:title" content="Changelog, LocalGhost">
-        <meta property="og:description" content="Dated releases of the LocalGhost box and app, starting with wisp 0.0.1 on 2 October 2026, and the sets on the setup mirror.">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 and 0.0.2 on 2 October 2026, and the sets on the setup mirror.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/changelog">
         <meta name="twitter:title" content="Changelog, LocalGhost">
-        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, starting with wisp 0.0.1 on 2 October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 and 0.0.2 on 2 October 2026, and the sets on the setup mirror.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -47,7 +47,7 @@
             "@type": "WebPage",
             "name": "Changelog",
             "headline": "Changelog",
-            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, starting with wisp 0.0.1, and the sets on the setup mirror.",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.2, and the sets on the setup mirror.",
             "url": "https://www.localghost.ai/changelog",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
@@ -148,11 +148,28 @@
                     Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
                 </p>
 
+                <div class="entry" id="wisp-0.0.2">
+                    <h3>wisp 0.0.2, the second cut</h3>
+                    <span class="when">2 OCTOBER 2026 // TAG v0.0.2 // COMMIT c9d82c0</span>
+                    <p>
+                        Still a wisp, since the name is the release line and the number is the cut. Every 0.x release is a wisp, 1.x will be shade, and specter, phantom and poltergeist come after. This is 0.0.1 with the day's fixes, and the first cut whose <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2">GitHub release</a> holds everything its notes promise, the server, the signed app with its <code>APP.txt</code>, the source archive and a <code>SHA256SUMS</code> signed by the site key. The mirror's <code>server</code> and <code>app</code> sets carry it.
+                    </p>
+                    <ul class="plain-list">
+                        <li>Photos a phone saved as HEIC with an unfamiliar brand were archived as videos. The box now reads every brand in the file, and at its first start on 0.0.2 it re-reads the archive once and puts each one right.</li>
+                        <li>A lost phone can be retired by its key, with <code>ghost-cli ghost.secd retire</code> on the box or from another phone, and every call it makes after that is answered as if the box were down.</li>
+                        <li>The release cut stops before tagging when the app can't be built or signed, and the upload no longer stops on a name collision, which is what left three files off 0.0.1's page.</li>
+                        <li>The repository's README, CONTRIBUTING.md and SECURITY.md describe what is built, CI runs the Go and app tests, and the tree builds on a Mac.</li>
+                    </ul>
+                    <p>
+                        The app installs over 0.0.1 and keeps the enrolment. Known gaps at 0.0.2 are the certificate authority's key on the system disk (by choice, so a phone can be enrolled or retired while the vault is locked), ten-year device certificates, releases signed by the site key alone, an APK that isn't byte-reproducible yet, and no Mist, mail or decoy volume.
+                    </p>
+                </div>
+
                 <div class="entry" id="wisp-0.0.1">
                     <h3>wisp 0.0.1, the first release</h3>
                     <span class="when">2 OCTOBER 2026 // TAG v0.0.1 // COMMIT 86ee41c</span>
                     <p>
-                        The server for linux-amd64, built reproducibly from the tag, and the Android app, signed with the app's own key (certificate SHA-256 <code>3dcc5e35…f0cdf4</code>, in full on <a href="/setup#step-2">Set Up a Box</a>). Both are on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">GitHub release</a> and on the setup mirror as the <code>server</code> and <code>app</code> sets. From this release on, a box takes new releases from the phone (DEPLOY), checks them against the mirror's signed manifest and rolls back by itself if the new build fails its first unlock.
+                        The server for linux-amd64, built reproducibly from the tag, and the Android app, signed with the app's own key (certificate SHA-256 <code>3dcc5e35…f0cdf4</code>, in full on <a href="/setup#step-2">Set Up a Box</a>). Both went on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1">GitHub release</a> and on the setup mirror as the <code>server</code> and <code>app</code> sets, which carry the newest release. From this release on, a box takes new releases from the phone (DEPLOY), checks them against the mirror's signed manifest and rolls back by itself if the new build fails its first unlock.
                     </p>
                     <p>
                         Eleven daemons ship in it, ten doing their whole job and ghost.shadowd with its first detector. The known gaps at release are the certificate authority's key on the system disk, a trusted header on secd's loopback port, releases signed by the site key alone, no per-device revocation, no recovery path, and no Mist, mail or decoy volume yet.

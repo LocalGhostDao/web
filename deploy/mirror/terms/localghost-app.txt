@@ -1,12 +1,14 @@
 LocalGhost app , https://github.com/LocalGhostDao/localghost (app/android)
 
 The app set is LocalGhost's Android app, copied unmodified from the GitHub release of the same tag,
-and the detached GPG signature the site key (info@localghost.ai) made over it. The APK is signed with
+the detached GPG signature the site key (info@localghost.ai) made over it, and APP.txt. The APK is signed with
 the app's own keystore; its signing certificate's SHA-256 is
 
   3D:CC:5E:35:71:80:36:A2:6C:F3:63:73:EE:53:E7:9F:51:2B:F0:2D:97:F7:01:70:52:99:6D:55:DD:F0:CD:F4
 
-and app/android/VERIFY.md in the repository says how to rebuild it from the tag and compare.
+and APP.txt beside it states the same certificate with the APK's hash and commit. The APK is not
+byte-reproducible yet, so the copy in the release is the one to check; app/android/VERIFY.md in the
+repository says how.
 
 What is inside and under which terms:
 - LocalGhost's own code, MIT (TERMS-localghost-mit.txt).
