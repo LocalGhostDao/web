@@ -6,7 +6,7 @@
 
         <title>Setup Mirror, Signed Box Downloads | LocalGhost.ai</title>
         <meta name="title" content="Setup Mirror, Signed Box Downloads | LocalGhost.ai">
-        <meta name="description" content="The signed mirror LocalGhost boxes download their setup files from. What it carries and under which terms, why it exists, and how a box checks every file.">
+        <meta name="description" content="Everything a LocalGhost box downloads, signed. Maps, time zones, elevation, engines, models and English Wikipedia, with their terms and how a box checks them.">
         <meta name="keywords" content="LocalGhost mirror, setup mirror, signed downloads, sha256 manifest, gpg signature, GeoNames, Natural Earth, OpenStreetMap land polygons, self-hosted AI setup">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -16,7 +16,7 @@
         <meta property="og:type" content="article">
         <meta property="og:url" content="https://www.localghost.ai/mirror">
         <meta property="og:title" content="The LocalGhost Setup Mirror">
-        <meta property="og:description" content="Every file a LocalGhost box downloads at setup, published with its terms and listed in a signed manifest.">
+        <meta property="og:description" content="Everything a LocalGhost box downloads, from maps and time zones to models and English Wikipedia, published with its terms and listed in a signed manifest.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-mirror.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
@@ -34,7 +34,7 @@
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/mirror">
         <meta name="twitter:title" content="The LocalGhost Setup Mirror">
-        <meta name="twitter:description" content="Every file a LocalGhost box downloads at setup, published with its terms and listed in a signed manifest.">
+        <meta name="twitter:description" content="Everything a LocalGhost box downloads, from maps and time zones to models and English Wikipedia, published with its terms and listed in a signed manifest.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-mirror.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -52,7 +52,7 @@
             "@context": "https://schema.org",
             "@type": "TechArticle",
             "headline": "The LocalGhost Setup Mirror",
-            "description": "What the signed setup mirror carries and under which terms, why it exists, and how a LocalGhost box checks every file it downloads from it.",
+            "description": "What the signed setup mirror carries (maps, time zones, elevation, engines, models and English Wikipedia) and under which terms, why it exists, and how a LocalGhost box checks every file it downloads from it.",
             "image": "https://www.localghost.ai/images/og-mirror.png",
             "author": {
                 "@type": "Person",
@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-09-24",
-            "dateModified": "2026-10-01",
+            "dateModified": "2026-10-02",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/mirror"
@@ -133,12 +133,17 @@
             .mirror-table tr:last-child td { border-bottom: none; }
             .mirror-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; }
             .mirror-table td:first-child { font-family: var(--font-mono); color: var(--terminal); white-space: nowrap; }
-            .mirror-table code { display: block; border: none; background: none; padding: 0; margin: 0 0 0.2rem; font-size: 0.8rem; overflow-wrap: anywhere; }
+            .mirror-table code { border: none; background: none; padding: 0; font-size: 0.8rem; overflow-wrap: anywhere; }
+            .mirror-table td[data-label="Files"] code { display: block; margin: 0 0 0.2rem; }
             .mirror-table code, pre.cmd, .manifesto-text code { font-variant-ligatures: none; }
+            .mirror-table .set-meta { display: block; margin-top: 0.3rem; font-size: 0.68rem; line-height: 1.4; color: var(--text-dim); white-space: normal; letter-spacing: 0.02em; }
+            .mirror-table tr.group th { background: var(--void); color: var(--text-dim); font-size: 0.66rem; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); }
             @media (max-width: 640px) {
                 .mirror-table-wrap { border: none; }
                 .mirror-table, .mirror-table tbody, .mirror-table tr, .mirror-table td { display: block; width: 100%; }
                 .mirror-table thead { display: none; }
+                .mirror-table tr.group { border: none; margin: 1.25rem 0 0.5rem; }
+                .mirror-table tr.group th { display: block; background: none; padding: 0; border: none; }
                 .mirror-table tr { border: 1px solid var(--border); margin-bottom: 0.75rem; }
                 .mirror-table td { border-bottom: none; padding: 0.35rem 0.8rem; }
                 .mirror-table td:first-child { padding-top: 0.7rem; }
@@ -179,23 +184,23 @@
             <div class="page-header">
                 <div class="section-label">&gt; MIRROR</div>
                 <h1>Setup Mirror</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-09-24">24 September 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-09-24">24 September 2026</time>, updated <time datetime="2026-10-02">2 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
 
                 <p class="mirror-lede">
-                    This is where a LocalGhost box gets the files it downloads once, at setup. Every file here is a copy of something already public, published as it came and with the terms it came under, and listed in a manifest signed with the same key that signs every deploy of this site.
+                    This is where a LocalGhost box gets everything it downloads. Every file here is a copy of something already public, published as it came and with the terms it came under, and listed in a manifest signed with the same key that signs every deploy of this site. A box with this mirror, or a copy of it on a USB disk, never has to ask anyone else for its maps, its models or its engines.
                 </p>
 
                 <p>
-                    The mirror started in September 2026 with four sets, <code>geo</code>, <code>landpolygons</code>, <code>go</code> and <code>models</code> (Gemma 4 12B), and <code>roads</code>, <code>llama</code> (one pinned release of llama.cpp), <code>embeddings</code> (EmbeddingGemma) and <code>phone</code> (Gemma 4 E2B for the phone app) followed within the week, and <code>whisper</code> and <code>speech</code> (the engine and the model a box transcribes voice notes with) at the end of the month. October added <code>tz</code> (time zones), <code>elevation</code> (the Copernicus DEM) and <code>wikipedia</code> (English Wikipedia, searchable offline). The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
+                    It carries thirteen sets. A box needs about 10 GB of them to set itself up, and most of that is the chat model. Three sets are big and optional, the road extracts (79 GB), the elevation tiles (around 100 GB) and English Wikipedia (around 60 GB), and a box takes only the parts it asks for, one continent of roads or the tiles around the places it has been. The mirror started in September 2026 with four sets and grew to thirteen by October. The manifest is the list that counts, and a set is on the mirror once its files are in <code>MANIFEST.txt</code>.
                 </p>
 
                 <h2 class="section-header">&gt; 1. WHAT IT CARRIES</h2>
 
                 <p>
-                    Files come in sets, and a box asks for a set by name. Each set sits in its own folder with a <code>TERMS</code> file per licence and a <code>NOTICE.txt</code> that says which file is under which terms and where it came from. The <code>geo</code> set has two sources, so it takes two rows.
+                    Files come in sets, and a box asks for a set by name. Each set sits in its own folder with a <code>TERMS</code> file per licence and a <code>NOTICE.txt</code> that says which file is under which terms and where it came from. Under each set's name is its size and how often it changes here. "Monthly" means upstream is checked once a month, "pinned" means the file only changes when I choose a new version, and "by hand" means a set too big to refresh on its own.
                 </p>
 
                 <div class="mirror-table-wrap">
@@ -204,98 +209,106 @@
                             <tr><th>Set</th><th>Files</th><th>Where it comes from</th><th>Terms</th></tr>
                         </thead>
                         <tbody>
+                            <tr class="group"><th colspan="4">Maps and places</th></tr>
                             <tr>
-                                <td data-label="Set">geo</td>
+                                <td data-label="Set">geo<span class="set-meta">400 MB<br>monthly</span></td>
                                 <td data-label="Files"><code>admin1CodesASCII.txt</code> <code>admin2Codes.txt</code> <code>countryInfo.txt</code> <code>allCountries.zip</code></td>
-                                <td data-label="Where it comes from">The GeoNames data dumps, unmodified. The box uses them for reverse geocoding.</td>
+                                <td data-label="Where it comes from">The GeoNames data dumps, unmodified. The box uses them for reverse geocoding and to name the places a day happened in.</td>
                                 <td data-label="Terms">CC BY 4.0<sup class="fn"><a href="#ref1">[1]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">geo</td>
+                                <td data-label="Set">geo<span class="set-meta">17 MB<br>monthly</span></td>
                                 <td data-label="Files"><code>world.geojson</code> <code>world-50m.geojson</code> <code>world-110m.geojson</code></td>
                                 <td data-label="Where it comes from">Natural Earth's country boundaries at three scales, renamed only (<code>world.geojson</code> is the 10m file, the other two carry their scale in the name). The base of the map.</td>
                                 <td data-label="Terms">Public domain<sup class="fn"><a href="#ref2">[2]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">landpolygons</td>
+                                <td data-label="Set">landpolygons<span class="set-meta">880 MB<br>monthly</span></td>
                                 <td data-label="Files"><code>land-polygons-complete-4326.zip</code></td>
                                 <td data-label="Where it comes from">OpenStreetMap's land polygons from osmdata.openstreetmap.de, unmodified. The box cuts them into its map's coastline tiles.</td>
                                 <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">roads</td>
+                                <td data-label="Set">roads<span class="set-meta">79 GB<br>by hand, about monthly</span></td>
                                 <td data-label="Files"><code>europe-latest.osm.pbf</code> and the other seven continent extracts, named as Geofabrik names them</td>
-                                <td data-label="Where it comes from">OpenStreetMap's roads as Geofabrik's continent extracts, unmodified, about 80 GB in all and refreshed about monthly. A box only fetches the continents it's told to at setup, and cuts them into street tiles itself.</td>
+                                <td data-label="Where it comes from">OpenStreetMap's roads as Geofabrik's continent extracts, unmodified. A box only fetches the continents it's told to at setup, and cuts them into street tiles itself.</td>
                                 <td data-label="Terms">ODbL 1.0<sup class="fn"><a href="#ref3">[3]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">tz</td>
+                                <td data-label="Set">tz<span class="set-meta">46 MB<br>monthly</span></td>
                                 <td data-label="Files"><code>timezones-with-oceans-1970.geojson.zip</code> <code>tzdata-latest.tar.gz</code></td>
                                 <td data-label="Where it comes from">The time zone boundaries of the world, oceans included, from timezone-boundary-builder, and IANA's time zone rules. A box uses them to cut a day at local midnight wherever the photo was taken.</td>
                                 <td data-label="Terms">ODbL 1.0 and public domain<sup class="fn"><a href="#ref10">[10]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">elevation</td>
+                                <td data-label="Set">elevation<span class="set-meta">around 100 GB<br>by hand</span></td>
                                 <td data-label="Files">about 26,000 <code>Copernicus_DSM_COG_30_*.tif</code> tiles, <code>tileList.txt</code>, the licence</td>
-                                <td data-label="Where it comes from">The Copernicus DEM GLO-90, the height of the world's land every 90 metres, one tile per degree, unmodified. Refreshed only by hand, and a box takes only the tiles it needs, for hillshading and the climb on a walk.</td>
+                                <td data-label="Where it comes from">The Copernicus DEM GLO-90, the height of the world's land every 90 metres, one tile per degree, unmodified. A box takes only the tiles it needs, for hillshading and the climb on a walk.</td>
                                 <td data-label="Terms">Copernicus DEM licence<sup class="fn"><a href="#ref11">[11]</a></sup></td>
                             </tr>
+                            <tr class="group"><th colspan="4">Engines a box builds</th></tr>
                             <tr>
-                                <td data-label="Set">go</td>
+                                <td data-label="Set">go<span class="set-meta">57 MB<br>pinned</span></td>
                                 <td data-label="Files"><code>go1.25.4.linux-amd64.tar.gz</code></td>
                                 <td data-label="Where it comes from">The official Go release, checked against go.dev's published SHA-256 before it's mirrored. Setup needs it before any Go exists on the box.</td>
                                 <td data-label="Terms">BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">llama</td>
+                                <td data-label="Set">llama<span class="set-meta">36 MB<br>pinned</span></td>
                                 <td data-label="Files"><code>llama.cpp-v0.5.0-7fe450e.tar.gz</code></td>
-                                <td data-label="Where it comes from">GitHub's source archive of llama.cpp release v0.5.0, the inference engine, fetched by commit so the URL can't move. Every box builds this one; a new pin is a new file name.</td>
+                                <td data-label="Where it comes from">GitHub's source archive of llama.cpp release v0.5.0, the inference engine, fetched by commit so the URL can't move. Every box builds this one, and a new pin is a new file name.</td>
                                 <td data-label="Terms">MIT<sup class="fn"><a href="#ref5">[5]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">whisper</td>
+                                <td data-label="Set">whisper<span class="set-meta">9 MB<br>pinned</span></td>
                                 <td data-label="Files"><code>whisper.cpp-v1.9.4-927cfce.tar.gz</code></td>
                                 <td data-label="Where it comes from">GitHub's source archive of whisper.cpp release v1.9.4, the speech engine, pinned the same way as llama.cpp. A box builds it to transcribe the voice notes in its daily check-in.</td>
                                 <td data-label="Terms">MIT<sup class="fn"><a href="#ref8">[8]</a></sup></td>
                             </tr>
+                            <tr class="group"><th colspan="4">Models</th></tr>
                             <tr>
-                                <td data-label="Set">speech</td>
-                                <td data-label="Files"><code>ggml-large-v3-turbo-q5_0.bin</code></td>
-                                <td data-label="Where it comes from">OpenAI's Whisper large-v3-turbo, multilingual, in the whisper.cpp maintainers' ggml build quantised to q5_0, 574 MB. Unmodified and pinned by SHA-256.</td>
-                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref9">[9]</a></sup></td>
-                            </tr>
-                            <tr>
-                                <td data-label="Set">models</td>
+                                <td data-label="Set">models<span class="set-meta">7.3 GB<br>pinned</span></td>
                                 <td data-label="Files"><code>gemma-4-12b-it-Q4_K_M.gguf</code> <code>mmproj-F16.gguf</code></td>
                                 <td data-label="Where it comes from">Gemma 4 12B instruct (Q4_K_M) and its vision projector, the build every box runs, as quantised and published by Unsloth. Unmodified and pinned by SHA-256.</td>
                                 <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">phone</td>
-                                <td data-label="Files"><code>gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf</code></td>
-                                <td data-label="Where it comes from">Gemma 4 E2B instruct for the phone app, Unsloth's dynamic 2-bit quantisation of Google's quantisation-aware checkpoint, 2.2 GB. Unmodified and pinned by SHA-256. A phone fetches this set and nothing else.</td>
-                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
+                                <td data-label="Set">speech<span class="set-meta">574 MB<br>pinned</span></td>
+                                <td data-label="Files"><code>ggml-large-v3-turbo-q5_0.bin</code></td>
+                                <td data-label="Where it comes from">OpenAI's Whisper large-v3-turbo, multilingual, in the whisper.cpp maintainers' ggml build quantised to q5_0. Unmodified and pinned by SHA-256.</td>
+                                <td data-label="Terms">MIT<sup class="fn"><a href="#ref9">[9]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">embeddings</td>
+                                <td data-label="Set">embeddings<span class="set-meta">329 MB<br>pinned</span></td>
                                 <td data-label="Files"><code>embeddinggemma-300m-qat-Q8_0.gguf</code></td>
                                 <td data-label="Where it comes from">EmbeddingGemma 300M, Google's embedding model, for search over your own notes. Google's quantisation-aware Q8_0 checkpoint as converted to GGUF by the llama.cpp maintainers. Unmodified and pinned by SHA-256.</td>
                                 <td data-label="Terms">Gemma Terms of Use<sup class="fn"><a href="#ref7">[7]</a></sup></td>
                             </tr>
                             <tr>
-                                <td data-label="Set">wikipedia</td>
+                                <td data-label="Set">phone<span class="set-meta">2.2 GB<br>pinned</span></td>
+                                <td data-label="Files"><code>gemma-4-E2B-it-qat-UD-Q2_K_XL.gguf</code></td>
+                                <td data-label="Where it comes from">Gemma 4 E2B instruct for the phone app, Unsloth's dynamic 2-bit quantisation of Google's quantisation-aware checkpoint. Unmodified and pinned by SHA-256. A phone fetches this set and nothing else.</td>
+                                <td data-label="Terms">Apache 2.0<sup class="fn"><a href="#ref6">[6]</a></sup></td>
+                            </tr>
+                            <tr class="group"><th colspan="4">Knowledge</th></tr>
+                            <tr>
+                                <td data-label="Set">wikipedia<span class="set-meta">around 60 GB<br>by hand, every month or two</span></td>
                                 <td data-label="Files"><code>wikipedia_en_all_nopic.zim</code></td>
-                                <td data-label="Where it comes from">English Wikipedia without pictures, as Kiwix packages it, about 60 GB with its own full-text index, checked against the SHA-256 Kiwix publishes. The newest dump is taken by hand every month or two. A box searches it to answer questions without the web.</td>
+                                <td data-label="Where it comes from">English Wikipedia without pictures, as Kiwix packages it, with its own full-text index, checked against the SHA-256 Kiwix publishes. A box searches it to answer questions without the web.</td>
                                 <td data-label="Terms">CC BY-SA 4.0<sup class="fn"><a href="#ref12">[12]</a></sup></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
+                <p>
+                    The sizes are what a box would download if it took the whole set. Two of them, elevation and Wikipedia, are estimates until their first build is published, and I'll put the real figures here then.
+                </p>
+
                 <h2 class="section-header">&gt; 2. WHY A MIRROR</h2>
 
                 <p>
-                    Before this, setting up a box meant fetching from five different places on the day (GeoNames, GitHub, the OpenStreetMap data server, Google's Go downloads and Hugging Face) and trusting each of them to be up, to serve the same bytes it served last week, and not to keep a record of who asked. Any one of the five being slow or down made setup slow or broken, and none of them owes a LocalGhost box anything.
+                    Without it, setting up a box would mean fetching from nine different places on the day (GeoNames, GitHub, the OpenStreetMap data servers, Geofabrik, Google's Go downloads, Hugging Face, IANA, Kiwix and Amazon's open data buckets) and trusting each of them to be up, to serve the same bytes it served last week, and not to keep a record of who asked. Any one of them being slow or down would make setup slow or broken, and none of them owes a LocalGhost box anything.
                 </p>
 
                 <p>
@@ -303,7 +316,7 @@
                 </p>
 
                 <p>
-                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror carries one release, named in the file along with its commit, and a new pin is a new file name that makes boxes rebuild. The model weights are pinned the same way, by SHA-256, so if a file ever changes upstream the publish stops instead of passing it on to a box. Where the upstream publishes a checksum (go.dev, a Hugging Face file page) the pin is taken from there; GitHub publishes none for source archives, so the llama.cpp pin is the hash of the first copy the web server downloaded, read off the server and written into the config by hand.
+                    Pinning matters more for code than for data. A box that builds llama.cpp from whatever master was that morning can end up running something different from the box next to it, so the mirror carries one release, named in the file along with its commit, and a new pin is a new file name that makes boxes rebuild. The model weights are pinned the same way, by SHA-256, so if a file ever changes upstream the publish stops instead of passing it on to a box. Where the upstream publishes a checksum (go.dev, a Hugging Face file page, Kiwix) the check is against that. GitHub publishes none for source archives, so the llama.cpp and whisper.cpp pins are the hash of the first copy the web server downloaded, read off the server and written into the config by hand.
                 </p>
 
                 <p>
@@ -313,24 +326,28 @@
                 <h2 class="section-header">&gt; 3. HOW A BOX CHECKS IT</h2>
 
                 <p>
-                    Boxes fetch from here with <code>tools/mirror_fetch.sh</code> in the <a href="https://github.com/LocalGhostDao/localghost">server repo</a>, and install nothing unless every check passes.
+                    Boxes fetch from here with <code>tools/mirror_fetch.sh</code> in the <a href="https://github.com/LocalGhostDao/localghost">server repo</a>, a set at a time, and install nothing unless every check passes.
                 </p>
 
                 <ol class="mirror-steps">
                     <li>It downloads <code>MANIFEST.txt</code> and <code>MANIFEST.txt.asc</code> and verifies the signature against <code>tools/mirror-key.asc</code>, a copy of this site's key pinned in the server repo (so it's never fetched from the same place as the manifest), in a throwaway gpg home so nothing in your own keyring is involved.</li>
                     <li>It requires the mirror's own header on the manifest, so another manifest signed by the same key (a release, or a deploy of this site) can't be passed off as a mirror manifest.</li>
                     <li>It refuses a build older than the last one that box used (the build name is kept in <code>/var/lib/ghost/mirror-build</code>), so an old manifest with a perfectly valid signature can't be replayed to roll a box back.</li>
-                    <li>It downloads each file under a temporary name, resuming if the connection drops, and only gives it its real name once its SHA-256 matches the manifest.</li>
+                    <li>It downloads each file under a temporary name, resuming if the connection drops, and only gives it its real name once its SHA-256 matches the manifest. In a big set it fetches only the files it was asked for, one continent or one tile.</li>
                 </ol>
 
                 <p>
-                    If the mirror can't be reached or a check fails, the setup scripts fall back to the upstream source, so the mirror can make setup faster and more predictable but it can't stop a box from being set up. <code>GHOST_MIRROR=off</code> skips it entirely, and <code>GHOST_MIRROR=&lt;url&gt;</code> points a box at a copy you host yourself.
+                    If the mirror can't be reached or a check fails, setup says so and stops. The one way round that is an environment variable an operator has to type, and every file fetched that way is printed as not coming from a signed list. A box with no internet at all can read a copy of this mirror from a USB disk, with the same checks, and <code>GHOST_MIRROR=&lt;url&gt;</code> points a box at a copy you host yourself. <code>sudo ./tools/update.sh</code> on a running box reads the signed list first, then fetches only what changed.
                 </p>
 
                 <h2 class="section-header">&gt; 4. HOW IT'S BUILT</h2>
 
                 <p>
-                    The mirror is built by a script that sits next to the deploy script in the <a href="https://github.com/LocalGhostDao/web">web repo</a> and is never served. It runs on every deploy of this site, but it asks upstream for changes at most once a month, on the first deploy on or after the 1st. The other deploys that month publish only what the config added or changed (a new set, a new pin, an edited terms file) from the copies it already holds, and usually publish nothing at all, so a box sees a new build about once a month plus whenever a set is added. When it does ask, it downloads a file again only when upstream says it changed, stops if the Go tarball doesn't match go.dev's checksum, and leaves out any set whose terms file isn't finished. The road extracts are refreshed only by hand, about monthly.
+                    The mirror is built by a script that sits next to the deploy script in the <a href="https://github.com/LocalGhostDao/web">web repo</a> and is never served. It runs on every deploy of this site, but it asks upstream for changes at most once a month, on the first deploy on or after the 1st. The other deploys that month publish only what the config added or changed (a new set, a new pin, an edited terms file) from the copies it already holds, and usually publish nothing at all, so a box sees a new build about once a month plus whenever a set is added. When it does ask, it downloads a file again only when upstream says it changed, stops if the Go tarball doesn't match go.dev's checksum, and leaves out any set whose terms file isn't finished.
+                </p>
+
+                <p>
+                    The three big sets are refreshed only by hand. The road extracts change every day upstream, so they're taken about once a month. The elevation tiles are one line in the config that stands for every name in the tile list Copernicus publishes, and they don't change between Copernicus releases, so they're downloaded once. Wikipedia is the newest dump in Kiwix's directory at the time, checked against the SHA-256 Kiwix publishes beside it, and the older dump leaves the cache when a newer one arrives.
                 </p>
 
                 <p>
@@ -372,7 +389,7 @@ grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/g
                 <div class="credits">Map data © OpenStreetMap contributors, continent extracts by Geofabrik GmbH, time zone boundaries by timezone-boundary-builder. Made with Natural Earth. Place names from GeoNames. Elevation © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved. Encyclopaedia text from Wikipedia, CC BY-SA 4.0.</div>
 
                 <p>
-                    Postgres and Redis still come from their own apt repositories at setup, and I haven't decided yet whether mirroring those is worth the work. If you maintain one of the sources above and want it handled differently, or you find a file here that doesn't match its manifest, email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->.
+                    Two things a box still fetches from elsewhere are the Go modules for its build, which come from proxy.golang.org and are pinned by <code>go.sum</code>, and its Debian packages (Postgres, Redis and the rest), which come from Debian's and upstream's apt repositories. Those are the gaps left between this mirror and a box that never needs anything else. If you maintain one of the sources above and want it handled differently, or you find a file here that doesn't match its manifest, email <!--email_off--><a href="mailto:info@localghost.ai">info@localghost.ai</a><!--/email_off-->.
                 </p>
 
                 <h2 class="section-header">&gt; REFERENCES</h2>
