@@ -74,7 +74,7 @@
                 }
             },
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-02",
+            "dateModified": "2026-10-03",
             "mainEntityOfPage": {
                 "@type": "WebPage",
                 "@id": "https://www.localghost.ai/setup"
@@ -122,8 +122,8 @@
                 { "@type": "HowToTool", "name": "USB cable with USB debugging on the phone, for adb" }
             ],
             "step": [
-                { "@type": "HowToStep", "position": 1, "name": "Prepare the machine", "url": "https://www.localghost.ai/setup#step-1", "text": "Enable the firmware TPM, install Debian 13 with sudo, git, make and nginx, install the NVIDIA driver and CUDA toolkit if there is a card, and clone the repository at the release tag v0.0.2, or main, as the user who will build it." },
-                { "@type": "HowToStep", "position": 2, "name": "Install the app", "url": "https://www.localghost.ai/setup#step-2", "text": "Install the signed app from the release, localghost-app-0.0.2.apk, after checking its GPG signature by the site key and its signing certificate (SHA-256 3dcc5e35718036a26cf36373ee53e79f512bf02d97f7017052996d55ddf0cdf4), or build it with gradlew installDebug, before the box draws its enrolment QR." },
+                { "@type": "HowToStep", "position": 1, "name": "Prepare the machine", "url": "https://www.localghost.ai/setup#step-1", "text": "Enable the firmware TPM, install Debian 13 with sudo, git, make and nginx, install the NVIDIA driver and CUDA toolkit if there is a card, and clone the repository at the release tag v0.0.3, or main, as the user who will build it." },
+                { "@type": "HowToStep", "position": 2, "name": "Install the app", "url": "https://www.localghost.ai/setup#step-2", "text": "Install the signed app from the release, localghost-app-0.0.3.apk, after checking its GPG signature by the site key and its signing certificate (SHA-256 3dcc5e35718036a26cf36373ee53e79f512bf02d97f7017052996d55ddf0cdf4), or build it with gradlew installDebug, before the box draws its enrolment QR." },
                 { "@type": "HowToStep", "position": 3, "name": "Build the engine and fetch the model", "url": "https://www.localghost.ai/setup#step-3", "text": "From the server folder, run sudo ./tools/setup_llama.sh before provisioning, to build llama-server (with CUDA when nvcc is found) and stage Gemma 4 12B, its vision projector and EmbeddingGemma from the signed mirror." },
                 { "@type": "HowToStep", "position": 4, "name": "Run the guided setup", "url": "https://www.localghost.ai/setup#step-4", "text": "Run sudo ./tools/setup.sh with your user. It installs Postgres, Redis and Go, builds the binaries, asks for the disk, the seal tier and the PINs, and provisions the box after a dry run and a typed confirmation, then draws the enrolment QR." },
                 { "@type": "HowToStep", "position": 5, "name": "Scan the QR, then unlock", "url": "https://www.localghost.ai/setup#step-5", "text": "Scan the animated QR with the app as soon as it appears, since scanning is enrolment, clear the terminal, and unlock with the main PIN from the app." },
@@ -216,11 +216,11 @@
             <div class="manifesto-text">
 
                 <p class="setup-lede">
-                    This is how to put LocalGhost on a machine you own, from a bare Debian install to a phone that unlocks it. It's the procedure I follow on my own box, taken from the scripts in the server repo, in the order they expect them and with the reason for each step. The current release is <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2">wisp 0.0.2</a>, the second cut of wisp, from 2 October 2026. It carries the server and a signed Android app. Build the box from its tag for the release, or from <code>main</code> for what I run the day I run it.
+                    This is how to put LocalGhost on a machine you own, from a bare Debian install to a phone that unlocks it. It's the procedure I follow on my own box, taken from the scripts in the server repo, in the order they expect them and with the reason for each step. The current release is <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3">wisp 0.0.3</a>, the third cut of wisp, from 3 October 2026. It carries the server and a signed Android app. Build the box from its tag for the release, or from <code>main</code> for what I run the day I run it.
                 </p>
 
                 <p>
-                    Every step is a script you can read before you run it, and the ones that destroy anything ask you to type a word first. Setup takes an afternoon, most of it downloads and compiling. A large photo library then takes the box a few days to describe and index, and the phone shows how far it has got. There's one rule about order (step 2) and one cost you should know about before you start, which is that there is no recovery path yet (section 5).
+                    Every step is a script you can read before you run it, and the ones that destroy anything ask you to type a word first. Setup takes an afternoon, most of it downloads and compiling. A large photo library then takes the box a few days to describe and index, and the phone shows how far it has got. There's one rule about order (step 2) and one cost you should know about before you start, which is that wisp has no recovery path (section 5).
                 </p>
 
                 <h2 class="section-header" id="need">&gt; 1. WHAT YOU NEED</h2>
@@ -286,8 +286,8 @@ ls /dev/tpm*
 <span class="c"># as root</span>
 apt install sudo git make nginx
 
-<span class="c"># as your login user, the release, wisp 0.0.2</span>
-git clone --branch v0.0.2 https://github.com/LocalGhostDao/localghost.git
+<span class="c"># as your login user, the release, wisp 0.0.3</span>
+git clone --branch v0.0.3 https://github.com/LocalGhostDao/localghost.git
 
 <span class="c"># or the newest code instead</span>
 git clone https://github.com/LocalGhostDao/localghost.git</pre>
@@ -296,25 +296,25 @@ git clone https://github.com/LocalGhostDao/localghost.git</pre>
                 <div class="step" id="step-2">
                     <h3>STEP 2. INSTALL THE APP <span class="who">// PHONE</span></h3>
                     <p>
-                        The release carries the app, built at the same commit as the server and signed. Download it, check it, and install it, either by opening the file on the phone and allowing installs from wherever you opened it, or over USB with <code>adb</code>.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                        The release carries the app, built at the same commit as the server and signed. Download it, check it, and install it, either by opening the file on the phone and allowing installs from wherever you opened it, or over USB with <code>adb</code>.<sup class="fn"><a href="#ref13">[13]</a></sup>
                     </p>
 <pre class="cmd"><span class="c"># the APK, and the site key's signature over it</span>
-R=https://github.com/LocalGhostDao/localghost/releases/download/v0.0.2
-curl -LO $R/localghost-app-0.0.2.apk
-curl -LO $R/localghost-app-0.0.2.apk.asc
+R=https://github.com/LocalGhostDao/localghost/releases/download/v0.0.3
+curl -LO $R/localghost-app-0.0.3.apk
+curl -LO $R/localghost-app-0.0.3.apk.asc
 curl -s https://www.localghost.ai/.well-known/pgp-key.asc | gpg --import
-gpg --verify localghost-app-0.0.2.apk.asc localghost-app-0.0.2.apk
+gpg --verify localghost-app-0.0.3.apk.asc localghost-app-0.0.3.apk
 
 <span class="c"># the certificate it's signed with, apksigner is in the SDK build-tools</span>
-apksigner verify --print-certs localghost-app-0.0.2.apk
+apksigner verify --print-certs localghost-app-0.0.3.apk
 
 <span class="c"># install over USB, or open the file on the phone</span>
-adb install localghost-app-0.0.2.apk</pre>
+adb install localghost-app-0.0.3.apk</pre>
 <pre class="cmd"><span class="c"># the key gpg must name, and the certificate apksigner must print</span>
 DCE9 A3D1 4EB4 6197 1DD5 F393 706E 4194 F08A 09A0
 3dcc5e35718036a26cf36373ee53e79f512bf02d97f7017052996d55ddf0cdf4</pre>
                     <p>
-                        gpg should report a good signature from info@localghost.ai with the first, and apksigner a signer certificate whose SHA-256 digest is the second. Android installs an update over the app only when it's signed with that same certificate, so a copy signed by anyone else can't replace it quietly. In the app, VERIFY BUILD shows the release ("wisp 0.0.2 (2)"), the commit it was built from (<code>c9d82c0</code>), the source manifest's root and the signing certificate, and <code>APP.txt</code> in the release states the same hash, commit and certificate. The APK isn't byte-reproducible yet (a Gradle build differs from run to run), so the signed copy in the release is the one to check, and <code>app/android/VERIFY.md</code> says how. 0.0.2 installs over 0.0.1 and keeps the enrolment, since the key is the same.<sup class="fn"><a href="#ref4">[4]</a></sup> The same APK is in the mirror's <code>app</code> set, so a USB copy of the mirror can set up the phone as well as the box.
+                        gpg should report a good signature from info@localghost.ai with the first, and apksigner a signer certificate whose SHA-256 digest is the second. Android installs an update over the app only when it's signed with that same certificate, so a copy signed by anyone else can't replace it quietly. In the app, VERIFY BUILD shows the release ("wisp 0.0.3 (3)"), the commit it was built from (<code>c3726d3</code>), the source manifest's root and the signing certificate, and <code>APP.txt</code> in the release states the same hash, commit and certificate. The APK isn't byte-reproducible yet (a Gradle build differs from run to run), so the signed copy in the release is the one to check, and <code>app/android/VERIFY.md</code> says how. 0.0.3 installs over 0.0.1 and 0.0.2 and keeps the enrolment, since the key is the same.<sup class="fn"><a href="#ref4">[4]</a></sup> The same APK is in the mirror's <code>app</code> set, so a USB copy of the mirror can set up the phone as well as the box.
                     </p>
                     <p>
                         To build it yourself instead, on Windows install Android Studio (it brings JDK 21) and in its SDK Manager tick Android API 37 and 36, Build-Tools 36.0.0, NDK 28.2.13676358 and CMake 3.22.1, the versions the build pins. Put the repo in a path without spaces, turn on USB debugging on the phone, plug it in and run <code>gradlew.bat installDebug</code> in <code>app\android</code>. On Debian, one script installs the same toolchain.<sup class="fn"><a href="#ref3">[3]</a></sup>
@@ -427,7 +427,7 @@ sudo ./tools/privacy_check.sh
 ./bin/ghost-cli ghost.secd devices
 ./bin/ghost-cli ghost.secd retire id=&lt;key&gt;</pre>
                     <p>
-                        Releases reach the box through the phone. Once a day on Wi-Fi the app reads the mirror's signed list, and when a newer release is there it says so ("wisp 0.0.2 is out"). DEPLOY, under SETTINGS and SERVER, downloads the release and hands it to the box, which checks the signature and every hash with the same verifier setup used, keeps the previous build and switches to the new one. It goes back by itself if the first unlock onto the new build fails or a critical daemon keeps falling over in its first ten minutes, and ROLL BACK sits beside DEPLOY.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                        Releases reach the box through the phone. Once a day on Wi-Fi the app reads the mirror's signed list, and when a newer release is there it says so ("wisp 0.0.3 is out"). DEPLOY, under SETTINGS and SERVER, downloads the release and hands it to the box, which checks the signature and every hash with the same verifier setup used, keeps the previous build and switches to the new one. It goes back by itself if the first unlock onto the new build fails or a critical daemon keeps falling over in its first ten minutes, and ROLL BACK sits beside DEPLOY.<sup class="fn"><a href="#ref12">[12]</a></sup><sup class="fn"><a href="#ref13">[13]</a></sup>
                     </p>
                     <p>
                         A redeploy from git is for code you've built yourself. It restarts <code>ghost.secd</code>, which locks the box, and you unlock again from the phone. New daemon binaries wait in a staging folder on the system disk and move onto the volume at that unlock. Arm the watchdog on any box you can't walk up to. Mine froze once while I was away and stayed frozen until someone could press the button.<sup class="fn"><a href="#ref6">[6]</a></sup>
@@ -465,13 +465,13 @@ sudo ./tools/privacy_check.sh
                 </p>
 
                 <p>
-                    After setup, the phone is the only thing that talks to the box, and the box asks the internet only for public things, with nothing of yours in the request. <code>ghost.tallyd</code> reads prices from the exchanges and the ECB itself, every minute. News feeds come from the phone while it's on Wi-Fi and from the box when the phone is away. A coin's page reads the coin's own website, Wikipedia's API is asked only by a box without its own copy of Wikipedia, and updates come from the mirror. The box never asks for a map tile and never sends a location, a photo or a note. The phone sends two things, and only when you ask. A question that needs the web sends its search words to DuckDuckGo, or Brave with your own key, and the phone reads the pages and hands the box the paragraphs. A weather question that names no place sends the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key.<sup class="fn"><a href="#ref12">[12]</a></sup>
+                    After setup, the phone is the only thing that talks to the box, and the box asks the internet only for public things, with nothing of yours in the request. <code>ghost.tallyd</code> reads prices from the exchanges and the ECB itself, every minute. News feeds come from the phone while it's on Wi-Fi and from the box when the phone is away. A coin's page reads the coin's own website, Wikipedia's API is asked only by a box without its own copy of Wikipedia, and updates come from the mirror. Once a day <code>ghost.tallyd</code> also pulls the forecast for the world's three thousand larger places from Open-Meteo, the same list for every box, and the weather where you are is looked up on the box. The box never asks for a map tile and never sends a location, a photo or a note. The phone sends one thing, and only when you ask. A question that needs the web sends its search words to DuckDuckGo, or Brave with your own key, and the phone reads the pages and hands the box the paragraphs. Up to wisp 0.0.2 a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, and an app older than 0.0.3 still does until it's updated.<sup class="fn"><a href="#ref13">[13]</a></sup>
                 </p>
 
                 <h2 class="section-header" id="costs">&gt; 5. WHAT IT COSTS</h2>
 
                 <p>
-                    There's no recovery path yet. On the <code>tpm</code> tier the volume key is sealed to this board's TPM, in the boot state it measured, and nothing else holds a copy, so a dead board or a forgotten PIN means the archive on that disk is gone. The two hardware keys described on the <a href="/about">About page</a> aren't part of setup yet. Until they are, keep the originals of anything you can't lose somewhere else as well.
+                    There's no recovery path in wisp. On the <code>tpm</code> tier the volume key is sealed to this board's TPM, in the boot state it measured, and nothing else holds a copy, so a dead board or a forgotten PIN means the archive on that disk is gone. The two FIDO2 hardware keys for setup and recovery described on the <a href="/about">About page</a> are planned for <a href="/build#releases">shade</a> (1.x) at the earliest, and until they come, keep the originals of anything you can't lose somewhere else as well.
                 </p>
 
                 <p>
@@ -479,7 +479,7 @@ sudo ./tools/privacy_check.sh
                 </p>
 
                 <p>
-                    The box's certificate authority key sits on the system disk, by choice, so a phone can be enrolled or refused while the vault is locked. The price is that root on the box, or someone holding that disk, could make a phone certificate, and the PIN would be the only gate left. On the default setup secd also trusts a certificate header nginx passes to it on its loopback port, so on a box that runs other services, those could reach it without a certificate. <code>ghost-ctl edge-passthrough</code> switches secd to terminating the phone's TLS itself, which isn't the default yet, and until it is, run nothing on the box you don't trust. Releases are signed by the same site key as the mirror, and a separate offline release key is planned. Phone certificates are valid for ten years. Since wisp 0.0.2 one phone can be retired by its key (step 7), and every call it makes after that is answered as if the box were down, but a retired phone that should come back needs a fresh QR and is a new device. The QR is a credential until the first unlock retires its key, as step 5 says. A first import of a large library takes days on a GPU and longer on a CPU. And this is pre-release software that changes every day on my box first, so read each script before you run it and let the dry runs do their job. <a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> goes through each part with what it costs, and what broke on the way.
+                    The box's certificate authority key sits on the system disk, by choice, so a phone can be enrolled or refused while the vault is locked. The price is that root on the box, or someone holding that disk, could make a phone certificate, and the PIN would be the only gate left. On the default setup secd also trusts a certificate header nginx passes to it on its loopback port, so on a box that runs other services, those could reach it without a certificate. <code>ghost-ctl edge-passthrough</code> switches secd to terminating the phone's TLS itself, which isn't the default yet, and until it is, run nothing on the box you don't trust. Releases are signed by the same site key as the mirror, and a separate offline release key is planned for a later wisp. Phone certificates are valid for ten years, and shorter ones the phone renews itself are planned for a later wisp too. Since wisp 0.0.2 one phone can be retired by its key (step 7), and every call it makes after that is answered as if the box were down, but a retired phone that should come back needs a fresh QR and is a new device.<sup class="fn"><a href="#ref12">[12]</a></sup> A retire button on the phone's DEVICES screen comes in a later wisp. The QR is a credential until the first unlock retires its key, as step 5 says. A first import of a large library takes days on a GPU and longer on a CPU. And this is pre-release software that changes every day on my box first, so read each script before you run it and let the dry runs do their job. <a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> goes through each part with what it costs, and what broke on the way.
                 </p>
 
                 <p>
@@ -499,7 +499,8 @@ sudo ./tools/privacy_check.sh
                     <div class="ref" id="ref9"><span class="n">[9]</span>nginx, <code>ngx_http_ssl_module</code>, the <code>ssl_verify_client</code> directive. With <code>optional</code>, nginx asks for a client certificate, verifies it if one is offered and passes the result on instead of refusing the connection itself, which is what lets secd answer every unauthenticated request with the same 503. Source for section 3. <a href="https://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_verify_client" target="_blank" rel="noopener">nginx.org/en/docs/http/ngx_http_ssl_module.html</a></div>
                     <div class="ref" id="ref10"><span class="n">[10]</span>Trusted Computing Group, TPM 2.0 Library Specification, the sealing operation the box uses for its volume key, an object the TPM unseals only when the platform's measured state matches the policy it was sealed under, and Google's go-tpm, the Go package the box uses to talk to it. Source for what "sealed" means here. <a href="https://trustedcomputinggroup.org/resource/tpm-library-specification/" target="_blank" rel="noopener">trustedcomputinggroup.org</a> and <a href="https://github.com/google/go-tpm" target="_blank" rel="noopener">github.com/google/go-tpm</a></div>
                     <div class="ref" id="ref11"><span class="n">[11]</span>RFC 9106, Argon2 Memory-Hard Function for Password Hashing and Proof-of-Work Applications, 2021. The key derivation the software tier wraps the volume key with, which makes each guess expensive but puts no limit on how many guesses there are. Source for the software tier's cost. <a href="https://www.rfc-editor.org/rfc/rfc9106" target="_blank" rel="noopener">rfc-editor.org/rfc/rfc9106</a></div>
-                    <div class="ref" id="ref12"><span class="n">[12]</span>LocalGhost wisp 0.0.2, tag <code>v0.0.2</code> of 2 October 2026 (commit c9d82c0), with the server bundle, the signed Android app with its <code>APP.txt</code>, the source archive and a <code>SHA256SUMS</code> signed by the site key, and its notes, which list what changed since 0.0.1 (the HEIC repair, retiring a phone by its key) and the known gaps, and wisp 0.0.1's notes, which describe how to install it, how the phone takes a release from the mirror, how the box checks it and rolls it back, and what leaves the box. Source for steps 2 and 7 and sections 4 and 5. <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost/releases/tag/v0.0.2</a> and <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1" target="_blank" rel="noopener">releases/tag/v0.0.1</a></div>
+                    <div class="ref" id="ref12"><span class="n">[12]</span>LocalGhost wisp 0.0.2, tag <code>v0.0.2</code> of 2 October 2026 (commit c9d82c0), with the server bundle, the signed Android app with its <code>APP.txt</code>, the source archive and a <code>SHA256SUMS</code> signed by the site key, and its notes, which list what changed since 0.0.1 (the HEIC repair, retiring a phone by its key) and the known gaps, and wisp 0.0.1's notes, which describe how to install it, how the phone takes a release from the mirror, how the box checks it and rolls it back, and what leaves the box. Source for step 7 and section 5. <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost/releases/tag/v0.0.2</a> and <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.1" target="_blank" rel="noopener">releases/tag/v0.0.1</a></div>
+                    <div class="ref" id="ref13"><span class="n">[13]</span>LocalGhost wisp 0.0.3, tag <code>v0.0.3</code> of 3 October 2026 (commit c3726d3), with the same assets as 0.0.2 (the server bundle, the signed app with its <code>APP.txt</code>, the source archive and a <code>SHA256SUMS</code> signed by the site key), and its notes. The box pulls the forecast for the world's three thousand larger places from Open-Meteo once a day, the same list for every box, and answers the weather where the phone is from that table, so the phone has no weather lookup of its own and sends no position. An older app keeps asking Open-Meteo itself until it is updated. Source for steps 2 and 7 and section 4. <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3" target="_blank" rel="noopener">github.com/LocalGhostDao/localghost/releases/tag/v0.0.3</a></div>
                 </div>
 
             </div>

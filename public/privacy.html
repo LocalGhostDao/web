@@ -21,7 +21,7 @@
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-02T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-03T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
@@ -51,7 +51,7 @@
             "url": "https://www.localghost.ai/privacy",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-02",
+            "dateModified": "2026-10-03",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,13 +139,13 @@
             <div class="page-header">
                 <div class="section-label">&gt; PRIVACY</div>
                 <h1>Privacy</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-02">2 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-03">3 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
 
                 <p class="page-lede">
-                    What this website, the setup mirror and the LocalGhost software do with information about you. The website and the mirror keep no record of your visit. The software keeps your data on your own box and asks the internet only for public things, and the phone sends a search's words or a rounded position for the weather only when you ask.
+                    What this website, the setup mirror and the LocalGhost software do with information about you. The website and the mirror keep no record of your visit. The software keeps your data on your own box and asks the internet only for public things, and the phone sends a search's words only when you ask.
                 </p>
 
                 <p>
@@ -183,17 +183,21 @@
                     <li>News feeds, fetched by the phone while it's on Wi-Fi and by the box when the phone is away.</li>
                     <li>Maps, models and releases from the setup mirror, checked against its signed manifest.</li>
                     <li>A coin's own website for its page, and Wikipedia's API only on a box without its own copy of Wikipedia.</li>
+                    <li>The forecast for the world's three thousand larger places from Open-Meteo, once a day. The list is the same for every box, so the request says nothing about where you are, and the weather where you are is looked up on the box.</li>
                 </ul>
 
                 <p>
-                    The box never asks for a map tile, and it never sends a location, a photo or a note. The phone talks to your box and nothing else, apart from three things.
+                    The box never asks for a map tile, and it never sends a location, a photo or a note. The phone talks to your box and nothing else, apart from two things.
                 </p>
 
                 <ul class="plain-list">
                     <li>When a question needs the web, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive.</li>
-                    <li>When you ask about the weather without naming a place, the phone sends its position, rounded to two decimal places (about a kilometre), to Open-Meteo for the forecast. Open-Meteo needs no account and no key, so the request carries the rounded position and nothing that says who you are.</li>
                     <li>Once a day on Wi-Fi it reads the mirror's manifest to see whether there's a new release.</li>
                 </ul>
+
+                <p>
+                    Up to wisp 0.0.2, a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key. Since wisp 0.0.3 the box answers it from its own daily pull and the phone sends no position. An app older than 0.0.3 keeps asking Open-Meteo itself until it's updated.
+                </p>
 
                 <p>
                     The box keeps what you keep. Every memory can be edited or deleted from the phone, and the box never writes over your version. A wipe PIN destroys the volume's key, after which nothing on the disk can be read. The full list is in the <a href="https://github.com/LocalGhostDao/localghost#readme">repository's README</a> under "What leaves the box", and <a href="/setup#network">Set Up a Box</a> says the same from the operator's side.

@@ -79,19 +79,34 @@
             "@type": "WebPage",
             "@id": "https://www.localghost.ai/build"
         },
-        "dateModified": "2026-10-02",
+        "dateModified": "2026-10-03",
         "url": "https://www.localghost.ai/build",
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/#website"
         },
-        "wordCount": 680
+        "wordCount": 1220
     }
     </script>
     <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/pages.css">
     <link rel="stylesheet" href="/css/build.css">
+    <style>
+        .release-table-wrap { margin: 1.5rem 0; border: 1px solid var(--border); }
+        .release-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.65; background: var(--void-lighter); }
+        .release-table th, .release-table td { text-align: left; vertical-align: top; padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--border); }
+        .release-table tr:last-child th, .release-table tr:last-child td { border-bottom: none; }
+        .release-table th { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; color: var(--terminal); font-weight: 500; white-space: nowrap; width: 9.5rem; }
+        .release-table th .when { display: block; color: var(--text-dim); font-size: 0.65rem; letter-spacing: 0.12em; margin-top: 0.2rem; }
+        .release-table tr.out th { color: var(--text); }
+        @media (max-width: 640px) {
+            .release-table, .release-table tbody, .release-table tr, .release-table th, .release-table td { display: block; width: 100%; }
+            .release-table th { border-bottom: none; padding-bottom: 0.15rem; }
+            .release-table th .when { display: inline; margin: 0 0 0 0.5rem; }
+            .release-table td { padding-top: 0.2rem; }
+        }
+    </style>
 </head>
 <body>
     <!-- NAVIGATION -->
@@ -122,11 +137,11 @@
 
             <!-- STATUS CALLOUT -->
             <div class="status-callout">
-                <p class="status-title">Phase 2, Running Every Day</p>
-                <p class="status-sub">Phases 1 and 2 of the roadmap run every day on my own box. 30,408 photos captioned and mapped, notes, voice memos, health data, search and chat over all of it, and a phone app as the front end. The current release is wisp 0.0.2, the second cut of wisp on 2 October 2026, the server and a signed Android app, with the code on GitHub.</p>
+                <p class="status-title">wisp, Running Every Day</p>
+                <p class="status-sub">The first release line runs every day on my own box. 30,408 photos captioned and mapped, notes, voice memos, health data, search and chat over all of it, and a phone app as the front end. The current release is wisp 0.0.3, the third cut of wisp on 3 October 2026, the server and a signed Android app, with the code on GitHub.</p>
                 <a href="/hard-truths/what-the-box-does-now" class="status-cta">[ WHAT THE BOX DOES NOW → ]</a>
                 <a href="/setup" class="status-cta">[ SET UP A BOX → ]</a>
-                <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2" target="_blank" class="status-cta">[ WISP 0.0.2 → ]</a>
+                <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3" target="_blank" class="status-cta">[ WISP 0.0.3 → ]</a>
             </div>
 
             <p>
@@ -217,11 +232,11 @@
             <h2 class="section-header">&gt; 2. OUR CONTRIBUTION</h2>
 
             <p>
-                LocalGhost is our piece of the puzzle, a privacy-first, self-hosted AI system designed to run entirely on your hardware, built around a fleet of daemons that each handle one job, from ingesting your text, images, audio, and structured data, through building the memory layer, to backup, encryption, duress mode, and <a href="/hard-truths/dictator-brain">ghost.shadowd</a> which exists to challenge your thinking instead of confirming it. The fleet starts at ten daemons and will grow over time as new modalities and jobs are added. Hardware tiers run from Raspberry Pi to rack mount.
+                LocalGhost is our piece of the puzzle, a privacy-first, self-hosted AI system designed to run entirely on your hardware, built around a fleet of daemons that each handle one job, from ingesting your text, images, audio and structured data, through building the memory layer, to encryption, the wipe PIN and <a href="/hard-truths/dictator-brain">ghost.shadowd</a>, which exists to challenge your thinking instead of confirming it. Eleven daemons ship in wisp, and the fleet will grow as new modalities and jobs are added. Today it runs on a Debian machine of your own with an NVIDIA GPU, and the box we build is planned for specter (section 3).
             </p>
 
             <p>
-                <span class="highlight">The technical details live in the repo.</span> Architecture, security model, roadmap phases, hardware specs, all documented there.
+                <span class="highlight">The technical details live in the repo.</span> Architecture, the vault and its PINs, what leaves the box and where it is going, all documented there.
             </p>
 
             <div class="repo-links">
@@ -229,14 +244,14 @@
                     <span class="repo-icon">→</span>
                     <span class="repo-text">
                         <strong>README.md</strong>
-                        <span>Architecture, daemons, roadmap, hardware tiers</span>
+                        <span>Architecture, daemons, what leaves the box, where it is going</span>
                     </span>
                 </a>
-                <a href="https://github.com/LocalGhostDao/localghost/blob/main/docs/SECURITY.md" target="_blank" class="repo-link">
+                <a href="https://github.com/LocalGhostDao/localghost/blob/main/SECURITY.md" target="_blank" class="repo-link">
                     <span class="repo-icon">→</span>
                     <span class="repo-text">
                         <strong>SECURITY.md</strong>
-                        <span>Hidden volumes, duress mode, the purge</span>
+                        <span>How to report a vulnerability, the scope, the site key</span>
                     </span>
                 </a>
                 <a href="/setup" class="repo-link">
@@ -256,16 +271,41 @@
             </div>
 
             <p>
-                Current status, Phase 2. The daemons for notes, voice, photos and video, location, health data, search and chat run every day on the development box, and <a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> goes through each of them with what it costs. Software releases are named after ghosts, smallest first. Every 0.x release is a <code>wisp</code>, 1.x will be <code>shade</code>, and <code>specter</code>, <code>phantom</code> and <code>poltergeist</code> come after. The current one, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.2">wisp 0.0.2</a>, came out on 2 October 2026, and hardware ships after the software is stable.
+                Current status, wisp. The daemons for notes, voice, photos and video, location, health data, search and chat run every day on the development box, and <a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> goes through each of them with what it costs. Software releases are named after ghosts, smallest first. Every 0.x release is a <code>wisp</code>, 1.x will be <code>shade</code>, and <code>specter</code>, <code>phantom</code> and <code>poltergeist</code> come after. The current one, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3">wisp 0.0.3</a>, came out on 3 October 2026, and hardware ships after the software is stable.
             </p>
 
-            <!-- SECTION 3: HOW TO HELP -->
-            <h2 class="section-header">&gt; 3. HOW TO HELP</h2>
+
+            <!-- SECTION 3: WHAT COMES WHEN -->
+            <h2 class="section-header" id="releases">&gt; 3. WHAT COMES WHEN</h2>
+
+            <p>
+                Releases are named after ghosts, smallest first, and the name is the line while the number is the cut. Every 0.x release is a <code>wisp</code> and 1.x will be <code>shade</code>, with <code>specter</code>, <code>phantom</code> and <code>poltergeist</code> after it. Everything that isn't built yet sits under the earliest line it's planned for. None of it has a date, and if a piece moves, this table and the <a href="/changelog">changelog</a> say so.
+            </p>
+
+            <div class="release-table-wrap">
+                <table class="release-table">
+                    <tbody>
+                        <tr class="out"><th>wisp 0.0.1 to 0.0.3 <span class="when">OUT</span></th><td>What runs today. The vault with one PIN and a wipe PIN, the photo archive with captions, tags and search, the trail on the box's own map, a story for every day, memories, the chat, news and prices, health and voice notes, notifications, releases the phone deploys with a rollback, a lost phone retired by its key from the box, and since 0.0.3 the weather, pulled by the box once a day for the world's three thousand larger places, so the phone sends no position.</td></tr>
+                        <tr><th>later wisps <span class="when">0.x</span></th><td>The weather on home and the lock screen, a retire button on the phone's DEVICES screen, shorter device certificates the phone renews itself, an offline release key that signs beside the site key, and the decoy volume, opened by a PIN of its own. A release every few weeks.</td></tr>
+                        <tr><th>shade <span class="when">1.x</span></th><td>Two FIDO2 hardware keys for setup and recovery, and with them the first recovery path. As many duress PINs as you want, each opening its own volume or wiping the box (<a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>). Imports of bank, fitness and other exports through ghost.tallyd's parsers. Memories rolled up into episodes. The other 27 of ghost.shadowd's detectors and its cold-read arbiter.</td></tr>
+                        <tr><th>specter <span class="when">AFTER SHADE</span></th><td>The box we build and sell, the <a href="/#hardware">Black Box</a> on the home page, with its two hardware keys in the box.</td></tr>
+                        <tr><th>phantom <span class="when">AFTER SPECTER</span></th><td>Mail, a browser extension, and always-on listening that keeps audio in a RAM buffer only until it's transcribed (<a href="/hard-truths/overhears">What the Ghost Owes the People It Overhears</a>).</td></tr>
+                        <tr><th>poltergeist <span class="when">THE LAST LINE</span></th><td><a href="/#mist">The Mist</a> and ghost.mistd, encrypted and sharded backup spread across other people's boxes, with no central server.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                The near end of this list is in the repository's README under "Where it is going", and each release's notes list its known gaps.
+            </p>
+
+            <!-- SECTION 4: HOW TO HELP -->
+            <h2 class="section-header">&gt; 4. HOW TO HELP</h2>
 
             <div class="help-options">
                 <div class="help-card featured">
                     <div class="help-title">Watch the Repo</div>
-                    <p>Building in the open. Star the repo, watch for releases, and follow along as daemons land and Mist stands up.</p>
+                    <p>Building in the open. Star the repo, watch for releases, and follow along as each cut lands.</p>
                     <code><a href="https://github.com/LocalGhostDao/localghost" target="_blank">github.com/LocalGhostDao/localghost</a></code>
                 </div>
                 <div class="help-card">
@@ -273,12 +313,12 @@
                     <p>See a gap in section 1? Fill it. Even partial solutions matter. The <a href="/directory">Directory</a> tracks what exists, add yours when it's ready.</p>
                 </div>
                 <div class="help-card">
-                    <div class="help-title">Write tallyd Plugins</div>
-                    <p>Data parsers for <code>ghost.tallyd</code>, bank exports, health apps, fitness trackers, anything that exports data. Plugin architecture makes this modular.</p>
+                    <div class="help-title">Write tallyd Parsers</div>
+                    <p>Data parsers for <code>ghost.tallyd</code>, bank exports, health apps, fitness trackers, anything that exports data. The imports are planned for shade, and today tallyd takes only the Health Connect sync and public prices, so this is open ground.</p>
                 </div>
                 <div class="help-card">
                     <div class="help-title">Test and Break Things</div>
-                    <p>Security review, edge cases, UX feedback. When builds exist, we need people who'll try to break them.</p>
+                    <p>Security review, edge cases, UX feedback. wisp is out, so there's something to break, and <a href="https://github.com/LocalGhostDao/localghost/blob/main/SECURITY.md" target="_blank">SECURITY.md</a> says how to report what you find.</p>
                 </div>
                 <div class="help-card">
                     <div class="help-title">Fund Development</div>

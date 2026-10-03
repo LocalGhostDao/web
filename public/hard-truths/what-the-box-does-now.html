@@ -75,7 +75,7 @@
             }
         },
         "datePublished": "2026-09-29",
-        "dateModified": "2026-09-29",
+        "dateModified": "2026-10-03",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://www.localghost.ai/hard-truths/what-the-box-does-now"
@@ -264,7 +264,7 @@
         <h2 class="section-header">&gt; 2. Where the key lives</h2>
 
         <p>
-            The archive sits on a LUKS2 volume and the volume key is sealed to the box's TPM <a href="#ref-3" class="cite">[3]</a>, through Google's go-tpm, the one dependency outside the standard library that isn't a golang.org/x package. Sealed means the TPM hands the key back only to this board, in the boot state it measured when the key went in. Pull the disk and put it in another machine and what you have is ciphertext with no key on it anywhere, which is the property I wanted and the property that bites later (below). What releases the key is the PIN, typed in the phone app over the mutual TLS above. The PIN scheme is the one from <a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>, and the two FIDO2 hardware keys are for setup and recovery, not for the daily unlock.
+            The archive sits on a LUKS2 volume and the volume key is sealed to the box's TPM <a href="#ref-3" class="cite">[3]</a>, through Google's go-tpm, the one dependency outside the standard library that isn't a golang.org/x package. Sealed means the TPM hands the key back only to this board, in the boot state it measured when the key went in. Pull the disk and put it in another machine and what you have is ciphertext with no key on it anywhere, which is the property I wanted and the property that bites later (below). What releases the key is the PIN, typed in the phone app over the mutual TLS above. The PIN scheme is the one from <a href="/hard-truths/honeypot">The Honeypot Under Your Desk</a>, and the two FIDO2 hardware keys, planned for shade (1.x) at the earliest, are for setup and recovery, not for the daily unlock.
         </p>
 
         <p>
@@ -272,11 +272,11 @@
         </p>
 
         <p>
-            A box without a TPM (a software TPM, an older board, a virtual machine on someone's laptop) runs the same code path with the seal step missing. The volume key is then derived from the PIN alone, Argon2id as the Honeypot post describes <a href="#ref-4" class="cite">[4]</a>, and the health tool says so in plain words rather than pretending the seal is there. A box without hardware keys falls back the same way for setup, PIN only, and says that too. I'd rather a box tell you it's weaker than refuse to run.
+            A box without a TPM (a software TPM, an older board, a virtual machine on someone's laptop) runs the same code path with the seal step missing. The volume key is then derived from the PIN alone, Argon2id as the Honeypot post describes <a href="#ref-4" class="cite">[4]</a>, and the health tool says so in plain words rather than pretending the seal is there. Until the hardware keys arrive in shade, every box sets up with the PIN alone. I'd rather a box tell you it's weaker than refuse to run.
         </p>
 
         <p>
-            The prices run in opposite directions. Without a TPM the PIN is the whole secret, and a short PIN under Argon2id is still a short PIN. With one, the key is married to a board, and a dead board means the recovery path (the hardware keys and the recovery key described on the <a href="/about">About page</a>) rather than a disk swap.
+            The prices run in opposite directions. Without a TPM the PIN is the whole secret, and a short PIN under Argon2id is still a short PIN. With one, the key is married to a board, and a dead board means the recovery path rather than a disk swap, and wisp has none yet (the hardware keys and the recovery key described on the <a href="/about">About page</a> are planned for shade).
         </p>
 
         <h2 class="section-header">&gt; 3. The shape of it</h2>
@@ -298,7 +298,7 @@
             <dt>Daemons</dt><dd>ghost.secd, framed, searchd, oracled, synthd, watchd, noted, voiced, tallyd, cued. Go, standard library plus go-tpm and three golang.org/x packages. Postgres and Redis.</dd>
             <dt>Transport</dt><dd>Mutual TLS to secd only. The box is its own CA (ECDSA P-256). The phone pins the server certificate's SHA-256 fingerprint. Anything else gets 503.</dd>
             <dt>Enrolment</dt><dd>One animated QR, 858 bytes (client certificate, PKCS#8 key, host, port, name, server fingerprint), 8 data + 4 parity frames, one second each, 8 to 12 seconds. No CSR, no pairing code, no network exchange.</dd>
-            <dt>Unlock</dt><dd>A PIN typed in the phone app releases the TPM-sealed key and issues a two-day session token. FIDO2 keys for setup and recovery. No TPM or no hardware key means PIN only with Argon2id, and the health tool says so.</dd>
+            <dt>Unlock</dt><dd>A PIN typed in the phone app releases the TPM-sealed key and issues a two-day session token. FIDO2 keys for setup and recovery are planned for shade. No TPM means PIN only with Argon2id, and the health tool says so.</dd>
             <dt>Models</dt><dd>Gemma 4 12B instruct Q4_K_M with its F16 vision projector on llama-server (llama.cpp v0.5.0). EmbeddingGemma 300M Q8_0 for search. Gemma 4 E2B UD-Q2_K_XL (2.2 GB) on the phone.</dd>
             <dt>Search</dt><dd>Postgres full-text search and vector search, fused with reciprocal rank fusion. Web pages are read by the phone, never by the box.</dd>
             <dt>Map data</dt><dd>OpenStreetMap land polygons, Geofabrik continent extracts (79 GB), GeoNames, Natural Earth, all cut into tiles on the box.</dd>
