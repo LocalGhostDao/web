@@ -248,9 +248,9 @@
                             </tr>
                             <tr class="group"><th colspan="4">Engines a box builds</th></tr>
                             <tr>
-                                <td data-label="Set">go<span class="set-meta">57 MB<br>pinned</span></td>
-                                <td data-label="Files"><code>go1.25.4.linux-amd64.tar.gz</code></td>
-                                <td data-label="Where it comes from">The official Go release, checked against go.dev's published SHA-256 before it's mirrored. Setup needs it before any Go exists on the box.</td>
+                                <td data-label="Set">go<span class="set-meta">124 MB<br>pinned</span></td>
+                                <td data-label="Files"><code>go1.27.1.linux-amd64.tar.gz</code> <code>go1.25.4.linux-amd64.tar.gz</code></td>
+                                <td data-label="Where it comes from">The official Go releases, checked against go.dev's published SHA-256 before they're mirrored. Setup needs one before any Go exists on the box. Go 1.27.1 is the newest and the one the next release builds with. Go 1.25.4, which is out of support, stays only because setup at wisp 0.0.3 asks for it, and it leaves once that release is replaced.</td>
                                 <td data-label="Terms">BSD 3-Clause<sup class="fn"><a href="#ref4">[4]</a></sup></td>
                             </tr>
                             <tr>
@@ -390,8 +390,8 @@ gpg --verify MANIFEST.txt.asc MANIFEST.txt
 
 <span class="c"># then any file against its line in the manifest, the Go tarball for example</span>
 BUILD=$(sed -n 's/^# Build: //p' MANIFEST.txt)
-curl -sO https://www.localghost.ai/mirror/$BUILD/go/go1.25.4.linux-amd64.tar.gz
-grep " /$BUILD/go/go1.25.4.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/go/| |" | sha256sum -c</pre>
+curl -sO https://www.localghost.ai/mirror/$BUILD/go/go1.27.1.linux-amd64.tar.gz
+grep " /$BUILD/go/go1.27.1.linux-amd64.tar.gz$" MANIFEST.txt | sed "s| /$BUILD/go/| |" | sha256sum -c</pre>
 
                 <h2 class="section-header">&gt; 6. TERMS</h2>
 
