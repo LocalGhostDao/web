@@ -226,7 +226,7 @@ unpacks into one directory named after the commit (`tar xzf ... --strip-componen
 
 ## Releases (`server` and `app`)
 
-`server` is LocalGhost's own release, the set the phone offers as an update ("wisp 0.0.3 is out",
+`server` is LocalGhost's own release, the set the phone offers as an update ("wisp 0.0.4 is out",
 DEPLOY under SETTINGS › SERVER). Its three files are the GitHub release's, unmodified, each pinned by
 the SHA-256 GitHub shows beside the asset: the bundle (`localghost-server-<version>-linux-amd64.tar.gz`,
 the daemons and operator tools, `tools/mirror_fetch.sh` and the pinned key), `RELEASE.txt` (version,
@@ -237,13 +237,13 @@ hash. `terms/localghost-mit.txt` is the repo's LICENSE with a short header.
 
 The box verifies the set with the release's own `mirror_fetch.sh` over a `file://` copy the phone hands
 it, against the key it already holds, then unpacks the bundle and keeps the previous build for a
-rollback. Tested on 3 October 2026: a scratch publish of wisp 0.0.3 (commit c3726d3) signed with a throwaway
+rollback. Tested on 4 October 2026: a scratch publish of wisp 0.0.4 (commit 1062b7f) signed with a throwaway
 key, then the bundled `mirror_fetch.sh` for `server` and for `app` against it, every file matched.
 
-`app` is the Android app from the same release: `localghost-app-0.0.3.apk`, signed with the app's
+`app` is the Android app from the same release: `localghost-app-0.0.4.apk`, signed with the app's
 keystore (signing certificate SHA-256
 `3dcc5e35718036a26cf36373ee53e79f512bf02d97f7017052996d55ddf0cdf4`, checked here by verifying the
-APK's v2 signature and content digest), `localghost-app-0.0.3.apk.asc`, the site key's detached
+APK's v2 signature and content digest), `localghost-app-0.0.4.apk.asc`, the site key's detached
 signature over it, and `APP.txt` (the APK's hash, commit, version and certificate). The APK is not
 byte-reproducible yet, so its pin is the release's. The `.idsig` (APK signature scheme v4, for incremental adb installs) stays on
 GitHub. A phone installs the app once by hand; on the mirror it means a USB copy sets up the phone as
@@ -252,7 +252,9 @@ well as the box. Its terms are `localghost-app` (what is inside under which lice
 
 A new release is six lines replaced in `mirror.conf`: the new file names, the tag in the URLs, and
 the pins from the release page (or `sha256sum` of a copy you cut yourself with
-`tools/cut_release.sh <version>`, which gives the same server bytes). A plain deploy publishes it,
+`tools/cut_release.sh <version>`, which gives the same server bytes with the Go that `RELEASE.txt`
+names, `go=1.27.1` from 0.0.4 on). When a release moves `go.mod` to a new Go, the `go` set gains that
+version's line in the same deploy. A plain deploy publishes it,
 since a changed line is fetched even in a month whose upstream check has already run. If a release
 is cut again under the same tag, the pins change and the publish stops on the old ones until they
 are replaced, which is what happened with wisp 0.0.1 (commit 5354b9b, then 86ee41c with the app). From 0.0.2 on,

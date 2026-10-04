@@ -21,7 +21,7 @@
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-03T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-04T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
@@ -51,7 +51,7 @@
             "url": "https://www.localghost.ai/privacy",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-03",
+            "dateModified": "2026-10-04",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; PRIVACY</div>
                 <h1>Privacy</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-03">3 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-04">4 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -180,7 +180,7 @@
 
                 <ul class="plain-list">
                     <li>Prices from the exchanges and the ECB's exchange rates, fetched by the box.</li>
-                    <li>News feeds and the exchanges' tickers, fetched by the phone in the background with no cookies, so their publishers see the phone's address, and by the box itself when the phone is away.</li>
+                    <li>News feeds and the exchanges' tickers, fetched by the phone on Wi-Fi with no cookies, so their publishers see the phone's address, and by the box itself when the phone is away.</li>
                     <li>Maps, models and releases from the setup mirror, checked against its signed manifest.</li>
                     <li>A coin's own website for its page, and Wikipedia's API only on a box without its own copy of Wikipedia.</li>
                     <li>The forecast for the world's three thousand larger places from Open-Meteo, once a day. The list is the same for every box, so the request says nothing about where you are, and the weather where you are is looked up on the box.</li>
@@ -191,13 +191,12 @@
                 </p>
 
                 <ul class="plain-list">
-                    <li>When a question needs the web, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive. In the same round, a currency question ("100 euro in lei") goes to Frankfurter for the ECB's rate with the amount and the two currencies, and a "who is" or "what is" question goes to Wikipedia's API with the name it asks about.</li>
-                    <li>To know which country it's in, for the phrase packs and the language, the phone hands its newest position to Android's own geocoder, at most every 12 hours unless it has moved 20 km. The geocoder is the operating system's service, not ours. On some phones it answers on the device, and on phones with Google's services it usually sends the position to Google. The app keeps the country it gets back.</li>
+                    <li>When you ask the chat something the box can't answer from what it holds, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive. In the same round, a currency question the box didn't answer ("100 euro in lei") goes to Frankfurter for the ECB's rate with the amount and the two currencies, and a "who is" or "what is" question goes to Wikipedia's summary API with the name it asks about, unless the box has its own copy of Wikipedia, which then answers and nothing is asked.</li>
                     <li>Once a day on Wi-Fi it reads the mirror's manifest to see whether there's a new release.</li>
                 </ul>
 
                 <p>
-                    Up to wisp 0.0.2, a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key. Since wisp 0.0.3 the box answers it from its own daily pull and the phone sends no position for it. An app older than 0.0.3 keeps asking Open-Meteo itself until it's updated.
+                    Up to wisp 0.0.2, a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key. Since wisp 0.0.3 the box answers it from its own daily pull and the phone sends no position for it. Up to wisp 0.0.3, to know which country it was in for the phrase packs, the phone also handed its newest position to Android's geocoder, which on phones with Google's services usually sent it to Google. Since 0.0.4 the box reads the country from its own map data. An app older than these releases keeps doing the old lookups until it's updated.
                 </p>
 
                 <p>

@@ -107,7 +107,7 @@
                 "name": "What does the AI actually do?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The models run on the box, on its GPU when it has one and its CPU when it doesn't (Gemma 4 12B for descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.3 they do these things. Describing and tagging. Every photo gets a description and tags in eleven categories, so you can find it later by what's in it Days and memories. A short story of each day from the photos, the trail, the health data and the check-in, the places you keep going back to, and facts from your notes and chats, each one yours to edit or delete Search and chat. Ask about your own life and it answers from your archive, with the sources it used listed under the answer Noticing. Once a day it writes up a habit or a change from the last few weeks, kept only when every number in it came from your data Arguing back. ghost.shadowd, the critic, runs its first detector. Correlations like sleep against spending wait for the bank and fitness parsers planned for shade The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimise for \"engagement.\" It just tells you the truth."
+                    "text": "The models run on the box, on its GPU when it has one and its CPU when it doesn't (Gemma 4 12B for descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.4 they do these things. Describing and tagging. Every photo gets a description and tags in eleven categories, so you can find it later by what's in it Days and memories. A short story of each day from the photos, the trail, the health data and the check-in, the places you keep going back to, and facts from your notes and chats, each one yours to edit or delete Search and chat. Ask about your own life and it answers from your archive, with the sources it used listed under the answer Noticing. Once a day it writes up a habit or a change from the last few weeks, kept only when every number in it came from your data Arguing back. ghost.shadowd, the critic, runs its first detector. Correlations like sleep against spending wait for the bank and fitness parsers planned for shade The key difference is that this AI has zero incentive to manipulate you. It can't sell you anything, can't show you ads, can't optimise for \"engagement.\" It just tells you the truth."
                 }
             },
             {
@@ -139,7 +139,7 @@
                 "name": "What if I lose my encryption key?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Then your data is gone, and that's by design. We never had access to it, so there's no \"forgot password\" flow and no support ticket that can bring it back. Today, in wisp 0.0.3. The volume key is sealed to your box's TPM, or wrapped by your PIN on a machine without one, and there's no recovery path yet. A dead board or a forgotten PIN loses the archive on that disk, so keep the originals of anything you can't lose somewhere else as well. Coming in shade (1.x) at the earliest, not in wisp. The plan is two hardware security keys per box, and boxes we sell are meant to come with them. At setup you plug both in, and the box makes the master key and splits it between them with Shamir's Secret Sharing, so neither key alone can decrypt anything. Key 1. Kept with the box for daily use. Key 2. Kept somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is the recovery key. If you lose Key 1, Key 2 makes a new pair. If your house burns down with the box and Key 1 inside, Key 2 restores everything to a new box. If you lose both, it's game over. Technical note. The planned keys are FIDO2 hardware tokens with secure elements. The master key never leaves the secure element and only derived keys are used at runtime, with a 2-of-2 split and an optional 2-of-3 mode with a third key."
+                    "text": "Then your data is gone, and that's by design. We never had access to it, so there's no \"forgot password\" flow and no support ticket that can bring it back. Today, in wisp 0.0.4. The volume key is sealed to your box's TPM, or wrapped by your PIN on a machine without one, and there's no recovery path yet. A dead board or a forgotten PIN loses the archive on that disk, so keep the originals of anything you can't lose somewhere else as well. Coming in shade (1.x) at the earliest, not in wisp. The plan is two hardware security keys per box, and boxes we sell are meant to come with them. At setup you plug both in, and the box makes the master key and splits it between them with Shamir's Secret Sharing, so neither key alone can decrypt anything. Key 1. Kept with the box for daily use. Key 2. Kept somewhere safe and separate, a bank vault, a trusted friend's house, your parents' place. This is the recovery key. If you lose Key 1, Key 2 makes a new pair. If your house burns down with the box and Key 1 inside, Key 2 restores everything to a new box. If you lose both, it's game over. Technical note. The planned keys are FIDO2 hardware tokens with secure elements. The master key never leaves the secure element and only derived keys are used at runtime, with a 2-of-2 split and an optional 2-of-3 mode with a third key."
                 }
             },
             {
@@ -411,7 +411,7 @@
             <h2>THE FLEET: LOCAL DAEMONS</h2>
 
             <p>
-                Eleven daemons ship in the current release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3" style="color: var(--terminal);">wisp 0.0.3</a>, ten of them doing their whole
+                Eleven daemons ship in the current release, <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.4" style="color: var(--terminal);">wisp 0.0.4</a>, ten of them doing their whole
                 job every day and ghost.shadowd with its first detector, and one more, ghost.mistd, is planned for poltergeist.
                 Each is a small Go program with one job, so when one of them is wrong, the name of the daemon
                 is the name of the bug. Apart from ghost.secd, they all live on the encrypted volume and exist
@@ -707,7 +707,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
 
             <p>
                 Where an answer describes something that isn't built yet, it names the release line it's planned for, and the <a href="/build#releases" style="color: var(--terminal);">roadmap</a> lists them all. What the current release,
-                <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.3" style="color: var(--terminal);">wisp 0.0.3</a>, does today is on the
+                <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.4" style="color: var(--terminal);">wisp 0.0.4</a>, does today is on the
                 <a href="/about" style="color: var(--terminal);">About page</a> and in its release notes.
             </p>
 
@@ -765,7 +765,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                     <div class="faq-answer">
                         <p>
                             The models run on the box, on its GPU when it has one and its CPU when it doesn't (Gemma 4 12B for
-                            descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.3 they do these things.
+                            descriptions and chat, EmbeddingGemma for search, Whisper for voice notes). In wisp 0.0.4 they do these things.
                         </p>
                         <ul class="faq-list-items">
                             <li><strong>Describing and tagging.</strong> Every photo gets a description and tags in eleven categories, so you can find it later by what's in it</li>
@@ -903,7 +903,7 @@ NO CENTRAL NODE. NO MASTER. JUST THE MESH.</pre>
                             flow and no support ticket that can bring it back.
                         </p>
                         <p>
-                            <strong>Today, in wisp 0.0.3.</strong> The volume key is sealed to your box's TPM, or wrapped by your PIN on a
+                            <strong>Today, in wisp 0.0.4.</strong> The volume key is sealed to your box's TPM, or wrapped by your PIN on a
                             machine without one, and there's no recovery path yet. A dead board or a forgotten PIN loses the archive on
                             that disk, so keep the originals of anything you can't lose somewhere else as well.
                         </p>
