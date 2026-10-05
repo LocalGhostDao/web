@@ -6,7 +6,7 @@
 
         <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
         <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
-        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.4, and the sets on the setup mirror.">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.5, and the sets on the setup mirror.">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/changelog">
@@ -15,20 +15,20 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/changelog">
         <meta property="og:title" content="Changelog, LocalGhost">
-        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.4 in October 2026, and the sets on the setup mirror.">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.5 in October 2026, and the sets on the setup mirror.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-04T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-05T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/changelog">
         <meta name="twitter:title" content="Changelog, LocalGhost">
-        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.4 in October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.5 in October 2026, and the sets on the setup mirror.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -47,11 +47,11 @@
             "@type": "WebPage",
             "name": "Changelog",
             "headline": "Changelog",
-            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.4, and the sets on the setup mirror.",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.5, and the sets on the setup mirror.",
             "url": "https://www.localghost.ai/changelog",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-04",
+            "dateModified": "2026-10-05",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; CHANGELOG</div>
                 <h1>Changelog</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-04">4 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-05">5 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -147,6 +147,34 @@
                 <p class="page-lede">
                     Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
                 </p>
+
+                <div class="entry" id="wisp-0.0.5">
+                    <h3>wisp 0.0.5, a box from the release alone</h3>
+                    <span class="when">5 OCTOBER 2026 // TAG v0.0.5 // COMMIT b5ef714</span>
+                    <p>
+                        The fifth cut of wisp, on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.5">GitHub release</a> with the same assets as before and on the setup mirror as the <code>server</code> and <code>app</code> sets. <a href="/setup">Set Up a Box</a> now starts from the release.
+                    </p>
+                    <ul class="plain-list">
+                        <li>A box is set up from the release alone. The bundle carries <code>ghost-setup</code>, <code>ghost-qr</code> and the operator scripts, so it's download, check the signature, unpack and <code>sudo localghost/tools/install.sh</code>, with no git, Go or make. Setup builds the model engine for the card the driver reports, with no number in a script to change.</li>
+                        <li>The volume can be a file on a drive that's mounted at boot, allocated in full, instead of a whole empty disk. The seal, the PINs and the wipe work the same.</li>
+                        <li>English Wikipedia is imported into the box's own database, read once and never at a question, and the file is removed afterwards. The chat, the coin pages and a new WIKIPEDIA page read it, and nothing of a question leaves the box.</li>
+                        <li>The phone no longer asks Frankfurter for a currency, since the box answers from the ECB table it keeps.</li>
+                        <li>The check-in and a memory each have a page of their own, a notification opens the thing it's about, and a question can be asked aloud, heard on the box and kept nowhere.</li>
+                        <li>One memory per person, and a trip of several outings becomes one trip. Box Status says what ghost.synthd did in its last pass.</li>
+                        <li>SETTINGS names the build the box runs, keeps the last four releases on a shelf to put back on, and finds the release on the mirror again. The widget and the lock screen lead with BTC and ETH.</li>
+                    </ul>
+                    <p>
+                        A box on 0.0.4 can take it from the phone with DEPLOY, the first release a box can take that way, since every earlier bundle carried a file the box's unpacker refused. After the first unlock you still run <code>update.sh</code> yourself, and secd queuing it is next.
+                    </p>
+                </div>
+
+                <div class="entry" id="setup-short">
+                    <h3>Set Up a Box, shorter</h3>
+                    <span class="when">4 OCTOBER 2026</span>
+                    <p>
+                        <a href="/setup">Set Up a Box</a> opens with the whole setup in five moves, and each step shows what to run and what it asks, with the reasons and the less common cases folded under it. It also says to leave Wikipedia out with <code>GHOST_WIKI=0</code> for now: the reader in wisp 0.0.4 can't open the published file, and the fix comes with 0.0.5. A setup from the release alone, with nothing to compile, and the volume as an encrypted file on any drive are on the <a href="/build#releases">roadmap</a> for a later wisp.
+                    </p>
+                </div>
 
                 <div class="entry" id="wisp-0.0.4">
                     <h3>wisp 0.0.4, Go 1.27.1 and no geocoder</h3>
@@ -158,7 +186,7 @@
                         <li>The server is built with Go 1.27.1. The earlier cuts used Go 1.25.4, which has had thirty-five standard-library advisories fixed since. Setup and every redeploy install the Go that <code>go.mod</code> names from the mirror, the build never fetches a toolchain by itself, and <code>RELEASE.txt</code> says which Go built the set, so anyone rebuilding the bundle to check its hashes knows which one to use.</li>
                         <li>The phone no longer asks its geocoder which country it's in, which on most phones was a network call to Google carrying the fix. The box answers from its own Natural Earth map.</li>
                         <li>A "what is" question that the box's own copy of Wikipedia answers no longer goes to the web at all.</li>
-                        <li><code>update.sh</code> takes English Wikipedia, about 50 GB, with the other sets whenever the volume has 60 GB free, and <code>GHOST_WIKI=0</code> leaves it out.</li>
+                        <li><code>update.sh</code> takes English Wikipedia, about 50 GB, with the other sets whenever the volume has 60 GB free, and <code>GHOST_WIKI=0</code> leaves it out. Found after the cut: the ZIM reader in 0.0.4 can't open the published file, so leave it out until 0.0.5, where the fix is.</li>
                         <li>A coin in CRYPTO50 priced at more than twenty times its month's base is held at its last good price rather than moving the whole index, and <code>ghost-cli ghost.tallyd rates index=1</code> lays the index out coin by coin.</li>
                         <li>With the map open, the dot follows the phone every few seconds.</li>
                     </ul>

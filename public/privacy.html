@@ -21,7 +21,7 @@
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-04T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-05T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
@@ -51,7 +51,7 @@
             "url": "https://www.localghost.ai/privacy",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-04",
+            "dateModified": "2026-10-05",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; PRIVACY</div>
                 <h1>Privacy</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-04">4 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-05">5 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -191,12 +191,12 @@
                 </p>
 
                 <ul class="plain-list">
-                    <li>When you ask the chat something the box can't answer from what it holds, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive. In the same round, a currency question the box didn't answer ("100 euro in lei") goes to Frankfurter for the ECB's rate with the amount and the two currencies, and a "who is" or "what is" question goes to Wikipedia's summary API with the name it asks about, unless the box has its own copy of Wikipedia, which then answers and nothing is asked.</li>
+                    <li>When you ask the chat something the box can't answer from what it holds, the phone runs the search itself (DuckDuckGo, or Brave with your own key) and reads the pages, so the search engine sees the question's words and never your archive. In the same round, a "who is" question goes to Wikipedia's summary API with the name it asks about, unless the box has its own copy of Wikipedia, which then answers and nothing is asked.</li>
                     <li>Once a day on Wi-Fi it reads the mirror's manifest to see whether there's a new release.</li>
                 </ul>
 
                 <p>
-                    Up to wisp 0.0.2, a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key. Since wisp 0.0.3 the box answers it from its own daily pull and the phone sends no position for it. Up to wisp 0.0.3, to know which country it was in for the phrase packs, the phone also handed its newest position to Android's geocoder, which on phones with Google's services usually sent it to Google. Since 0.0.4 the box reads the country from its own map data. An app older than these releases keeps doing the old lookups until it's updated.
+                    Up to wisp 0.0.2, a weather question that named no place also sent the phone's position, rounded to two decimal places (about a kilometre), to Open-Meteo, which needs no account and no key. Since wisp 0.0.3 the box answers it from its own daily pull and the phone sends no position for it. Up to wisp 0.0.3, to know which country it was in for the phrase packs, the phone also handed its newest position to Android's geocoder, which on phones with Google's services usually sent it to Google. Since 0.0.4 the box reads the country from its own map data. Up to wisp 0.0.4 a currency question the box didn't answer also went from the phone to Frankfurter, and since 0.0.5 the box answers it from the ECB table it keeps. An app older than these releases keeps doing the old lookups until it's updated.
                 </p>
 
                 <p>
