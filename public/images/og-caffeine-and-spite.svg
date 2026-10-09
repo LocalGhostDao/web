@@ -40,12 +40,12 @@
 
 <line x1="80" y1="300" x2="200" y2="300" stroke="#33FF00" stroke-width="2"/>
 
-<text x="80" y="356" class="mono text-dim" font-size="22" font-weight="400">An AskReddit thread asked millennials how they're</text>
-<text x="80" y="388" class="mono text-dim" font-size="22" font-weight="400">holding up. Badly, mostly, and still holding. A man with</text>
-<text x="80" y="420" class="mono text-dim" font-size="22" font-weight="400">$40 and no callbacks still asked "But how are you?"</text>
+<text x="80" y="356" class="mono text-dim" font-size="22" font-weight="400">Millennials are holding up badly, mostly. The world</text>
+<text x="80" y="388" class="mono text-dim" font-size="22" font-weight="400">is better than it feels by most of the numbers, and</text>
+<text x="80" y="420" class="mono text-dim" font-size="22" font-weight="400">the tide that lifted it is going out.</text>
 
 <g class="mono" font-size="17" fill="#a0a0a0">
-    <text x="80" y="500">house prices <tspan fill="#33ff00">+259%</tspan>, earnings <tspan fill="#33ff00">+68%</tspan>, 1997 to 2016  |  a home in England, <tspan fill="#33ff00">8.3x</tspan> earnings</text>
+    <text x="80" y="500">child deaths <tspan fill="#33ff00">-60%</tspan> since 1990  |  <tspan fill="#33ff00">1.5bn</tspan> out of poverty  |  trade peaked at <tspan fill="#33ff00">61%</tspan> of GDP, 2008</text>
 </g>
 
 <line x1="80" y1="556" x2="1120" y2="556" class="divider" stroke-width="1"/>
