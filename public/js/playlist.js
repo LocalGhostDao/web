@@ -28,7 +28,8 @@
         { num: '17', title: 'Bucket',                          src: '/assets/playlist/17. Bucket.mp3',                   post: '/hard-truths/index-not-a-person' },
         { num: '18', title: 'A Ghost Should Not Possess',      src: '/assets/playlist/18. A Ghost Should Not Possess.mp3',  post: '/hard-truths/should-not-possess' },
         { num: '19', title: 'Late May, Flat',      src: '/assets/playlist/19. Late May, Flat.mp3',  post: '/hard-truths/the-expensive-part' },
-        { num: '20', title: 'The Only Copy',       src: '/assets/playlist/20. The Only Copy.mp3',   post: '/hard-truths/what-the-box-does-now' }
+        { num: '20', title: 'The Only Copy',       src: '/assets/playlist/20. The Only Copy.mp3',   post: '/hard-truths/what-the-box-does-now' },
+        { num: '21', title: 'But How Are You',     src: '/assets/playlist/21. But How Are You.mp3', post: '/hard-truths/caffeine-and-spite' }
     ];
 
     var audio       = document.getElementById('pl-audio');

@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var CACHE = 'localghost-playlist-v1';
+var CACHE = 'localghost-playlist-v2';
 
 self.addEventListener('install', function () {
     self.skipWaiting();
