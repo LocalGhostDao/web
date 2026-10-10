@@ -172,7 +172,7 @@
         </div>
 
         <p>
-            I switched from ChatGPT to Claude on March 5th 2026 after the OpenAI Pentagon deal. Anthropic refused to let the Department of Defense use Claude for mass surveillance or autonomous weapons, got designated a supply chain risk for it, and Trump ordered federal agencies to stop using their technology. [1] OpenAI stepped in hours later with a contract of their own, and Altman admitted it was rushed and looked "opportunistic and sloppy." [2] ChatGPT uninstalls surged, Claude went to number one on the App Store [3], and I was one of the people who moved, not because Claude is better at everything (it isn't) but because I wasn't comfortable sending my thoughts through a company that had just undercut a competitor for taking a position I agreed with.
+            I switched from ChatGPT to Claude on 5 March 2026 after the OpenAI Pentagon deal. Anthropic refused to let the Department of Defense use Claude for mass surveillance or autonomous weapons, got designated a supply chain risk for it, and Trump ordered federal agencies to stop using their technology. [1] OpenAI stepped in hours later with a contract of their own, and Altman admitted it was rushed and looked "opportunistic and sloppy." [2] ChatGPT uninstalls surged, Claude went to number one on the App Store [3], and I was one of the people who moved, not because Claude is better at everything (it isn't) but because I wasn't comfortable sending my thoughts through a company that had just undercut a competitor for taking a position I agreed with.
         </p>
 
         <p>
@@ -204,11 +204,11 @@
         <h2 class="section-header">&gt; 2. What happens when everything runs the same model</h2>
 
         <p>
-            The lock-in problem gets worse when you realise that most of the AI-powered products being built right now run on the same three or four foundation models underneath. Your note-taking app, your code editor, your email assistant, your customer support tool, your search engine, and increasingly your operating system are all calling the same handful of APIs. When everything runs on GPT-4 or Claude or Gemini, a subtle bias in one model propagates to everything built on top of it, a vulnerability in one model's training data affects every product that uses it, and a pricing change by one provider hits every business that depends on it simultaneously.
+            The lock-in problem gets worse when you realise that most of the AI-powered products being built right now run on the same three or four foundation models. Your note-taking app, your code editor, your email assistant, your customer support tool, your search engine, and increasingly your operating system are all calling the same handful of APIs. When everything runs on GPT-4 or Claude or Gemini, a subtle bias in one model propagates to everything built on top of it, a vulnerability in one model's training data affects every product that uses it, and a pricing change by one provider hits every business that depends on it simultaneously.
         </p>
 
         <p>
-            This is the supply chain risk that the <a href="/hard-truths/inflection">Inflection post</a> described at the extraction layer, but it's also a resilience problem. If a single model provider has a bad day, outage, policy change, sudden content restriction, every product built on it has the same bad day. We've already seen this happen with API pricing changes that killed startups overnight and content policy updates that broke existing workflows without warning. The monoculture means there's nowhere to fail over to because everyone's failover runs on the same infrastructure.
+            This is the supply chain risk that the <a href="/hard-truths/inflection">Inflection post</a> described at the extraction layer, but it's also a resilience problem. If a single model provider has a bad day (outage, policy change, sudden content restriction), every product built on it has the same bad day. We've already seen this happen with API pricing changes that killed startups overnight and content policy updates that broke existing workflows without warning. The monoculture means there's nowhere to fail over to because everyone's failover runs on the same infrastructure.
         </p>
 
         <div class="signal">
@@ -222,21 +222,21 @@
         </p>
 
         <p>
-            The argument I'm making with LocalGhost is that for most of what a personal AI needs to do, good enough is enough. Summarising your journal entries doesn't require frontier intelligence, tagging your photos doesn't need a trillion parameters, and correlating your sleep data with your spending patterns is a problem a well-prompted 7B model can handle today. The tasks that matter for privacy, organising your data, finding patterns in your life, being honest with you about what the data shows, these don't need to be solved by the most capable model ever trained, they need to be solved by a model that runs on your hardware, answers to nobody, and can be swapped when something better comes along.
+            The argument I'm making with LocalGhost is that for most of what a personal AI needs to do, good enough is enough. Summarising your journal entries doesn't require frontier intelligence, tagging your photos doesn't need a trillion parameters, and correlating your sleep data with your spending patterns is a problem a well-prompted 7B model can handle today. The tasks that matter for privacy (organising your data, finding patterns in your life, being honest with you about what the data shows) can be solved by a model that runs on your hardware, answers to nobody, and can be swapped when something better comes along, and none of them needs the most capable model ever trained.
         </p>
 
         <p>
-            Open-weight models are improving fast enough that the gap between local and cloud capability is narrowing every few months. Llama, Mistral, Qwen, Gemma, the open weights ecosystem is producing models that would have been considered frontier eighteen months ago, and they run on consumer hardware (not great, but OK). You won't be at the forefront of progress with a local setup, and I think for what we're building that will be enough, because the trade-off is a marginal capability difference versus complete architectural independence, and for personal AI the independence matters more than the margin.
+            Open-weight models are improving fast enough that the gap between local and cloud capability is narrowing every few months. The open weights ecosystem (Llama, Mistral, Qwen, Gemma) is producing models that would have been considered frontier eighteen months ago, and they run on consumer hardware (not great, but OK). You won't be at the forefront of progress with a local setup, and I think for what we're building that will be enough, because the trade-off is a marginal capability difference versus complete architectural independence, and for personal AI the independence matters more than the margin.
         </p>
 
         <h2 class="section-header">&gt; 4. HOW WE'RE BUILDING THE TEST</h2>
 
         <p>
-            What made the switch from ChatGPT to Claude worse is that I had no way of knowing whether Claude was better or worse for my life admin use case. I assumed it was OK because Claude said so, because the benchmarks showed similar performance and because I had been using Claude for coding for over a year already. But I don't have a preset list of expected outcomes for the things I use a model for, which means I'm relying on someone else's tests to decide whether a tool I use every day got better or worse, and their tests measure general capability, not whether the model understands my codebase or produces Go code the way I write it. With cloud models you can at least lean on the provider's evaluation infrastructure and hope their priorities overlap with yours. With open-weight models running locally you can't even take that for granted, because nobody is testing whether Llama 3 handles your specific workflow better than Llama 2 did, that's entirely your problem, and most people don't have a systematic way to answer it.
+            What made the switch from ChatGPT to Claude worse is that I had no way of knowing whether Claude was better or worse for my life admin use case. I assumed it was OK because Claude said so, because the benchmarks showed similar performance and because I had been using Claude for coding for over a year already. But I don't have a preset list of expected outcomes for the things I use a model for, so I'm relying on someone else's tests to decide whether a tool I use every day got better or worse, and their tests measure general capability, not whether the model understands my codebase or produces Go code the way I write it. With cloud models you can at least lean on the provider's evaluation infrastructure and hope their priorities overlap with yours. With open-weight models running locally you can't even take that for granted, because nobody is testing whether Llama 3 handles your specific workflow better than Llama 2 did, that's entirely your problem, and most people don't have a systematic way to answer it.
         </p>
 
         <p>
-            The infrastructure for model evaluation exists, and it's substantial. MMLU, HumanEval, Chatbot Arena, dozens of standardised benchmarks that measure general capability across reasoning, coding, maths, instruction following. Enterprise teams have frameworks like OpenAI Evals, DeepEval, and Langfuse for building custom test suites against their production use cases. None of this is what I'm describing, because all of it is built for developers evaluating models before deployment or companies monitoring production systems. It is not built for a person with a box under their desk who wants to swap from Llama to Mistral and know whether the daemons that organise their life still work the way they're supposed to. The evaluation gap is at the personal level, and that's the gap we're going to be building into LocalGhost (I think, anyway, we'll see if the approach survives contact with real users).
+            The infrastructure for model evaluation exists, and it's substantial. MMLU, HumanEval, Chatbot Arena, dozens of standardised benchmarks that measure general capability across reasoning, coding, maths, instruction following. Enterprise teams have frameworks like OpenAI Evals, DeepEval, and Langfuse for building custom test suites against their production use cases. None of this is what I'm describing, because all of it is built for developers evaluating models before deployment or companies monitoring production systems, not for a person with a box under their desk who wants to swap from Llama to Mistral and know whether the daemons that organise their life still work the way they're supposed to. The evaluation gap is at the personal level, and that's the gap we're going to be filling with LocalGhost (I think, anyway, we'll see if the approach survives contact with real users).
         </p>
 
         <p>
@@ -264,22 +264,22 @@
         </p>
 
         <div class="final-words">
-            The problem I haven't solved is what happens when you change. A personal test suite built from six months of your corrections enforces the preferences of who you were six months ago, and without some kind of decay or recency weighting it calcifies into a fossil that penalises models for adapting to who you're becoming. I'm building a system designed to free you from one kind of lock-in and I don't yet know how to prevent it from creating another.
+            The problem I haven't solved is what happens when you change. A personal test suite built from six months of your corrections enforces the preferences of who you were six months ago, and without some kind of decay or recency weighting it calcifies and starts penalising models for adapting to who you're becoming. I'm building a system designed to free you from one kind of lock-in and I don't yet know how to prevent it from creating another.
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
         <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="reference">
-            [1] CNBC, March 5 2026. Reporting on the Department of Defense officially designating Anthropic a supply chain risk after negotiations collapsed over autonomous weapons and domestic mass surveillance, and Trump's directive ordering federal agencies to cease using Anthropic's technology. <a href="https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html" target="_blank" rel="noopener">cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran</a>
+            [1] CNBC, 5 March 2026. Reporting on the Department of Defense officially designating Anthropic a supply chain risk after negotiations collapsed over autonomous weapons and domestic mass surveillance, and Trump's directive ordering federal agencies to cease using Anthropic's technology. <a href="https://www.cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran.html" target="_blank" rel="noopener">cnbc.com/2026/03/05/anthropic-pentagon-ai-claude-iran</a>
         </p>
 
         <p class="reference">
-            [2] Fortune, March 3 2026. Source for Altman's internal memo acknowledging OpenAI "shouldn't have rushed" the Pentagon deal and the "opportunistic and sloppy" quote. Also covers the renegotiated contract terms adding surveillance restrictions. <a href="https://fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic/" target="_blank" rel="noopener">fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic</a>
+            [2] Fortune, 3 March 2026. Source for Altman's internal memo acknowledging OpenAI "shouldn't have rushed" the Pentagon deal and the "opportunistic and sloppy" quote. Also covers the renegotiated contract terms adding surveillance restrictions. <a href="https://fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic/" target="_blank" rel="noopener">fortune.com/2026/03/03/sam-altman-openai-pentagon-renegotiating-deal-anthropic</a>
         </p>
 
         <p class="reference">
-            [3] TechCrunch, March 2 2026. Source for the 295% surge in ChatGPT uninstalls, the 51% jump in Claude US downloads, and Claude reaching number one on the US App Store. Based on Sensor Tower market intelligence data. <a href="https://techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal/" target="_blank" rel="noopener">techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal</a>
+            [3] TechCrunch, 2 March 2026. Source for the 295% surge in ChatGPT uninstalls, the 51% jump in Claude US downloads, and Claude reaching number one on the US App Store. Based on Sensor Tower market intelligence data. <a href="https://techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal/" target="_blank" rel="noopener">techcrunch.com/2026/03/02/chatgpt-uninstalls-surged-by-295-after-dod-deal</a>
         </p>
 
     </div>

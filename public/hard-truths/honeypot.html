@@ -215,7 +215,7 @@
         <h2 class="section-header">&gt; 1. Where encryption stops helping</h2>
 
         <p>
-            Encryption protects data at rest. Encryption does not protect you when someone is standing in front of you with the legal authority to compel you to unlock the device. Border agents can require decryption in most jurisdictions (not all, but most) [2], courts can issue warrants compelling cooperation, and the wrench attack is the simplest version of the same threat model, a thirty-dollar wrench applied to a kneecap defeats any cryptographic system, because the attacker doesn't need to break the math, they just need to break the person.
+            Encryption protects data at rest but does not protect you when someone is standing in front of you with the legal authority to compel you to unlock the device. Border agents can require decryption in most jurisdictions (not all, but most) [2], courts can issue warrants compelling cooperation, and the wrench attack is the simplest version of the same threat model, a thirty-dollar wrench (five dollars in the xkcd, but inflation gets to everything, wrenches included) applied to a kneecap defeats any cryptographic system, because the attacker doesn't need to break the maths, they just need to break the person.
         </p>
 
         <p>
@@ -229,13 +229,13 @@
         </p>
 
         <p>
-            At the other end of the coercion scale there is a hard limit. A border agent in an adversarial jurisdiction can compel every PIN you have, someone holding a weapon to your head can compel every PIN you have, and no duress architecture, including this one, physically prevents you from sharing every PIN when the cost of refusing is high enough. What v1 offers against unlimited coercion is structural ambiguity about completeness and nothing stronger, and I want to be clear that ambiguity is not the same as physical impossibility.
+            At the other end of the coercion scale there is a hard limit. A border agent in an adversarial jurisdiction can compel every PIN you have, someone holding a weapon to your head can compel every PIN you have, and no duress architecture, including this one, physically prevents you from sharing every PIN when the cost of refusing is high enough. What v1 has against unlimited coercion is ambiguity about completeness and nothing stronger, and I want to be clear that ambiguity is not the same as physical impossibility.
         </p>
 
         <h2 class="section-header">&gt; 3. HOW WE PLAN TO HIDE IT</h2>
 
         <p>
-            The basic idea is borrowed from VeraCrypt and similar tools that have done this for years. Hidden volumes work by encrypting parallel filesystems with different derived keys, where each PIN unlocks its own volume, and the same hardware key proves you're physically present regardless of which PIN you typed. Only the PIN determines which world you walk into.
+            The basic idea is borrowed from VeraCrypt and similar tools that have done this for years. Hidden volumes work by encrypting parallel filesystems with different derived keys, where each PIN unlocks its own volume, and the same hardware key proves you're physically present regardless of which PIN you typed, so only the PIN determines which world you walk into.
         </p>
 
         <p>
@@ -251,7 +251,7 @@
         </p>
 
         <p>
-            The advantage is structural, there is no metadata anywhere on the box recording how many PINs exist or what each one does, because the configuration lives inside the encrypted volumes themselves and is invisible without the keys. An attacker who demands every PIN you have can't verify they got them all, can't distinguish a duress PIN from a real one without typing it, and can't tell from the outside which PIN unlocks a volume and which one wipes the box.
+            The advantage is that there is no metadata anywhere on the box recording how many PINs exist or what each one does, because the configuration lives inside the encrypted volumes themselves and is invisible without the keys. An attacker who demands every PIN you have can't verify they got them all, can't distinguish a duress PIN from a real one without typing it, and can't tell from the outside which PIN unlocks a volume and which one wipes the box.
         </p>
 
         <p>
@@ -269,7 +269,7 @@
         </p>
 
         <p>
-            You can hand over a PIN. You can let them browse. You can answer their questions about why your photo library is so small or why you don't journal much. The decoy life looks plausible because the only person who knows the decoy is a decoy is you, and the decoy is a different boring person who happens to use the same hardware. Sanitised data wouldn't work because the patterns themselves are identifying, and any decoy that preserved your real patterns with the dangerous bits redacted would just be a slightly worse version of surrender.
+            You can hand over a PIN, let them browse, and answer their questions about why your photo library is so small or why you don't journal much. The decoy life looks plausible because the only person who knows the decoy is a decoy is you, and the decoy is a different boring person who happens to use the same hardware. Sanitised data wouldn't work because the patterns themselves are identifying, and any decoy that preserved your real patterns with the dangerous bits redacted would just be a slightly worse version of surrender.
         </p>
 
         <div class="signal">
@@ -291,7 +291,7 @@
         </p>
 
         <p>
-            The user experience is deliberately undramatic. You type the purge PIN, the volume mounts, ghost.secd reads the marker, and the screen shows what looks like a first-run setup wizard, the kind of screen you would see on a brand-new device that has never been configured. Behind that screen, every other encrypted volume is being overwritten with random data, every daemon's database is being dropped, the Postgres instances are being wiped, the Redis caches are being flushed, the Mist shards on the network (the distributed backup layer) are being dereferenced so the distributed copies become unrecoverable, and the encryption keys are being destroyed. By the time the destruction finishes the box is on its way back to factory state with no trace of what was on it before. The attacker watching you type sees nothing alarming. They see a fresh-looking device that could be a brand-new install, or maybe the wrong PIN, or maybe just a box that was never set up properly, and the assumptions they walk away with are not the assumptions they walked in with.
+            The user experience is deliberately undramatic. You type the purge PIN, the volume mounts, ghost.secd reads the marker, and the screen shows what looks like a first-run setup wizard, the kind of screen you would see on a brand-new device that has never been configured. Behind that screen, every other encrypted volume is being overwritten with random data, every daemon's database is being dropped, the Postgres instances are being wiped, the Redis caches are being flushed, the Mist shards on the network (the distributed backup layer) are being dereferenced so the distributed copies become unrecoverable, and the encryption keys are being destroyed. By the time the destruction finishes the box is on its way back to factory state with no trace of what was on it before. The attacker watching you type sees nothing alarming. They see a fresh-looking device that could be a brand-new install, or maybe the wrong PIN, or maybe just a box that was never set up properly.
         </p>
 
         <p>
@@ -299,7 +299,7 @@
         </p>
 
         <p>
-            The two options exist alongside each other because they answer different questions. The duress PIN answers how to cooperate without surrendering. The Purge answers how to make sure no one ever recovers anything from the box, ever. Those are not the same question, and neither answer is sufficient on its own.
+            The two options exist alongside each other because they answer different questions. The duress PIN answers how to cooperate without surrendering. The Purge answers how to make sure no one ever recovers anything from the box, ever. Neither answer is sufficient on its own.
         </p>
 
         <h2 class="section-header">&gt; 6. WHAT SECD IS AND WHAT IT ISN'T</h2>
@@ -317,14 +317,14 @@
         </p>
 
         <div class="final-words">
-            Cristina asked me what would happen if someone stole the box. The version of LocalGhost I am building toward is one where the answer doesn't matter much. The box can be stolen, seized, or surrendered, and the most useful tool you own becomes the most boring thing the person looking at it has ever seen, a stranger who happens to use the same hardware. Whether the decoy generation will be convincing enough to survive a real encounter is something I won't know until people test it.
+            Cristina asked me what would happen if someone stole the box. The version of LocalGhost I am building towards is one where the answer doesn't matter much. The box can be stolen, seized, or surrendered, and the most useful tool you own becomes the most boring thing the person looking at it has ever seen, a stranger who happens to use the same hardware. Whether the decoy generation will be convincing enough to survive a real encounter is something I won't know until people test it.
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
         <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="reference">
-            [1] Randall Munroe, XKCD 538, "Security". The comic that gave the wrench attack its name, illustrating that a $5 wrench applied to a person defeats any cryptographic system because the attacker bypasses the math entirely. <a href="https://xkcd.com/538/" target="_blank" rel="noopener">xkcd.com/538</a>
+            [1] Randall Munroe, XKCD 538, "Security". The comic that gave the wrench attack its name, illustrating that a $5 wrench applied to a person defeats any cryptographic system because the attacker bypasses the maths entirely. <a href="https://xkcd.com/538/" target="_blank" rel="noopener">xkcd.com/538</a>
         </p>
 
         <p class="reference">

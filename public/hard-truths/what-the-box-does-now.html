@@ -254,7 +254,7 @@
         </p>
 
         <p>
-            From then on the phone trusts the box by that pinned fingerprint alone. It doesn't use the CA for this and it doesn't check the hostname, which sounds lazy and is the point. The box can be a LAN address today and a tunnel address tomorrow and the phone doesn't care what it's called, it cares what it is. On every call the phone presents its client certificate. nginx checks it against the box CA with <code>ssl_verify_client optional</code> <a href="#ref-2" class="cite">[2]</a> and passes the verdict inward, and secd makes the decision, so a missing or forged certificate gets the same 503 as everything else, including a well-formed request from a device the box never issued. A stranger scanning the box finds a web server having a bad day. On top of the certificate, the PIN unlock issues a session token that lasts two days.
+            From then on the phone trusts the box by that pinned fingerprint alone. It doesn't use the CA for this and it doesn't check the hostname, which sounds lazy and is the point. The box can be a LAN address today and a tunnel address tomorrow and the phone doesn't care what it's called as long as the fingerprint matches. On every call the phone presents its client certificate. nginx checks it against the box CA with <code>ssl_verify_client optional</code> <a href="#ref-2" class="cite">[2]</a> and passes the verdict inward, and secd makes the decision, so a missing or forged certificate gets the same 503 as everything else, including a well-formed request from a device the box never issued. A stranger scanning the box finds a web server having a bad day. On top of the certificate, the PIN unlock issues a session token that lasts two days.
         </p>
 
         <p>
@@ -315,7 +315,7 @@
         </p>
 
         <p>
-            Everything the phone holds that matters is a copy of something on the box, except three things that live on the phone only. The private key from the QR. The Brave Search key, if I set one. And the location points the box hasn't acknowledged yet. The phone's model is downloaded from the box and checked against the hash the box states, never from the internet.
+            Everything the phone holds that matters is a copy of something on the box, except three things that live on the phone only, the private key from the QR, the Brave Search key if I set one, and the location points the box hasn't acknowledged yet. The phone's model is downloaded from the box and checked against the hash the box states, never from the internet.
         </p>
 
         <p>
@@ -413,7 +413,7 @@
         </p>
 
         <p>
-            What this costs is that a model wrote some of it. The number check stops invented figures. It can't stop a wrong adjective. The template is always kept beside the model's text, and I can edit or delete any memory and the box leaves my version alone.
+            What this costs is that a model wrote some of it. The number check stops invented figures but it can't stop a wrong adjective. The template is always kept beside the model's text, and I can edit or delete any memory and the box leaves my version alone.
         </p>
 
         <h2 class="section-header">&gt; 10. Phrases on the lock screen</h2>
@@ -437,7 +437,7 @@
         </p>
 
         <p>
-            <code>sudo ./tools/update.sh</code> brings a running box up to date with the mirror. It reads the signed list first, then for each set fetches only what is different. On its first run on my box it found the 12B model file 1,440 bytes short of the pinned one, a different upload under the same name, replaced it and restarted the model. That's the whole argument for the pin, in one number.
+            <code>sudo ./tools/update.sh</code> brings a running box up to date with the mirror. It reads the signed list first, then for each set fetches only what is different. On its first run on my box it found the 12B model file 1,440 bytes short of the pinned one, a different upload under the same name, replaced it and restarted the model.
         </p>
 
         <p>

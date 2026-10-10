@@ -242,7 +242,7 @@
         </p>
 
         <p>
-            Now for the GPU. It is a standard MSI RTX 4070 (12GB) <a href="#ref-2" class="cite">[2]</a>, and it sits in a Razer Core X Chroma <a href="#ref-3" class="cite">[3]</a>, a Thunderbolt 3 eGPU enclosure. They are the pair from the opening, three years of gaming service behind them.
+            The GPU is a standard MSI RTX 4070 (12GB) <a href="#ref-2" class="cite">[2]</a>, and it sits in a Razer Core X Chroma <a href="#ref-3" class="cite">[3]</a>, a Thunderbolt 3 eGPU enclosure. They are the pair from the opening, three years of gaming service behind them.
         </p>
 
         <h2 class="section-header">&gt; 2. The setup</h2>
@@ -264,7 +264,7 @@
         </p>
 
         <p>
-            Then the Thunderbolt side. The enclosure was recognised but the GPU wasn't appearing on the PCIe bus, it needed authorising. On a headless NAS there's no desktop prompt to click "allow," and <code>boltctl enroll</code> failed because PolicyKit wasn't installed. Installing polkit fixed the enrollment, which persists the authorisation so the card comes up automatically on every boot. The link came up at Thunderbolt 3 speeds (40 Gb/s, roughly PCIe 3.0 x4), which is what the Core X Chroma runs at, and that barely matters for inference.
+            Then the Thunderbolt side. The enclosure was recognised but the GPU wasn't appearing on the PCIe bus, it needed authorising. On a headless NAS there's no desktop prompt to click "allow," and <code>boltctl enroll</code> failed because PolicyKit wasn't installed. Installing polkit fixed the enrolment, which persists the authorisation so the card comes up automatically on every boot. The link came up at Thunderbolt 3 speeds (40 Gb/s, roughly PCIe 3.0 x4), which is what the Core X Chroma runs at, and that barely matters for inference.
         </p>
 
         <p>
@@ -311,7 +311,7 @@
         </p>
 
         <p>
-            The Thunderbolt question, does running the GPU over a 40 Gb/s external link instead of a native PCIe slot hurt? For inference, almost not at all. The model weights cross the link once at load time, then live entirely in the card's own VRAM. Token generation streams those weights from VRAM at the card's full bandwidth and never touches the Thunderbolt link. The thin external connection only matters while loading the model, not while using it. A 4070 in a box on the end of a cable runs inference at very nearly the speed it would in a desktop slot, provided the whole model fits in VRAM. The 12B at 6.62GB leaves comfortable room in the 4070's 12GB, so it does.
+            The Thunderbolt question, does running the GPU over a 40 Gb/s external link instead of a native PCIe slot hurt? For inference, almost not at all. The model weights cross the link once at load time, then live entirely in the card's own VRAM. Token generation streams those weights from VRAM at the card's full bandwidth and never touches the Thunderbolt link. A 4070 in a box on the end of a cable runs inference at very nearly the speed it would in a desktop slot, provided the whole model fits in VRAM. The 12B at 6.62GB leaves comfortable room in the 4070's 12GB, so it does.
         </p>
 
         <h2 class="section-header">&gt; 4. What I ended up with</h2>
@@ -321,7 +321,7 @@
         </p>
 
         <p>
-            The tests that started all this are the proof. The journal categorisation suite that took an hour on CPU now runs in four minutes. And the full memory encoding from How Memory Gets Made, the overnight pass that turns a day into memory, now fits the night it was designed for. A heavy day is over four hours of recording, sixty pictures, eighty locations pulled off Google Maps, around two hundred emails and a thousand messages. Encoding that on the GPU takes about two hours. On CPU the same pass takes over a day, which means the system falls behind its own life and never catches up. Overnight consolidation only works if a day encodes in less than a night, and the card is the difference between the design being a post and being a daemon.
+            The journal categorisation suite that started all this took an hour on CPU and now runs in four minutes. And the full memory encoding from How Memory Gets Made, the overnight pass that turns a day into memory, now fits the night it was designed for. A heavy day is over four hours of recording, sixty pictures, eighty locations pulled off Google Maps, around two hundred emails and a thousand messages. Encoding that on the GPU takes about two hours. On CPU the same pass takes over a day, so the system falls behind its own life and never catches up. Overnight consolidation only works if a day encodes in less than a night, and the card is the difference between the design being a post and being a daemon.
         </p>
 
         <p>
@@ -359,7 +359,7 @@
         </table>
 
         <p>
-            In a tower the card drops straight into the PCIe slot, so there is no enclosure and no second power supply, and the GPU runs at full bandwidth instead of over a cable. The SSD is not optional even though the bulk storage is on the spinning drives, because the OS and the model weights load from flash or the whole thing crawls. What sets the generation speed is the card, and the 5070 in that table costs the same as the 4070 I benchmarked but carries more memory bandwidth, around 670 GB/s against 500 <a href="#ref-13" class="cite">[13]</a>. This workload is bound by that bandwidth, so the 5070 runs faster than my numbers, not slower. I have not run this exact card, so read that as the floor, not the ceiling.
+            In a tower the card drops straight into the PCIe slot, so there is no enclosure and no second power supply, and the GPU runs at full bandwidth instead of over a cable. The SSD is not optional even though the bulk storage is on the spinning drives, because the OS and the model weights load from flash or the whole thing crawls. What sets the generation speed is the card, and the 5070 in that table costs the same as the 4070 I benchmarked but carries more memory bandwidth, around 670 GB/s against 500 <a href="#ref-13" class="cite">[13]</a>. This workload is bound by that bandwidth, so the 5070 runs faster than my numbers. I have not run this exact card, so read that as the floor, not the ceiling.
         </p>
 
         <p>
@@ -369,7 +369,7 @@
         <h2 class="section-header">&gt; 6. The thing you are renting</h2>
 
         <p>
-            That tower is a one-time cost. The alternative is a fee that arrives every month for as long as you use it. The standard tier at OpenAI, Anthropic and Google sits at the best part of twenty pounds a month, the power tiers at eighty and a hundred and sixty, and Google's ceiling at two hundred <a href="#ref-9" class="cite">[9]</a>. Anyone running more than one of them, which is common, clears a thousand pounds a year. And that subscription is the cheap end of it, because buying the same usage by the token through the API runs far past the flat fee on a heavy day.
+            That tower is a one-time cost, and the alternative is a fee that arrives every month for as long as you use it. The standard tier at OpenAI, Anthropic and Google sits at the best part of twenty pounds a month, the power tiers at eighty and a hundred and sixty, and Google's ceiling at two hundred <a href="#ref-9" class="cite">[9]</a>. Anyone running more than one of them, which is common, clears a thousand pounds a year. And that subscription is the cheap end of it, because buying the same usage by the token through the API runs far past the flat fee on a heavy day.
         </p>
 
         <div class="alarm">
@@ -393,7 +393,7 @@
         </p>
 
         <p>
-            AI was never cheap, it was subsidised, and you were the land being taken.
+            AI only looked cheap because it was subsidised, and you were the land being taken.
         </p>
 
         <div class="signal">
@@ -401,7 +401,7 @@
         </div>
 
         <p>
-            The counterweight is capability. A 12B model on a 4070 is not GPT-5 and it is not Claude Fable, and I am not going to pretend otherwise. The frontier models are genuinely smarter, and for the hardest reasoning and the longest agentic runs they pull ahead and it is not close. What has changed is how rarely that ceiling is the thing that bites. For more than nine in ten of the tasks I run, model intelligence is not the bottleneck. The smart ones earn their price on the open-ended work, the 'scan this whole codebase and find the bug I cannot see' kind of task, where the value is in the model noticing something I never pointed it at. The local model is the right tool for the opposite and far more common case, where I already know the problem, I have the architecture in my head, and I need a capable hand to build the thing I have already scoped. Drafting, summarising, answering against my own notes, coding to a plan I already hold, the bulk of daily use sits well inside what a local near-frontier model handles.
+            The counterweight is capability. A 12B model on a 4070 is not GPT-5 and it is not Claude Fable, and I am not going to pretend otherwise. The frontier models are smarter, and for the hardest reasoning and the longest agentic runs they pull ahead and it is not close. What has changed is how rarely that ceiling is the thing that bites. For more than nine in ten of the tasks I run, model intelligence is not the bottleneck. The smart ones earn their price on the open-ended work, the 'scan this whole codebase and find the bug I cannot see' kind of task, where the value is in the model noticing something I never pointed it at. The local model is the right tool for the opposite and far more common case, where I already know the problem, I have the architecture in my head, and I need a capable hand to build the thing I have already scoped. Drafting, summarising, answering against my own notes, coding to a plan I already hold, the bulk of daily use sits well inside what a local near-frontier model handles.
         </p>
 
         <p>
@@ -417,7 +417,7 @@
         </p>
 
         <p>
-            The rented models are moving the other way. They grow more cautious over time, quicker to refuse, more fond of the polite line about what they cannot help with on requests that were always fine, because the company is liable for every answer it puts its name to. An open model on your own disk carries none of that and does what you ask, and the open weights are getting more capable and more open at the same time, not less. So the end state is every model worth running available in both places at once, your box and the managed cloud, and when the same model runs in both, the local copy wins on the things that never depended on raw capability, on cost, on privacy, and on whether it answers you at all.
+            The rented models are moving the other way. They grow more cautious over time, quicker to refuse, more fond of the polite line about what they cannot help with on requests that were always fine, because the company is liable for every answer it puts its name to. An open model on your own disk carries none of that and does what you ask, and the open weights are getting more capable and more open at the same time. So the end state is every model worth running available in both places at once, your box and the managed cloud, and when the same model runs in both, the local copy wins on the things that never depended on raw capability, on cost, on privacy, and on whether it answers you at all.
         </p>
 
         <div class="final-words">
@@ -462,7 +462,7 @@
         </p>
 
         <p class="references" id="ref-8">
-            <strong>[8]</strong> Mania for Subjugation, part of Dan Carlin's Hardcore History. The podcast I was listening to, Carlin's multi-part history of Alexander the Great, first installment released June 2024. Source for the podcast named in the opening. Show page at <a href="https://www.dancarlin.com/product/hardcore-history-71-mania-for-subjugation/" target="_blank" rel="noopener">dancarlin.com</a>.
+            <strong>[8]</strong> Mania for Subjugation, part of Dan Carlin's Hardcore History. The podcast I was listening to, Carlin's multi-part history of Alexander the Great, first instalment released June 2024. Source for the podcast named in the opening. Show page at <a href="https://www.dancarlin.com/product/hardcore-history-71-mania-for-subjugation/" target="_blank" rel="noopener">dancarlin.com</a>.
         </p>
 
         <p class="references" id="ref-9">
