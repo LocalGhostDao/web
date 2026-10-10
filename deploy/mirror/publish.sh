@@ -45,8 +45,12 @@
 # (LocalGhostDao/localghost), with tools/mirror_fetch.sh.
 #
 # Needs on this machine: curl, gpg with the info@localghost.ai secret key, sha256sum and flock. The
-# mirror only proxies files: nothing is cut, converted or rebuilt here. Boxes do their own processing
-# (the coastline tiles, for one) from the files they fetch.
+# mirror proxies files: nothing is cut or converted here, and boxes do their own processing (the
+# coastline tiles, for one) from the files they fetch. One exception, a set whose list= line says
+# pack=heights (elevation): its tiles go into the build as packs, one file per 30-degree block, each
+# tile's bytes unchanged behind a small index, made here with ghost-heights from the release the
+# server set pins (a linux-amd64 binary, so this machine has to run one). 26,000 loose tiles made a
+# manifest every box and phone had to read; the same tiles and the same tool give the same bytes.
 set -eu
 umask 022
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -327,6 +331,64 @@ if [ "$MODE" = sign ]; then
     exit 0
 fi
 
+# --- pack=heights: a listed set's tiles go into the build as packs, one per 30-degree block       ---
+# --- (GLO-90_N30_W030.heights is 30 to 60 north, 30 west to 0), each tile's bytes as they were    ---
+# --- behind a small index, which is what a box from wisp 0.0.6 on reads. They are made with        ---
+# --- ghost-heights out of the server set's pinned bundle, kept in $CACHE/pack/<set>/ and made     ---
+# --- again only when the tiles or the tool change (.stamp). The tiles stay in $CACHE/list/<set>/,  ---
+# --- so the cache holds the set twice.                                                             ---
+PACKED=""
+heights_tool() { # the ghost-heights binary out of the server set's pinned bundle, its path on stdout
+    _hl="$(awk '$1 == "server" && $2 ~ /^localghost-server-.*\.tar\.gz$/ { print $2, $4; for (i = 5; i <= NF; i++) if ($i ~ /^check=sha256:/) print substr($i, 14); exit }' "$CACHE/conf.tmp")"
+    _hf="$(echo "$_hl" | awk 'NR == 1 { print $1 }')"; _hu="$(echo "$_hl" | awk 'NR == 1 { print $2 }')"
+    _hp="$(echo "$_hl" | awk 'NR == 2')"
+    [ -n "$_hf" ] && [ -n "$_hp" ] || return 1
+    _hb="$(pinned "$_hu" "$_hp" "$_hf")" || return 1
+    _hd="$CACHE/tools/$_hp"
+    if [ ! -x "$_hd/ghost-heights" ]; then
+        rm -rf "${_hd:?}.tmp"; mkdir -p "$_hd.tmp"
+        tar -xzf "$_hb" -C "$_hd.tmp" --wildcards '*bin/ghost-heights' 2>/dev/null || { rm -rf "${_hd:?}.tmp"; return 1; }
+        _hg="$(find "$_hd.tmp" -type f -name ghost-heights | head -1)"
+        [ -n "$_hg" ] || { rm -rf "${_hd:?}.tmp"; return 1; }
+        mkdir -p "$_hd"
+        mv -f "$_hg" "$_hd/ghost-heights"
+        chmod 755 "$_hd/ghost-heights"
+        rm -rf "${_hd:?}.tmp"
+    fi
+    echo "$_hd/ghost-heights"
+}
+pack_heights() { # <set> , the set's tiles from $LISTDIR/<set> into packs, linked into the build
+    _ps="$1"
+    _pt="$(heights_tool)" || die "$_ps: pack=heights needs ghost-heights from the server set's bundle (its localghost-server-*.tar.gz line with check=sha256:), and it could not be had"
+    HEIGHTS_FROM="$(awk '$1 == "server" && $2 ~ /^localghost-server-/ { print $2; exit }' "$CACHE/conf.tmp" | sed 's/^localghost-server-\([^-]*\)-.*/wisp \1/')"
+    _pin="$LISTDIR/$_ps"
+    _pout="$CACHE/pack/$_ps"
+    _pstamp="$( { sha256sum "$_pt" | cut -d' ' -f1; find "$_pin" -type f -name '*.tif' -printf '%f %s\n' | sort; } | sha256sum | cut -d' ' -f1)"
+    if [ "$(cat "$_pout/.stamp" 2>/dev/null)" != "$_pstamp" ] || ! ls "$_pout"/*.heights >/dev/null 2>&1; then
+        say "$_ps: packing $(find "$_pin" -type f -name '*.tif' | wc -l) tiles by 30-degree block with ghost-heights from $HEIGHTS_FROM, once per set of tiles and tool"
+        rm -rf "${_pout:?}.tmp"; mkdir -p "$_pout.tmp"
+        _pt0="$(date +%s)"
+        "$_pt" pack "$_pin" "$_pout.tmp" >&2 || { rm -rf "${_pout:?}.tmp"; die "$_ps: ghost-heights pack failed"; }
+        ls "$_pout.tmp"/*.heights >/dev/null 2>&1 || { rm -rf "${_pout:?}.tmp"; die "$_ps: ghost-heights pack wrote no .heights files"; }
+        for _pp in "$_pout.tmp"/*.heights; do
+            "$_pt" check "$_pp" >/dev/null 2>&1 || { rm -rf "${_pout:?}.tmp"; die "$_ps: ghost-heights check failed on $(basename "$_pp")"; }
+        done
+        echo "$_pstamp" > "$_pout.tmp/.stamp"
+        rm -rf "${_pout:?}"
+        mv "$_pout.tmp" "$_pout"
+        say "$_ps: $(ls "$_pout"/*.heights | wc -l) packs made and checked in $(( ($(date +%s) - _pt0) / 60 )) min"
+    fi
+    mkdir -p "$NEW/$_ps"
+    eval "_pterms=\${PACK_TERMS_$_ps:-} _phost=\${PACK_HOST_$_ps:-}"
+    for _pp in "$_pout"/*.heights; do
+        _pf="$(basename "$_pp")"
+        case "$_pf" in .*|*[!A-Za-z0-9._+-]*) die "$_ps: ghost-heights wrote a bad file name '$_pf'" ;; esac
+        ln -f "$_pp" "$NEW/$_ps/$_pf" 2>/dev/null || cp "$_pp" "$NEW/$_ps/$_pf"
+        printf '%s\n    terms: %s\n    from:  %s\n' "$_pf" "$_pterms" "the tiles of its 30-degree block in tileList.txt${_phost:+, from https://$_phost/}, each tile's bytes unchanged, packed with ghost-heights from LocalGhost $HEIGHTS_FROM" >> "$NEW/$_ps/NOTICE.txt"
+    done
+    say "$_ps: $(ls "$_pout"/*.heights | wc -l) packs in the build (the tiles stay in the cache)"
+}
+
 # --- the sets this run refreshes ---
 grep -v '^[[:space:]]*#' "$CONF" | awk 'NF' > "$CACHE/conf.tmp"
 ALL="$(awk '{print $1}' "$CACHE/conf.tmp" | sort -u)"
@@ -510,7 +572,18 @@ while read -r set file tnames source opt; do
             done
             _ml_terms="$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')"
             _ml_last="$set|$tnames"
+            case " ${opt:-} " in *" pack=heights "*)
+                # the tiles stay in the cache; pack_heights puts the set's packs in the build below
+                echo "$PACKED" | grep -qx "$set" || PACKED="$PACKED
+$set"
+                _mlh="$(echo "$source" | sed 's#^[a-z]*://\([^/]*\)/.*#\1#')"
+                eval "PACK_TERMS_$set=\$_ml_terms PACK_HOST_$set=\$_mlh" ;;
+            esac
         fi
+        case " ${opt:-} " in *" pack=heights "*)
+            [ -s "$LISTDIR/$set/$file" ] || die "$set/$file: not in $LISTDIR/$set"
+            continue ;;
+        esac
         ln -f "$LISTDIR/$set/$file" "$NEW/$set/$file" 2>/dev/null || cp "$LISTDIR/$set/$file" "$NEW/$set/$file" \
             || die "$set/$file: not in $LISTDIR/$set"
         printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$_ml_terms" "$source" >> "$NEW/$set/NOTICE.txt"
@@ -534,7 +607,8 @@ while read -r set file tnames source opt; do
                 [ "${#pin}" -eq 64 ] || die "$set/$file: check=sha256: needs 64 lowercase hex characters" ;;
             check=godev) godev_check=1 ;;
             manual) ;;
-            *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, check=sumfile, list=<url>, manual)" ;;
+            pack=*) die "$set/$file: $o goes on a list= line" ;;
+            *) die "$set/$file: unknown option '$o' (check=godev, check=sha256:<hex>, check=sumfile, list=<url>, pack=heights, manual)" ;;
         esac
     done
     url="$source"
@@ -583,6 +657,7 @@ while read -r set file tnames source opt; do
     say "$set/$file: $(du -h --apparent-size "$NEW/$set/$file" | cut -f1)"
 done < "$CACHE/conf.tmp"
 [ -z "${LISTED_N:-}" ] || say "listed files in this build: $LISTED_N"
+for s in $PACKED; do pack_heights "$s"; done
 for s in $ALL; do
     if want "$s" && [ -f "$NEW/$s/NOTICE.txt" ]; then
         { echo "LocalGhost mirror, build $BUILD , set '$s'. Each file below is published under the terms named."; echo ""; cat "$NEW/$s/NOTICE.txt"; } > "$NEW/$s/.notice.tmp"

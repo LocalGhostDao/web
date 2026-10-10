@@ -186,8 +186,28 @@ progress line and an estimate, into `cache/list/elevation/`. A tile already ther
 about again, since tiles don't change within a Copernicus release; to take a new release, delete that
 directory. Stopping a run and starting it again loses nothing.
 
+Since wisp 0.0.6 the set is published as packs (`pack=heights` on the list line), one file per
+30-degree block (`GLO-90_N30_W030.heights` is 30 to 60 north, 30 west to 0), some sixty for the world,
+each the block's tiles with their bytes unchanged behind a small index. The tiles are still downloaded
+into `cache/list/elevation/` as above; the build then runs `ghost-heights pack <tiles dir> <out dir>`
+with the binary taken out of the `server` set's pinned bundle (into `cache/tools/<pin>/`), checks every
+pack with `ghost-heights check`, keeps the packs in `cache/pack/elevation/` and links them into the
+build in place of the tiles. The packs are made again only when the tiles or the tool change (the
+`.stamp` beside them), and the same tiles with the same tool give the same bytes, so a repack with
+nothing new leaves the mirror where it was. The manifest lists sixty names instead of 26,000, which
+every box and phone reads. A box from 0.0.6 on takes the packs whose block touches the area it asks
+for (`GHOST_GEO_ELEVATION="34:72,-25:45"` for Europe); a box on 0.0.5 or earlier reads loose tiles
+only and finds none, so it takes 0.0.6 first. The cache holds the set twice (tiles and packs, on the
+order of 100 GB each), and `ghost-heights` is a linux-amd64 binary, so the publish runs on such a
+machine. Tested on 10 October 2026 with a throwaway key and a stand-in `ghost-heights`: four tiles made
+four packs, a second publish left the build alone, a new tool repacked to the same bytes, and the
+0.0.5 bundle's `mirror_fetch.sh` fetched two packs by name against the signed manifest.
+
+    deploy/mirror/publish.sh --sign-later elevation    # in screen; packs from the cached tiles
+    deploy/mirror/publish.sh --sign
+
 The licence asks that everyone who receives the data is bound by it, so the licence PDF is a file in
-the set. A box fetches only the tiles it needs.
+the set, and `terms/copernicus-dem.txt` says what a pack is.
 
 `wikipedia` is English Wikipedia without pictures as Kiwix packages it (around 60 GB, its own
 full-text index inside). The source ends in `wikipedia_en_all_nopic_*.zim`, so a named publish reads

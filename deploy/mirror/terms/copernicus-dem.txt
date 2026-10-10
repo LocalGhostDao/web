@@ -1,8 +1,12 @@
 Copernicus DEM GLO-90 , the Copernicus WorldDEM-90
 
-The .tif tiles and tileList.txt in this set are unmodified copies of the Copernicus DEM GLO-90 from the
-public copy on the AWS Registry of Open Data (https://registry.opendata.aws/copernicus-dem/), one
-Cloud Optimised GeoTIFF per 1x1 degree tile.
+The data in this set is the Copernicus DEM GLO-90 from the public copy on the AWS Registry of Open
+Data (https://registry.opendata.aws/copernicus-dem/), one Cloud Optimised GeoTIFF per 1x1 degree tile,
+and tileList.txt is upstream's list of those tiles, unmodified. The tiles are carried in .heights packs,
+one per 30-degree block (GLO-90_N30_W030.heights is 30 to 60 north, 30 west to 0): each pack is the
+block's tiles with their bytes exactly as published behind a small index, made with ghost-heights
+from the LocalGhost release named in NOTICE.txt. Nothing in a tile is changed, so the data is as
+Copernicus published it.
 
 Attribution (for the data as it is here, unmodified):
 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the
