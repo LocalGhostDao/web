@@ -53,7 +53,7 @@
             try {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: title,
-                    artist: 'Vlad Cealicu — LocalGhost Hard Truths',
+                    artist: 'Vlad Cealicu // LocalGhost Hard Truths',
                     album: album,
                     artwork: artworkArr
                 });

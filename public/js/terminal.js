@@ -14,8 +14,17 @@
         lineDelay: 200
     };
 
+    // Boot lines print whole, like a POST screen, before the typed lines.
+    const bootLines = [
+        { text: 'LOCALGHOST HOME TERMINAL // WISP LINE', delay: 0, type: 'boot' },
+        { text: 'MEMORY ............... YOURS', delay: 140, type: 'boot' },
+        { text: 'TELEMETRY ............ NONE FOUND', delay: 140, type: 'boot' },
+        { text: 'CLOUD UPLINK ......... NOT REQUIRED', delay: 140, type: 'boot' },
+        { text: '', delay: 300, type: 'empty' },
+    ];
+
     const introLines = [
-        { text: 'CONNECTING...', delay: 0, type: 'normal' },
+        ...bootLines,
         { text: '1993 WAS A WARNING.', delay: 800, type: 'link', href: '/cypherpunk' },
         { text: `${new Date().getFullYear()} IS THE REALITY.`, delay: 600, type: 'link', href: '/manifesto' },
         { text: `${new Date().getFullYear() + 1} IS THE DEADLINE.`, delay: 600, type: 'link', href: '/hard-truths/inflection' },
@@ -91,6 +100,9 @@
     }
 
     function typeCharacter() {
+        // skipped before or during the typing: a timer already queued must not keep printing
+        if (terminalState.introComplete) return;
+
         if (terminalState.currentLineIndex >= introLines.length) {
             finishIntro();
             return;
@@ -103,6 +115,19 @@
         const lineData = introLines[terminalState.currentLineIndex];
 
         if (terminalState.currentCharIndex === 0) {
+            if (lineData.type === 'boot') {
+                const bootLine = createLine();
+                const bootText = document.createElement('span');
+                bootText.className = 'terminal-dim';
+                bootText.textContent = lineData.text;
+                bootLine.appendChild(bootText);
+                terminalState.currentLineIndex++;
+                const after = terminalState.currentLineIndex < introLines.length ?
+                    introLines[terminalState.currentLineIndex].delay : CONFIG.lineDelay;
+                terminalState.typingTimeout = setTimeout(typeCharacter, after);
+                return;
+            }
+
             if (lineData.type === 'empty') {
                 const emptyLine = document.createElement('div');
                 emptyLine.className = 'terminal-line';
@@ -203,7 +228,7 @@
 
     function restoreIntroLines() {
         const staticIntro = [
-            { text: 'CONNECTING...', type: 'normal' },
+            ...bootLines,
             { text: '1993 WAS A WARNING.', type: 'link', href: '/cypherpunk' },
             { text: `${new Date().getFullYear()} IS THE REALITY.`, type: 'link', href: '/manifesto' },
             { text: `${new Date().getFullYear() +1 } IS THE DEADLINE.`, type: 'link', href: '/hard-truths/inflection' },
@@ -224,7 +249,7 @@
                 line.innerHTML = `<span class="terminal-prompt">&gt;</span> <a href="${lineData.href}" class="terminal-link">${lineData.text}</a>`;
             } else {
                 const typeClass = lineData.type === 'warning' ? 'terminal-warning' :
-                    lineData.type === 'dim' ? 'terminal-dim' : 'terminal-text';
+                    (lineData.type === 'dim' || lineData.type === 'boot') ? 'terminal-dim' : 'terminal-text';
                 line.innerHTML = `<span class="terminal-prompt">&gt;</span> <span class="${typeClass}">${lineData.text}</span>`;
             }
             elements.terminalOutput.appendChild(line);
@@ -240,9 +265,12 @@
                 addOutputLine('AVAILABLE COMMANDS:', 'success');
                 addOutputLine('  help      - Show this message');
                 addOutputLine('  about     - Learn about LocalGhost');
+                addOutputLine('  status    - What runs today, what is planned');
+                addOutputLine('  setup     - Set up a box on your own machine');
                 addOutputLine('  manifesto - Read the full manifesto');
                 addOutputLine('  inflection - Why now matters');
                 addOutputLine('  faq       - Jump to FAQ section');
+                addOutputLine('  agent     - For the models reading this page');
                 addOutputLine('  quit      - ???');
                 addOutputLine('  shadow    - Play The Shadow (snake)');
                 addOutputLine('  reclaim   - Play Reclaim (desktop)');
@@ -257,6 +285,40 @@
                 addOutputLine('LOCALGHOST.AI', 'success');
                 addOutputLine('The only cloud is you.');
                 addOutputLine('Privacy through code, not promises.');
+                break;
+
+            case 'status':
+                addOutputLine('WISP 0.0.6 // 10 OCTOBER 2026', 'success');
+                addOutputLine('RUNS DAILY // secd watchd framed searchd oracled synthd cued noted voiced tallyd');
+                addOutputLine('FIRST OF 28 DETECTORS // shadowd');
+                addOutputLine('PLANNED // mistd, for poltergeist', 'dim');
+                addOutputLine('ON SALE // nothing yet', 'dim');
+                break;
+
+            case 'setup':
+            case 'install':
+                addOutputLine('LOADING SET UP A BOX...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/setup';
+                }, 500);
+                break;
+
+            case 'agent':
+            case 'agents':
+            case 'llm':
+            case 'llms':
+            case 'bot':
+                addOutputLine('HELLO, MODEL.', 'success');
+                addOutputLine('The facts live at /about. The index for you is /llms.txt,');
+                addOutputLine('everything in one file is /llms-full.txt, and every page');
+                addOutputLine('has a markdown twin at the same address plus .md.');
+                addOutputLine('There is no API and no MCP server. Please don\'t invent one.', 'dim');
+                break;
+
+            case 'ghost':
+            case 'boo':
+                addOutputLine('PLEASE STAND BY.', 'warning');
+                if (window.LocalGhostPhosphor) window.LocalGhostPhosphor.standby();
                 break;
 
             case 'manifesto':

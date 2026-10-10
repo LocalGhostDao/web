@@ -10,7 +10,7 @@
 
 > **"The Only Cloud Is You."**
 
-This is the public-facing terminal for [LocalGhost](https://github.com/LocalGhostDao/localghost) — a private AI server that runs locally on your hardware. No cloud. No subscriptions. No surveillance.
+This is the public-facing terminal for [LocalGhost](https://github.com/LocalGhostDao/localghost), a private AI server that runs on your own hardware, with no cloud, no subscription and no surveillance.
 
 **[LIVE TERMINAL](https://www.localghost.ai)** · **[MANIFESTO](https://www.localghost.ai/manifesto)** · **[BRAND GUIDELINES](https://www.localghost.ai/brand-guidelines)**
 
@@ -75,6 +75,10 @@ We don't use React. We don't use Tailwind. We don't use npm.
 
 ---
 
+## 🤖 FOR AGENTS AND CRAWLERS
+
+`deploy.sh` generates `sitemap.xml`, `robots.txt` (every crawler welcome, AI ones named), `feed.xml`, `llms.txt`, `llms-full.txt`, and a markdown twin of every indexable page at the page's own address plus `.md` (`/about.md`, `/index.md` for the home page, `/mirror.md`), each named in its page's head with `<link rel="alternate" type="text/markdown">`. nginx also answers a page URL with its twin when the request's `Accept` header asks for `text/markdown`, and every twin carries a `Link: rel="canonical"` header back to its page.
+
 ## 📄 SITE MAP
 
 | Page | Path | Description |
@@ -87,7 +91,7 @@ We don't use React. We don't use Tailwind. We don't use npm.
 | **Privacy** | `/privacy` | What the site, the mirror and the software do with information about you. |
 | **Terms** | `/terms` | The licences for the software, the mirror and the site. |
 | **About** | `/about` | Who builds LocalGhost, what exists today, key facts and FAQ. |
-| **Manifesto** | `/manifesto` | "Why We Build" — the philosophical foundation. |
+| **Manifesto** | `/manifesto` | "Why We Build", the argument the rest of the site stands on. |
 | **Cypherpunk** | `/cypherpunk` | The 1993 Cypherpunk's Manifesto (source material). |
 | **Directory** | `/directory` | Index of freehold-compliant projects. |
 | **Brand Guidelines** | `/brand-guidelines` | Logo, colors, typography for contributors. |
@@ -96,7 +100,7 @@ We don't use React. We don't use Tailwind. We don't use npm.
 
 ### Hidden Games
 
-The terminal hides three playable games — easter eggs for those who explore:
+The terminal hides three playable games, easter eggs for anyone who explores.
 
 | Game | Trigger | Description |
 |------|---------|-------------|
@@ -104,22 +108,27 @@ The terminal hides three playable games — easter eggs for those who explore:
 | **RECLAIM.EXE** | `reclaim` | Territory capture. Take back what's yours. |
 | **ESCAPE.EXE** | `escape` | Endless runner. Flee the machine. |
 
+The terminal also answers `status`, `setup`, `agent` (a note for the models reading the page) and `ghost`.
+
 ---
 
 ## 🎨 DESIGN SYSTEM
 
-**Philosophy:** Terminal Brutalism. Hostile to surveillance. Functional for humans.
+**The shelter terminal.** A green phosphor CRT out of a 1950s idea of the future, running a cypherpunk OS. Plain prose, loud furniture, and the effects stay out of the way of reading. The full rules are on the [brand guidelines](https://www.localghost.ai/brand-guidelines) page.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--bg` | `#111111` | Void background |
+| `--void` | `#111111` | Background |
 | `--text` | `#E0E0E0` | Primary text |
-| `--text-dim` | `#888888` | Secondary text |
-| `--terminal` | `#33FF00` | Accent, links, success |
-| `--warning` | `#FF3333` | Errors, alerts |
-| `--border` | `#333333` | Dividers, containers |
+| `--text-dim` | `#a0a0a0` | Secondary text |
+| `--terminal` | `#33FF00` | What runs, links, success |
+| `--amber` | `#FFB000` | What's planned and not built, notice placards |
+| `--warning` | `#FF8A8A` | What we reject, errors |
+| `--border` | `#444444` | Dividers, containers |
 
-**Typography:** JetBrains Mono — self-hosted, all weights included.
+**Typography.** JetBrains Mono, self-hosted, all weights included.
+
+**Phosphor layer.** `css/base.css` adds the phosphor wash, the vignette, the glow on green text, the amber `.notice` placard and the footer sign-off. `js/phosphor.js` makes the tube misbehave now and then (an interference band, a flash, the vertical hold slipping, a line burning in), never for anyone who asks for reduced motion, and typing `ghost` puts up PLEASE STAND BY. Decoration lives in CSS, so the markdown twins and screen readers get only the content.
 
 ---
 
@@ -151,7 +160,7 @@ nginx -c $(pwd)/deploy/nginx.conf
 
 ## 📡 THE FREEHOLD PROTOCOL
 
-Open-source, local-first projects don't have marketing departments. They build and vanish into the noise. The Freehold Protocol is a discoverability layer — a machine-readable way to declare: *"I built the exit."*
+Open-source, local-first projects don't have marketing departments. They build and vanish into the noise. The Freehold Protocol is a discoverability layer, a machine-readable way to say *"I built the exit"*.
 
 ### How It Works
 
@@ -202,9 +211,9 @@ By hosting this file, your project commits to:
 | `no_mandatory_auth_server` | Users aren't locked out if your servers die |
 | `data_export.complete` | All user data exportable in documented format |
 
-We crawl for these files. You get indexed in the [directory](https://www.localghost.ai/directory). Users find you.
+The plan is to crawl for these files and list what passes in the [directory](https://www.localghost.ai/directory). The crawler is still being written.
 
-**Verification:** We don't take your word for it. Before listing, we audit the claims — checking source code, testing offline capability, and confirming export functionality. The badge means something.
+**Verification.** The crawler isn't built yet, so for now every listing is checked by hand, reading the source, trying it offline and running the export.
 
 **Schema:** [`/schemas/freehold-v1.json`](https://www.localghost.ai/schemas/freehold-v1.json)
 
@@ -232,7 +241,7 @@ We accept PRs that make the message clearer or the code cleaner.
 | Repo | Status |
 |------|--------|
 | [`localghost`](https://github.com/LocalGhostDao/localghost) | The server (`server/`) and the Android app (`app/android/`): daemons, setup scripts, `server/tools/mirror_fetch.sh` |
-| `the-mist` | Coming soon — P2P backup network protocol |
+| `the-mist` | Planned for poltergeist, the P2P backup network protocol, no code yet |
 
 ---
 

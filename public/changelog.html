@@ -192,7 +192,7 @@
                     <h3>Set Up a Box, shorter</h3>
                     <span class="when">4 OCTOBER 2026</span>
                     <p>
-                        <a href="/setup">Set Up a Box</a> opens with the whole setup in five moves, and each step shows what to run and what it asks, with the reasons and the less common cases folded under it. It also says to leave Wikipedia out with <code>GHOST_WIKI=0</code> for now: the reader in wisp 0.0.4 can't open the published file, and the fix comes with 0.0.5. A setup from the release alone, with nothing to compile, and the volume as an encrypted file on any drive are on the <a href="/build#releases">roadmap</a> for a later wisp.
+                        <a href="/setup">Set Up a Box</a> opens with the whole setup in five moves, and each step shows what to run and what it asks, with the reasons and the less common cases folded under it. It also says to leave Wikipedia out with <code>GHOST_WIKI=0</code> for now, since the reader in wisp 0.0.4 can't open the published file, and the fix comes with 0.0.5. A setup from the release alone, with nothing to compile, and the volume as an encrypted file on any drive are on the <a href="/build#releases">roadmap</a> for a later wisp.
                     </p>
                 </div>
 
@@ -206,12 +206,12 @@
                         <li>The server is built with Go 1.27.1. The earlier cuts used Go 1.25.4, which has had thirty-five standard-library advisories fixed since. Setup and every redeploy install the Go that <code>go.mod</code> names from the mirror, the build never fetches a toolchain by itself, and <code>RELEASE.txt</code> says which Go built the set, so anyone rebuilding the bundle to check its hashes knows which one to use.</li>
                         <li>The phone no longer asks its geocoder which country it's in, which on most phones was a network call to Google carrying the fix. The box answers from its own Natural Earth map.</li>
                         <li>A "what is" question that the box's own copy of Wikipedia answers no longer goes to the web at all.</li>
-                        <li><code>update.sh</code> takes English Wikipedia, about 50 GB, with the other sets whenever the volume has 60 GB free, and <code>GHOST_WIKI=0</code> leaves it out. Found after the cut: the ZIM reader in 0.0.4 can't open the published file, so leave it out until 0.0.5, where the fix is.</li>
+                        <li><code>update.sh</code> takes English Wikipedia, about 50 GB, with the other sets whenever the volume has 60 GB free, and <code>GHOST_WIKI=0</code> leaves it out. Found after the cut, the ZIM reader in 0.0.4 can't open the published file, so leave it out until 0.0.5, where the fix is.</li>
                         <li>A coin in CRYPTO50 priced at more than twenty times its month's base is held at its last good price rather than moving the whole index, and <code>ghost-cli ghost.tallyd rates index=1</code> lays the index out coin by coin.</li>
                         <li>With the map open, the dot follows the phone every few seconds.</li>
                     </ul>
                     <p>
-                        A box on an earlier wisp takes it from the phone with DEPLOY, and the app installs over the earlier one and keeps the enrolment. The known gaps name the certificate header again: a fresh box trusts the header nginx passes until <code>ghost-ctl edge-passthrough</code> moves the phone's TLS into secd, and a box reached by IP alone can't take that yet. The mirror's <code>go</code> set now carries Go 1.27.1 alone.
+                        A box on an earlier wisp takes it from the phone with DEPLOY, and the app installs over the earlier one and keeps the enrolment. The known gaps name the certificate header again, since a fresh box trusts the header nginx passes until <code>ghost-ctl edge-passthrough</code> moves the phone's TLS into secd, and a box reached by IP alone can't take that yet. The mirror's <code>go</code> set now carries Go 1.27.1 alone.
                     </p>
                 </div>
 
@@ -357,5 +357,6 @@
             <p class="footer-quote">"A dated list of what changed, so nobody has to guess." // Changelog</p>
         </footer>
 
+        <script src="/js/phosphor.js" defer></script>
     </body>
 </html>

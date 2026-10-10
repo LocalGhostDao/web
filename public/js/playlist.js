@@ -125,7 +125,7 @@
             navigator.mediaSession.metadata = new MediaMetadata({
                 title: t.title,
                 artist: 'Vlad Cealicu',
-                album: 'LocalGhost — The Build Soundtrack',
+                album: 'LocalGhost // The Build Soundtrack',
                 artwork: [{ src: '/images/og-playlist.png', sizes: '1200x630', type: 'image/png' }]
             });
             navigator.mediaSession.setActionHandler('play', function ()  { audio.play(); });

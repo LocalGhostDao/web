@@ -28,12 +28,16 @@
     --lg-terminal-rgb: 51, 255, 0;
     
     --lg-text: #E0E0E0;
-    --lg-text-dim: #808080;
+    --lg-text-dim: #a0a0a0;
     --lg-text-rgb: 224, 224, 224;
     
-    --lg-border: #333333;
-    --lg-warning: #FF3333;
+    --lg-border: #444444;
+    --lg-warning: #FF8A8A;
     --lg-warning-alt: #FF6B6B;
+
+    /* The second phosphor, for planned and not built */
+    --lg-amber: #FFB000;
+    --lg-amber-dim: #7a5500;
     
     /* Typography */
     --lg-font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Consolas', monospace;
@@ -604,3 +608,35 @@
 .lg-transition-slow {
     transition: all var(--lg-transition-slow);
 }
+
+
+/* ===========================================
+   NOTICE PLACARD
+   A civil-defence bulletin pinned to the terminal.
+   For what isn't built yet, said plainly.
+   <div class="lg-notice"><div class="lg-notice-head"><span>PUBLIC NOTICE</span><span>PLANNED</span></div><p>...</p></div>
+   =========================================== */
+
+.lg-notice {
+    border: 1px solid var(--lg-amber-dim);
+    outline: 1px solid rgba(122, 85, 0, 0.55);
+    outline-offset: 4px;
+    background: rgba(255, 176, 0, 0.025);
+    padding: 1.25rem 1.5rem 0.75rem;
+    margin: 2.5rem 4px;
+}
+
+.lg-notice-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-family: var(--lg-font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--lg-amber);
+    text-shadow: 0 0 6px rgba(255, 176, 0, 0.35);
+    margin-bottom: 0.9rem;
+}
+
+.lg-color-amber { color: var(--lg-amber); }

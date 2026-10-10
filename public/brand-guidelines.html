@@ -18,7 +18,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.localghost.ai/brand-guidelines">
     <meta property="og:title" content="Brand Guidelines | LocalGhost.ai">
-    <meta property="og:description" content="Cypherpunk Terminal Brutalism. The visual identity of sovereignty, colour, typography, effects and voice.">
+    <meta property="og:description" content="The shelter terminal. LocalGhost's visual and verbal identity, colour, type, effects, components and voice.">
     <meta property="og:image" content="https://www.localghost.ai/images/og-brand.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -30,7 +30,7 @@
     <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:url" content="https://www.localghost.ai/brand-guidelines">
     <meta name="twitter:title" content="Brand Guidelines | LocalGhost.ai">
-    <meta name="twitter:description" content="Cypherpunk Terminal Brutalism. The visual identity of sovereignty.">
+    <meta name="twitter:description" content="The shelter terminal. LocalGhost's visual and verbal identity.">
     <meta name="twitter:image" content="https://www.localghost.ai/images/og-brand.png">
     
     <!-- Favicons -->
@@ -50,7 +50,7 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Brand Guidelines",
-        "description": "The visual and verbal identity of LocalGhost. Cypherpunk Terminal Brutalism.",
+        "description": "The visual and verbal identity of LocalGhost, a green phosphor shelter terminal running a cypherpunk OS.",
         "url": "https://www.localghost.ai/brand-guidelines",
         "isPartOf": {
             "@id": "https://www.localghost.ai/#website"
@@ -113,16 +113,20 @@
             <h2>Core Identity</h2>
             
             <p>
-                <strong>Cypherpunk Terminal Brutalism.</strong> The visual language is a deliberate throwback to early computing (CRT monitors, green phosphor terminals, the hacker aesthetic of the 1990s), executed with modern restraint.
+                <strong>The shelter terminal.</strong> A green phosphor CRT out of a 1950s idea of the future, running a cypherpunk OS. The screen is the hacker terminal of the 1990s, the furniture around it is retro-futurist civil defence, the bulletins pinned beside it are dry, and the bunker is a box under your desk with your own life in it.
             </p>
-            
+
             <p>
-                The retro look is an ideological statement rather than nostalgia. It says <em>we remember when computers were tools, not cages.</em>
+                The retro look goes back to when a computer was a tool you owned and could open, and it's built with modern restraint, so the text stays readable and the effects stay out of the way.
+            </p>
+
+            <p>
+                No borrowed mascots, logos or names from any game or film, however close the mood.
             </p>
 
             <h3>The Positioning</h3>
             <p>
-                LocalGhost inverts the modern cloud model. We move everything, AI, data, digital identity, from their servers to yours. A private server where nobody can see you. Where nobody even knows you exist.
+                LocalGhost moves the AI, the data and the memory built from it off someone else's servers and onto a box you own, which answers your phone and gives everyone else the same 503 a dead server would.
             </p>
 
             <div class="principles-box">
@@ -301,7 +305,7 @@
             <h2>Colour Palette</h2>
             
             <p>
-                A deliberately limited palette. Black, green, grey, red. No gradients. No pastels. The constraint is the point.
+                A deliberately limited palette of black, green, grey and red, with amber for what isn't built yet. No pastels, and no gradients on surfaces (the only ones are the tube's own glow and vignette).
             </p>
 
             <div class="color-grid">
@@ -369,11 +373,19 @@
                         <div class="swatch-use">Danger, errors, "their" way, what we reject. Use sparingly.</div>
                     </div>
                 </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #FFB000; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Amber</div>
+                        <div class="swatch-hex" onclick="copyColor('#FFB000')">#FFB000</div>
+                        <div class="swatch-use">The second phosphor. Planned, not built, and the notice placards. Never for decoration.</div>
+                    </div>
+                </div>
             </div>
 
             <h3>Usage Rules</h3>
             <p>
-                Terminal Green is sacred. It represents LocalGhost values, user sovereignty, and correct paths. Warning Red is reserved for what we reject, surveillance, rent-seeking, enshittification. Don't dilute either.
+                Each colour is a status. Terminal Green is what runs and what we stand for, Amber is what's planned and not built yet, and Warning Red is what we reject (surveillance, rent-seeking, enshittification). A reader should be able to tell built from planned by colour alone, so don't use any of the three for decoration.
             </p>
         </section>
 
@@ -431,7 +443,7 @@
             <h2>Visual Effects</h2>
 
             <p>
-                Subtle texture and animation that evokes CRT monitors without being distracting. The effects are subliminal, you feel them more than you see them.
+                Texture that makes the page read as a lit tube without getting in the way of reading it. The constant effects are faint, and the loud ones are easter eggs that show up rarely, for a moment, and never for anyone whose system asks for reduced motion.
             </p>
 
             <div class="effect-grid">
@@ -461,7 +473,16 @@
                 <strong>Terminal Glow.</strong> Box-shadow and text-shadow on green elements. <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.8rem;">text-shadow: 0 0 5px var(--terminal-dim)</code>
             </p>
             <p>
-                <strong>Flicker.</strong> Randomised, slow animation (6s+ duration). Subtle opacity changes. Not annoying, just enough to feel alive.
+                <strong>Phosphor wash and vignette.</strong> A faint green radial wash behind the content, brightest a third of the way down, and a dark vignette at the edges of the viewport, both fixed and pointer-transparent. They're in <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.8rem;">base.css</code>, so every page gets them.
+            </p>
+            <p>
+                <strong>Flicker.</strong> Randomised, slow animation (6s+ duration) inside the terminal only. Subtle opacity changes, enough to feel alive.
+            </p>
+            <p>
+                <strong>Easter eggs.</strong> <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.8rem;">/js/phosphor.js</code> lets the tube misbehave now and then, an interference band rolling down, a flash, the vertical hold slipping, or a line burning in faintly. The first comes 30 to 90 seconds after the page opens, then one every one to three minutes, never while the tab is hidden. Typing <em>ghost</em> outside a text field puts up PLEASE STAND BY.
+            </p>
+            <p>
+                <strong>Decoration stays out of the text.</strong> Flavour lines like the footer's END OF TRANSMISSION live in CSS, so screen readers, crawlers and the markdown twins of each page get the content and none of the set dressing.
             </p>
             <p>
                 <strong>Borders.</strong> Always 1px. Sharp corners (0 or 4px max border-radius for code blocks). No drop shadows. No blur effects on cards.
@@ -473,6 +494,12 @@
             <div class="section-header">&gt; SECTION_06</div>
             <h2>Components</h2>
 
+            <div class="notice" role="note">
+                <div class="notice-head"><span>PUBLIC NOTICE No. 00</span><span>THE NOTICE PLACARD</span></div>
+                <p>
+                    A civil-defence bulletin pinned to the terminal, double-ruled in amber. Use it for what isn't built yet and for what a reader should know before relying on something. One fact per notice, said plainly, with the dry joke allowed only after the fact. Markup is a <code>div.notice</code> holding a <code>div.notice-head</code> with two spans, then paragraphs.
+                </p>
+            </div>
             <div class="component-box">
                 <div class="component-demo">
                     <div class="component-label">BUTTONS</div>
@@ -541,7 +568,7 @@
                     <div class="motif-symbol">⚿</div>
                     <div class="motif-content">
                         <div class="motif-name">Hardware Keys</div>
-                        <div class="motif-desc">Physical tokens. Tangible ownership. Two keys, two locations. If you lose both, you're gone, and that's the point. Sovereignty means responsibility.</div>
+                        <div class="motif-desc">Two FIDO2 keys, planned for shade (1.x) at the earliest, one kept with the box and one somewhere else. Lose both and the archive is gone, which is the price of nobody else holding a copy.</div>
                     </div>
                 </div>
                 <div class="motif-item">
@@ -560,21 +587,21 @@
             <h2>Voice & Tone</h2>
 
             <p>
-                <strong>Direct. Technical. Defiant.</strong> The copy declares rather than explains. It assumes intelligence. It treats the reader as a peer, not a prospect.
+                The <a href="/writing-guidelines">writing guidelines</a> are the rules for every word on the site, and this section is how they meet the look. The short version is someone who built the thing walking a sceptical peer through it, plainly, with the numbers, saying what isn't done yet, and with a dry joke where one lands.
             </p>
 
-            <h3>Key Rhetorical Moves</h3>
+            <h3>How the voice meets the look</h3>
             <p>
-                <strong>Manifestos over marketing.</strong> We don't pitch benefits; we state principles.
+                <strong>Plain prose, loud furniture.</strong> The terminal chrome, the placards and the boot screen carry the retro-futurist mood, so the sentences don't have to. Body copy stays first person and specific.
             </p>
             <p>
-                <strong>"We" vs "They."</strong> Clear adversarial framing. Big Tech is the antagonist. The user is the protagonist. LocalGhost is the weapon.
+                <strong>Built in green, planned in amber.</strong> Anything not running today gets said in the copy and marked in amber. The look should never make a plan read like a feature.
             </p>
             <p>
-                <strong>Code as proof.</strong> Every claim is backed by architecture, not policy. "Code, not promises."
+                <strong>Code as proof.</strong> A claim about privacy names the mechanism (the 503, the certificate, the TPM seal) or links the code, rather than asking for trust.
             </p>
             <p>
-                <strong>Dark humour.</strong> "At least this 404 doesn't phone home." Gallows wit that acknowledges the absurdity of the status quo.
+                <strong>Dark humour.</strong> "At least this 404 doesn't phone home." Civil-defence deadpan about the absurd parts of the status quo, and about ourselves, never at the reader.
             </p>
 
             <h3>Signature Phrases</h3>
@@ -582,7 +609,6 @@
                 <div class="phrase-item">The only cloud is you.</div>
                 <div class="phrase-item">We have designed ourselves out of the loop.</div>
                 <div class="phrase-item">Atoms don't have terms of service.</div>
-                <div class="phrase-item">The architecture is the legal defence.</div>
                 <div class="phrase-item">Do not lend your mind to the dying machine.</div>
                 <div class="phrase-item">The exit is open.</div>
                 <div class="phrase-item">Privacy through code, not promises.</div>
@@ -608,7 +634,7 @@
                 </div>
                 <div class="voice-example">
                     <div class="voice-label do">[✓] DO</div>
-                    <div class="voice-text">"Sovereignty means responsibility. Two keys. Two locations. No excuses."</div>
+                    <div class="voice-text">"There's no recovery path in wisp, so a forgotten PIN loses the archive on that disk. Keep the originals somewhere else as well."</div>
                 </div>
                 <div class="voice-example">
                     <div class="voice-label dont">[✗] DON'T</div>
@@ -616,11 +642,11 @@
                 </div>
                 <div class="voice-example">
                     <div class="voice-label do">[✓] DO</div>
-                    <div class="voice-text">"The math doesn't care about your feelings."</div>
+                    <div class="voice-text">"The Mist is a design, no code for it exists yet, and when it does, residents are asked not to make it the only copy of anything."</div>
                 </div>
                 <div class="voice-example">
                     <div class="voice-label dont">[✗] DON'T</div>
-                    <div class="voice-text">"We understand this might seem complicated..."</div>
+                    <div class="voice-text">"Our revolutionary backup network keeps your data safe forever."</div>
                 </div>
             </div>
 
@@ -642,15 +668,15 @@
                 <h3 class="box-title">&gt; INTERACTION PHILOSOPHY</h3>
                 <div class="principle-item">
                     <span class="principle-icon">[1]</span>
-                    <div class="principle-text"><strong>Easter eggs over empty polish.</strong> Every interaction rewards curiosity. The terminal is interactive. The snake game teaches data consumption. Buttons do unexpected things.</div>
+                    <div class="principle-text"><strong>Easter eggs over empty polish.</strong> Curiosity gets rewarded. The home terminal takes commands, the snake game is about what a model eats, and the tube misbehaves now and then if you stay long enough.</div>
                 </div>
                 <div class="principle-item">
                     <span class="principle-icon">[2]</span>
-                    <div class="principle-text"><strong>No dark patterns.</strong> The waitlist modal doesn't collect email. The donate modal shows a raw ETH address. We don't trick. We don't manipulate.</div>
+                    <div class="principle-text"><strong>No dark patterns.</strong> The waitlist modal doesn't collect email and the donate modal shows a raw ETH address, with nothing in between to nudge you.</div>
                 </div>
                 <div class="principle-item">
                     <span class="principle-icon">[3]</span>
-                    <div class="principle-text"><strong>Friction as feature.</strong> We don't auto-play. We don't pop up. We don't interrupt. If you want to engage, you engage. The box waits for you.</div>
+                    <div class="principle-text"><strong>Nothing interrupts.</strong> No auto-play and no pop-ups. The easter eggs never take focus, and the one that covers the screen comes only when you type for it.</div>
                 </div>
                 <div class="principle-item">
                     <span class="principle-icon">[4]</span>
@@ -771,6 +797,7 @@
                     <div class="component-label">COLOURS</div>
                     <code class="lg-code">.lg-color-terminal</code>
                     <code class="lg-code">.lg-color-dim</code>
+                    <code class="lg-code">.lg-color-amber</code>
                     <code class="lg-code">.lg-bg-void</code>
                     <code class="lg-code">.lg-bg-void-lighter</code>
                 </div>
@@ -814,6 +841,7 @@
                     <code class="lg-code">.lg-divider</code>
                     <code class="lg-code">.lg-list</code>
                     <code class="lg-code">.lg-section-label</code>
+                    <code class="lg-code">.lg-notice</code>
                 </div>
             </div>
 
@@ -867,5 +895,6 @@
             });
         }
     </script>
+    <script src="/js/phosphor.js" defer></script>
 </body>
 </html>

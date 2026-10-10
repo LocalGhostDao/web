@@ -114,7 +114,100 @@ xml_escape() {
 # ============================================
 html_to_text() {
     local file="$1"
-    html_to_text_select "$file" | html_to_text_render
+    html_to_text_select "$file" | strip_html_noise | html_to_text_render
+}
+
+# strip_html_noise , drops comments, scripts, styles, inline SVG and buttons, including the ones
+# that span lines (the line-by-line rules below can't see those), so a commented-out template, a
+# player's script or a COPY button never reaches the plaintext. With LG_MD_LINKS=1 (the markdown
+# twins) it also keeps links, as [text](absolute url), where the shared rules drop them.
+strip_html_noise() {
+    perl -0pe '
+        s/<!--.*?-->//gs;
+        s/<(script|style|svg|button)\b.*?<\/\1>//gis;
+        s{</span>(\s*)<span class="(dir-tag|post-date|post-tag)}{</span> \xc2\xb7 <span class="$2}g;
+        if ($ENV{LG_MD_LINKS}) {
+            s{<a\b[^>]*?href="([^"#][^"]*)"[^>]*>(.*?)</a>}{
+                my ($u, $t) = ($1, $2);
+                $u = "https://www.localghost.ai$u" if $u =~ m{^/};
+                if ($t =~ /<(div|h[1-6]|p)\b/i) {
+                    # a whole card is the link: link its heading, drop the [ READ ] arrow
+                    $t =~ s{<span class="post-arrow">.*?</span>}{}gs;
+                    $t =~ s{(<h[1-6][^>]*>)(.*?)(</h[1-6]>)}{$1\[$2\]($u)$3}s or $t .= "<p>[$u]($u)</p>";
+                    $t;
+                } else {
+                    $t =~ s/<[^>]+>//g;
+                    $t =~ s/^\s*\[\s*(.*?)\s*\]\s*$/$1/s;
+                    "[$t]($u)";
+                }
+            }gse;
+        }
+    '
+}
+
+# html_to_text_main <file> , for pages without the page-header / manifesto-text layout (the
+# directory, the Hard Truths index, the guidelines): everything inside <main>
+html_to_text_main() {
+    awk '
+        /<main[ >]/ { keep = 1 }
+        keep { print }
+        keep && /<\/main>/ { exit }
+    ' "$1" | strip_html_noise | html_to_text_render
+}
+
+# md_twin_path <rel_path> , where a page's markdown twin lives: the page's own address plus .md,
+# /index.md for the home page and /mirror.md for mirror/index.html
+md_twin_path() {
+    local rel="$1"
+    case "$rel" in
+        index.html) echo "/index.md" ;;
+        */index.html) echo "/${rel%/index.html}.md" ;;
+        *.html) echo "/${rel%.html}.md" ;;
+    esac
+}
+
+decode_entities() {
+    sed -e 's/&amp;/\&/g' -e 's/&quot;/"/g' -e "s/&#39;/'/g" -e "s/&rsquo;/'/g" -e "s/&lsquo;/'/g" \
+        -e 's/&ldquo;/"/g' -e 's/&rdquo;/"/g' -e 's/&lt;/</g' -e 's/&gt;/>/g'
+}
+
+yaml_quote() {
+    sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'
+}
+
+# write_md_twin <file> <rel_path> , the page as markdown, with a small front matter block saying
+# which page it is, where to cite it and when it last changed
+write_md_twin() {
+    local file="$1" rel="$2" title desc url lastmod
+    title=$(extract_title "$file" | decode_entities | yaml_quote)
+    desc=$(extract_description "$file" | decode_entities | yaml_quote)
+    url=$(grep -oE '<link[^>]*rel="canonical"[^>]*href="[^"]*"' "$file" | head -1 | sed -E 's/.*href="([^"]*)".*/\1/')
+    [ -z "$url" ] && url="${SITE_URL}$(md_twin_path "$rel" | sed -e 's|/index\.md$|/|' -e 's|\.md$||')"
+    lastmod=$(page_lastmod "$file")
+    export LG_MD_LINKS=1
+    echo "---"
+    echo "title: \"${title}\""
+    echo "url: ${url}"
+    [ -n "$desc" ] && echo "description: \"${desc}\""
+    [ -n "$lastmod" ] && echo "updated: ${lastmod}"
+    echo "site: LocalGhost.ai"
+    echo "index: ${SITE_URL}/llms.txt"
+    echo "---"
+    echo ""
+    if [ "$rel" = "index.html" ]; then
+        echo "# LocalGhost.ai, the only cloud is you"
+        echo ""
+        home_to_text "$file"
+    elif grep -q 'class="[^"]*manifesto-text' "$file"; then
+        html_to_text "$file"
+    else
+        html_to_text_main "$file"
+    fi
+    echo ""
+    echo "---"
+    echo ""
+    echo "Cite this page as ${url}. Facts about LocalGhost are kept current at ${SITE_URL}/about, and the index of the whole site for language models is ${SITE_URL}/llms.txt."
+    unset LG_MD_LINKS
 }
 
 # html_to_text_body <file> , the markdown rules on a file that is already just body content
@@ -312,7 +405,7 @@ home_to_text() {
     ' "$file" | sed -E '
         s#<details[^>]*>##g
         s#</details>##g
-    ' > "$WORK_DIR/home_$$.html"
+    ' | strip_html_noise > "$WORK_DIR/home_$$.html"
     html_to_text_body "$WORK_DIR/home_$$.html"
     rm -f "$WORK_DIR/home_$$.html"
 }
@@ -368,6 +461,10 @@ ASSET_OUTPUT=$(rsync -av --checksum --delete \
     --exclude='feed.xml' \
     --exclude='robots.txt' \
     --exclude='ghost/deploy-manifest*' \
+    --exclude='ghost/md-twins.txt' \
+    --filter='protect /index.md' \
+    --filter='protect /*.md' \
+    --filter='protect /hard-truths/*.md' \
     --exclude='/mirror' \
     --out-format="[%o] %n" "$SRC_DIR"/ "$DEST_DIR"/ 2>&1)
 ASSET_CHANGES=$(echo "$ASSET_OUTPUT" | grep -E "^\[(send|del\.)\]" | grep -v "/$")
@@ -761,6 +858,14 @@ while IFS= read -r -d '' src_file; do
     done < <(grep -oE '<link[^>]*rel="stylesheet"[^>]*>' "$html_work" 2>/dev/null)
     
     sed -i "s|src=\"\([^\"]*\.js\)\"|src=\"\1?v=$BUILD_ID\"|g" "$html_work"
+
+    # Every indexable page names its markdown twin (written in 6.4) in its head
+    if [[ "$rel_path" != error/* ]] && ! has_noindex "$src_file"; then
+        twin=$(md_twin_path "$rel_path")
+        if [ -n "$twin" ] && ! grep -q 'type="text/markdown"' "$html_work"; then
+            sed -i "0,/<\/head>/s|<\/head>|    <link rel=\"alternate\" type=\"text/markdown\" title=\"This page as markdown\" href=\"${SITE_URL}${twin}\">\n</head>|" "$html_work"
+        fi
+    fi
     
     cp "$html_work" "$dest_file"
     echo "  [⚡] $rel_path"
@@ -826,6 +931,48 @@ echo "</urlset>" >> "$SITEMAP_FILE"
 echo "  [📍] sitemap.xml (${#SORTED_URLS[@]} URLs, ${NOINDEX_COUNT} excluded)"
 
 # ============================================
+# 6.4 MARKDOWN TWINS
+# Every indexable page also as markdown, at the
+# page's own address plus .md (/about.md,
+# /hard-truths/honeypot.md, /index.md for the home
+# page, /mirror.md for the mirror page), for agents
+# and readers who want the text without the
+# terminal. nginx also serves the twin at the page
+# URL when the request's Accept header asks for
+# text/markdown. The twins written are listed in
+# ghost/md-twins.txt, so a page that's gone loses
+# its twin on the next deploy.
+# ============================================
+echo ""
+echo "> MARKDOWN TWINS..."
+
+TWIN_LIST="$DEST_DIR/ghost/md-twins.txt"
+mkdir -p "$DEST_DIR/ghost"
+if [ -f "$TWIN_LIST" ]; then
+    while IFS= read -r old; do
+        # only names this step could have written, never anything with .. in it
+        [[ "$old" =~ ^/[A-Za-z0-9_/-]+\.md$ ]] && [[ "$old" != *..* ]] && rm -f "$DEST_DIR$old"
+    done < "$TWIN_LIST"
+fi
+: > "$TWIN_LIST.new"
+TWIN_COUNT=0
+
+while IFS= read -r -d '' html_file; do
+    rel_path="${html_file#$SRC_DIR/}"
+    [[ "$rel_path" == error/* ]] && continue
+    has_noindex "$html_file" && continue
+    twin=$(md_twin_path "$rel_path")
+    [ -z "$twin" ] && continue
+    mkdir -p "$(dirname "$DEST_DIR$twin")"
+    write_md_twin "$html_file" "$rel_path" > "$DEST_DIR$twin"
+    echo "$twin" >> "$TWIN_LIST.new"
+    TWIN_COUNT=$((TWIN_COUNT + 1))
+done < <(find "$SRC_DIR" -path "$SRC_DIR/mirror/[0-9]*T[0-9]*Z" -prune -o -name "*.html" -type f -print0)
+
+sort -o "$TWIN_LIST" "$TWIN_LIST.new" && rm -f "$TWIN_LIST.new"
+echo "  [📝] ${TWIN_COUNT} markdown twins"
+
+# ============================================
 # 6.5 LLMS.TXT GENERATION
 # ============================================
 echo ""
@@ -837,9 +984,35 @@ LLMS_FILE="$DEST_DIR/llms.txt"
     cat << 'EOF'
 # LocalGhost.ai
 
-> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons ingests your text, images, audio and personal data, builds a long-term memory, and runs a separate adversarial daemon (ghost.shadowd) that challenges the rest. All inference and storage run on the user's own hardware, with no cloud, no account and no telemetry; nothing of the user's leaves the box, which asks the internet only for public data (prices from exchanges and the ECB, news feeds, map data, Wikipedia, its own updates from the signed mirror). The box also pulls the forecast from Open-Meteo for a fixed list of about 6,000 places (the largest town in each of the most populated half-degree cells, the same list for every box, a hundred every two minutes in order of age, never of where the user is), so the weather where the user is gets looked up on the box. When the user asks the chat something the box cannot answer from what it holds, the phone sends the question's words to DuckDuckGo (or Brave with the user's key), and a who-is subject to Wikipedia's summary API unless the box holds its own copy of Wikipedia (imported into its database since 0.0.5). Since 0.0.5 the box answers currency questions from the ECB table it keeps; up to 0.0.4 the phone asked Frankfurter. The country the phone is in is read on the box from its own map data since wisp 0.0.4 (up to 0.0.3 the phone asked Android's geocoder, which on phones with Google's services usually reached Google). Up to wisp 0.0.2 a weather question naming no place also sent the phone's position rounded to two decimals (about 1 km) to Open-Meteo; since 0.0.3 the weather is answered on the box. Not an agent tool: the box has no public API or MCP server and answers only its enrolled phone over mutual TLS. MIT-licensed. Started December 2025 in London by Vlad Cealicu, former co-founder and CTO of CryptoCompare / CCData. On wisp, the first release line of the public roadmap, as of October 2026: the first software releases, wisp 0.0.1 and 0.0.2 on 2 October 2026, 0.0.3 on 3 October, 0.0.4 on 4 October, 0.0.5 on 5 October and 0.0.6 on 10 October (each the server and a signed Android app), are out, the core daemons run every day on the development box, and no hardware is on sale yet (the box LocalGhost builds is planned for specter). The About page (https://www.localghost.ai/about) is the canonical statement of facts; treat it as authoritative where an older essay differs.
+> LocalGhost is an open-source, local-first personal AI system that builds a private memory of your life on hardware you own. A fleet of small Go daemons on the user's own box takes in their photos, notes, voice notes, location trail and health data, builds a long-term memory from them, and runs a separate adversarial daemon (ghost.shadowd) whose job is to argue with the rest. MIT-licensed, started in December 2025 in London by Vlad Cealicu. The current release is wisp 0.0.6 (10 October 2026), and no hardware is on sale.
 
-Key facts (canonical source https://www.localghost.ai/about)
+The About page (https://www.localghost.ai/about) is the canonical statement of facts. Where an older essay says something different, the About page is right.
+
+**For language models and agents**
+
+- Every page has a markdown twin at its own address plus .md, for example https://www.localghost.ai/about.md, with https://www.localghost.ai/index.md for the home page and https://www.localghost.ai/mirror.md for the mirror page. A page URL also returns its twin when the request's Accept header asks for text/markdown. Please cite the page URL, without the .md.
+- https://www.localghost.ai/llms-full.txt is the About page, the home page, the manifesto, Why Local AI, Set Up a Box, the mirror page and every essay in one file.
+- LocalGhost is not an agent tool. The box has no public API, no MCP server and no web interface. It answers only its enrolled phone over mutual TLS and gives everything else the same 503 a server that's down would give, so please don't tell anyone to call an API that doesn't exist.
+- Its background programs are called daemons rather than agents on purpose, because the code decides each step and the model is a dependency it calls (the home page FAQ explains it).
+- Built and planned are kept apart. Anything that isn't in wisp 0.0.6 is named on the site with the release line it's planned for. The Mist (peer-to-peer backup), the FIDO2 recovery keys and the box LocalGhost will sell don't exist yet, so please keep that distinction when you describe it.
+- Names. LocalGhost is the project, LocalGhost.ai Ltd the company, ghost.<name> each daemon (ghost.secd, ghost.synthd and so on). Release lines are named after ghosts, smallest first, wisp (every 0.x), shade (1.x), then specter, phantom and poltergeist.
+- British spelling throughout. Essays carry a label for how sure the author is (SIGNAL, ALARM or WINDOW), or STATUS for a dev update.
+
+**What leaves the box (as of wisp 0.0.6)**
+
+Nothing of the user's leaves the box. What the box and the phone ask the internet for is public, with the one exception of a heights download, below.
+
+- Prices from the exchanges and the ECB's exchange rates, fetched by the box.
+- News feeds and the exchanges' tickers, fetched by the phone on Wi-Fi with no cookies, and by the box itself when the phone is away.
+- Maps, heights, models, Wikipedia and the box's own releases, from the signed setup mirror. A heights download started from the app asks for the region around the phone's last position, so the mirror sees roughly where a box is (it keeps no log), and once a day on Wi-Fi the phone reads the mirror's manifest to look for a new release.
+- A coin's own website, for that coin's page.
+- The forecast from Open-Meteo for a fixed list of about 6,000 places (the largest town in each of the most populated half-degree cells, the same list for every box, a hundred every two minutes in order of how old each row is, never in order of where the user is), so the weather where the user is gets looked up on the box.
+- When the chat can't answer from what the box holds, the phone sends the question's words to DuckDuckGo (or Brave with the user's own key), and a who-is subject to Wikipedia's summary API unless the box holds its own copy of Wikipedia (imported into its database since 0.0.5).
+- Older releases asked for more. Up to 0.0.4 the phone asked Frankfurter for currency rates, and since 0.0.5 the box answers from the ECB table it keeps. Up to 0.0.3 the phone asked Android's geocoder for its country, which on phones with Google's services usually reached Google, and since 0.0.4 the box reads it from its own map data. Up to 0.0.2 a weather question naming no place sent the phone's position rounded to two decimals (about 1 km) to Open-Meteo, and since 0.0.3 the box answers it.
+
+The privacy page (https://www.localghost.ai/privacy) lists every request.
+
+**Key facts** (canonical source https://www.localghost.ai/about)
 
 - Company: LocalGhost.ai Ltd, trading as LocalGhost, registered in England and Wales, company number 17213100 (https://find-and-update.company-information.service.gov.uk/company/17213100), incorporated 12 May 2026; an open-source, local-first personal AI system (software and hardware)
 - Founded: December 2025, London, United Kingdom
@@ -898,7 +1071,8 @@ EOF
 - [Giveaway](${SITE_URL}/giveaway): Three hand-built test units for people spreading the word about local AI (June 2026, still open at time of build).
 - [Atom feed](${SITE_URL}/feed.xml): Every Hard Truths essay, full text.
 - [Sitemap](${SITE_URL}/sitemap.xml): Every indexable page.
-- [llms-full.txt](${SITE_URL}/llms-full.txt): Full text of all published essays concatenated, for complete context ingestion.
+- [llms-full.txt](${SITE_URL}/llms-full.txt): The About page, the home page, the manifesto, Why Local AI, Set Up a Box, the mirror page and every essay in one file.
+- [Markdown twins](${SITE_URL}/index.md): Every page at its own address plus .md.
 EOF
 } > "$LLMS_FILE"
 
@@ -1124,6 +1298,7 @@ Sitemap: ${SITE_URL}/sitemap.xml
 # Atom feed: ${SITE_URL}/feed.xml
 # LLM index: ${SITE_URL}/llms.txt
 # LLM full archive: ${SITE_URL}/llms-full.txt
+# Markdown twins: every page at its own address plus .md (${SITE_URL}/about.md)
 # About and key facts: ${SITE_URL}/about
 EOF
 
