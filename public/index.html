@@ -1011,58 +1011,77 @@ NO CENTRAL NODE. EVERY BOX IS A PEER.</pre>
         <!-- HARDWARE -->
         <section id="hardware">
             <div class="section-header">&gt; SECTION_06</div>
-            <h2>THE BLACK BOX</h2>
+            <h2>THE TOWER</h2>
 
             <div class="notice" role="note">
                 <div class="notice-head"><span>PUBLIC NOTICE No. 06</span><span>NOTHING IS ON SALE</span></div>
                 <p>
-                    The Black Box is planned for specter, after the software is stable. The spec below is the design and
-                    will change before launch, so please don't queue. Today LocalGhost runs on a machine of your own, and
-                    <a href="/setup">Set Up a Box</a> says how.
+                    The tower we build and sell is planned for specter, after the software is stable. The parts below are
+                    the reference build and will change before launch, so please don't queue. Today LocalGhost runs on a
+                    machine of your own, and <a href="/setup">Set Up a Box</a> says how.
                 </p>
             </div>
 
             <p>
-                The plan is standard parts we can name, our install on top, and a case you can open. We won't make our
-                own silicon or boards, and you could buy every part yourself.
+                It's a plain tower of parts you can order from anywhere, cobbled together rather than designed, because the
+                parts that matter are the graphics card and the disks and everything else is there to hold them up. It's the
+                build from <a href="/hard-truths/the-expensive-part">The Expensive Part Was Never the AI</a>, priced new in
+                June 2026, and the card is the one part you swap as they get faster.
             </p>
 
             <div class="specs-list">
                 <div>
                     <span class="spec-label">&gt; COMPUTE</span>
-                    <span class="spec-value">ARM64 SBC w/ NPU</span>
-                </div>
-                <div>
-                    <span class="spec-label">&gt; STORAGE</span>
-                    <span class="spec-value">M.2 NVMe (Standard 2280 Form Factor)</span>
+                    <span class="spec-value">Ryzen 5 5600 on a B550M board, 6 cores</span><span class="spec-price">~£175</span>
                 </div>
                 <div>
                     <span class="spec-label">&gt; MEMORY</span>
-                    <span class="spec-value">16GB+ LPDDR4x</span>
+                    <span class="spec-value">32GB DDR4, two 16GB sticks</span><span class="spec-price">~£50</span>
                 </div>
                 <div>
-                    <span class="spec-label">&gt; SECURITY</span>
-                    <span class="spec-value">2× FIDO2 Hardware Keys</span>
+                    <span class="spec-label">&gt; GPU</span>
+                    <span class="spec-value">RTX 5070, 12GB, runs the model</span><span class="spec-price">~£499</span>
                 </div>
                 <div>
-                    <span class="spec-label">&gt; CHASSIS</span>
-                    <span class="spec-value">Aluminium (Passive Cooling / Fanless)</span>
+                    <span class="spec-label">&gt; SYSTEM</span>
+                    <span class="spec-value">1TB NVMe for the OS, the model and the daemons</span><span class="spec-price">~£55</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; ARCHIVE</span>
+                    <span class="spec-value">Two 4TB hard drives, mirrored</span><span class="spec-price">~£200</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; CASE</span>
+                    <span class="spec-value">A mid-tower, nothing fancy</span><span class="spec-price">~£60</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; POWER</span>
+                    <span class="spec-value">850W, with room for the next card</span><span class="spec-price">~£90</span>
+                </div>
+                <div>
+                    <span class="spec-label">&gt; KEYS</span>
+                    <span class="spec-value status-planned">Two FIDO2 hardware keys, planned for shade</span>
+                </div>
+                <div class="spec-total">
+                    <span class="spec-label">&gt; TOTAL</span>
+                    <span class="spec-value">About £1,130 in parts, June 2026 prices</span>
                 </div>
             </div>
 
             <div class="supply-chain-note">
                 <strong>SUPPLY CHAIN TRANSPARENCY.</strong><br>
-                This is a bill-of-materials product, made of standard parts you could buy yourself.
-                What we add is the assembly, the cooling, the install, and the testing that says the parts work together.
-                The final spec will be published before launch.
+                Every part above is something you could buy yourself, at the price next to it. What we'd add is the assembly,
+                the install and the testing that says the parts work together, for the 30% margin in the economics above.
+                Expect a fan you can hear and a few cable ties (it lives under a desk, it isn't a design object). The final
+                parts list goes up before launch.
             </div>
 
             <div class="hardware-options">
                 <div class="hardware-option">
                     <h3>OPTION A // THE INTEGRATOR</h3>
                     <p>
-                        We buy the parts, build the box, install the software and post it to you, with the two
-                        hardware keys in the box. The margin pays for the labour, the testing and the software.
+                        We buy the parts, bolt the tower together, install the software and post it to you, with the
+                        two hardware keys in the box. The margin pays for the labour, the testing and the software.
                     </p>
                     <div class="hardware-price">PRICE TBD</div>
                     <button class="hardware-btn ghost" onclick="LocalGhost.openWaitlistModal()">[ REMIND ME ]</button>
@@ -1071,7 +1090,7 @@ NO CENTRAL NODE. EVERY BOX IS A PEER.</pre>
                     <h3>OPTION B // THE SCAVENGER</h3>
                     <p>
                         Don't wait for us. The software runs today on a Debian 13 machine with a TPM and
-                        a spare disk, faster with an NVIDIA card, and the phone app comes signed in the same release.
+                        a spare disk, faster with an NVIDIA card (the parts list above will do), and the phone app comes signed in the same release.
                         The setup page has what you need, the order to do it in, and what each step costs,
                         from a bare install to a phone that unlocks the box. Show us what you build.
                     </p>

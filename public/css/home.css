@@ -532,6 +532,10 @@
 
 .specs-list div {
     margin-bottom: 0.3rem;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    column-gap: 0.75rem;
+    align-items: baseline;
 }
 
 .specs-list .spec-label {
@@ -543,6 +547,32 @@
 
 .specs-list .spec-value {
     color: var(--text);
+}
+
+.specs-list .spec-price {
+    color: var(--text-dim);
+    text-align: right;
+}
+
+.specs-list .spec-value.status-planned {
+    color: var(--amber);
+}
+
+@media (max-width: 600px) {
+    .specs-list div {
+        grid-template-columns: 1fr auto;
+        margin-bottom: 0.7rem;
+    }
+    .specs-list .spec-label {
+        grid-column: 1 / -1;
+        min-width: 0;
+    }
+}
+
+.specs-list .spec-total {
+    border-top: 1px dashed var(--border);
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
 }
 
 .supply-chain-note {
