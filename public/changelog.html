@@ -6,7 +6,7 @@
 
         <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
         <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
-        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.5, and the sets on the setup mirror.">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.6, and the sets on the setup mirror.">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/changelog">
@@ -15,20 +15,20 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/changelog">
         <meta property="og:title" content="Changelog, LocalGhost">
-        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.5 in October 2026, and the sets on the setup mirror.">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.6 in October 2026, and the sets on the setup mirror.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-05T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-10T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/changelog">
         <meta name="twitter:title" content="Changelog, LocalGhost">
-        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.5 in October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.6 in October 2026, and the sets on the setup mirror.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -47,11 +47,11 @@
             "@type": "WebPage",
             "name": "Changelog",
             "headline": "Changelog",
-            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.5, and the sets on the setup mirror.",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.6, and the sets on the setup mirror.",
             "url": "https://www.localghost.ai/changelog",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-05",
+            "dateModified": "2026-10-10",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; CHANGELOG</div>
                 <h1>Changelog</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-05">5 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-10">10 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -147,6 +147,26 @@
                 <p class="page-lede">
                     Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
                 </p>
+
+                <div class="entry" id="wisp-0.0.6">
+                    <h3>wisp 0.0.6, two-week certificates and the box's sources on the phone</h3>
+                    <span class="when">10 OCTOBER 2026 // TAG v0.0.6 // COMMIT 2c4786d</span>
+                    <p>
+                        The sixth cut of wisp, on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.6">GitHub release</a> with the same assets as before and on the setup mirror as the <code>server</code> and <code>app</code> sets.
+                    </p>
+                    <ul class="plain-list">
+                        <li>A phone's certificate lasts two weeks, and the phone renews it once a day while it talks to the box, re-signing the key that has never left it. A phone left for longer has to be enrolled again with a fresh QR, and the QR's own certificate is good for an hour. The box names a phone by its public key now, so a renewal is the same phone and a retirement by key holds across renewals.</li>
+                        <li>INTEGRATIONS on the phone, which was SOURCES, shows what the box draws on, Wikipedia, the news, the market numbers, the weather, the maps and the heights, and speech, each with its state and where it comes from. A missing one can be fetched from the mirror with two taps, which runs the same <code>update.sh</code> the operator runs by hand. The news feeds are kept from the app, added by their address, switched off or taken off the list.</li>
+                        <li>The weather is on HOME and on a tall widget. The box's list is now the largest town in each of about six thousand half-degree cells, pulled from Open-Meteo a hundred every two minutes, and neither the list nor the order depends on where you are.</li>
+                        <li>The Wikipedia import is faster and says how long is left. The first one on my box was on course to take about 22 hours, most of it keeping the search indexes current, and those are now built once at the end, with several readers going at once. A page with a stray byte no longer stops it, and a search by title works while it runs.</li>
+                        <li>The box reads the heights from packs of 30 by 30 degrees as well as from loose tiles, and the mirror publishing the packs is next.</li>
+                        <li>The chat shows the steps it took under the answer, transcripts spell people's names the way your memories do, and a name you corrected by hand keeps one memory for that person.</li>
+                        <li>A pass over the whole app. Back goes where you came from, nothing spins forever, nothing fails silently, and DEPLOY, ROLL BACK and LOCK BOX NOW ask once before they act.</li>
+                    </ul>
+                    <p>
+                        A box on 0.0.5 takes it from the phone with DEPLOY. The phone renews its certificate at its first unlock on 0.0.6, and the weather list refills over about two hours. A box set up from a checkout runs <code>sudo ./tools/redeploy.sh</code>, which lays <code>update.sh</code> and the geo tools under <code>/opt/localghost</code> for the app's fetches.
+                    </p>
+                </div>
 
                 <div class="entry" id="wisp-0.0.5">
                     <h3>wisp 0.0.5, a box from the release alone</h3>

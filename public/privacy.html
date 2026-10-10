@@ -21,7 +21,7 @@
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-05T00:00:00Z">
+        <meta property="article:modified_time" content="2026-10-10T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
@@ -51,7 +51,7 @@
             "url": "https://www.localghost.ai/privacy",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-05",
+            "dateModified": "2026-10-10",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; PRIVACY</div>
                 <h1>Privacy</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-05">5 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-10">10 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -181,9 +181,9 @@
                 <ul class="plain-list">
                     <li>Prices from the exchanges and the ECB's exchange rates, fetched by the box.</li>
                     <li>News feeds and the exchanges' tickers, fetched by the phone on Wi-Fi with no cookies, so their publishers see the phone's address, and by the box itself when the phone is away.</li>
-                    <li>Maps, models and releases from the setup mirror, checked against its signed manifest.</li>
+                    <li>Maps, models and releases from the setup mirror, checked against its signed manifest. A heights fetch started from the app asks for the region around the phone's last position, so the mirror sees roughly which part of the world a box wants, and it keeps no log of it.</li>
                     <li>A coin's own website for its page, and Wikipedia's API only on a box without its own copy of Wikipedia.</li>
-                    <li>The forecast for the world's three thousand larger places from Open-Meteo, once a day. The list is the same for every box, so the request says nothing about where you are, and the weather where you are is looked up on the box.</li>
+                    <li>The forecast from Open-Meteo for a fixed list of about six thousand places, the largest town in each of the most populated half-degree cells, a hundred every two minutes so each is fresh about once a day. The list is the same for every box and the order goes by how old each row is, so the requests say nothing about where you are, and the weather where you are is looked up on the box.</li>
                 </ul>
 
                 <p>
