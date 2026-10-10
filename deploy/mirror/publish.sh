@@ -334,10 +334,13 @@ fi
 # --- pack=heights: a listed set's tiles go into the build as packs, one per 30-degree block       ---
 # --- (GLO-90_N30_W030.heights is 30 to 60 north, 30 west to 0), each tile's bytes as they were    ---
 # --- behind a small index, which is what a box from wisp 0.0.6 on reads. They are made with        ---
-# --- ghost-heights out of the server set's pinned bundle, kept in $CACHE/pack/<set>/ and made     ---
-# --- again only when the tiles or the tool change (.stamp). The tiles stay in $CACHE/list/<set>/,  ---
-# --- so the cache holds the set twice.                                                             ---
+# --- ghost-heights out of the server set's pinned bundle and kept in $CACHE/pack/<set>/ with a     ---
+# --- .stamp of the tool and the tile list they were made from. Once the packs are made and checked ---
+# --- the loose tiles leave $CACHE/list/<set>/ (GHOST_MIRROR_KEEP_TILES=1 keeps them); while the    ---
+# --- stamp holds they are never downloaded again, and a new ghost-heights or a new tile list       ---
+# --- brings them down once more to pack again.                                                     ---
 PACKED=""
+PACK_FRESH=""
 heights_tool() { # the ghost-heights binary out of the server set's pinned bundle, its path on stdout
     _hl="$(awk '$1 == "server" && $2 ~ /^localghost-server-.*\.tar\.gz$/ { print $2, $4; for (i = 5; i <= NF; i++) if ($i ~ /^check=sha256:/) print substr($i, 14); exit }' "$CACHE/conf.tmp")"
     _hf="$(echo "$_hl" | awk 'NR == 1 { print $1 }')"; _hu="$(echo "$_hl" | awk 'NR == 1 { print $2 }')"
@@ -357,14 +360,30 @@ heights_tool() { # the ghost-heights binary out of the server set's pinned bundl
     fi
     echo "$_hd/ghost-heights"
 }
+pack_key() { # <set> <tool> , what the set's packs are made from: the tool's bytes and the tile names
+    { sha256sum "$2" | cut -d' ' -f1; awk -v s="$1" '$1 == s { print $2 }' "$CACHE/list.want" | sort; } | sha256sum | cut -d' ' -f1
+}
+pack_current() { # <set> , are the packs in the cache made from this tool and this tile list?
+    _ct="$(heights_tool)" || return 1
+    ls "$CACHE/pack/$1"/*.heights >/dev/null 2>&1 || return 1
+    [ "$(cat "$CACHE/pack/$1/.stamp" 2>/dev/null)" = "$(pack_key "$1" "$_ct")" ]
+}
 pack_heights() { # <set> , the set's tiles from $LISTDIR/<set> into packs, linked into the build
     _ps="$1"
     _pt="$(heights_tool)" || die "$_ps: pack=heights needs ghost-heights from the server set's bundle (its localghost-server-*.tar.gz line with check=sha256:), and it could not be had"
     HEIGHTS_FROM="$(awk '$1 == "server" && $2 ~ /^localghost-server-/ { print $2; exit }' "$CACHE/conf.tmp" | sed 's/^localghost-server-\([^-]*\)-.*/wisp \1/')"
     _pin="$LISTDIR/$_ps"
     _pout="$CACHE/pack/$_ps"
-    _pstamp="$( { sha256sum "$_pt" | cut -d' ' -f1; find "$_pin" -type f -name '*.tif' -printf '%f %s\n' | sort; } | sha256sum | cut -d' ' -f1)"
+    _pstamp="$(pack_key "$_ps" "$_pt")"
+    if [ "$(cat "$_pout/.stamp" 2>/dev/null)" != "$_pstamp" ] && ls "$_pout"/*.heights >/dev/null 2>&1 \
+       && [ "$(cat "$_pout/.stamp" 2>/dev/null)" = "$( { sha256sum "$_pt" | cut -d' ' -f1; find "$_pin" -type f -name '*.tif' -printf '%f %s\n' 2>/dev/null | sort; } | sha256sum | cut -d' ' -f1)" ]; then
+        # packs from the first packing publish carry the stamp of the tool and the tile files; the
+        # same tool and the same tiles, so they stand, under the stamp that needs no tiles
+        echo "$_pstamp" > "$_pout/.stamp"
+    fi
     if [ "$(cat "$_pout/.stamp" 2>/dev/null)" != "$_pstamp" ] || ! ls "$_pout"/*.heights >/dev/null 2>&1; then
+        _pmiss="$(awk -v s="$_ps" '$1 == s { print $2 }' "$CACHE/list.want" | while read -r _pf; do [ -s "$_pin/$_pf" ] || echo "$_pf"; done | wc -l)"
+        [ "$_pmiss" -eq 0 ] || die "$_ps: $_pmiss tiles are not in $_pin to pack; publish $_ps again"
         say "$_ps: packing $(find "$_pin" -type f -name '*.tif' | wc -l) tiles by 30-degree block with ghost-heights from $HEIGHTS_FROM, once per set of tiles and tool"
         rm -rf "${_pout:?}.tmp"; mkdir -p "$_pout.tmp"
         _pt0="$(date +%s)"
@@ -386,7 +405,12 @@ pack_heights() { # <set> , the set's tiles from $LISTDIR/<set> into packs, linke
         ln -f "$_pp" "$NEW/$_ps/$_pf" 2>/dev/null || cp "$_pp" "$NEW/$_ps/$_pf"
         printf '%s\n    terms: %s\n    from:  %s\n' "$_pf" "$_pterms" "the tiles of its 30-degree block in tileList.txt${_phost:+, from https://$_phost/}, each tile's bytes unchanged, packed with ghost-heights from LocalGhost $HEIGHTS_FROM" >> "$NEW/$_ps/NOTICE.txt"
     done
-    say "$_ps: $(ls "$_pout"/*.heights | wc -l) packs in the build (the tiles stay in the cache)"
+    say "$_ps: $(ls "$_pout"/*.heights | wc -l) packs in the build"
+    if [ "${GHOST_MIRROR_KEEP_TILES:-}" != 1 ] && ls "$_pin"/*.tif >/dev/null 2>&1; then
+        _pfreed="$(du -sh --apparent-size "$_pin" 2>/dev/null | cut -f1)"
+        rm -rf "${_pin:?}"
+        say "$_ps: the loose tiles left the cache ($_pfreed); a build still live keeps its own links to them until it is pruned"
+    fi
 }
 
 # --- the sets this run refreshes ---
@@ -516,7 +540,18 @@ while read -r set file tnames source opt; do
     case " ${opt:-} " in *" listed "*) ;; *) continue ;; esac
     want "$set" || continue
     echo "$set $file $source" >> "$CACHE/list.want"
+    case " ${opt:-} " in *" pack=heights "*)
+        echo "$PACK_FRESH" | grep -qx "$set" || PACK_FRESH="$PACK_FRESH
+$set" ;;
+    esac
 done < "$CACHE/conf.tmp"
+_pf_sets="$PACK_FRESH"; PACK_FRESH=""
+for s in $_pf_sets; do
+    if pack_current "$s"; then
+        PACK_FRESH="$PACK_FRESH $s"
+        say "$s: the packs in the cache are current for this tile list and ghost-heights, so no tile is fetched"
+    fi
+done
 if [ -s "$CACHE/list.want" ]; then
     for s in $(awk '{ print $1 }' "$CACHE/list.want" | sort -u); do mkdir -p "$LISTDIR/$s"; done
     # copies an older publish.sh kept under its own cache names (dl-<hash>-<file>) move over
@@ -525,6 +560,7 @@ if [ -s "$CACHE/list.want" ]; then
          ($2 in old) { print old[$2], $1 "/" $2 }' "$CACHE/dl.names" "$CACHE/list.want" \
     | while read -r _o _n; do [ -s "$LISTDIR/$_n" ] || mv -f "$CACHE/$_o" "$LISTDIR/$_n"; done
     while read -r _s _f _u; do
+        case " $PACK_FRESH " in *" $_s "*) continue ;; esac
         [ -s "$LISTDIR/$_s/$_f" ] || echo "$_u $LISTDIR/$_s/$_f"
     done < "$CACHE/list.want" > "$CACHE/list.todo"
     _total="$(grep -c . "$CACHE/list.want")"
@@ -573,17 +609,14 @@ while read -r set file tnames source opt; do
             _ml_terms="$(echo "$tnames" | sed 's/\([^,]*\)/TERMS-\1.txt/g; s/,/ /g')"
             _ml_last="$set|$tnames"
             case " ${opt:-} " in *" pack=heights "*)
-                # the tiles stay in the cache; pack_heights puts the set's packs in the build below
+                # the tiles are not linked; pack_heights puts the set's packs in the build below
                 echo "$PACKED" | grep -qx "$set" || PACKED="$PACKED
 $set"
                 _mlh="$(echo "$source" | sed 's#^[a-z]*://\([^/]*\)/.*#\1#')"
                 eval "PACK_TERMS_$set=\$_ml_terms PACK_HOST_$set=\$_mlh" ;;
             esac
         fi
-        case " ${opt:-} " in *" pack=heights "*)
-            [ -s "$LISTDIR/$set/$file" ] || die "$set/$file: not in $LISTDIR/$set"
-            continue ;;
-        esac
+        case " ${opt:-} " in *" pack=heights "*) continue ;; esac
         ln -f "$LISTDIR/$set/$file" "$NEW/$set/$file" 2>/dev/null || cp "$LISTDIR/$set/$file" "$NEW/$set/$file" \
             || die "$set/$file: not in $LISTDIR/$set"
         printf '%s\n    terms: %s\n    from:  %s\n' "$file" "$_ml_terms" "$source" >> "$NEW/$set/NOTICE.txt"

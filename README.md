@@ -91,6 +91,7 @@ We don't use React. We don't use Tailwind. We don't use npm.
 | **Cypherpunk** | `/cypherpunk` | The 1993 Cypherpunk's Manifesto (source material). |
 | **Directory** | `/directory` | Index of freehold-compliant projects. |
 | **Brand Guidelines** | `/brand-guidelines` | Logo, colors, typography for contributors. |
+| **Writing Guidelines** | `/writing-guidelines` | How every page is written, with the banned list and the checklist. [`vlad-voice.md`](vlad-voice.md) sits on top of it for posts in Vlad's own voice. |
 | **404** | `/error/404.html` | Even our errors stay on brand. |
 
 ### Hidden Games

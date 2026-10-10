@@ -192,19 +192,34 @@ each the block's tiles with their bytes unchanged behind a small index. The tile
 into `cache/list/elevation/` as above; the build then runs `ghost-heights pack <tiles dir> <out dir>`
 with the binary taken out of the `server` set's pinned bundle (into `cache/tools/<pin>/`), checks every
 pack with `ghost-heights check`, keeps the packs in `cache/pack/elevation/` and links them into the
-build in place of the tiles. The packs are made again only when the tiles or the tool change (the
-`.stamp` beside them), and the same tiles with the same tool give the same bytes, so a repack with
-nothing new leaves the mirror where it was. The manifest lists sixty names instead of 26,000, which
-every box and phone reads. A box from 0.0.6 on takes the packs whose block touches the area it asks
-for (`GHOST_GEO_ELEVATION="34:72,-25:45"` for Europe); a box on 0.0.5 or earlier reads loose tiles
-only and finds none, so it takes 0.0.6 first. The cache holds the set twice (tiles and packs, on the
-order of 100 GB each), and `ghost-heights` is a linux-amd64 binary, so the publish runs on such a
-machine. Tested on 10 October 2026 with a throwaway key and a stand-in `ghost-heights`: four tiles made
-four packs, a second publish left the build alone, a new tool repacked to the same bytes, and the
-0.0.5 bundle's `mirror_fetch.sh` fetched two packs by name against the signed manifest.
+build in place of the tiles. The `.stamp` beside the packs is the tool's hash and the tile list, and
+the same tiles with the same tool give the same bytes, so a repack with nothing new leaves the mirror
+where it was. The manifest lists sixty names instead of 26,000, which every box and phone reads. A box
+from 0.0.6 on takes the packs whose block touches the area it asks for
+(`GHOST_GEO_ELEVATION="34:72,-25:45"` for Europe); a box on 0.0.5 or earlier reads loose tiles only
+and finds none, so it takes 0.0.6 first.
+
+Once the packs are made and checked, the loose tiles leave the cache, so the set is on the pool once.
+While the stamp holds, a publish of `elevation` fetches no tile at all; a new `ghost-heights` (a new
+`server` pin) or a new tile list brings all of them down again (on the order of 100 GB, hours) to pack
+again, and they leave once more. `GHOST_MIRROR_KEEP_TILES=1` keeps them. Loose tiles are not published
+any more: there is no box on 0.0.5 left to want them, and keeping both would make a 0.0.6 box fetch
+both. `ghost-heights` is a linux-amd64 binary, so the publish runs on such a machine.
 
     deploy/mirror/publish.sh --sign-later elevation    # in screen; packs from the cached tiles
-    deploy/mirror/publish.sh --sign
+    GHOST_MIRROR_KEEP=1 deploy/mirror/publish.sh --sign # live, and the older builds (with their
+                                                        # links to the tiles) pruned at once
+
+A build keeps hard links to its files, so the tiles' space comes back only when the cache has let
+them go and the last build that carried them is pruned. `GHOST_MIRROR_KEEP=1` on the signing run
+prunes every build but the new one; without it the build before stays until the next publish.
+
+Tested on 10 October 2026 with a throwaway key and a stand-in `ghost-heights`: four tiles made four
+packs; a second publish fetched no tile and left the build alone; packs made by the first version of
+this step kept their bytes under the new stamp; a new tool fetched the tiles again, packed them to the
+same bytes and let them go; `GHOST_MIRROR_KEEP_TILES=1` kept them; `GHOST_MIRROR_KEEP=1 --sign` left
+one build; and the 0.0.5 bundle's `mirror_fetch.sh` fetched two packs by name against the signed
+manifest.
 
 The licence asks that everyone who receives the data is bound by it, so the licence PDF is a file in
 the set, and `terms/copernicus-dem.txt` says what a pack is.
