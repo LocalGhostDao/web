@@ -155,6 +155,29 @@
             <p class="statement-main">You don't need anyone's permission to build your own tools from public data, and once in a while yours turn out as good as the thing you were renting.</p>
         </div>
 
+        <div class="podcast-player"
+             data-src="/assets/podcast/breaking-free.mp3"
+             data-title="Breaking Free"
+             data-album="EPISODE 20"
+             data-artwork="/images/og-breaking-free.png">
+            <div class="pp-meta">
+                <span><span class="pp-label">&gt; EPISODE 20</span> // OFFLINE-READY</span>
+                <span>NOTEBOOKLM AUDIO</span>
+            </div>
+            <div class="pp-controls">
+                <button class="pp-play" type="button" aria-label="Play podcast">
+                    <span class="pp-icon-play">&#9654;</span>
+                    <span class="pp-icon-pause">&#10074;&#10074;</span>
+                </button>
+                <div class="pp-progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="pp-progress-bar"></div>
+                </div>
+                <span class="pp-time">00:00 / --:--</span>
+                <a class="pp-download" href="/assets/podcast/breaking-free.mp3" download aria-label="Download podcast">DOWNLOAD</a>
+            </div>
+            <audio preload="metadata" src="/assets/podcast/breaking-free.mp3"></audio>
+        </div>
+
         <p>
             At 2am on Sunday 11 October I was still working downstairs in the lobby of the Rioca aparthotel in Neu-Ulm (Cristina was asleep and I was feeling creative) when three guys came through on their way out for the night. We got chatting, and it turned out all three of them worked in AI, one in sales and two as developers. They never did go out, and we talked until 4am.
         </p>
@@ -560,6 +583,7 @@
     <p class="footer-quote">"If you can read the file you can build the tool, and the tool is yours." // Breaking Free</p>
 </footer>
 
+<script src="/js/blog-player.js" defer></script>
 
     <script src="/js/phosphor.js" defer></script>
 </body>
