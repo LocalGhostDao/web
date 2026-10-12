@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breaking Free | LocalGhost.ai</title>
+    <meta name="description" content="Three APIs taken off the box. Prices from seven exchanges, a map from OpenStreetMap's raw files, weather from the forecast models themselves, and none of it needed permission.">
+    <meta name="author" content="Vlad Cealicu">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="keywords" content="weather models, GRIB2, ICON-D2, ECMWF, GFS, Met Office, OpenStreetMap, Geofabrik, Copernicus DEM, crypto prices, exchange tickers, ECB reference rates, first-party data, open data, APIs, self-hosting, LocalGhost, Hard Truths">
+    <meta name="category" content="Engineering, Open Data">
+    <meta name="language" content="en-GB">
+    <link rel="canonical" href="https://www.localghost.ai/hard-truths/breaking-free">
+    <link rel="alternate" type="application/atom+xml" title="LocalGhost Hard Truths" href="https://www.localghost.ai/feed.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.localghost.ai/hard-truths/breaking-free">
+    <meta property="og:title" content="Breaking Free | LocalGhost Hard Truths">
+    <meta property="og:description" content="How the box stopped asking a price aggregator, a map provider and a weather API, and built all three from the public data they were reading. The map came out worse, the prices about the same, and the weather as good as Google's card and more local for the point I stand on.">
+    <meta property="og:image" content="https://www.localghost.ai/images/og-breaking-free.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Breaking Free, LocalGhost Hard Truths">
+    <meta property="og:site_name" content="LocalGhost.ai">
+    <meta property="og:locale" content="en_GB">
+    <meta property="article:published_time" content="2026-10-12T00:00:00Z">
+    <meta property="article:author" content="Vlad Cealicu">
+    <meta property="article:section" content="Hard Truths">
+    <meta property="article:tag" content="weather models">
+    <meta property="article:tag" content="GRIB2">
+    <meta property="article:tag" content="OpenStreetMap">
+    <meta property="article:tag" content="first-party data">
+    <meta property="article:tag" content="open data">
+    <meta property="article:tag" content="APIs">
+    <meta property="article:tag" content="self-hosting">
+    <meta property="article:tag" content="LocalGhost">
+    <meta property="article:reading_time" content="12">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@localghostai">
+    <meta name="twitter:creator" content="@vladcealicu">
+    <meta name="twitter:title" content="Breaking Free">
+    <meta name="twitter:description" content="Prices from the exchanges, a map from the raw files, weather from the models. None of it needed permission.">
+    <meta name="twitter:image" content="https://www.localghost.ai/images/og-breaking-free.png">
+    <meta name="twitter:image:alt" content="Breaking Free, LocalGhost Hard Truths">
+    <meta name="fediverse:creator" content="@vladcealicu">
+    <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#111111">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Breaking Free",
+        "description": "How the box stopped asking a price aggregator, a map provider and a weather API, and built all three from the public data they were reading. The map came out worse, the prices about the same, and the weather as good as Google's card and more local for the point I stand on.",
+        "author": {
+            "@type": "Person",
+            "@id": "https://www.localghost.ai/about#vlad-cealicu",
+            "name": "Vlad Cealicu",
+            "url": "https://www.localghost.ai/about#vlad-cealicu",
+            "sameAs": [
+                "https://x.com/vladcealicu"
+            ]
+        },
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://www.localghost.ai/#organization",
+            "name": "LocalGhost",
+            "url": "https://www.localghost.ai",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.localghost.ai/images/logo.png"
+            }
+        },
+        "datePublished": "2026-10-12",
+        "dateModified": "2026-10-12",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.localghost.ai/hard-truths/breaking-free"
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://www.localghost.ai/images/og-breaking-free.png",
+            "width": 1200,
+            "height": 630
+        },
+        "keywords": "weather models, GRIB2, ICON-D2, ECMWF, OpenStreetMap, Copernicus DEM, exchange prices, first-party data, open data, APIs, self-hosting, LocalGhost",
+        "articleSection": "Hard Truths",
+        "wordCount": 2916,
+        "inLanguage": "en-GB",
+        "isPartOf": {
+            "@id": "https://www.localghost.ai/hard-truths#blog"
+        },
+        "url": "https://www.localghost.ai/hard-truths/breaking-free"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.localghost.ai"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Hard Truths",
+                "item": "https://www.localghost.ai/hard-truths"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Breaking Free",
+                "item": "https://www.localghost.ai/hard-truths/breaking-free"
+            }
+        ]
+    }
+    </script>
+    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/pages.css">
+    <link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+
+<nav>
+            <div class="nav-logo">
+                <a href="/"><span>&gt;</span> LOCALGHOST.AI <span class="nav-status hide-mobile">| THE ONLY CLOUD IS YOU</span></a>
+            </div>
+            <div class="nav-links">
+                <a href="/about" class="hide-mobile">ABOUT</a>
+                <a href="/manifesto">MANIFESTO</a>
+                <a href="/hard-truths" class="active">HARD TRUTHS</a>
+                <a href="/build">BUILD</a>
+                <a href="/directory" class="hide-mobile">DIRECTORY</a>
+                <a href="https://github.com/LocalGhostDao" target="_blank">GITHUB</a>
+            </div>
+        </nav>
+
+<main class="narrow">
+
+    <div class="page-header">
+        <div class="section-label">&gt; HARD_TRUTHS // POST_20 // OCT 2026</div>
+        <h1>Breaking Free</h1>
+        <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // <time datetime="2026-10-12">12 October 2026</time></div>
+    </div>
+
+    <div class="manifesto-text">
+
+        <div class="statement-box">
+            <p class="statement-main">You don't need anyone's permission to build your own tools from public data, and once in a while yours turn out as good as the thing you were renting.</p>
+        </div>
+
+        <p>
+            At 2am on Sunday 11 October I was still working at the Rioca aparthotel in Neu-Ulm when three guys were heading out for the night. We ended up chatting for a bit, and it turned out all three of them worked in AI, one in sales and two as developers. I told them about LocalGhost and about the local part, that the forecast on my phone comes from the weather centres' own model files, read and blended on my own box for the point I'm standing on, and they were astonished you could do that with open data. If three people who work in AI every day didn't know you could, I suspect most people don't, so this post is how.
+        </p>
+
+        <p>
+            The day before, on 10 October 2026, the weather card on my phone changed what it says under the line. For a week it had said "pulled 2 h ago", meaning the box had asked Open-Meteo for the forecast. Since that evening it has said "the box's own forecast from ICON-D2 09Z, ICON-EU 06Z, IFS 06Z, GFS 06Z", the German, European, ECMWF and American weather models with their runs named by the hour, read off the weather centres' own servers and blended on the box under my desk in London.
+        </p>
+
+        <p>
+            I've been checking it against the Google card since, from a window near Neu-Ulm. I'd call it as good, and more local, because one of those models has a cell every 2.2 kilometres and the box reads the cell I'm in rather than the town. It's felt better than that every time I've looked, and I think part of the reason is that it's mine now rather than a service I'm renting. Two days of looking out of a window isn't a verification run, and I'll come back to that.
+        </p>
+
+        <p>
+            It got me thinking about how much of the box still leaned on other people's APIs when it was built to lean on nobody. The box doesn't phone home, but until this month it did ask a price aggregator for the price of bitcoin and a weather API for the weather, and it drew its map from tiles somebody else rendered. Each of those came with a key or a quota or a terms page, so every time the box wanted a number it asked permission first, and the number was never theirs in the first place. The exchanges publish their trades, the weather centres publish their models and OpenStreetMap publishes the planet. The API is a convenience laid over public data, and it's also a leash.
+        </p>
+
+        <p>
+            So I took the three of them off, one at a time. The map came out worse than what it replaced, the prices came out about the same, and the weather came out as good, which I didn't expect.
+        </p>
+
+        <h2 class="section-header">&gt; 1. Prices, from the exchanges</h2>
+
+        <p>
+            I spent twelve years building a price index for digital assets (CCCAGG, which <a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a> is partly about), so this one I knew how to do (a strange way to spend a decade, but it comes in handy). The box's version is the small one. ghost.tallyd asks seven exchanges for their public tickers, Coinbase, Kraken, Bitstamp, Gemini and Bitfinex in dollars and Binance and OKX in USDT, and folds USDT into dollars at the median of the fresh USDT/USD quotes <a href="#ref-1" class="cite">[1]</a>. A quote older than fifteen minutes is dropped, and so is a quote more than two per cent from the median, which also gets noted. What's left is averaged by volume, and the spread between the venues is kept beside the price, so the card can say "the exchanges agree" or "they differ by 1.4%". Nobody gave the box a key for any of this, because those endpoints are what the exchanges' own web pages read.
+        </p>
+
+        <p>
+            For currencies it reads the European Central Bank's reference rates, the XML file the ECB has published every working day at around 16:00 Frankfurt time since 1999, the whole history in one 16 MB file the first time and the daily file after that <a href="#ref-2" class="cite">[2]</a>. For the longer view it pulls daily candles from each venue, a page a tick, walking backwards until it reaches January 2010 or the venue's first day. And on top of the fifty largest coins it builds an index of its own, CRYPTO50, weighted by each coin's average daily volume over the previous month, with the weights set once a month and a start at 1,000. It's an indication of crypto overall, the way the FTSE is an indication of London, and the box can tell you which coin moved it.
+        </p>
+
+        <p>
+            Against the aggregator it replaced, it's about the same for the big coins and worse for the rest. Seven venues is seven venues, and a coin that trades mostly in Seoul isn't on any of them. The rank list (which coins are the top fifty) still comes from one public list, because the box can't rank what it doesn't quote, and the exchanges see the box's address asking for the same tickers every minute, which is what they'd see from a browser tab. What I get for it is a number on the card that the box made, from trades the box saw, with its working shown.
+        </p>
+
+        <h2 class="section-header">&gt; 2. Maps, from the raw files</h2>
+
+        <p>
+            The map was the biggest job, and if the comparison is Google Maps it's the one that came out worse. It's also the one I'm proudest of, because the box now holds the whole planet and never tells anyone which bit of it I'm looking at.
+        </p>
+
+        <p>
+            The coastline is OpenStreetMap's land polygons, cut on the box into one-degree tiles <a href="#ref-3" class="cite">[3]</a>. The streets are Geofabrik's continent extracts, eight files and about 79 gigabytes of OpenStreetMap for the whole world, Europe alone 33 GB <a href="#ref-4" class="cite">[4]</a>. Nothing in Go's standard library reads the PBF format those come in, so I wrote a reader (the protobuf wire format by hand, the zlib blocks, the delta-coded nodes) that decodes on a handful of cores in file order, in three passes over each file. The first marks every node id a road uses in a bitmap, and since the ids are global the bitmap alone is 1.6 GB. The second writes those nodes sorted, sixteen bytes each, into a file the third pass binary-searches through a memory map. The third cuts every way exactly on the cell borders into two grids, major roads per degree for when you're zoomed out and every named street per tenth of a degree for when you're not, and while it's there it writes a routing graph beside the tiles, with the ways split at junctions, so the box can route a walk along the streets with A* when the trail says I walked (<a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> has the trail). Africa cuts in about four minutes and Europe takes hours.
+        </p>
+
+        <p>
+            The place names are GeoNames, ranked so a country's name beats a town's <a href="#ref-5" class="cite">[5]</a>. The heights are the Copernicus GLO-90 elevation model, which the box took from the LocalGhost mirror on 10 October as 69 packs, one per thirty-degree block, 67 GB in twenty minutes with every file checked against the signed manifest <a href="#ref-6" class="cite">[6]</a>. With the heights on the box a day's trail says "climbed about 340 m, the highest point 470 m above the sea", and the weather uses them too. The time zones came in the same run, the timezone-boundary-builder polygons rasterised on the box into a grid of twentieth-of-a-degree cells, two bytes a lookup, so "today" and "19:00" are my day and my evening rather than UTC's <a href="#ref-7" class="cite">[7]</a>.
+        </p>
+
+        <p>
+            Then the phone, which fetches a tile from the box only when it zooms in over it, keeps a few hundred megabytes of them, and draws the streets with a codec I wrote twice, once in Go and once in Kotlin, tested against the same fixture bytes. Names rotate along the middle segment of their street and fight each other for space.
+        </p>
+
+        <p>
+            What's missing is a lot. Lakes and rivers draw as land, because the land polygons are the land and only the land. There are no relations, so a long river or a park boundary that OpenStreetMap stores as a relation isn't there, and there are no businesses, no traffic, no transit and no search box that knows what "the good bakery" means. The first cut of the whole world is a day of the box's time and 80 GB of downloads. If you want to find a restaurant, use Google Maps, and if you want a map that draws every street you've walked for the rest of your life without reporting a coordinate to anyone, this is that, and nobody had to approve it.
+        </p>
+
+        <h2 class="section-header">&gt; 3. Weather, from the models</h2>
+
+        <p>
+            Google's own help page says what its forecast is made of, an internal system over the models and observations of DWD, ECMWF, NOAA, the Met Office and others, a radar nowcast, people's reports, and climate records from NOAA <a href="#ref-8" class="cite">[8]</a>. I read that page in October, and what stuck was that the inputs are public. DWD publishes the ICON models as open data, one bz2 file per parameter per step <a href="#ref-9" class="cite">[9]</a>. ECMWF publishes its IFS runs at a quarter of a degree under CC-BY-4.0, with an index file that says where each field sits in the GRIB file so you can fetch it by byte range <a href="#ref-10" class="cite">[10]</a>. NOAA's GFS is public domain with the same kind of index <a href="#ref-11" class="cite">[11]</a>. The Met Office wants an account and a key for its 2 km UK model, and the free plan is a gigabyte a month, which is enough to try <a href="#ref-12" class="cite">[12]</a>. Google blends those, and there was no reason the box couldn't.
+        </p>
+
+        <p>
+            Most of the work was the decoder. The models come as GRIB2, a 1990s binary format from the World Meteorological Organization with a dozen ways to pack the numbers <a href="#ref-13" class="cite">[13]</a>, and ECMWF's files use the one that hurts, CCSDS Rice compression, the codec satellites use to send data down <a href="#ref-14" class="cite">[14]</a>. Something like three weeks of evenings went into reading sections, grids, simple and complex packing with spatial differencing, bitmaps, and the Rice decoder with its zero-block runs and split samples, each checked against ecCodes over nineteen test files until every value matched. A global field at a quarter of a degree now decodes in 60 milliseconds on the box.
+        </p>
+
+        <p>
+            Then the forecast itself. Every half hour tallyd looks for a run newer than the one it has, and when a centre has published its last step it pulls six fields (temperature and dew point at two metres, accumulated precipitation, the two wind components and cloud cover) for every hour to two days out and every third hour to five days, and reduces them to the six thousand places the box forecasts for everyone, so nothing about where I am changes what's fetched. The run before the newest covers the hours before the newest one starts. For each place and hour the models are blended with weights by region and lead time, the German models heaviest inside their domain, ECMWF heaviest everywhere else and GFS lightest everywhere, after dropping any model more than four degrees from the others' median when there are three or more to compare. That's the price index's rule applied to temperature, and as with the price index the disagreement is kept with every value. As I write this, a little after midnight on 12 October, the card says Tuesday will go from 2 °C to 13 with some drizzle in the afternoon, and that at ten that morning it shows a spread of 6.1 degrees between the models about how cold it'll be, which is the kind of thing I want to know and the Google card has never told me. The chance of rain is the weighted share of models that give more than a tenth of a millimetre in the hour, so it's the models' agreement, and the card says so rather than calling it a probability.
+        </p>
+
+        <p>
+            Two things make it local. The model's cell has a height and the town has a different one, so the temperature is moved by the standard lapse rate of 6.5 °C per kilometre of the difference, using the box's own heights <a href="#ref-15" class="cite">[15]</a>. Every weather service does this and most don't tell you, and until the heights landed on the box it couldn't. And while my phone is inside ICON-D2's domain, Germany and its neighbours, the box pulls that model too (2.2 km cells, hourly, eight runs a day) and keeps a window of its raw grid six tenths of a degree around my last fix. The forecast where I am is read off that window at the exact point, with the ground's height at that point, and the card says "where you are, near Neu-Ulm". The same is built for the Met Office's 2 km model over the UK, behind a key the box's owner puts in and the box never shows anyone, and the box works out where home is from the trail (the nights, at a 0.02 degree cell) so the order's region can be drawn around it.
+        </p>
+
+        <p>
+            So is it better than Google's? I don't think I can say that yet. It's as good on what I've seen, it's for the cell I'm in at the height I'm at, from the highest-resolution model that covers me, and it names its sources, while Google's card is for the town. What Google has and the box doesn't is the licensed radar over the whole of Europe, the density of the national station networks and a million people's reports of the sky. The box's nowcast doesn't exist yet, and neither does its verification, so "as good" is two days at a window and not a number. All of this goes out to everyone in wisp 0.0.7, and for now it runs on my box.
+        </p>
+
+        <h2 class="section-header">&gt; 4. You don't need permission</h2>
+
+        <p>
+            Every one of these data sets is published for this. The exchanges want their tickers read, DWD, ECMWF and NOAA publish the models so people will use them (ECMWF asks only for a line of attribution), and OpenStreetMap exists so that nobody has to ask Google for a map. The API in between was only ever someone else's reading of the source, with a key so they could count you, a quota so they could charge you (<a href="/hard-truths/integration-tax">The Integration Tax</a> is about that bill), and a shape you had to fit.
+        </p>
+
+        <p>
+            I don't think the APIs are villains. Open-Meteo is a good service and I'd recommend it to anyone who doesn't want to write a GRIB decoder, which is nearly everyone. But the permission they appear to grant was never theirs to grant. If you can read the file you can build the tool, and the tool is yours, so it keeps running when their free tier ends or when they're acquired, and it tells you where every number came from because you fetched it. Sometimes, when the thing you need is local and the thing they sell is general, yours comes out as good and closer, because you can afford to care about one point on the map and they can't.
+        </p>
+
+        <p>
+            What it costs is time and disk. The map took the better part of two weeks and 80 GB, the weather took about three weeks of evenings and pulls a few gigabytes a day, and the prices took a few days because I'd done it before. None of that is free, and none of it is beyond one person with a Go compiler and some stubbornness, which is the part I'd like more people to believe.
+        </p>
+
+        <h2 class="section-header">&gt; 5. What's still open</h2>
+
+        <p>
+            The weather needs verifying. Every run's first step is the model's analysis of what the weather was, so the box can score each model's day-ahead forecast against the next day's analysis, per region and per field, with data it already holds, and once there's a month of it the fixed weights become the inverse of that error. After that come observations (NOAA's METAR feed is one small file an hour for every airport in the world) and then a nowcast where the radar is open, which Germany's is and Europe's as a whole is not. The Met Office pull is written but hasn't fetched anything yet. The first key I pasted was refused for being too long (their key is a token of over a thousand characters and my limit was two hundred, which is the kind of mistake you only make once), and it fits now, so the first real run is next. The map needs lakes and relations, and a way to do the cutting a day at a time on someone else's box. The price index needs venues outside the dollar.
+        </p>
+
+        <p>
+            And the feeling that started this, that my forecast is better than Google's, needs a month of numbers rather than two days at a window. I think it'll come out about even for the town and ahead for the point I'm standing on, and I'd rather find out than assert it.
+        </p>
+
+        <div class="final-words">
+            The card still names the models it read, and I'm still checking it against the window.
+            <span class="small">[ localghost.ai // hard-truths ]</span>
+        </div>
+
+        <h2 class="section-header">&gt; REFERENCES</h2>
+
+        <p class="references" id="ref-1">
+            <strong>[1]</strong> The exchanges' public market data endpoints, read without a key, the Coinbase Exchange API, Kraken's REST API, the Bitstamp HTTP API, Gemini's REST API, Bitfinex REST v2, the Binance spot API and the OKX API v5. Source for the seven venues and the USDT fold. <a href="https://docs.cdp.coinbase.com/exchange" target="_blank" rel="noopener">docs.cdp.coinbase.com/exchange</a>, <a href="https://docs.kraken.com/api" target="_blank" rel="noopener">docs.kraken.com/api</a>, <a href="https://www.bitstamp.net/api" target="_blank" rel="noopener">bitstamp.net/api</a>, <a href="https://docs.gemini.com" target="_blank" rel="noopener">docs.gemini.com</a>, <a href="https://docs.bitfinex.com" target="_blank" rel="noopener">docs.bitfinex.com</a>, <a href="https://developers.binance.com" target="_blank" rel="noopener">developers.binance.com</a> and <a href="https://www.okx.com/docs-v5" target="_blank" rel="noopener">okx.com/docs-v5</a>.
+        </p>
+
+        <p class="references" id="ref-2">
+            <strong>[2]</strong> European Central Bank, the euro foreign exchange reference rates, published around 16:00 CET every TARGET working day since 1999 and available as XML, the full history in one file and the daily file beside it. Source for the currency table and the daily history. <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener">ecb.europa.eu, euro reference exchange rates</a>.
+        </p>
+
+        <p class="references" id="ref-3">
+            <strong>[3]</strong> OpenStreetMap land polygons, published at osmdata.openstreetmap.de under the Open Database License. The coastline the box cuts into one-degree tiles, and the reason inland water draws as land. <a href="https://osmdata.openstreetmap.de/data/land-polygons.html" target="_blank" rel="noopener">osmdata.openstreetmap.de/data/land-polygons.html</a>.
+        </p>
+
+        <p class="references" id="ref-4">
+            <strong>[4]</strong> Geofabrik's OpenStreetMap continent extracts, eight PBF files republished daily under the Open Database License, about 79 GB in all in September 2026 with Europe at 33 GB. Source for the sizes. <a href="https://download.geofabrik.de" target="_blank" rel="noopener">download.geofabrik.de</a>.
+        </p>
+
+        <p class="references" id="ref-5">
+            <strong>[5]</strong> GeoNames, the geographical database under CC BY 4.0, with the feature codes the box ranks place names by. <a href="https://www.geonames.org/export/codes.html" target="_blank" rel="noopener">geonames.org/export/codes.html</a>.
+        </p>
+
+        <p class="references" id="ref-6">
+            <strong>[6]</strong> Copernicus DEM GLO-90, the European Space Agency's global 90 m digital elevation model, free and open under the Copernicus DEM licence with attribution. The heights the box holds as 69 packs. <a href="https://spacedata.copernicus.eu/collections/copernicus-digital-elevation-model" target="_blank" rel="noopener">spacedata.copernicus.eu</a>.
+        </p>
+
+        <p class="references" id="ref-7">
+            <strong>[7]</strong> timezone-boundary-builder by Evan Siroky, the time zone polygons built from OpenStreetMap and released as GeoJSON under the Open Database License. Source for the box's time zone grid. <a href="https://github.com/evansiroky/timezone-boundary-builder" target="_blank" rel="noopener">github.com/evansiroky/timezone-boundary-builder</a>.
+        </p>
+
+        <p class="references" id="ref-8">
+            <strong>[8]</strong> Google, "How weather forecasts work on Google", the help page that names the models and observations behind the Google weather card (DWD, Environment Canada, EUMETNET, ECMWF, NOAA, NWS, the Met Office and Unidata), the radar nowcast, user reports and NOAA climate data. Source for the layers in the weather section. <a href="https://support.google.com/websearch" target="_blank" rel="noopener">support.google.com/websearch</a>.
+        </p>
+
+        <p class="references" id="ref-9">
+            <strong>[9]</strong> Deutscher Wetterdienst Open Data, the ICON, ICON-EU and ICON-D2 model output as GRIB2 under the GeoNutzV terms with attribution. Source for the German models, their grids and how often they run. <a href="https://opendata.dwd.de/weather/nwp/" target="_blank" rel="noopener">opendata.dwd.de/weather/nwp</a>.
+        </p>
+
+        <p class="references" id="ref-10">
+            <strong>[10]</strong> ECMWF Open Data, real-time forecast data from the IFS and AIFS at 0.25 degrees under CC-BY-4.0, with the .index files that give each field's byte range. Source for the ECMWF model, its licence and the byte-range pull. <a href="https://www.ecmwf.int/en/forecasts/datasets/open-data" target="_blank" rel="noopener">ecmwf.int/en/forecasts/datasets/open-data</a>.
+        </p>
+
+        <p class="references" id="ref-11">
+            <strong>[11]</strong> NOAA NOMADS, the GFS 0.25 degree output and its .idx files, public domain. Source for GFS. <a href="https://nomads.ncep.noaa.gov" target="_blank" rel="noopener">nomads.ncep.noaa.gov</a>.
+        </p>
+
+        <p class="references" id="ref-12">
+            <strong>[12]</strong> Met Office Weather DataHub, Atmospheric Models, the UK 2 km and global 10 km deterministic models behind an API key, with a free plan of 1 GB a month and paid plans from £15 a month for 10 GB, as read in October 2026. Source for the keyed model and the plans. <a href="https://datahub.metoffice.gov.uk" target="_blank" rel="noopener">datahub.metoffice.gov.uk</a>.
+        </p>
+
+        <p class="references" id="ref-13">
+            <strong>[13]</strong> World Meteorological Organization, Manual on Codes (WMO-No. 306), FM 92 GRIB edition 2, the format the models are published in, with its templates for grids, products and data representation. Source for the format and the packings the decoder reads. <a href="https://library.wmo.int" target="_blank" rel="noopener">library.wmo.int</a>.
+        </p>
+
+        <p class="references" id="ref-14">
+            <strong>[14]</strong> CCSDS 121.0-B, Lossless Data Compression, the Consultative Committee for Space Data Systems' Rice coding standard, which GRIB2 data representation template 5.42 uses. Source for the compression in ECMWF's files. <a href="https://public.ccsds.org" target="_blank" rel="noopener">public.ccsds.org</a>.
+        </p>
+
+        <p class="references" id="ref-15">
+            <strong>[15]</strong> The standard atmosphere lapse rate of 6.5 °C per kilometre, from the International Standard Atmosphere (ISO 2533), the correction applied to a model cell's temperature for the difference between the model's ground and the real one. Source for the height correction.
+        </p>
+
+    </div>
+
+    <div class="post-nav">
+        <a href="/hard-truths/caffeine-and-spite" class="prev">
+            <div class="pn-label">← PREVIOUS POST</div>
+            <div class="pn-title">Caffeine and Spite</div>
+        </a>
+        <a href="/hard-truths" class="next">
+            <div class="pn-label">ALL POSTS →</div>
+            <div class="pn-title">Hard Truths Index</div>
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-links">
+            <a href="/about">ABOUT</a>
+            <a href="/manifesto">MANIFESTO</a>
+            <a href="/why-local-ai">WHY LOCAL AI</a>
+            <a href="/setup">SETUP</a>
+            <a href="/mirror">MIRROR</a>
+            <a href="/changelog">CHANGELOG</a>
+            <a href="/status">STATUS</a>
+            <a href="https://github.com/LocalGhostDao">SOURCE CODE</a>
+            <a href="/brand-guidelines">BRAND GUIDELINES</a>
+            <a href="/writing-guidelines">WRITING GUIDELINES</a>
+            <a href="/privacy">PRIVACY</a>
+            <a href="/terms">TERMS</a>
+            <a href="/.well-known/pgp-key.asc">PGP KEY</a>
+            <a href="mailto:info@localghost.ai">CONTACT</a>
+        </div>
+    <p class="footer-quote">"The API in between was only ever someone else's reading of the source, with a key so they could count you." // Breaking Free</p>
+</footer>
+
+
+    <script src="/js/phosphor.js" defer></script>
+</body>
+</html>
