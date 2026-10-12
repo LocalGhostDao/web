@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breaking Free | LocalGhost.ai</title>
-    <meta name="description" content="Two APIs taken off the box and a map built from scratch. Prices from seven exchanges, weather from the forecast models themselves, the planet from OpenStreetMap's raw files, and none of it needed permission.">
+    <meta name="description" content="Two APIs taken off the box and a map built from scratch. Prices from seven exchanges, weather from the forecast models themselves, the planet from OpenStreetMap's raw files, with a diagram of each and how you could do the same.">
     <meta name="author" content="Vlad Cealicu">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="weather models, GRIB2, ICON-D2, ECMWF, GFS, Met Office, OpenStreetMap, Geofabrik, Copernicus DEM, crypto prices, exchange tickers, ECB reference rates, first-party data, open data, APIs, self-hosting, LocalGhost, Hard Truths">
@@ -38,7 +38,7 @@
     <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="Breaking Free">
-    <meta name="twitter:description" content="Prices from the exchanges, a map from the raw files, weather from the models. None of it needed permission.">
+    <meta name="twitter:description" content="How my box gets its prices from the exchanges, its weather from the models and its map from OpenStreetMap's raw files, and how you could do the same.">
     <meta name="twitter:image" content="https://www.localghost.ai/images/og-breaking-free.png">
     <meta name="twitter:image:alt" content="Breaking Free, LocalGhost Hard Truths">
     <meta name="fediverse:creator" content="@vladcealicu">
@@ -86,7 +86,7 @@
         },
         "keywords": "weather models, GRIB2, ICON-D2, ECMWF, OpenStreetMap, Copernicus DEM, exchange prices, first-party data, open data, APIs, self-hosting, LocalGhost",
         "articleSection": "Hard Truths",
-        "wordCount": 2308,
+        "wordCount": 2176,
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/hard-truths#blog"
@@ -160,11 +160,11 @@
         </p>
 
         <p>
-            I told them about LocalGhost, the box under my desk in London that keeps my photos, my trail and my notes, which my phone talks to and nobody else does. Then I told them about the local part. When the phone wants to know something about the world, the price of bitcoin, the streets around it or tomorrow's weather, the box works it out from the public data itself, rather than asking a company that worked it out from the same public data and sells it back with a key. The forecast on my phone that weekend came from the weather centres' own model files, read and blended on the box for the point I was standing on, and they were astonished you could do that with open data.
+            I told them about LocalGhost, the box under my desk in London that keeps my photos, my trail and my notes and talks only to my phone, and then about the local part. When the phone wants the price of bitcoin, the streets around it or tomorrow's weather, the box works it out from the public data itself instead of asking a company that worked it out from the same data and sells it back with a key. My forecast that weekend came from the weather centres' own model files, blended on the box for the point I was standing on, and they were astonished you could do that with open data.
         </p>
 
         <p>
-            If three people who work in AI every day didn't know you could, I suspect most people don't, so this post is how. It covers the three things the box used to get from someone else or didn't have at all, the prices, the map and the weather, with a diagram of how each one works.
+            If three people who work in AI didn't know you could, I suspect most people don't either, so here's how I did it, in case you want to do the same with whatever you're tired of asking Google or anyone else for. It's in three parts, the prices, the map and the weather, each with a diagram.
         </p>
 
         <figure class="post-figure">
@@ -172,24 +172,8 @@
                 <source srcset="/images/breaking-free-map.webp" type="image/webp">
                 <img src="/images/breaking-free-map.jpg" alt="The LocalGhost map on my phone over Ulm and Neu-Ulm, with Sunday's trail as a green line, the photos as green dots and the stops labelled with their times." width="720" height="1376" loading="lazy">
             </picture>
-            <figcaption>The map on my phone at 02:49 on 12 October, a night later and still in Neu-Ulm. The box drew it from OpenStreetMap's raw files. The green line is Sunday's 8 km round Ulm and Neu-Ulm as the trail recorded it, the green dots are the pictures I took, and the labels are where I stopped and when. Every tile came from the box.</figcaption>
+            <figcaption>The map on my phone at 02:49 on 12 October, a night later and still in Neu-Ulm, drawn by the box from OpenStreetMap's raw files. The green line is Sunday's 8 km round Ulm and Neu-Ulm, the dots are the pictures I took, and the labels are where I stopped and when.</figcaption>
         </figure>
-
-        <p>
-            A few hours before that, on the evening of 10 October, the weather card on my phone had changed what it says under the line. It used to say "pulled 2 h ago", which meant the box had asked Open-Meteo. Since that evening it has said "the box's own forecast from ICON-D2 09Z, ICON-EU 06Z, IFS 06Z, GFS 06Z", the German, European, ECMWF and American models with their runs named by the hour.
-        </p>
-
-        <p>
-            I've been checking it against the Google card since, from a window near Neu-Ulm. I'd call it as good, and more local, because ICON-D2 has a cell every 2.2 kilometres and the box reads the one I'm in rather than the town. It's felt better than that, and I think part of the reason is that it's mine now rather than a service I'm renting. Two days at a window isn't a verification run, though.
-        </p>
-
-        <p>
-            It got me thinking about how much of the box still leaned on other people's APIs when it was built to lean on nobody. Until this month it asked CoinGecko for the price of bitcoin and a weather API for the weather, and each came with a key or a quota or a terms page, so every time the box wanted a number it asked permission first, for a number that was never theirs in the first place. The exchanges publish their trades and the weather centres publish their models. The API is a convenience laid over public data, and it's also a leash.
-        </p>
-
-        <p>
-            So I took both off, one at a time. The prices came out about the same as CoinGecko's and the weather as good as Google's card, which I didn't expect. The map never had a leash, because I built it from scratch out of the same kind of public data.
-        </p>
 
         <h2 class="section-header">&gt; 1. Prices, from the exchanges</h2>
 
@@ -266,11 +250,11 @@
         </figure>
 
         <p>
-            Currencies come from the European Central Bank's reference rates, published every working day at around 16:00 Frankfurt time since 1999 (funnily enough I wrote that part in Düsseldorf and Mannheim, and passed through Frankfurt as well) <a href="#ref-2" class="cite">[2]</a>. On top of the fifty largest coins the box builds its own index, CRYPTO50, weighted by a month's volume, and it can tell you which coin moved it.
+            Currencies come from the European Central Bank's reference rates, published every working day at around 16:00 Frankfurt time since 1999 (funnily enough I wrote that part in Düsseldorf and Mannheim, and passed through Frankfurt as well) <a href="#ref-2" class="cite">[2]</a>.
         </p>
 
         <p>
-            Against CoinGecko it's about the same for the big coins and worse for the rest, because seven venues is seven venues and a coin that trades mostly in Seoul isn't on any of them. The ranking of which coins are the top fifty comes from Coinbase. The exchanges see the box asking for the same tickers every minute, which is what they'd see from a browser tab.
+            Against CoinGecko it's about the same for the big coins and worse for the rest, because seven venues is seven venues and a coin that trades mostly in Seoul isn't on any of them. The list of which coins count as the top fifty comes from Coinbase. The exchanges see the box asking for the same tickers every minute, which is what they'd see from a browser tab.
         </p>
 
         <h2 class="section-header">&gt; 2. Maps, from the raw files</h2>
@@ -344,13 +328,17 @@
         </p>
 
         <p>
-            It's still not Google Maps. There are no businesses and no reviews, no traffic and no transit, lakes and rivers draw as land, and the long things OpenStreetMap stores as relations aren't there yet. But it has the paths and the routing along them, the heights, the names and every street in the world, and for a few weeks of work I think that's quite good. If you want a restaurant, use Google Maps. If you want a map that draws every street you've walked for the rest of your life without reporting a coordinate to anyone, it's the one at the top of this post.
+            It's still not Google Maps. There are no businesses and no reviews, no traffic and no transit, lakes and rivers draw as land, and the long things OpenStreetMap stores as relations aren't there yet. But it has the paths and the routing along them, the heights, the names and every street in the world, and for a few weeks of work I think that's quite good. It won't find you a restaurant, but it puts my pictures where I took them, which is what I started it for, and it draws every street I've walked without telling anyone where I was.
         </p>
 
         <h2 class="section-header">&gt; 3. Weather, from the models</h2>
 
         <p>
-            Google's help page says what its forecast is made of, an internal system over the models and observations of DWD, ECMWF, NOAA, the Met Office and others, a radar nowcast and people's reports <a href="#ref-8" class="cite">[8]</a>. What stuck with me was that the inputs are public. DWD publishes ICON as open data <a href="#ref-9" class="cite">[9]</a>, ECMWF publishes IFS at a quarter of a degree under CC-BY-4.0 with an index that lets you fetch one field by byte range <a href="#ref-10" class="cite">[10]</a>, and NOAA's GFS is public domain <a href="#ref-11" class="cite">[11]</a>. The Met Office's 2 km UK model needs an account and a key, and its free plan is a gigabyte a month <a href="#ref-12" class="cite">[12]</a>.
+            On the evening of 10 October, a few hours before the lobby, the weather card on my phone stopped saying "pulled 2 h ago", which meant the box had asked Open-Meteo, and started saying "the box's own forecast from ICON-D2 09Z, ICON-EU 06Z, IFS 06Z, GFS 06Z", the German, European, ECMWF and American models with their runs named by the hour.
+        </p>
+
+        <p>
+            Google's help page says what its forecast is made of, an internal system over the models and observations of DWD, ECMWF, NOAA, the Met Office and others, plus a radar nowcast and people's reports <a href="#ref-8" class="cite">[8]</a>. Most of those models are public, and anyone can download them. DWD publishes ICON as open data <a href="#ref-9" class="cite">[9]</a>, ECMWF publishes IFS at a quarter of a degree under CC-BY-4.0 with an index that lets you fetch one field by byte range <a href="#ref-10" class="cite">[10]</a>, and NOAA's GFS is public domain <a href="#ref-11" class="cite">[11]</a>. The Met Office's 2 km UK model needs an account and a key, and its free plan is a gigabyte a month <a href="#ref-12" class="cite">[12]</a>. I registered and got a key, which was frustrating, because it's the Met Office and we should just have the data. The first key I pasted didn't fit (it's over a thousand characters and I'd capped it at two hundred), but the box pulls that model now too.
         </p>
 
         <p>
@@ -360,8 +348,8 @@
         <figure class="post-figure flow">
             <svg viewBox="0 0 380 626" role="img" aria-labelledby="fig-weather-t fig-weather-d" style="--cycle:10s" xmlns="http://www.w3.org/2000/svg">
                 <title id="fig-weather-t">How the box makes the forecast</title>
-                <desc id="fig-weather-d">Four public models are pulled by byte range, decoded from GRIB2, reduced to six thousand places and to the exact point I'm at, corrected for height, then blended with any model far from the median dropped, and the card shows the result with how far apart the models are.</desc>
-                <path class="wire" d="M186 26 H190 V180 M194 26 H190 M186 78 H190 M194 78 H190"/>
+                <desc id="fig-weather-d">Four open models and the Met Office's keyed one are pulled by byte range, decoded from GRIB2, reduced to six thousand places and to the exact point I'm at, corrected for height, then blended with any model far from the median dropped, and the card shows the result with how far apart the models are.</desc>
+                <path class="wire" d="M186 26 H190 V180 M194 26 H190 M186 78 H190 M194 78 H190 M186 130 H190"/>
                 <path class="wire" d="M190 224 V244"/>
                 <path class="wire" d="M190 288 L98 308 M190 288 L282 308"/>
                 <path class="wire" d="M98 360 L190 380 M282 360 L190 380"/>
@@ -379,9 +367,9 @@
                 <rect class="bx" x="194" y="56" width="176" height="44"/>
                 <text x="206" y="75">NOAA GFS</text>
                 <text x="206" y="91" class="t-dim">0.25°, the world</text>
-                <rect class="bx plan" x="10" y="108" width="176" height="44"/>
-                <text x="22" y="127" class="t-amber">Met Office 2 km</text>
-                <text x="22" y="143" class="t-amber t-dim">keyed, not pulled yet</text>
+                <rect class="bx" x="10" y="108" width="176" height="44"/>
+                <text x="22" y="127">Met Office UKV</text>
+                <text x="22" y="143" class="t-dim">2 km, the UK, keyed</text>
                 <rect class="bx plan" x="194" y="108" width="176" height="44"/>
                 <text x="206" y="127" class="t-amber">radar nowcast</text>
                 <text x="206" y="143" class="t-amber t-dim">not built</text>
@@ -427,6 +415,7 @@
                 <circle class="pkt a-w0b" cx="194" cy="26" r="3.2" style="--dx:-4px;--dy:154px;--mx:-4px;--my:0px;animation-delay:0.1s"/>
                 <circle class="pkt a-w0b" cx="186" cy="78" r="3.2" style="--dx:4px;--dy:102px;--mx:4px;--my:0px;animation-delay:0.2s"/>
                 <circle class="pkt a-w0b" cx="194" cy="78" r="3.2" style="--dx:-4px;--dy:102px;--mx:-4px;--my:0px;animation-delay:0.3s"/>
+                <circle class="pkt a-w0b" cx="186" cy="130" r="3.2" style="--dx:4px;--dy:50px;--mx:4px;--my:0px;animation-delay:0.4s"/>
                 <circle class="pkt a-w1" cx="190" cy="224" r="3.2" style="--dx:0px;--dy:20px"/>
                 <circle class="pkt a-w2" cx="190" cy="288" r="3.2" style="--dx:-92px;--dy:20px"/>
                 <circle class="pkt a-w2" cx="190" cy="288" r="3.2" style="--dx:92px;--dy:20px"/>
@@ -434,7 +423,7 @@
                 <circle class="pkt a-w3" cx="282" cy="360" r="3.2" style="--dx:-92px;--dy:20px"/>
                 <circle class="pkt a-w4" cx="190" cy="424" r="3.2" style="--dx:0px;--dy:20px"/>
             </svg>
-            <figcaption>The weather. Four public models are pulled by byte range and decoded on the box, reduced to six thousand places that are the same for every box and to the exact point I'm at, corrected for height and blended, with any model far from the others dropped. The Met Office model and a radar nowcast are in amber because they don't run yet.</figcaption>
+            <figcaption>The weather. Four open models and the Met Office's keyed one are pulled by byte range and decoded on the box, reduced to six thousand places that are the same for every box and to the exact point I'm at, corrected for height and blended, with any model far from the others dropped. The radar nowcast is in amber because it isn't built yet.</figcaption>
         </figure>
 
         <p>
@@ -442,31 +431,35 @@
         </p>
 
         <p>
-            So is it better than Google's? I can't say that yet. It's as good on what I've seen, and it's for the cell I'm in at the height I'm at, while Google's card is for the town. Google has the licensed radar over Europe, the national station networks and a million people's reports of the sky, and the box has no nowcast and no verification yet. It goes out to everyone in wisp 0.0.7.
+            I can't say yet that it's better than Google's. I've been checking it against the Google card since, from a window near Neu-Ulm, and it's as good on what I've seen, which I didn't expect. It's for the cell I'm in at the height I'm at, while Google's card is for the town. It's felt better than that, and I think part of the reason is that it's mine now rather than a service I'm renting. Google has the licensed radar over Europe, the national station networks and a million people's reports of the sky, and the box has no nowcast and no verification yet. It goes out to everyone in wisp 0.0.7.
         </p>
 
-        <h2 class="section-header">&gt; 4. You don't need permission</h2>
+        <h2 class="section-header">&gt; 4. You can do this too</h2>
 
         <p>
-            Every one of these data sets is published to be used. The exchanges want their tickers read, the weather centres publish their models so people will use them, and OpenStreetMap exists so that nobody has to ask Google for a map. The API in between was only ever someone else's reading of the source, with a key so they could count you and a quota so they could charge you (<a href="/hard-truths/integration-tax">The Integration Tax</a> is about that bill).
+            Every one of these data sets is published to be used. The exchanges want their tickers read, the weather centres publish their models so people will use them, and OpenStreetMap exists so that nobody has to ask Google for a map. An API in front of that data is someone else reading the source for you, and it comes with a key, a quota and a terms page (<a href="/hard-truths/integration-tax">The Integration Tax</a> is about that bill).
         </p>
 
         <p>
-            I don't think the APIs are villains. Open-Meteo is a good service and I'd recommend it to anyone who doesn't want to write a GRIB decoder, which is nearly everyone. But if you can read the file you can build the tool, and the tool is yours, so it keeps running when their free tier ends and it tells you where every number came from. The map took a few weeks and 80 GB, the weather about three weeks of evenings, and the prices a few days because I'd done it before. None of that is beyond one person with a Go compiler and some stubbornness.
+            I don't think the APIs are villains. Open-Meteo is a good service and I'd recommend it to anyone who doesn't want to write a GRIB decoder, which is nearly everyone. But if you can read the file you can build the tool, and the tool is yours, so it keeps running when their free tier ends and it tells you where every number came from.
+        </p>
+
+        <p>
+            The map took a few weeks and 80 GB, the weather about three weeks of evenings, and the prices a few days because I'd done it before. I didn't need a team for any of it, just a Go compiler, a lot of evenings and some stubbornness (and Claude, which is how CoinGecko got in there in the first place). If there's a service you're tired of asking, look at what it reads. A lot of the time it's a file someone publishes for free, and the hard part is the format.
         </p>
 
         <h2 class="section-header">&gt; 5. What's still open</h2>
 
         <p>
-            The weather needs verifying. Each run starts with the model's analysis of what the weather was, so the box can score yesterday's forecasts against today's analysis with data it already holds, and after a month the weights can come from that. Observations and a radar nowcast come after. The Met Office pull is written and the key fits now (the first one I pasted was over a thousand characters and my limit was two hundred), so its first real run is next. The map needs lakes and relations, and the price index needs venues outside the dollar.
+            The weather needs verifying. Each run starts with the model's analysis of what the weather was, so the box can score yesterday's forecasts against today's analysis with data it already holds, and after a month the weights can come from that. Observations and a radar nowcast come after. The map needs lakes and relations, and the price index needs venues outside the dollar.
         </p>
 
         <p>
-            And the feeling that started this, that my forecast is better than Google's, needs a month of numbers rather than two days at a window. I think it'll come out about even for the town and ahead for the point I'm standing on, and I'd rather find out than assert it.
+            And the feeling that started this, that my forecast is better than Google's, needs a month of numbers rather than two days at a window. I think it'll come out about even for the town and ahead for the point I'm standing on, but that's a guess until the numbers are in.
         </p>
 
         <div class="final-words">
-            The card still names the models it read, and I'm still checking it against the window.
+            Eric Hughes wrote in 1993 that <a href="/cypherpunk">cypherpunks write code</a>, and in <a href="/hard-truths/caffeine-and-spite">Caffeine and Spite</a> I said we need to roll up our sleeves and fix what we can control. The data's published and the gates are open, so pick the thing you're tired of asking someone else for and start writing code. The three guys in the lobby never did go out that night, and I hope at least one of them goes home and builds something of their own.
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
@@ -564,7 +557,7 @@
             <a href="/.well-known/pgp-key.asc">PGP KEY</a>
             <a href="mailto:info@localghost.ai">CONTACT</a>
         </div>
-    <p class="footer-quote">"The API in between was only ever someone else's reading of the source, with a key so they could count you." // Breaking Free</p>
+    <p class="footer-quote">"If you can read the file you can build the tool, and the tool is yours." // Breaking Free</p>
 </footer>
 
 
