@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breaking Free | LocalGhost.ai</title>
-    <meta name="description" content="Three APIs taken off the box. Prices from seven exchanges, a map from OpenStreetMap's raw files, weather from the forecast models themselves, and none of it needed permission.">
+    <meta name="description" content="Two APIs taken off the box and a map built from scratch. Prices from seven exchanges, weather from the forecast models themselves, the planet from OpenStreetMap's raw files, and none of it needed permission.">
     <meta name="author" content="Vlad Cealicu">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="keywords" content="weather models, GRIB2, ICON-D2, ECMWF, GFS, Met Office, OpenStreetMap, Geofabrik, Copernicus DEM, crypto prices, exchange tickers, ECB reference rates, first-party data, open data, APIs, self-hosting, LocalGhost, Hard Truths">
@@ -15,7 +15,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/breaking-free">
     <meta property="og:title" content="Breaking Free | LocalGhost Hard Truths">
-    <meta property="og:description" content="How the box stopped asking a price aggregator, a map provider and a weather API, and built all three from the public data they were reading. The map came out worse, the prices about the same, and the weather as good as Google's card and more local for the point I stand on.">
+    <meta property="og:description" content="How the box stopped asking a price aggregator and a weather API and built both from the public data they were reading, and how a map that started as country shapes for my photos grew into the whole planet with routing. The prices came out about the same, and the weather as good as Google's card and more local for the point I stand on.">
     <meta property="og:image" content="https://www.localghost.ai/images/og-breaking-free.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -52,7 +52,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "Breaking Free",
-        "description": "How the box stopped asking a price aggregator, a map provider and a weather API, and built all three from the public data they were reading. The map came out worse, the prices about the same, and the weather as good as Google's card and more local for the point I stand on.",
+        "description": "How the box stopped asking a price aggregator and a weather API and built both from the public data they were reading, and how a map that started as country shapes for my photos grew into the whole planet with routing. The prices came out about the same, and the weather as good as Google's card and more local for the point I stand on.",
         "author": {
             "@type": "Person",
             "@id": "https://www.localghost.ai/about#vlad-cealicu",
@@ -86,7 +86,7 @@
         },
         "keywords": "weather models, GRIB2, ICON-D2, ECMWF, OpenStreetMap, Copernicus DEM, exchange prices, first-party data, open data, APIs, self-hosting, LocalGhost",
         "articleSection": "Hard Truths",
-        "wordCount": 2916,
+        "wordCount": 2308,
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/hard-truths#blog"
@@ -156,101 +156,309 @@
         </div>
 
         <p>
-            At 2am on Sunday 11 October I was still working at the Rioca aparthotel in Neu-Ulm when three guys were heading out for the night. We ended up chatting for a bit, and it turned out all three of them worked in AI, one in sales and two as developers. I told them about LocalGhost and about the local part, that the forecast on my phone comes from the weather centres' own model files, read and blended on my own box for the point I'm standing on, and they were astonished you could do that with open data. If three people who work in AI every day didn't know you could, I suspect most people don't, so this post is how.
+            At 2am on Sunday 11 October I was still working downstairs in the lobby of the Rioca aparthotel in Neu-Ulm (Cristina was asleep and I was feeling creative) when three guys came through on their way out for the night. We got chatting, and it turned out all three of them worked in AI, one in sales and two as developers. They never did go out, and we talked until 4am.
         </p>
 
         <p>
-            The day before, on 10 October 2026, the weather card on my phone changed what it says under the line. For a week it had said "pulled 2 h ago", meaning the box had asked Open-Meteo for the forecast. Since that evening it has said "the box's own forecast from ICON-D2 09Z, ICON-EU 06Z, IFS 06Z, GFS 06Z", the German, European, ECMWF and American weather models with their runs named by the hour, read off the weather centres' own servers and blended on the box under my desk in London.
+            I told them about LocalGhost, the box under my desk in London that keeps my photos, my trail and my notes, which my phone talks to and nobody else does. Then I told them about the local part. When the phone wants to know something about the world, the price of bitcoin, the streets around it or tomorrow's weather, the box works it out from the public data itself, rather than asking a company that worked it out from the same public data and sells it back with a key. The forecast on my phone that weekend came from the weather centres' own model files, read and blended on the box for the point I was standing on, and they were astonished you could do that with open data.
         </p>
 
         <p>
-            I've been checking it against the Google card since, from a window near Neu-Ulm. I'd call it as good, and more local, because one of those models has a cell every 2.2 kilometres and the box reads the cell I'm in rather than the town. It's felt better than that every time I've looked, and I think part of the reason is that it's mine now rather than a service I'm renting. Two days of looking out of a window isn't a verification run, and I'll come back to that.
+            If three people who work in AI every day didn't know you could, I suspect most people don't, so this post is how. It covers the three things the box used to get from someone else or didn't have at all, the prices, the map and the weather, with a diagram of how each one works.
+        </p>
+
+        <figure class="post-figure">
+            <picture>
+                <source srcset="/images/breaking-free-map.webp" type="image/webp">
+                <img src="/images/breaking-free-map.jpg" alt="The LocalGhost map on my phone over Ulm and Neu-Ulm, with Sunday's trail as a green line, the photos as green dots and the stops labelled with their times." width="720" height="1376" loading="lazy">
+            </picture>
+            <figcaption>The map on my phone at 02:49 on 12 October, a night later and still in Neu-Ulm. The box drew it from OpenStreetMap's raw files. The green line is Sunday's 8 km round Ulm and Neu-Ulm as the trail recorded it, the green dots are the pictures I took, and the labels are where I stopped and when. Every tile came from the box.</figcaption>
+        </figure>
+
+        <p>
+            A few hours before that, on the evening of 10 October, the weather card on my phone had changed what it says under the line. It used to say "pulled 2 h ago", which meant the box had asked Open-Meteo. Since that evening it has said "the box's own forecast from ICON-D2 09Z, ICON-EU 06Z, IFS 06Z, GFS 06Z", the German, European, ECMWF and American models with their runs named by the hour.
         </p>
 
         <p>
-            It got me thinking about how much of the box still leaned on other people's APIs when it was built to lean on nobody. The box doesn't phone home, but until this month it did ask a price aggregator for the price of bitcoin and a weather API for the weather, and it drew its map from tiles somebody else rendered. Each of those came with a key or a quota or a terms page, so every time the box wanted a number it asked permission first, and the number was never theirs in the first place. The exchanges publish their trades, the weather centres publish their models and OpenStreetMap publishes the planet. The API is a convenience laid over public data, and it's also a leash.
+            I've been checking it against the Google card since, from a window near Neu-Ulm. I'd call it as good, and more local, because ICON-D2 has a cell every 2.2 kilometres and the box reads the one I'm in rather than the town. It's felt better than that, and I think part of the reason is that it's mine now rather than a service I'm renting. Two days at a window isn't a verification run, though.
         </p>
 
         <p>
-            So I took the three of them off, one at a time. The map came out worse than what it replaced, the prices came out about the same, and the weather came out as good, which I didn't expect.
+            It got me thinking about how much of the box still leaned on other people's APIs when it was built to lean on nobody. Until this month it asked CoinGecko for the price of bitcoin and a weather API for the weather, and each came with a key or a quota or a terms page, so every time the box wanted a number it asked permission first, for a number that was never theirs in the first place. The exchanges publish their trades and the weather centres publish their models. The API is a convenience laid over public data, and it's also a leash.
+        </p>
+
+        <p>
+            So I took both off, one at a time. The prices came out about the same as CoinGecko's and the weather as good as Google's card, which I didn't expect. The map never had a leash, because I built it from scratch out of the same kind of public data.
         </p>
 
         <h2 class="section-header">&gt; 1. Prices, from the exchanges</h2>
 
         <p>
-            I spent twelve years building a price index for digital assets (CCCAGG, which <a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a> is partly about), so this one I knew how to do (a strange way to spend a decade, but it comes in handy). The box's version is the small one. ghost.tallyd asks seven exchanges for their public tickers, Coinbase, Kraken, Bitstamp, Gemini and Bitfinex in dollars and Binance and OKX in USDT, and folds USDT into dollars at the median of the fresh USDT/USD quotes <a href="#ref-1" class="cite">[1]</a>. A quote older than fifteen minutes is dropped, and so is a quote more than two per cent from the median, which also gets noted. What's left is averaged by volume, and the spread between the venues is kept beside the price, so the card can say "the exchanges agree" or "they differ by 1.4%". Nobody gave the box a key for any of this, because those endpoints are what the exchanges' own web pages read.
+            When I first wired prices into the box, Claude picked CoinGecko for them, and that pissed me off, because it reminded me that we'd closed the free API at CoinDesk Data. I couldn't bring myself to use the competition, so I decided to build it instead. I spent twelve years building CCCAGG (<a href="/hard-truths/index-not-a-person">An Index Is Not a Person</a> is partly about it), so this one I knew how to do.
         </p>
 
         <p>
-            For currencies it reads the European Central Bank's reference rates, the XML file the ECB has published every working day at around 16:00 Frankfurt time since 1999, the whole history in one 16 MB file the first time and the daily file after that <a href="#ref-2" class="cite">[2]</a>. For the longer view it pulls daily candles from each venue, a page a tick, walking backwards until it reaches January 2010 or the venue's first day. And on top of the fifty largest coins it builds an index of its own, CRYPTO50, weighted by each coin's average daily volume over the previous month, with the weights set once a month and a start at 1,000. It's an indication of crypto overall, the way the FTSE is an indication of London, and the box can tell you which coin moved it.
+            ghost.tallyd asks seven exchanges for their public tickers, five in dollars and Binance and OKX in USDT, which it folds into dollars at the median USDT/USD quote <a href="#ref-1" class="cite">[1]</a>. A quote older than fifteen minutes is dropped, and so is one more than two per cent from the median, which also gets noted. The rest is averaged by volume, and the spread between the venues is kept beside the price, so the card can say "the exchanges agree" or "they differ by 1.4%". None of those endpoints needs a key, because they're what the exchanges' own web pages read.
+        </p>
+
+        <figure class="post-figure flow">
+            <svg viewBox="0 0 380 336" role="img" aria-labelledby="fig-prices-t fig-prices-d" style="--cycle:6s" xmlns="http://www.w3.org/2000/svg">
+                <title id="fig-prices-t">How the box makes a price</title>
+                <desc id="fig-prices-d">Seven exchanges' public tickers go into one filter that folds USDT into dollars, drops stale quotes and outliers, then a volume-weighted average with the spread kept, and the ECB's rates turn it into pounds or euros on the card.</desc>
+                <path class="wire" d="M93 16 L128 100"/>
+                <path class="wire" d="M93 44 L128 100"/>
+                <path class="wire" d="M93 72 L128 100"/>
+                <path class="wire" d="M93 100 L128 100"/>
+                <path class="wire" d="M93 128 L128 100"/>
+                <path class="wire" d="M93 156 L128 100"/>
+                <path class="wire" d="M93 184 L128 100"/>
+                <path class="wire" d="M253 140 V170"/>
+                <path class="wire" d="M253 222 V254"/>
+                <path class="wire" d="M113 290 H128"/>
+                <rect class="bx" x="1" y="4" width="92" height="24"/>
+                <text x="8" y="20">Coinbase</text>
+                <text x="88" y="20" class="t-dim end">$</text>
+                <rect class="bx" x="1" y="32" width="92" height="24"/>
+                <text x="8" y="48">Kraken</text>
+                <text x="88" y="48" class="t-dim end">$</text>
+                <rect class="bx" x="1" y="60" width="92" height="24"/>
+                <text x="8" y="76">Bitstamp</text>
+                <text x="88" y="76" class="t-dim end">$</text>
+                <rect class="bx" x="1" y="88" width="92" height="24"/>
+                <text x="8" y="104">Gemini</text>
+                <text x="88" y="104" class="t-dim end">$</text>
+                <rect class="bx" x="1" y="116" width="92" height="24"/>
+                <text x="8" y="132">Bitfinex</text>
+                <text x="88" y="132" class="t-dim end">$</text>
+                <rect class="bx" x="1" y="144" width="92" height="24"/>
+                <text x="8" y="160">Binance</text>
+                <text x="88" y="160" class="t-dim end">USDT</text>
+                <rect class="bx" x="1" y="172" width="92" height="24"/>
+                <text x="8" y="188">OKX</text>
+                <text x="88" y="188" class="t-dim end">USDT</text>
+                <rect class="bx on" x="128" y="60" width="251" height="80"/>
+                <text x="140" y="80">fold USDT into $ at the median</text>
+                <text x="140" y="100" class="t-dim">drop a quote over 15 min old</text>
+                <text x="140" y="116" class="t-dim">or over 2% from the median</text>
+                <text x="379" y="44" class="t-warn end">an outlier is dropped, and noted</text>
+                <rect class="bx on" x="128" y="170" width="251" height="52"/>
+                <text x="140" y="191">average by volume</text>
+                <text x="140" y="209" class="t-dim">keep the spread beside it</text>
+                <rect class="bx" x="1" y="268" width="112" height="44"/>
+                <text x="8" y="286">ECB</text>
+                <text x="8" y="302" class="t-dim">€ rates, daily</text>
+                <rect class="bx card" x="128" y="254" width="251" height="76"/>
+                <text x="140" y="276" class="t-dim">BTC from 7 venues</text>
+                <text x="140" y="297" class="t-on t-big glow a-glow2">the exchanges agree</text>
+                <text x="140" y="318" class="t-dim">in $, £ or €, made on the box</text>
+                <circle class="pkt a-w0" cx="93" cy="16" r="3.2" style="--dx:39px;--dy:84px"/>
+                <circle class="pkt a-w0" cx="93" cy="44" r="3.2" style="--dx:39px;--dy:56px;animation-delay:0.04s"/>
+                <circle class="pkt a-w0" cx="93" cy="72" r="3.2" style="--dx:39px;--dy:28px;animation-delay:0.08s"/>
+                <circle class="pkt a-w0" cx="93" cy="100" r="3.2" style="--dx:39px;--dy:0px;animation-delay:0.12s"/>
+                <circle class="pkt a-rej" cx="93" cy="128" r="3.2" style="--dx:39px;--dy:-28px;--rx:232px;--ry:-104px;animation-delay:0.16s"/>
+                <circle class="pkt a-w0" cx="93" cy="156" r="3.2" style="--dx:39px;--dy:-56px;animation-delay:0.2s"/>
+                <circle class="pkt a-w0" cx="93" cy="184" r="3.2" style="--dx:39px;--dy:-84px;animation-delay:0.24s"/>
+                <circle class="pkt a-w1" cx="253" cy="140" r="3.2" style="--dx:0px;--dy:30px"/>
+                <circle class="pkt a-w2" cx="253" cy="222" r="3.2" style="--dx:0px;--dy:32px"/>
+                <circle class="pkt a-w2" cx="113" cy="290" r="3.2" style="--dx:15px;--dy:0px"/>
+            </svg>
+            <figcaption>Prices. Seven exchanges' public tickers go through one filter that folds USDT into dollars and drops anything stale or more than 2% from the median, then a volume-weighted average with the spread kept beside it. The ECB's daily rates turn it into pounds or euros.</figcaption>
+        </figure>
+
+        <p>
+            Currencies come from the European Central Bank's reference rates, published every working day at around 16:00 Frankfurt time since 1999 (funnily enough I wrote that part in Düsseldorf and Mannheim, and passed through Frankfurt as well) <a href="#ref-2" class="cite">[2]</a>. On top of the fifty largest coins the box builds its own index, CRYPTO50, weighted by a month's volume, and it can tell you which coin moved it.
         </p>
 
         <p>
-            Against the aggregator it replaced, it's about the same for the big coins and worse for the rest. Seven venues is seven venues, and a coin that trades mostly in Seoul isn't on any of them. The rank list (which coins are the top fifty) still comes from one public list, because the box can't rank what it doesn't quote, and the exchanges see the box's address asking for the same tickers every minute, which is what they'd see from a browser tab. What I get for it is a number on the card that the box made, from trades the box saw, with its working shown.
+            Against CoinGecko it's about the same for the big coins and worse for the rest, because seven venues is seven venues and a coin that trades mostly in Seoul isn't on any of them. The ranking of which coins are the top fifty comes from Coinbase. The exchanges see the box asking for the same tickers every minute, which is what they'd see from a browser tab.
         </p>
 
         <h2 class="section-header">&gt; 2. Maps, from the raw files</h2>
 
         <p>
-            The map was the biggest job, and if the comparison is Google Maps it's the one that came out worse. It's also the one I'm proudest of, because the box now holds the whole planet and never tells anyone which bit of it I'm looking at.
+            The map was the biggest job, and it didn't replace anything. I decided to build it from scratch, at first just the continents and the countries' shapes so I could put my pictures on them, and then I kept adding. It's the one I'm proudest of, because the box holds the whole planet and never tells anyone which bit of it I'm looking at.
         </p>
 
         <p>
-            The coastline is OpenStreetMap's land polygons, cut on the box into one-degree tiles <a href="#ref-3" class="cite">[3]</a>. The streets are Geofabrik's continent extracts, eight files and about 79 gigabytes of OpenStreetMap for the whole world, Europe alone 33 GB <a href="#ref-4" class="cite">[4]</a>. Nothing in Go's standard library reads the PBF format those come in, so I wrote a reader (the protobuf wire format by hand, the zlib blocks, the delta-coded nodes) that decodes on a handful of cores in file order, in three passes over each file. The first marks every node id a road uses in a bitmap, and since the ids are global the bitmap alone is 1.6 GB. The second writes those nodes sorted, sixteen bytes each, into a file the third pass binary-searches through a memory map. The third cuts every way exactly on the cell borders into two grids, major roads per degree for when you're zoomed out and every named street per tenth of a degree for when you're not, and while it's there it writes a routing graph beside the tiles, with the ways split at junctions, so the box can route a walk along the streets with A* when the trail says I walked (<a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> has the trail). Africa cuts in about four minutes and Europe takes hours.
+            The streets are Geofabrik's continent extracts, eight files and about 79 GB of OpenStreetMap <a href="#ref-4" class="cite">[4]</a>, and the coastline is OpenStreetMap's land polygons <a href="#ref-3" class="cite">[3]</a>. Nothing in Go's standard library reads the PBF format those come in, so I wrote a reader, and it makes three passes over each file. The first marks every node a road uses, the second writes those nodes out sorted, and the third cuts every road on the tile borders and writes a routing graph beside the tiles, so the box can put the trail on real streets (<a href="/hard-truths/what-the-box-does-now">What the Box Does Now</a> has the trail). Africa takes about four minutes and Europe takes hours.
+        </p>
+
+        <figure class="post-figure flow">
+            <svg viewBox="0 0 380 508" role="img" aria-labelledby="fig-map-t fig-map-d" style="--cycle:8s" xmlns="http://www.w3.org/2000/svg">
+                <title id="fig-map-t">How the box makes the map</title>
+                <desc id="fig-map-d">Eight OpenStreetMap files go through three passes of a reader on the box, which mark the nodes roads use, write them sorted, then cut each road at the tile borders and build a routing graph. The phone draws the tiles, and the trail is walked along the streets.</desc>
+                <path class="wire" d="M190 52 V70"/>
+                <path class="wire" d="M190 114 V132"/>
+                <path class="wire" d="M190 176 V194"/>
+                <path class="wire" d="M190 238 V250 H98 V262 M190 250 H282 V262"/>
+                <path class="wire" d="M98 314 V334 M282 314 V334"/>
+                <rect class="bx" x="10" y="4" width="360" height="48"/>
+                <text x="22" y="24">Geofabrik · 8 files · 79 GB</text>
+                <text x="22" y="42" class="t-dim">OpenStreetMap for the world, as PBF</text>
+                <rect class="bx on" x="10" y="70" width="360" height="44"/>
+                <text x="22" y="89">pass 1 · mark the nodes roads use</text>
+                <text x="22" y="105" class="t-dim">a bitmap over every id, 1.6 GB</text>
+                <rect class="bar a-bar1" x="10.5" y="111" width="359" height="2.5"/>
+                <rect class="bx on" x="10" y="132" width="360" height="44"/>
+                <text x="22" y="151">pass 2 · write those nodes sorted</text>
+                <text x="22" y="167" class="t-dim">16 bytes each, read by memory map</text>
+                <rect class="bar a-bar2" x="10.5" y="173" width="359" height="2.5"/>
+                <rect class="bx on" x="10" y="194" width="360" height="44"/>
+                <text x="22" y="213">pass 3 · cut each road at the tiles</text>
+                <text x="22" y="229" class="t-dim">and split it at junctions for routing</text>
+                <rect class="bar a-bar3" x="10.5" y="235" width="359" height="2.5"/>
+                <rect class="bx on" x="10" y="262" width="176" height="52"/>
+                <text x="22" y="280">tiles</text>
+                <text x="22" y="295" class="t-dim">roads per 1°</text>
+                <text x="22" y="308" class="t-dim">streets per 0.1°</text>
+                <rect class="bar a-bar4" x="10.5" y="311" width="175" height="2.5"/>
+                <rect class="bx on" x="194" y="262" width="176" height="52"/>
+                <text x="206" y="280">routing graph</text>
+                <text x="206" y="295" class="t-dim">the trail walked</text>
+                <text x="206" y="308" class="t-dim">along real streets</text>
+                <rect class="bar a-bar4" x="194.5" y="311" width="175" height="2.5"/>
+                <rect class="bx card" x="10" y="334" width="360" height="150"/>
+                <clipPath id="fig-map-clip"><rect x="11" y="335" width="358" height="148"/></clipPath>
+                <g clip-path="url(#fig-map-clip)">
+                    <path class="street draw a-streets" pathLength="1" d="M60 334 L76 484"/>
+                    <path class="street draw a-streets" pathLength="1" d="M150 334 L142 484"/>
+                    <path class="street draw a-streets" pathLength="1" d="M236 334 L252 484"/>
+                    <path class="street draw a-streets" pathLength="1" d="M320 334 L312 484"/>
+                    <path class="street draw a-streets" pathLength="1" d="M10 452 L370 466"/>
+                    <path class="street draw a-streets" pathLength="1" d="M10 372 L150 380 L236 370 L320 386 L370 384"/>
+                    <path class="street major draw a-streets" pathLength="1" d="M10 404 L130 396 L250 412 L370 404"/>
+                    <path class="route draw a-route" pathLength="1" d="M74.4 476 L72.7 454.6 L249.5 461.3 L243.9 411.2 L316.2 407.6 L317.5 385.5"/>
+                    <circle class="shot a-shot" cx="150" cy="457.4" r="3.2"/>
+                    <circle class="shot a-shot" cx="200" cy="459.4" r="3.2"/>
+                    <circle class="shot a-shot" cx="246.7" cy="436" r="3.2"/>
+                    <circle class="shot a-shot" cx="280" cy="410" r="3.2"/>
+                    <circle class="you a-shot" cx="317.5" cy="385.5" r="6"/>
+                </g>
+                <text x="190" y="502" class="t-dim mid">the phone draws a tile the box sent it</text>
+            </svg>
+            <figcaption>The map. Eight OpenStreetMap files go through three passes of a reader on the box, the last of which cuts the roads into tiles and builds a routing graph. The phone asks the box for a tile only when it zooms in over it, and the trail is drawn along the streets it walked.</figcaption>
+        </figure>
+
+        <p>
+            Place names come from GeoNames <a href="#ref-5" class="cite">[5]</a>, the heights from the Copernicus 90 m elevation model, 67 GB pulled from the LocalGhost mirror <a href="#ref-6" class="cite">[6]</a>, and the time zones from timezone-boundary-builder, rasterised on the box so "today" is my day and not UTC's <a href="#ref-7" class="cite">[7]</a>. The phone draws the tiles with a codec I wrote twice, once in Go and once in Kotlin.
         </p>
 
         <p>
-            The place names are GeoNames, ranked so a country's name beats a town's <a href="#ref-5" class="cite">[5]</a>. The heights are the Copernicus GLO-90 elevation model, which the box took from the LocalGhost mirror on 10 October as 69 packs, one per thirty-degree block, 67 GB in twenty minutes with every file checked against the signed manifest <a href="#ref-6" class="cite">[6]</a>. With the heights on the box a day's trail says "climbed about 340 m, the highest point 470 m above the sea", and the weather uses them too. The time zones came in the same run, the timezone-boundary-builder polygons rasterised on the box into a grid of twentieth-of-a-degree cells, two bytes a lookup, so "today" and "19:00" are my day and my evening rather than UTC's <a href="#ref-7" class="cite">[7]</a>.
-        </p>
-
-        <p>
-            Then the phone, which fetches a tile from the box only when it zooms in over it, keeps a few hundred megabytes of them, and draws the streets with a codec I wrote twice, once in Go and once in Kotlin, tested against the same fixture bytes. Names rotate along the middle segment of their street and fight each other for space.
-        </p>
-
-        <p>
-            What's missing is a lot. Lakes and rivers draw as land, because the land polygons are the land and only the land. There are no relations, so a long river or a park boundary that OpenStreetMap stores as a relation isn't there, and there are no businesses, no traffic, no transit and no search box that knows what "the good bakery" means. The first cut of the whole world is a day of the box's time and 80 GB of downloads. If you want to find a restaurant, use Google Maps, and if you want a map that draws every street you've walked for the rest of your life without reporting a coordinate to anyone, this is that, and nobody had to approve it.
+            It's still not Google Maps. There are no businesses and no reviews, no traffic and no transit, lakes and rivers draw as land, and the long things OpenStreetMap stores as relations aren't there yet. But it has the paths and the routing along them, the heights, the names and every street in the world, and for a few weeks of work I think that's quite good. If you want a restaurant, use Google Maps. If you want a map that draws every street you've walked for the rest of your life without reporting a coordinate to anyone, it's the one at the top of this post.
         </p>
 
         <h2 class="section-header">&gt; 3. Weather, from the models</h2>
 
         <p>
-            Google's own help page says what its forecast is made of, an internal system over the models and observations of DWD, ECMWF, NOAA, the Met Office and others, a radar nowcast, people's reports, and climate records from NOAA <a href="#ref-8" class="cite">[8]</a>. I read that page in October, and what stuck was that the inputs are public. DWD publishes the ICON models as open data, one bz2 file per parameter per step <a href="#ref-9" class="cite">[9]</a>. ECMWF publishes its IFS runs at a quarter of a degree under CC-BY-4.0, with an index file that says where each field sits in the GRIB file so you can fetch it by byte range <a href="#ref-10" class="cite">[10]</a>. NOAA's GFS is public domain with the same kind of index <a href="#ref-11" class="cite">[11]</a>. The Met Office wants an account and a key for its 2 km UK model, and the free plan is a gigabyte a month, which is enough to try <a href="#ref-12" class="cite">[12]</a>. Google blends those, and there was no reason the box couldn't.
+            Google's help page says what its forecast is made of, an internal system over the models and observations of DWD, ECMWF, NOAA, the Met Office and others, a radar nowcast and people's reports <a href="#ref-8" class="cite">[8]</a>. What stuck with me was that the inputs are public. DWD publishes ICON as open data <a href="#ref-9" class="cite">[9]</a>, ECMWF publishes IFS at a quarter of a degree under CC-BY-4.0 with an index that lets you fetch one field by byte range <a href="#ref-10" class="cite">[10]</a>, and NOAA's GFS is public domain <a href="#ref-11" class="cite">[11]</a>. The Met Office's 2 km UK model needs an account and a key, and its free plan is a gigabyte a month <a href="#ref-12" class="cite">[12]</a>.
         </p>
 
         <p>
-            Most of the work was the decoder. The models come as GRIB2, a 1990s binary format from the World Meteorological Organization with a dozen ways to pack the numbers <a href="#ref-13" class="cite">[13]</a>, and ECMWF's files use the one that hurts, CCSDS Rice compression, the codec satellites use to send data down <a href="#ref-14" class="cite">[14]</a>. Something like three weeks of evenings went into reading sections, grids, simple and complex packing with spatial differencing, bitmaps, and the Rice decoder with its zero-block runs and split samples, each checked against ecCodes over nineteen test files until every value matched. A global field at a quarter of a degree now decodes in 60 milliseconds on the box.
+            Most of the work was the decoder. The models come as GRIB2, a World Meteorological Organization format with a dozen ways to pack the numbers <a href="#ref-13" class="cite">[13]</a>, and ECMWF's files use CCSDS Rice compression, the codec satellites send their data down with <a href="#ref-14" class="cite">[14]</a>. It took about three weeks of evenings, checked against ecCodes over nineteen test files until every value matched, and a global field now decodes in 60 milliseconds.
+        </p>
+
+        <figure class="post-figure flow">
+            <svg viewBox="0 0 380 626" role="img" aria-labelledby="fig-weather-t fig-weather-d" style="--cycle:10s" xmlns="http://www.w3.org/2000/svg">
+                <title id="fig-weather-t">How the box makes the forecast</title>
+                <desc id="fig-weather-d">Four public models are pulled by byte range, decoded from GRIB2, reduced to six thousand places and to the exact point I'm at, corrected for height, then blended with any model far from the median dropped, and the card shows the result with how far apart the models are.</desc>
+                <path class="wire" d="M186 26 H190 V180 M194 26 H190 M186 78 H190 M194 78 H190"/>
+                <path class="wire" d="M190 224 V244"/>
+                <path class="wire" d="M190 288 L98 308 M190 288 L282 308"/>
+                <path class="wire" d="M98 360 L190 380 M282 360 L190 380"/>
+                <path class="wire" d="M190 424 V444"/>
+                <path class="wire" d="M190 528 V548"/>
+                <rect class="bx" x="10" y="4" width="176" height="44"/>
+                <text x="22" y="23">DWD ICON-D2</text>
+                <text x="22" y="39" class="t-dim">2.2 km, Germany+</text>
+                <rect class="bx" x="194" y="4" width="176" height="44"/>
+                <text x="206" y="23">DWD ICON-EU</text>
+                <text x="206" y="39" class="t-dim">Europe</text>
+                <rect class="bx" x="10" y="56" width="176" height="44"/>
+                <text x="22" y="75">ECMWF IFS</text>
+                <text x="22" y="91" class="t-dim">0.25°, the world</text>
+                <rect class="bx" x="194" y="56" width="176" height="44"/>
+                <text x="206" y="75">NOAA GFS</text>
+                <text x="206" y="91" class="t-dim">0.25°, the world</text>
+                <rect class="bx plan" x="10" y="108" width="176" height="44"/>
+                <text x="22" y="127" class="t-amber">Met Office 2 km</text>
+                <text x="22" y="143" class="t-amber t-dim">keyed, not pulled yet</text>
+                <rect class="bx plan" x="194" y="108" width="176" height="44"/>
+                <text x="206" y="127" class="t-amber">radar nowcast</text>
+                <text x="206" y="143" class="t-amber t-dim">not built</text>
+                <rect class="bx on" x="10" y="180" width="360" height="44"/>
+                <text x="22" y="199">byte-range pull · six fields</text>
+                <text x="22" y="215" class="t-dim">temperature, dew point, rain, wind, cloud</text>
+                <rect class="bx on" x="10" y="244" width="360" height="44"/>
+                <text x="22" y="263">GRIB2 decode · 60 ms a global field</text>
+                <text x="22" y="279" class="t-dim">simple, complex and CCSDS Rice packing</text>
+                <rect class="bx on" x="10" y="308" width="176" height="52"/>
+                <text x="22" y="326">6,000 places</text>
+                <text x="22" y="341" class="t-dim">the same for</text>
+                <text x="22" y="354" class="t-dim">every box</text>
+                <rect class="bx on" x="194" y="308" width="176" height="52"/>
+                <text x="206" y="326">my exact point</text>
+                <text x="206" y="341" class="t-dim">ICON-D2's grid</text>
+                <text x="206" y="354" class="t-dim">round my last fix</text>
+                <rect class="bx on" x="10" y="380" width="360" height="44"/>
+                <text x="22" y="399">height correction</text>
+                <text x="22" y="415" class="t-dim">6.5 °C per km, from the box's heights</text>
+                <rect class="bx on" x="10" y="444" width="360" height="84"/>
+                <text x="22" y="464">blend by region and lead time</text>
+                <text x="22" y="480" class="t-dim">a model over 4° from the median is dropped</text>
+                <line class="scale" x1="40" y1="506" x2="340" y2="506"/>
+                <line class="scale" x1="40" y1="502" x2="40" y2="510"/>
+                <line class="scale" x1="100" y1="502" x2="100" y2="510"/>
+                <line class="scale" x1="160" y1="502" x2="160" y2="510"/>
+                <line class="scale" x1="220" y1="502" x2="220" y2="510"/>
+                <line class="scale" x1="280" y1="502" x2="280" y2="510"/>
+                <line class="scale" x1="340" y1="502" x2="340" y2="510"/>
+                <text x="34" y="522" class="t-dim">colder</text>
+                <text x="346" y="522" class="t-dim end">warmer</text>
+                <circle class="pkt a-model" cx="148" cy="506" r="4" style="--dx:28px"/>
+                <circle class="pkt a-model" cx="170" cy="506" r="4" style="--dx:6px"/>
+                <circle class="pkt a-model" cx="196" cy="506" r="4" style="--dx:-20px"/>
+                <circle class="pkt a-model-out" cx="296" cy="506" r="4"/>
+                <circle class="you a-blend" cx="176" cy="506" r="6"/>
+                <rect class="bx card" x="10" y="548" width="360" height="72"/>
+                <text x="22" y="567" class="t-dim">the box's own forecast, near Neu-Ulm</text>
+                <text x="22" y="588" class="t-on t-big glow a-glow4">Tue 2 to 13 °C, drizzle pm</text>
+                <text x="22" y="608" class="t-dim">the models are 6.1° apart at 10:00</text>
+                <circle class="pkt a-w0b" cx="186" cy="26" r="3.2" style="--dx:4px;--dy:154px;--mx:4px;--my:0px"/>
+                <circle class="pkt a-w0b" cx="194" cy="26" r="3.2" style="--dx:-4px;--dy:154px;--mx:-4px;--my:0px;animation-delay:0.1s"/>
+                <circle class="pkt a-w0b" cx="186" cy="78" r="3.2" style="--dx:4px;--dy:102px;--mx:4px;--my:0px;animation-delay:0.2s"/>
+                <circle class="pkt a-w0b" cx="194" cy="78" r="3.2" style="--dx:-4px;--dy:102px;--mx:-4px;--my:0px;animation-delay:0.3s"/>
+                <circle class="pkt a-w1" cx="190" cy="224" r="3.2" style="--dx:0px;--dy:20px"/>
+                <circle class="pkt a-w2" cx="190" cy="288" r="3.2" style="--dx:-92px;--dy:20px"/>
+                <circle class="pkt a-w2" cx="190" cy="288" r="3.2" style="--dx:92px;--dy:20px"/>
+                <circle class="pkt a-w3" cx="98" cy="360" r="3.2" style="--dx:92px;--dy:20px"/>
+                <circle class="pkt a-w3" cx="282" cy="360" r="3.2" style="--dx:-92px;--dy:20px"/>
+                <circle class="pkt a-w4" cx="190" cy="424" r="3.2" style="--dx:0px;--dy:20px"/>
+            </svg>
+            <figcaption>The weather. Four public models are pulled by byte range and decoded on the box, reduced to six thousand places that are the same for every box and to the exact point I'm at, corrected for height and blended, with any model far from the others dropped. The Met Office model and a radar nowcast are in amber because they don't run yet.</figcaption>
+        </figure>
+
+        <p>
+            Every half hour tallyd looks for a newer run, pulls six fields (temperature, dew point, rain, the two wind components and cloud) out to five days, and reduces them to six thousand places that are the same for every box, so where I am doesn't change what's fetched. The temperature is moved by 6.5 °C per kilometre between the model's ground and the real one, using the box's own heights <a href="#ref-15" class="cite">[15]</a>. While my phone is inside ICON-D2's domain the box also keeps a window of that model's 2.2 km grid around my last fix and reads the forecast at the exact point. Then the models are blended, the German ones heaviest inside their domain and ECMWF heaviest elsewhere, after dropping any model more than four degrees from the others' median. That's the price index's rule applied to temperature, and as with prices the disagreement is kept. As I write this the card says Tuesday goes from 2 °C to 13 with some drizzle in the afternoon, and that at ten in the morning the models are 6.1 degrees apart, which the Google card has never told me. The chance of rain is the share of models that give rain in that hour, and the card says so.
         </p>
 
         <p>
-            Then the forecast itself. Every half hour tallyd looks for a run newer than the one it has, and when a centre has published its last step it pulls six fields (temperature and dew point at two metres, accumulated precipitation, the two wind components and cloud cover) for every hour to two days out and every third hour to five days, and reduces them to the six thousand places the box forecasts for everyone, so nothing about where I am changes what's fetched. The run before the newest covers the hours before the newest one starts. For each place and hour the models are blended with weights by region and lead time, the German models heaviest inside their domain, ECMWF heaviest everywhere else and GFS lightest everywhere, after dropping any model more than four degrees from the others' median when there are three or more to compare. That's the price index's rule applied to temperature, and as with the price index the disagreement is kept with every value. As I write this, a little after midnight on 12 October, the card says Tuesday will go from 2 °C to 13 with some drizzle in the afternoon, and that at ten that morning it shows a spread of 6.1 degrees between the models about how cold it'll be, which is the kind of thing I want to know and the Google card has never told me. The chance of rain is the weighted share of models that give more than a tenth of a millimetre in the hour, so it's the models' agreement, and the card says so rather than calling it a probability.
-        </p>
-
-        <p>
-            Two things make it local. The model's cell has a height and the town has a different one, so the temperature is moved by the standard lapse rate of 6.5 °C per kilometre of the difference, using the box's own heights <a href="#ref-15" class="cite">[15]</a>. Every weather service does this and most don't tell you, and until the heights landed on the box it couldn't. And while my phone is inside ICON-D2's domain, Germany and its neighbours, the box pulls that model too (2.2 km cells, hourly, eight runs a day) and keeps a window of its raw grid six tenths of a degree around my last fix. The forecast where I am is read off that window at the exact point, with the ground's height at that point, and the card says "where you are, near Neu-Ulm". The same is built for the Met Office's 2 km model over the UK, behind a key the box's owner puts in and the box never shows anyone, and the box works out where home is from the trail (the nights, at a 0.02 degree cell) so the order's region can be drawn around it.
-        </p>
-
-        <p>
-            So is it better than Google's? I don't think I can say that yet. It's as good on what I've seen, it's for the cell I'm in at the height I'm at, from the highest-resolution model that covers me, and it names its sources, while Google's card is for the town. What Google has and the box doesn't is the licensed radar over the whole of Europe, the density of the national station networks and a million people's reports of the sky. The box's nowcast doesn't exist yet, and neither does its verification, so "as good" is two days at a window and not a number. All of this goes out to everyone in wisp 0.0.7, and for now it runs on my box.
+            So is it better than Google's? I can't say that yet. It's as good on what I've seen, and it's for the cell I'm in at the height I'm at, while Google's card is for the town. Google has the licensed radar over Europe, the national station networks and a million people's reports of the sky, and the box has no nowcast and no verification yet. It goes out to everyone in wisp 0.0.7.
         </p>
 
         <h2 class="section-header">&gt; 4. You don't need permission</h2>
 
         <p>
-            Every one of these data sets is published for this. The exchanges want their tickers read, DWD, ECMWF and NOAA publish the models so people will use them (ECMWF asks only for a line of attribution), and OpenStreetMap exists so that nobody has to ask Google for a map. The API in between was only ever someone else's reading of the source, with a key so they could count you, a quota so they could charge you (<a href="/hard-truths/integration-tax">The Integration Tax</a> is about that bill), and a shape you had to fit.
+            Every one of these data sets is published to be used. The exchanges want their tickers read, the weather centres publish their models so people will use them, and OpenStreetMap exists so that nobody has to ask Google for a map. The API in between was only ever someone else's reading of the source, with a key so they could count you and a quota so they could charge you (<a href="/hard-truths/integration-tax">The Integration Tax</a> is about that bill).
         </p>
 
         <p>
-            I don't think the APIs are villains. Open-Meteo is a good service and I'd recommend it to anyone who doesn't want to write a GRIB decoder, which is nearly everyone. But the permission they appear to grant was never theirs to grant. If you can read the file you can build the tool, and the tool is yours, so it keeps running when their free tier ends or when they're acquired, and it tells you where every number came from because you fetched it. Sometimes, when the thing you need is local and the thing they sell is general, yours comes out as good and closer, because you can afford to care about one point on the map and they can't.
-        </p>
-
-        <p>
-            What it costs is time and disk. The map took the better part of two weeks and 80 GB, the weather took about three weeks of evenings and pulls a few gigabytes a day, and the prices took a few days because I'd done it before. None of that is free, and none of it is beyond one person with a Go compiler and some stubbornness, which is the part I'd like more people to believe.
+            I don't think the APIs are villains. Open-Meteo is a good service and I'd recommend it to anyone who doesn't want to write a GRIB decoder, which is nearly everyone. But if you can read the file you can build the tool, and the tool is yours, so it keeps running when their free tier ends and it tells you where every number came from. The map took a few weeks and 80 GB, the weather about three weeks of evenings, and the prices a few days because I'd done it before. None of that is beyond one person with a Go compiler and some stubbornness.
         </p>
 
         <h2 class="section-header">&gt; 5. What's still open</h2>
 
         <p>
-            The weather needs verifying. Every run's first step is the model's analysis of what the weather was, so the box can score each model's day-ahead forecast against the next day's analysis, per region and per field, with data it already holds, and once there's a month of it the fixed weights become the inverse of that error. After that come observations (NOAA's METAR feed is one small file an hour for every airport in the world) and then a nowcast where the radar is open, which Germany's is and Europe's as a whole is not. The Met Office pull is written but hasn't fetched anything yet. The first key I pasted was refused for being too long (their key is a token of over a thousand characters and my limit was two hundred, which is the kind of mistake you only make once), and it fits now, so the first real run is next. The map needs lakes and relations, and a way to do the cutting a day at a time on someone else's box. The price index needs venues outside the dollar.
+            The weather needs verifying. Each run starts with the model's analysis of what the weather was, so the box can score yesterday's forecasts against today's analysis with data it already holds, and after a month the weights can come from that. Observations and a radar nowcast come after. The Met Office pull is written and the key fits now (the first one I pasted was over a thousand characters and my limit was two hundred), so its first real run is next. The map needs lakes and relations, and the price index needs venues outside the dollar.
         </p>
 
         <p>

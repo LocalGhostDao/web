@@ -769,3 +769,226 @@ div.alarm p {
         font-size: 0.76em;
     }
 }
+/* ===========================================
+   FIGURES AND FLOW DIAGRAMS
+   A screenshot or an inline SVG diagram with a caption under it. The caption carries the
+   content (the markdown twins drop inline SVG), and the FIG_n label is CSS so it stays out
+   of the text. Diagram packets move with CSS keyframes over --dx/--dy (and --mx/--my for a
+   bend, --rx/--ry for a rejected packet), all on one cycle per figure set by --cycle.
+   =========================================== */
+
+.manifesto-text { counter-reset: lg-fig; }
+
+.post-figure {
+    counter-increment: lg-fig;
+    margin: 2.5rem 0;
+}
+
+.post-figure img {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+}
+
+.post-figure figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+    margin: 0.9rem auto 0;
+    max-width: 560px;
+}
+
+.post-figure figcaption::before {
+    content: "FIG_" counter(lg-fig) " // ";
+    color: var(--terminal);
+}
+
+.post-figure.flow {
+    border: 1px solid var(--border);
+    background: rgba(51, 255, 0, 0.015);
+    padding: 1.25rem 1rem 1rem;
+}
+
+.flow svg {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 0 auto;
+    --cycle: 6s;
+}
+
+.flow .bx { fill: var(--void); stroke: var(--border); stroke-width: 1; }
+.flow .bx.on { stroke: var(--terminal-dim); }
+.flow .bx.card { stroke: var(--terminal); }
+.flow .bx.plan { stroke: var(--amber-dim); stroke-dasharray: 4 3; }
+.flow .wire { fill: none; stroke: var(--border); stroke-width: 1; }
+.flow .wire.plan { stroke: var(--amber-dim); stroke-dasharray: 3 3; }
+
+.flow text { font-family: var(--font-mono); font-size: 12px; fill: var(--text); }
+.flow .t-dim { font-size: 11px; fill: var(--text-dim); }
+.flow .t-on { fill: var(--terminal); }
+.flow .t-big { font-size: 13px; }
+.flow .t-amber { fill: var(--amber); }
+.flow .t-amber.t-dim { fill: #b98a2a; }
+.flow .t-warn { font-size: 11px; fill: var(--warning); }
+.flow .mid { text-anchor: middle; }
+.flow .end { text-anchor: end; }
+
+.flow .pkt { fill: var(--terminal); opacity: 0; }
+.flow .bar { fill: var(--terminal); transform-box: fill-box; transform-origin: left center; transform: scaleX(0); }
+.flow .street { fill: none; stroke: #4a4a4a; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.flow .street.major { stroke: var(--amber-dim); stroke-width: 3.5; }
+.flow .route { fill: none; stroke: var(--terminal); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.flow .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.flow .shot { fill: var(--terminal); opacity: 0; }
+.flow .you { fill: none; stroke: var(--terminal); stroke-width: 2; opacity: 0; }
+.flow .scale { stroke: var(--text-dim); stroke-width: 1; }
+.flow .glow { opacity: 0.45; }
+
+.flow .a-w0   { animation: lg-w0   var(--cycle) linear infinite; }
+.flow .a-w0b  { animation: lg-w0b  var(--cycle) linear infinite; }
+.flow .a-rej  { animation: lg-rej  var(--cycle) linear infinite; }
+.flow .a-w1   { animation: lg-w1   var(--cycle) linear infinite; }
+.flow .a-w2   { animation: lg-w2   var(--cycle) linear infinite; }
+.flow .a-w3   { animation: lg-w3   var(--cycle) linear infinite; }
+.flow .a-w4   { animation: lg-w4   var(--cycle) linear infinite; }
+.flow .a-glow2 { animation: lg-glow2 var(--cycle) linear infinite; }
+.flow .a-glow4 { animation: lg-glow4 var(--cycle) linear infinite; }
+.flow .a-bar1 { animation: lg-bar1 var(--cycle) linear infinite; }
+.flow .a-bar2 { animation: lg-bar2 var(--cycle) linear infinite; }
+.flow .a-bar3 { animation: lg-bar3 var(--cycle) linear infinite; }
+.flow .a-bar4 { animation: lg-bar4 var(--cycle) linear infinite; }
+.flow .a-streets { animation: lg-streets var(--cycle) ease-out infinite; }
+.flow .a-route { animation: lg-route var(--cycle) linear infinite; }
+.flow .a-shot { animation: lg-shot var(--cycle) linear infinite; }
+.flow .a-model { animation: lg-model var(--cycle) ease-in-out infinite; }
+.flow .a-model-out { animation: lg-model-out var(--cycle) ease-in infinite; }
+.flow .a-blend { animation: lg-blend var(--cycle) linear infinite; }
+
+@keyframes lg-w0 {
+    0%       { transform: translate(0, 0); opacity: 0; }
+    2%       { opacity: 1; }
+    20%      { transform: translate(var(--dx), var(--dy)); opacity: 1; }
+    22%, 100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+@keyframes lg-w0b {
+    0%       { transform: translate(0, 0); opacity: 0; }
+    2%       { opacity: 1; }
+    6%       { transform: translate(var(--mx), var(--my)); }
+    20%      { transform: translate(var(--dx), var(--dy)); opacity: 1; }
+    22%, 100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+@keyframes lg-rej {
+    0%       { transform: translate(0, 0); opacity: 0; fill: var(--terminal); }
+    2%       { opacity: 1; }
+    20%      { transform: translate(var(--dx), var(--dy)); fill: var(--terminal); }
+    26%      { transform: translate(var(--dx), var(--dy)); fill: var(--warning); opacity: 1; }
+    40%      { transform: translate(var(--rx), var(--ry)); fill: var(--warning); opacity: 1; }
+    46%, 100% { transform: translate(var(--rx), var(--ry)); fill: var(--warning); opacity: 0; }
+}
+@keyframes lg-w1 {
+    0%, 22%  { transform: translate(0, 0); opacity: 0; }
+    23%      { opacity: 1; }
+    34%      { transform: translate(var(--dx, 0), var(--dy)); opacity: 1; }
+    36%, 100% { transform: translate(var(--dx, 0), var(--dy)); opacity: 0; }
+}
+@keyframes lg-w2 {
+    0%, 36%  { transform: translate(0, 0); opacity: 0; }
+    37%      { opacity: 1; }
+    48%      { transform: translate(var(--dx, 0), var(--dy)); opacity: 1; }
+    50%, 100% { transform: translate(var(--dx, 0), var(--dy)); opacity: 0; }
+}
+@keyframes lg-w3 {
+    0%, 50%  { transform: translate(0, 0); opacity: 0; }
+    51%      { opacity: 1; }
+    62%      { transform: translate(var(--dx, 0), var(--dy)); opacity: 1; }
+    64%, 100% { transform: translate(var(--dx, 0), var(--dy)); opacity: 0; }
+}
+@keyframes lg-w4 {
+    0%, 64%  { transform: translate(0, 0); opacity: 0; }
+    65%      { opacity: 1; }
+    74%      { transform: translate(var(--dx, 0), var(--dy)); opacity: 1; }
+    76%, 100% { transform: translate(var(--dx, 0), var(--dy)); opacity: 0; }
+}
+@keyframes lg-glow2 {
+    0%, 48%  { opacity: 0.45; }
+    52%, 80% { opacity: 1; }
+    90%, 100% { opacity: 0.45; }
+}
+@keyframes lg-glow4 {
+    0%, 86%  { opacity: 0.45; }
+    89%, 97% { opacity: 1; }
+    100%     { opacity: 0.45; }
+}
+@keyframes lg-bar1 {
+    0%, 2%   { transform: scaleX(0); opacity: 1; }
+    16%, 94% { transform: scaleX(1); opacity: 1; }
+    100%     { transform: scaleX(1); opacity: 0; }
+}
+@keyframes lg-bar2 {
+    0%, 16%  { transform: scaleX(0); opacity: 1; }
+    30%, 94% { transform: scaleX(1); opacity: 1; }
+    100%     { transform: scaleX(1); opacity: 0; }
+}
+@keyframes lg-bar3 {
+    0%, 30%  { transform: scaleX(0); opacity: 1; }
+    44%, 94% { transform: scaleX(1); opacity: 1; }
+    100%     { transform: scaleX(1); opacity: 0; }
+}
+@keyframes lg-bar4 {
+    0%, 44%  { transform: scaleX(0); opacity: 1; }
+    54%, 94% { transform: scaleX(1); opacity: 1; }
+    100%     { transform: scaleX(1); opacity: 0; }
+}
+@keyframes lg-streets {
+    0%, 40%  { stroke-dashoffset: 1; opacity: 1; }
+    58%, 94% { stroke-dashoffset: 0; opacity: 1; }
+    100%     { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes lg-route {
+    0%, 58%  { stroke-dashoffset: 1; opacity: 1; }
+    80%, 94% { stroke-dashoffset: 0; opacity: 1; }
+    100%     { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes lg-shot {
+    0%, 72%  { opacity: 0; }
+    78%, 94% { opacity: 1; }
+    100%     { opacity: 0; }
+}
+@keyframes lg-model {
+    0%, 64%  { transform: translate(0, 0); opacity: 0; }
+    67%, 76% { transform: translate(0, 0); opacity: 1; }
+    85%      { transform: translate(var(--dx), 0); opacity: 1; }
+    87%, 100% { transform: translate(var(--dx), 0); opacity: 0; }
+}
+@keyframes lg-model-out {
+    0%, 64%  { transform: translate(0, 0); opacity: 0; fill: var(--terminal); }
+    67%      { transform: translate(0, 0); opacity: 1; fill: var(--terminal); }
+    72%      { transform: translate(0, 0); opacity: 1; fill: var(--warning); }
+    80%      { transform: translate(0, 18px); opacity: 0; fill: var(--warning); }
+    100%     { transform: translate(0, 18px); opacity: 0; fill: var(--warning); }
+}
+@keyframes lg-blend {
+    0%, 84%  { opacity: 0; }
+    87%, 97% { opacity: 1; }
+    100%     { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flow .pkt, .flow .a-model-out { animation: none; opacity: 0; }
+    .flow .bar { animation: none; transform: scaleX(1); }
+    .flow .draw { animation: none; stroke-dashoffset: 0; }
+    .flow .shot, .flow .you, .flow .a-blend { animation: none; opacity: 1; }
+    .flow .a-model { animation: none; opacity: 0; }
+    .flow .glow { animation: none; opacity: 1; }
+}
+
+@media (max-width: 600px) {
+    .post-figure.flow { padding: 1rem 0.4rem 0.8rem; }
+    .post-figure figcaption { font-size: 0.74rem; }
+}

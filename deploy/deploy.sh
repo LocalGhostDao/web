@@ -282,6 +282,13 @@ html_to_text_render() {
         s|</summary>|**|g
         s|</h3>|\n|g
 
+        # Images keep their alt text and address, as a markdown image on its own line
+        s|<img[^>]*src="(/[^"]*)"[^>]*alt="([^"]*)"[^>]*>|\n![\2](https://www.localghost.ai\1)\n|g
+
+        # A figure caption reads as an italic line under its image (any diagram SVG is gone by now)
+        s|<figcaption[^>]*>|\n*|g
+        s|</figcaption>|*\n|g
+
         # Byline pieces: author link and <time> keep their text
         s|<a[^>]*rel="author"[^>]*>([^<]*)</a>|\1|g
         s|<time[^>]*>([^<]*)</time>|\1|g
