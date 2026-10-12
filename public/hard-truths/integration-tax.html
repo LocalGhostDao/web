@@ -82,7 +82,7 @@
         },
         "keywords": "integration tax, personal tracker, portfolio tracker, CryptoCompare, Rotki, data portability, plugin architecture, local-first, LocalGhost, tallyd",
         "articleSection": "Hard Truths",
-        "wordCount": 2440,
+        "wordCount": 2414,
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/hard-truths#blog"
@@ -258,7 +258,7 @@
         </p>
 
         <p>
-            The founders who built every product above thought the same thing. None of this is about bad actors. Every one of them launched believing they would treat users better than the previous generation, and every one of them was either failed by the economics or compromised by the temptation to monetise the data they were holding. The architecture has to remove the company, because the company is what fails.
+            The founders who built every product above thought the same thing. Every one of them launched believing they would treat users better than the previous generation, and each was either failed by the economics or compromised by the temptation to monetise the data they were holding. The architecture has to remove the company, because the company is what fails.
         </p>
 
         <div class="alarm">
@@ -268,7 +268,7 @@
         <h2 class="section-header">&gt; 5. What tallyd does differently</h2>
 
         <p>
-            <a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/tallyd/README.md" target="_blank" rel="noopener">Tallyd</a> is the part of LocalGhost that cares about the numbers of your life, transactions, holdings, heart rate, sleep stages, screen time, commits, weight, workouts, medications, all in one place because the interesting signal lives at the intersections between them. The rest of the <a href="https://www.localghost.ai/#fleet">fleet</a> reads from it. Fifty to a hundred entries a day across forty years comes out to about a million rows, which is comfortable in any reasonable database, and Postgres handles a life today without drama. What it looks like in thirty years isn't a problem I need to solve now. The engineering this needs has always existed, there just hasn't been a commercial reason to point it at one person.
+            <a href="https://github.com/LocalGhostDao/localghost/blob/main/cmd/tallyd/README.md" target="_blank" rel="noopener">Tallyd</a> stores the numbers of your life in one place, from transactions and holdings to heart rate, sleep and workouts, because the interesting signal lives at the intersections between them. The rest of the <a href="https://www.localghost.ai/#fleet">fleet</a> reads from it. Fifty to a hundred entries a day across forty years comes out to about a million rows, which is comfortable in any reasonable database, and Postgres handles a life today without drama. What it looks like in thirty years isn't a problem I need to solve now. The engineering this needs has always existed, there just hasn't been a commercial reason to point it at one person.
         </p>
 
         <p>
@@ -284,7 +284,7 @@
         </p>
 
         <p>
-            A standard for portfolio data export exists. The OFX investment message set, shipped by Intuit, Microsoft, and CheckFree in 1997 and maintained by the Financial Data Exchange consortium <a href="#ref-9" class="cite">[9]</a>, covers holdings, positions, and transactions. Almost no consumer tracker implements it as an export option, not because the standard is hard or the implementation is expensive, but because no company in the category has ever had a commercial reason to make leaving easier than staying. That's the thing tallyd gets to do by default.
+            A standard for portfolio data export exists. The OFX investment message set, shipped by Intuit, Microsoft, and CheckFree in 1997 and maintained by the Financial Data Exchange consortium <a href="#ref-9" class="cite">[9]</a>, covers holdings, positions, and transactions. Almost no consumer tracker implements it as an export option. The standard is cheap to implement, and no company in the category has ever had a commercial reason to make leaving easier than staying. That's the thing tallyd gets to do by default.
         </p>
 
         <div class="signal">

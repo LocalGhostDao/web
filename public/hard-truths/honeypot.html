@@ -89,7 +89,7 @@
         },
         "keywords": "ghost.secd, duress mode, hidden volumes, compelled decryption, wrench attack, plausible deniability, LUKS2, Argon2id, FIDO2, AES-256-GCM, multi-PIN, the purge, local AI privacy",
         "articleSection": "Hard Truths",
-        "wordCount": 2399,
+        "wordCount": 2358,
         "timeRequired": "PT11M",
         "inLanguage": "en-GB",
         "isPartOf": {
@@ -265,7 +265,7 @@
         <h2 class="section-header">&gt; 4. How to comply without surrendering</h2>
 
         <p>
-            This is the part I keep coming back to because it changes the threat model completely. The traditional security mindset treats compelled disclosure as a failure state, the point at which the system has lost. The hidden volume design treats compelled disclosure as a normal operating mode, something the architecture handles cleanly because the architecture was designed to handle compelled disclosure from the start.
+            The traditional security mindset treats compelled disclosure as a failure state, the point at which the system has lost, and the hidden volume design treats it as a normal operating mode.
         </p>
 
         <p>
@@ -287,7 +287,7 @@
         </p>
 
         <p>
-            The Purge is just another PIN in the multi-PIN scheme. ghost.secd does not distinguish between a real PIN, a duress PIN, and a purge PIN at the architecture level, because every PIN derives a key, every key opens a volume, and the only thing that determines what happens next is what ghost.secd finds inside that volume after it mounts. Most volumes contain a filesystem with your data, or a decoy filesystem with someone else's. The purge volume is almost empty, holding nothing but a short string that ghost.secd recognises as the instruction to start destroying everything.
+            The Purge is just another PIN in the multi-PIN scheme. ghost.secd does not distinguish between a real PIN, a duress PIN, and a purge PIN at the architecture level, because every PIN derives a key, every key opens a volume, and the only thing that determines what happens next is what ghost.secd finds inside that volume after it mounts. Most volumes contain a filesystem with your data, or a decoy filesystem with someone else's. The purge volume is the almost empty one described earlier, holding only the marker.
         </p>
 
         <p>
