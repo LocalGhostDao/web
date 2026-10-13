@@ -41,7 +41,15 @@ cat > "$ROOT/bin/ghost-maild" <<WRAP
 exec "$ROOT/bin/ghost.maild" -conf "$ROOT/etc/maild.conf" "\$@"
 WRAP
 chmod 0755 "$ROOT/bin/ghost-maild"
-# the user unit
+# the user unit. A shell that is not a logind session (su, a plain ssh key login on some
+# setups) has no user bus in its environment; the user manager that lingering started is at
+# /run/user/<uid>, so point at it.
+if [ -z "${XDG_RUNTIME_DIR:-}" ]; then export XDG_RUNTIME_DIR="/run/user/$(id -u)"; fi
+if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ]; then export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"; fi
+if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
+  echo "no user manager for $(id -un) at $XDG_RUNTIME_DIR: run  sudo ./deploy/mail/scripts/root-once.sh $(id -un)  (it turns lingering on), then this again"
+  exit 1
+fi
 mkdir -p "$HOME/.config/systemd/user"
 sed -e "s|@ROOT@|$ROOT|g" "$HERE/../systemd/ghost.maild.service" > "$HOME/.config/systemd/user/ghost.maild.service"
 systemctl --user daemon-reload

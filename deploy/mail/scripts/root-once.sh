@@ -1,6 +1,6 @@
 #!/bin/sh
 # The three things only root can do, once; after this every update is the deploy user's.
-#   sudo ./deploy/mail/scripts/root-once.sh [deploy user, default: the sudo caller]
+#   sudo ./deploy/mail/scripts/root-once.sh [deploy user, default: the sudo caller; never root]
 #
 # 1. Port 25. A port under 1024 needs root or a capability; a capability on the binary would
 #    have to be re-set by root at every update, so instead the kernel's unprivileged-port floor
@@ -13,7 +13,8 @@
 set -e
 [ "$(id -u)" -eq 0 ] || { echo "run with sudo"; exit 1; }
 U="${1:-${SUDO_USER:-}}"
-[ -n "$U" ] && id "$U" >/dev/null 2>&1 || { echo "deploy user?"; exit 1; }
+[ -n "$U" ] && id "$U" >/dev/null 2>&1 || { echo "deploy user? run as  sudo $0 <user>  from that user, or name it"; exit 1; }
+[ "$U" != "root" ] || { echo "the deploy user is not root; name it:  sudo $0 coder"; exit 1; }
 H="$(getent passwd "$U" | cut -d: -f6)"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
