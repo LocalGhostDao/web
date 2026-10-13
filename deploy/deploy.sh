@@ -1316,14 +1316,24 @@ echo "  [🤖] robots.txt (${ROBOTS_LINES} lines)"
 if [ "$NGINX_CHANGED" = true ]; then
     echo ""
     echo "> NGINX CONFIGURATION..."
+    # Keep the live file so a config that fails nginx -t never stays in sites-available, where the
+    # next reload (a certbot renewal, a reboot) would pick it up and take the site down.
+    NGINX_BACKUP="${NGINX_DEST}.previous"
+    [ -f "$NGINX_DEST" ] && sudo cp -p "$NGINX_DEST" "$NGINX_BACKUP"
     sudo cp "$NGINX_SRC" "$NGINX_DEST"
-    
-    if sudo nginx -t 2>&1 | grep -q "successful"; then
+
+    NGINX_TEST=$(sudo nginx -t 2>&1)
+    if echo "$NGINX_TEST" | grep -q "successful"; then
         sudo systemctl reload nginx
         echo "  [⚡] nginx.conf deployed & reloaded"
     else
-        echo "  [✗] nginx config invalid"
-        sudo git -C "$(dirname "$NGINX_SRC")" checkout -- nginx.conf 2>/dev/null || true
+        echo "  [✗] nginx config invalid, the live one is back in place and nothing was reloaded"
+        echo "$NGINX_TEST" | sed 's/^/      /'
+        if [ -f "$NGINX_BACKUP" ]; then
+            sudo cp -p "$NGINX_BACKUP" "$NGINX_DEST"
+        else
+            sudo rm -f "$NGINX_DEST"
+        fi
     fi
 fi
 
