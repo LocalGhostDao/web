@@ -1,0 +1,17 @@
+# /etc/ghost-mail/maild.conf , the relay's configuration (key=value, # comments)
+hostname=mx.localghost.ai
+smtp=:25
+api=127.0.0.1:8025
+# the certificate for the hostname, copied here by the certbot deploy hook (deploy/mail/scripts/certbot-hook.sh)
+cert=/etc/ghost-mail/tls/fullchain.pem
+key=/etc/ghost-mail/tls/privkey.pem
+data=/var/lib/ghost-mail
+boxes=/etc/ghost-mail/boxes.conf
+# the relay's own X25519 key, for the boxes' outbound; make it with: ghost.maild -keygen (prints the public half)
+relaykey=/etc/ghost-mail/relay.key
+# greylisting: off until the inbox needs it
+greylist=off
+maxsize=26214400
+# sending allowance per box: recipients a day, recipients an hour
+sendday=100
+sendhour=10
