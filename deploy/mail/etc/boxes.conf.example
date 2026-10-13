@@ -1,4 +1,4 @@
-# /etc/ghost-mail/boxes.conf , one line per box. Each line comes from the box itself:
+# ~/ghost-mail/etc/boxes.conf , one line per box. Each line comes from the box itself:
 #   ghost-cli ghost.noted mail-enrol        (or SETTINGS › MAIL › THE RELAY'S LINE on the phone)
 # box=       the box id (lower case, digits, dashes), the same the box has in SETTINGS › MAIL
 # addresses= single addresses on a shared domain of the relay's (vlad@ghost.localghost.ai), comma separated
@@ -6,7 +6,7 @@
 #            (a line has addresses=, domains=, or both)
 # pub=       the box's X25519 mail public key (64 hex), what every message is sealed to
 # token=     the sha256 of the box's bearer token (64 hex); the token itself never leaves the box
-# dkim_rsa=  the box's RSA DKIM public key (base64 DER), published by `ghost.maild -dns <shared domain>`
+# dkim_rsa=  the box's RSA DKIM public key (base64 DER), published by `ghost-maild -dns <shared domain>`
 # dkim_ed=   the box's Ed25519 DKIM public key (base64), likewise
 # sendday=   (optional) this box's own daily sending allowance
 #

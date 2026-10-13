@@ -376,8 +376,10 @@ func main() {
 	bs.reload(lg)
 	cs := &certs{cFile: cfg.CertFile, kFile: cfg.KeyFile}
 	if _, err := cs.get(nil); err != nil {
-		lg.Error("certificate", "err", err)
-		os.Exit(1)
+		// no certificate yet (a fresh install before certbot has run): listen anyway; STARTTLS
+		// fails until the files appear and senders retry on their own, and the files are read
+		// again within ten minutes of landing
+		lg.Warn("no certificate yet: STARTTLS will fail until the files appear", "cert", cfg.CertFile, "err", err)
 	}
 	tlsCfg := &tls.Config{MinVersion: tls.VersionTLS12, GetCertificate: cs.get}
 	var relayPriv []byte

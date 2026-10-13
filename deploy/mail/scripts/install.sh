@@ -1,36 +1,57 @@
 #!/bin/sh
-# Installs or updates ghost.maild on the relay machine. Run as root from a checkout of the web
-# repository with Go, or copy a built binary in and give its path. Idempotent.
-#   sudo ./deploy/mail/scripts/install.sh [path/to/ghost.maild]
+# Installs or updates ghost.maild as the deploy user (coder): no sudo anywhere in here. The
+# binary, the configuration, the TLS copies, the relay key and the queue live under ~/ghost-mail;
+# the service is a systemd user unit, so it runs without a login and comes back on reboot
+# (lingering; scripts/root-once.sh turns it on). Root is needed once, for port 25 and the
+# certificate files: that is root-once.sh, run with sudo one time. Idempotent.
+#   ./deploy/mail/scripts/install.sh              build here, then install
+#   ./deploy/mail/scripts/install.sh <binary>     install a binary built elsewhere
 set -e
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ROOT="${GHOST_MAIL_HOME:-$HOME/ghost-mail}"
 BIN="${1:-}"
+
 if [ -z "$BIN" ]; then
   echo "building ghost.maild"
-  ( cd "$(dirname "$0")/.." && GOTOOLCHAIN=local GOFLAGS=-trimpath go build -o /tmp/ghost.maild ./cmd/ghost.maild )
-  BIN=/tmp/ghost.maild
+  mkdir -p "$ROOT/bin"
+  ( cd "$HERE/.." && GOTOOLCHAIN=local GOFLAGS=-trimpath go build -buildvcs=false -o "$ROOT/bin/ghost.maild.new" ./cmd/ghost.maild )
+  BIN="$ROOT/bin/ghost.maild.new"
 fi
-id ghost-mail >/dev/null 2>&1 || useradd --system --home /var/lib/ghost-mail --shell /usr/sbin/nologin ghost-mail
-install -d -o ghost-mail -g ghost-mail -m 0750 /var/lib/ghost-mail
-install -d -o root -g ghost-mail -m 0750 /etc/ghost-mail
-install -d -o ghost-mail -g ghost-mail -m 0750 /etc/ghost-mail/tls
-[ -f /etc/ghost-mail/maild.conf ] || install -o root -g ghost-mail -m 0640 "$(dirname "$0")/../etc/maild.conf.example" /etc/ghost-mail/maild.conf
-[ -f /etc/ghost-mail/boxes.conf ] || install -o root -g ghost-mail -m 0640 "$(dirname "$0")/../etc/boxes.conf.example" /etc/ghost-mail/boxes.conf
-install -o root -g root -m 0755 "$BIN" /usr/local/bin/ghost.maild
-if [ ! -f /etc/ghost-mail/relay.key ]; then
-  /usr/local/bin/ghost.maild -keygen > /etc/ghost-mail/relay.key.new
-  install -o root -g ghost-mail -m 0640 /etc/ghost-mail/relay.key.new /etc/ghost-mail/relay.key
-  rm -f /etc/ghost-mail/relay.key.new
-  echo "relay key made at /etc/ghost-mail/relay.key"
+mkdir -p "$ROOT/bin" "$ROOT/etc" "$ROOT/tls" "$ROOT/data"
+chmod 0750 "$ROOT" "$ROOT/etc" "$ROOT/tls" "$ROOT/data"
+if [ ! -f "$ROOT/etc/maild.conf" ]; then
+  sed -e "s|^cert=.*|cert=$ROOT/tls/fullchain.pem|" -e "s|^key=.*|key=$ROOT/tls/privkey.pem|" \
+      -e "s|^data=.*|data=$ROOT/data|" -e "s|^boxes=.*|boxes=$ROOT/etc/boxes.conf|" \
+      -e "s|^relaykey=.*|relaykey=$ROOT/etc/relay.key|" "$HERE/../etc/maild.conf.example" > "$ROOT/etc/maild.conf"
+  chmod 0640 "$ROOT/etc/maild.conf"
+  echo "wrote $ROOT/etc/maild.conf (hostname, ports and limits are the example's; edit if they differ)"
 fi
-install -m 0644 "$(dirname "$0")/../systemd/ghost.maild.service" /etc/systemd/system/ghost.maild.service
-if [ -d /etc/letsencrypt/renewal-hooks/deploy ]; then
-  install -m 0755 "$(dirname "$0")/certbot-hook.sh" /etc/letsencrypt/renewal-hooks/deploy/ghost-maild.sh
-  RENEWED_DOMAINS="$(sed -n 's/^hostname=//p' /etc/ghost-mail/maild.conf)" /etc/letsencrypt/renewal-hooks/deploy/ghost-maild.sh || true
+[ -f "$ROOT/etc/boxes.conf" ] || { install -m 0640 "$HERE/../etc/boxes.conf.example" "$ROOT/etc/boxes.conf"; }
+mv -f "$BIN" "$ROOT/bin/ghost.maild"
+chmod 0755 "$ROOT/bin/ghost.maild"
+if [ ! -f "$ROOT/etc/relay.key" ]; then
+  "$ROOT/bin/ghost.maild" -keygen > "$ROOT/etc/relay.key.new"
+  chmod 0600 "$ROOT/etc/relay.key.new"
+  mv "$ROOT/etc/relay.key.new" "$ROOT/etc/relay.key"
+  echo "relay key made at $ROOT/etc/relay.key"
 fi
-systemctl daemon-reload
-systemctl enable ghost.maild >/dev/null
-systemctl restart ghost.maild
+# a small wrapper so `ghost-maild -dns …` and friends find the conf
+cat > "$ROOT/bin/ghost-maild" <<WRAP
+#!/bin/sh
+exec "$ROOT/bin/ghost.maild" -conf "$ROOT/etc/maild.conf" "\$@"
+WRAP
+chmod 0755 "$ROOT/bin/ghost-maild"
+# the user unit
+mkdir -p "$HOME/.config/systemd/user"
+sed -e "s|@ROOT@|$ROOT|g" "$HERE/../systemd/ghost.maild.service" > "$HOME/.config/systemd/user/ghost.maild.service"
+systemctl --user daemon-reload
+systemctl --user enable ghost.maild >/dev/null
+systemctl --user restart ghost.maild
 sleep 1
-systemctl --no-pager --lines=5 status ghost.maild || true
-echo "relay public key (the boxes pin it; also at GET /box/<id>/key):"
-/usr/local/bin/ghost.maild -pubkey /etc/ghost-mail/relay.key
+systemctl --user --no-pager --lines=5 status ghost.maild || true
+if [ ! -f "$ROOT/tls/fullchain.pem" ]; then
+  echo
+  echo "no certificate at $ROOT/tls yet: the service restarts until root-once.sh has run and certbot has issued it (README, step 3)"
+fi
+echo "relay public key (the boxes fetch it themselves; also at GET /box/<id>/key):"
+"$ROOT/bin/ghost.maild" -pubkey "$ROOT/etc/relay.key"
