@@ -349,10 +349,87 @@
 
     /* ---- cache-first audio loading ---- */
 
-    function setCachedSrc(src, autoplay) {
+    /* With the service worker in charge, the plain URL is enough: it
+       answers from the offline cache, byte ranges included. Without it
+       (first visit, or a browser with no service worker) a downloaded
+       track is played from a blob so it still works offline. */
+    var blobUrl = null;
+
+    function playSrc(src, autoplay) {
+        if (blobUrl && src !== blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
         audio.src = src;
         audio.load();
         if (autoplay) audio.play().catch(function () {});
+    }
+
+    function setCachedSrc(src, autoplay) {
+        var controlled = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
+        if (controlled || !cacheSupported()) { playSrc(src, autoplay); return; }
+        caches.open(CACHE_NAME).then(function (cache) {
+            return cache.match(src);
+        }).then(function (hit) {
+            if (!hit) { playSrc(src, autoplay); return; }
+            return hit.blob().then(function (blob) {
+                if (tracks[current].src !== src) return;   /* skipped meanwhile */
+                var url = URL.createObjectURL(blob);
+                playSrc(url, autoplay);
+                blobUrl = url;
+            });
+        }).catch(function () { playSrc(src, autoplay); });
+    }
+
+    /* ---- the page itself, for opening /playlist with no network ---- */
+
+    var SHELL_NAME = 'localghost-shell-v3';   /* same name as in /sw.js */
+
+    function shellKey(u) {
+        var url = new URL(u, location.href);
+        var p = url.pathname === '/playlist.html' ? '/playlist' : url.pathname;
+        return url.origin + p;
+    }
+
+    function shellUrls() {
+        var urls = [location.pathname];
+        var seen = {};
+        var res = (performance.getEntriesByType && performance.getEntriesByType('resource')) || [];
+        res.forEach(function (e) {
+            var url = new URL(e.name);
+            if (url.origin !== location.origin) return;
+            if (/^\/(css|js|fonts)\//.test(url.pathname) ||
+                url.pathname === '/images/og-playlist.png' ||
+                url.pathname === '/favicon.svg' || url.pathname === '/favicon.ico') {
+                urls.push(url.pathname + url.search);
+            }
+        });
+        return urls.filter(function (u) {
+            var k = shellKey(u);
+            if (seen[k]) return false;
+            seen[k] = true;
+            return true;
+        });
+    }
+
+    function saveShell() {
+        if (!cacheSupported()) return Promise.resolve();
+        return caches.open(SHELL_NAME).then(function (cache) {
+            return Promise.all(shellUrls().map(function (u) {
+                return fetch(u).then(function (r) {
+                    if (r.ok && !r.redirected) return cache.put(shellKey(u), r);
+                }).catch(function () {});
+            }));
+        }).catch(function () {});
+    }
+
+    function registerWorker() {
+        if (!('serviceWorker' in navigator)) return;
+        navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(function () {
+            return navigator.serviceWorker.ready;
+        }).then(function () {
+            /* first visit: keep a copy of the page once the worker is up */
+            return caches.open(SHELL_NAME).then(function (c) {
+                return c.match(shellKey(location.pathname));
+            }).then(function (hit) { if (!hit) return saveShell(); });
+        }).catch(function () {});
     }
 
     /* ---- sync: cache new + update stale, with per-track progress ---- */
@@ -368,6 +445,7 @@
         var updated = 0;
         var meta;
 
+        saveShell();
         getMeta().then(function (m) {
             meta = m;
             next();
@@ -464,6 +542,7 @@
     /* ---- init ---- */
 
     renderTracklist();
+    registerWorker();
     loadTrack(0, false);
     probeDurations();
     try { refreshCacheIndicators(); } catch (e) { /* cache API unavailable */ }
