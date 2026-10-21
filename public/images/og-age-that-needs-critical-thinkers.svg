@@ -41,8 +41,8 @@
 
 <line x1="80" y1="348" x2="200" y2="348" stroke="#33FF00" stroke-width="2"/>
 
-<text x="80" y="400" class="mono text-dim" font-size="22" font-weight="400">Groupthink kept us alive. AI can move the whole</text>
-<text x="80" y="432" class="mono text-dim" font-size="22" font-weight="400">group now, and nobody feels it happening.</text>
+<text x="80" y="400" class="mono text-dim" font-size="22" font-weight="400">A group that thinks the same way can be</text>
+<text x="80" y="432" class="mono text-dim" font-size="22" font-weight="400">steered the same way, all at once.</text>
 
 <g class="mono" font-size="17" fill="#a0a0a0">
     <text x="80" y="500"><tspan fill="#33ff00">2x</tspan> as likely to agree with the AI  |  Romania <tspan fill="#33ff00">28th</tspan> of 35  |  Finland <tspan fill="#33ff00">1st</tspan> since 2017</text>
