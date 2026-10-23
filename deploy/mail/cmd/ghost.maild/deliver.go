@@ -381,8 +381,46 @@ func (o *outbound) deliverTo(host, from string, rcpts []string, raw []byte) (boo
 
 var errTLSVerify = errors.New("tls verification failed")
 
+// dialMail connects to a receiver's port 25 over IPv4 first and IPv6 only when the host has no
+// IPv4 address. The relay's published identity is its A record: the SPF `a:mx.…` term, the MX,
+// the reverse name all name the IPv4 address. A machine that also has a global IPv6 address
+// would otherwise be picked by the dialer's preference for v6 at any receiver with an AAAA
+// (Gmail has one), and the receiver would see a sender its SPF does not designate: the first
+// message through the relay reached Gmail from the box's IPv6 and failed SPF for exactly that.
+func dialMail(host string) (net.Conn, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ips, err := net.DefaultResolver.LookupIP(ctx, "ip", host)
+	cancel()
+	if err != nil {
+		return nil, err
+	}
+	var order []net.IP
+	for _, ip := range ips {
+		if ip.To4() != nil {
+			order = append(order, ip)
+		}
+	}
+	for _, ip := range ips {
+		if ip.To4() == nil {
+			order = append(order, ip)
+		}
+	}
+	var last error
+	for _, ip := range order {
+		conn, err := net.DialTimeout("tcp", net.JoinHostPort(ip.String(), "25"), 20*time.Second)
+		if err == nil {
+			return conn, nil
+		}
+		last = err
+	}
+	if last == nil {
+		last = fmt.Errorf("%s has no address", host)
+	}
+	return nil, last
+}
+
 func (o *outbound) session(host, from string, rcpts []string, raw []byte, verify bool) (bool, bool, error) {
-	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, "25"), 20*time.Second)
+	conn, err := dialMail(host)
 	if err != nil {
 		return false, false, err
 	}

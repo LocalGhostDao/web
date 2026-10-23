@@ -65,7 +65,11 @@ _dmarc.localghost.ai.      TXT    "v=DMARC1; p=reject"                          
 ```
 
 `_spf.localghost.ai` is the one record every box's domain includes (`include:_spf.localghost.ai`),
-so when the relay's IP changes this one record changes and no box touches its DNS. The `id` in the
+so when the relay's IP changes this one record changes and no box touches its DNS. The relay
+dials receivers over IPv4 first and IPv6 only for a host with no IPv4 address, so a machine
+that also carries a global IPv6 sends from the address the SPF names; the AAAA line is for a
+relay whose IPv6 is in the SPF (`ip6:`) and has a reverse name too, and is otherwise left out
+(the first message through the relay went to Gmail from an unlisted IPv6 and failed SPF). The `id` in the
 MTA-STS record changes whenever the policy file does. The last two lines are for `localghost.ai`
 itself and only make sense if nothing else sends as `@localghost.ai`.
 
