@@ -288,7 +288,7 @@
                 break;
 
             case 'status':
-                addOutputLine('WISP 0.0.6 // 10 OCTOBER 2026', 'success');
+                addOutputLine('WISP 0.0.7 // 23 OCTOBER 2026', 'success');
                 addOutputLine('RUNS DAILY // secd watchd framed searchd oracled synthd cued noted voiced tallyd');
                 addOutputLine('FIRST OF 28 DETECTORS // shadowd');
                 addOutputLine('PLANNED // mistd, for poltergeist', 'dim');

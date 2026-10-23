@@ -6,7 +6,7 @@
 
         <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
         <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
-        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.6, and the sets on the setup mirror.">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.7, and the sets on the setup mirror.">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/changelog">
@@ -15,7 +15,7 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/changelog">
         <meta property="og:title" content="Changelog, LocalGhost">
-        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.6 in October 2026, and the sets on the setup mirror.">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.7 in October 2026, and the sets on the setup mirror.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/changelog">
         <meta name="twitter:title" content="Changelog, LocalGhost">
-        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.6 in October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.7 in October 2026, and the sets on the setup mirror.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -47,11 +47,11 @@
             "@type": "WebPage",
             "name": "Changelog",
             "headline": "Changelog",
-            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.6, and the sets on the setup mirror.",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.7, and the sets on the setup mirror.",
             "url": "https://www.localghost.ai/changelog",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-10",
+            "dateModified": "2026-10-23",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; CHANGELOG</div>
                 <h1>Changelog</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-10">10 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-23">23 October 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -147,6 +147,27 @@
                 <p class="page-lede">
                     Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
                 </p>
+
+                <div class="entry" id="wisp-0.0.7">
+                    <h3>wisp 0.0.7, the box's own forecast, mail, and an audit</h3>
+                    <span class="when">23 OCTOBER 2026 // TAG v0.0.7 // COMMIT 261a0f0</span>
+                    <p>
+                        The seventh cut of wisp, on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.7">GitHub release</a> with the same assets as before and on the setup mirror as the <code>server</code> and <code>app</code> sets.
+                    </p>
+                    <ul class="plain-list">
+                        <li>The box makes the weather forecast itself. It pulls the runs of ECMWF's IFS, the German weather service's ICON-EU and NOAA's GFS as they come out, reads them with a GRIB2 decoder of its own and blends them into one forecast per place, keeping how far apart the models are. Near the phone it reads the forecast at the exact point, adding the German 2 km model in Germany and its neighbours and the Met Office's UK model for a box with its owner's key. Open-Meteo fills in until the first run is in. HOME draws the next day as a line, a tap opens a weather page with every hour, and the lock screen and the widget show the hour's temperature.</li>
+                        <li>The box can have an address of its own, on LocalGhost's shared domain or on a domain of yours. Mail lands on a relay we run at <code>mx.localghost.ai</code>, which seals it to the box's key on arrival and keeps nothing it can read, and the box fetches it, checks where it came from with SPF, DKIM and DMARC, and keeps it. MAIL on the phone has an inbox, threads, replies and a composer, and nothing leaves until you tap SEND, signed with the box's own keys. The relay's code is in the web repository under <code>deploy/mail</code>.</li>
+                        <li>The phone's calendar and contacts are kept on the box, read on the phone and never written back, and the chat answers "what's on tomorrow" or "what's Ana's number" from the box's copy.</li>
+                        <li>The map draws its base once into a layer, so a long look at the streets no longer heats the phone, and it has lakes, rivers and canals. A week or more in one country is a trip of its own, a single stay away for a night or more is a trip too, and every trip stays on the MEMORIES feed.</li>
+                        <li>HEALTH is a dashboard you drill into, by kind and then by day, with sleep stages, resting heart rate, heart rate variability, blood oxygen and more from a watch. The phone sends the box an account of what Health Connect holds, so a box with no health data says why, and the day's steps merge the watch and the phone the way Samsung Health does.</li>
+                        <li>Both trees went through a security audit. Six findings are closed here: a crafted message could hold the mail loop for hours, the PIN list on the system disk showed which entry was the wipe PIN, a wrong PIN didn't revoke the live session, a phone could keep spare certificates after it was retired, a model reply could turn a daemon's logging up, and the relay read a different From header than receivers do. Twelve leads that need a device, the model, Postgres or nginx to settle are in the report with checks for the owner, and <code>edge-passthrough</code> now writes the edge flag itself.</li>
+                        <li>The check-in opens on the day that just ended in the small hours, the widget fits its cell and leads with the brief, the recorder has a pause, the German pack has fifty-four phrases for shops, cafés, taxis and trains, and the chat keeps the box's own prices and rates in view when you ask how they've moved.</li>
+                        <li>The heights are on the mirror as 69 packs of 30 by 30 degrees, 67 GB for the world, and the privacy page and Set Up a Box now list the weather centres and the mail relay.</li>
+                    </ul>
+                    <p>
+                        A box on 0.0.6 takes it from the phone with DEPLOY. At the first start it rewrites its PIN list with the same PINs and cuts its road tiles once more to put the water in, which takes hours for a continent while the old tiles are served. From then on a wrong PIN logs the phone out, so the app shows the box as down until the right one. A box that moved the phone's TLS into secd before this should check that <code>/etc/ghost/edge</code> reads <code>tls</code>. The phone's calendar and contacts reach the box at the first sync after their permissions are given.
+                    </p>
+                </div>
 
                 <div class="entry" id="wisp-0.0.6">
                     <h3>wisp 0.0.6, two-week certificates and the box's sources on the phone</h3>
