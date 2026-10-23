@@ -15,6 +15,7 @@ import (
 	"crypto/subtle"
 	"crypto/tls"
 	"encoding/hex"
+	"errors"
 	"flag"
 	"fmt"
 	"log/slog"
@@ -385,6 +386,17 @@ func main() {
 	var relayPriv []byte
 	if k, err := seal.ReadKeyFile(cfg.RelayKey); err == nil {
 		relayPriv = k
+	} else if errors.Is(err, os.ErrNotExist) {
+		// the first start makes the relay's own key (the daemon's user owns the directory; the
+		// deploy user does not, since 18 Oct 2026, so install.sh cannot make it)
+		if priv, _, gerr := seal.GenerateKey(); gerr == nil {
+			if werr := os.WriteFile(cfg.RelayKey, []byte(hex.EncodeToString(priv)+"\n"), 0o600); werr == nil {
+				relayPriv = priv
+				lg.Info("relay key made", "path", cfg.RelayKey)
+			} else {
+				lg.Warn("no relay key and none could be written: outbound is off", "path", cfg.RelayKey, "err", werr)
+			}
+		}
 	} else {
 		lg.Warn("no relay key: outbound is off", "path", cfg.RelayKey, "err", err)
 	}

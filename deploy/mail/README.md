@@ -20,7 +20,7 @@ deploy/mail/
   nginx/mail.conf       the /box/ location for the mx host
   scripts/root-once.sh  sudo, once: unprivileged ports from 25, the certbot hook, lingering
   scripts/install.sh    as the deploy user, no sudo: build, ~/ghost-mail, the key, the unit, start; idempotent
-  scripts/certbot-hook.sh  the hook root-once.sh installs: copies the mx certificate into ~/ghost-mail/tls
+  scripts/certbot-hook.sh  the hook root-once.sh installs: copies the mx certificate into /var/lib/ghost-mail/tls
 ```
 
 ## What it is
@@ -91,29 +91,41 @@ As the deploy user, from a checkout with Go 1.25 or later:
 
 ```
 cd deploy/mail && go test ./... && cd ../..
-sudo ./deploy/mail/scripts/root-once.sh          # once, ever: port 25 for unprivileged users, the certbot hook, lingering
-./deploy/mail/scripts/install.sh                 # every time: build, ~/ghost-mail/{bin,etc,tls,data}, the relay key, the user unit, start
+sudo ./deploy/mail/scripts/root-once.sh          # once (and again harmlessly): the user ghost-mail, /var/lib/ghost-mail, the system unit, the certbot hook, leave to restart
+./deploy/mail/scripts/install.sh                 # every time: build into ~/ghost-mail/bin, the conf, restart (the one sudo)
 ```
 
-`install.sh` writes `~/ghost-mail/etc/maild.conf` from the example with the paths filled in
-(hostname `mx.localghost.ai`, SMTP `:25`, API `127.0.0.1:8025`; edit if they differ), makes
-the relay's X25519 key at `~/ghost-mail/etc/relay.key`, installs the unit at
-`~/.config/systemd/user/ghost.maild.service`, starts it, and prints the relay's public key.
-`~/ghost-mail/bin/ghost-maild` is a wrapper that passes the conf (`ghost-maild -dns …`).
-Until the certificate exists the daemon runs and logs "no certificate yet"; STARTTLS fails
-and senders retry. Then:
+The daemon runs as **ghost-mail**, a system user with no shell and no home, under a system unit
+that lets it write one path, `/var/lib/ghost-mail` (the queue, its own key, the certificate
+copies), and read the deploy user's `~/ghost-mail/{bin,etc}` (the binary, `maild.conf`,
+`boxes.conf`; group-readable). A parser that takes bytes from any host on the internet has
+nothing of the deploy user's to lose. `install.sh` writes `~/ghost-mail/etc/maild.conf` from
+the example with the paths filled in (hostname `mx.localghost.ai`, SMTP `:25`, API
+`127.0.0.1:8025`; edit if they differ) and restarts the service (`sudo systemctl restart
+ghost.maild`, allowed without a password by root-once.sh). The daemon makes its X25519 key at
+`/var/lib/ghost-mail/relay.key` on its first start. `~/ghost-mail/bin/ghost-maild` is a
+wrapper that passes the conf (`ghost-maild -dns …`). Until the certificate exists the daemon
+runs and logs "no certificate yet"; STARTTLS fails and senders retry. Then:
 
 1. **The certificate.** `sudo certbot certonly --webroot -w /var/www/localghost.ai/public
    --cert-name mx.localghost.ai -d mx.localghost.ai -d mta-sts.localghost.ai` (the port-80
    block in `deploy/nginx.conf` serves the challenge). The deploy hook copies the PEMs into
-   `~/ghost-mail/tls` at issue and at every renewal; the daemon reads them within ten minutes
-   (or `systemctl --user restart ghost.maild`).
+   `/var/lib/ghost-mail/tls` at issue and at every renewal; the daemon reads them within ten
+   minutes (or `sudo systemctl restart ghost.maild`).
 2. **nginx.** The `server` blocks for `mx.localghost.ai` (HTTPS, `/box/` proxied to
    `127.0.0.1:8025`) and `mta-sts.localghost.ai` (the policy at `/.well-known/mta-sts.txt`,
    `text/plain`) in `deploy/nginx.conf`; `deploy.sh` syncs and reloads.
-3. **Check.** `systemctl --user status ghost.maild`; `openssl s_client -starttls smtp -connect
-   mx.localghost.ai:25` shows the certificate; `curl -s https://mx.localghost.ai/box/x/in/`
-   answers 401 (no token). The log is `journalctl --user -u ghost.maild`.
+3. **Check.** `systemctl status ghost.maild` (`User=ghost-mail`); `openssl s_client -starttls
+   smtp -connect mx.localghost.ai:25` shows the certificate; `curl -s
+   https://mx.localghost.ai/box/xyz/in/` answers 401 (no token). The log is `journalctl -u
+   ghost.maild` (the deploy user is in `systemd-journal`, from the login after root-once.sh).
+4. **Open port 25, then prove it relays for nobody.** With the router's forward in place, from
+   a connection that is not the box's (a phone on mobile data with Termux, or any VPS):
+   `openssl s_client -starttls smtp -crlf -quiet -connect mx.localghost.ai:25`, then type
+   `EHLO probe.example`, `MAIL FROM:<probe@example.com>`, `RCPT TO:<someone@gmail.com>` (must
+   be `550`: not a box here), `RCPT TO:<vlad@ghost.localghost.ai>` (must be `250`), `QUIT`.
+   A plain `nc` probe proves nothing: the relay answers `530 Must issue a STARTTLS command
+   first` to `MAIL FROM` before TLS, so the relay question is never reached.
 
 `~/ghost-mail/etc/maild.conf` (key=value): `hostname`, `smtp` (`:25`), `api` (`127.0.0.1:8025`),
 `cert`, `key`, `data`, `boxes`, `relaykey`, `greylist` (off), `maxsize` (25 MB), `sendday`
@@ -138,16 +150,16 @@ the domain's MX points at the relay (`dig +short MX ghost.ana.example` → `10 m
 which is the proof the person controls the domain. That box pastes its own five records.
 
 To remove a box, remove its line and its two TXT records; its queue under
-`~/ghost-mail/data/<box>/` can be deleted.
+`/var/lib/ghost-mail/data/<box>/` can be deleted (root, or ghost-mail).
 
 In the first version this is by hand. Later: a one-time invite code and a `/enrol` endpoint that
 checks the MX itself (MAIL.md over there, "Who may use the relay").
 
 ## Running it
 
-- `journalctl --user -u ghost.maild -f`: `received box=vlad bytes=… tls=…`, `delivered`,
+- `journalctl -u ghost.maild -f`: `received box=vlad bytes=… tls=…`, `delivered`,
   `delivery deferred`, `refused by receiver`, `queue swept`. Never an address.
-- Disk: `du -sh ~/ghost-mail/data/*`; a box that never pulls holds up to 200 MB for thirty
+- Disk: `sudo du -sh /var/lib/ghost-mail/data/*`; a box that never pulls holds up to 200 MB for thirty
   days, then the sweep removes the old files.
 - A sending problem shows as `delivery deferred` repeating for one domain; after a day the box
   gets a bounce. The usual causes: the PTR missing, the IP young (Gmail greylists new IPs for
@@ -155,7 +167,7 @@ checks the MX itself (MAIL.md over there, "Who may use the relay").
 - Updating: `./deploy/mail/scripts/install.sh` again (or with a new binary's path); it
   restarts the service. Senders retry for days, so a restart loses nothing. `deploy.sh` does not
   touch the relay; mail is its own step, deliberately.
-- Greylisting: `greylist=on` in `~/ghost-mail/etc/maild.conf` and `systemctl --user restart
+- Greylisting: `greylist=on` in `~/ghost-mail/etc/maild.conf` and `sudo systemctl restart
   ghost.maild` if the boxes drown in bulk spam; a never-seen sender gets a 451 once and is
   taken on the retry.
 
@@ -166,3 +178,10 @@ before `MAIL`); sign anything (the boxes sign, each with its own domain's key; t
 no DKIM key); keep a message in the clear; log an address; send for a box that did not sign
 the message with the key in its domain's DNS; send past a box's allowance. All of these are
 in the code, not in a setting.
+- What stands between the internet and the box, in the daemon itself: 20 connections at once,
+  5 per address, a per-address rate of messages, 25 MB a message, `530` before STARTTLS, `550`
+  for any recipient not in `boxes.conf` (it relays for nobody), `452` when a box's queue is
+  full, a command timeout, and no shell, exec or file name taken from the wire. A kernel-side
+  rate limit on new connections to 25 (nftables, `limit rate over 10/minute burst 20` per
+  source) is worth adding on top: it keeps a scanner's flood off the accept loop entirely.
+

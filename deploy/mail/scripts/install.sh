@@ -1,65 +1,55 @@
 #!/bin/sh
-# Installs or updates ghost.maild as the deploy user (coder): no sudo anywhere in here. The
-# binary, the configuration, the TLS copies, the relay key and the queue live under ~/ghost-mail;
-# the service is a systemd user unit, so it runs without a login and comes back on reboot
-# (lingering; scripts/root-once.sh turns it on). Root is needed once, for port 25 and the
-# certificate files: that is root-once.sh, run with sudo one time. Idempotent.
+# Installs or updates ghost.maild as the deploy user (coder). The binary and the configuration
+# are the deploy user's under ~/ghost-mail; the daemon runs as the system user ghost-mail (a
+# system unit, scripts/root-once.sh) and writes only under /var/lib/ghost-mail. The one sudo in
+# here is the restart, which root-once.sh allowed without a password. Idempotent.
 #   ./deploy/mail/scripts/install.sh              build here, then install
 #   ./deploy/mail/scripts/install.sh <binary>     install a binary built elsewhere
 set -e
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="${GHOST_MAIL_HOME:-$HOME/ghost-mail}"
+STATE=/var/lib/ghost-mail
 BIN="${1:-}"
 
+id ghost-mail >/dev/null 2>&1 || { echo "no user ghost-mail yet: run  sudo ./deploy/mail/scripts/root-once.sh $(id -un)  first"; exit 1; }
 if [ -z "$BIN" ]; then
   echo "building ghost.maild"
   mkdir -p "$ROOT/bin"
   ( cd "$HERE/.." && GOTOOLCHAIN=local GOFLAGS=-trimpath go build -buildvcs=false -o "$ROOT/bin/ghost.maild.new" ./cmd/ghost.maild )
   BIN="$ROOT/bin/ghost.maild.new"
 fi
-mkdir -p "$ROOT/bin" "$ROOT/etc" "$ROOT/tls" "$ROOT/data"
-chmod 0750 "$ROOT" "$ROOT/etc" "$ROOT/tls" "$ROOT/data"
+mkdir -p "$ROOT/bin" "$ROOT/etc"
 if [ ! -f "$ROOT/etc/maild.conf" ]; then
-  sed -e "s|^cert=.*|cert=$ROOT/tls/fullchain.pem|" -e "s|^key=.*|key=$ROOT/tls/privkey.pem|" \
-      -e "s|^data=.*|data=$ROOT/data|" -e "s|^boxes=.*|boxes=$ROOT/etc/boxes.conf|" \
-      -e "s|^relaykey=.*|relaykey=$ROOT/etc/relay.key|" "$HERE/../etc/maild.conf.example" > "$ROOT/etc/maild.conf"
-  chmod 0640 "$ROOT/etc/maild.conf"
+  sed -e "s|^cert=.*|cert=$STATE/tls/fullchain.pem|" -e "s|^key=.*|key=$STATE/tls/privkey.pem|" \
+      -e "s|^data=.*|data=$STATE/data|" -e "s|^boxes=.*|boxes=$ROOT/etc/boxes.conf|" \
+      -e "s|^relaykey=.*|relaykey=$STATE/relay.key|" "$HERE/../etc/maild.conf.example" > "$ROOT/etc/maild.conf"
   echo "wrote $ROOT/etc/maild.conf (hostname, ports and limits are the example's; edit if they differ)"
+else
+  # an install from before the daemon had its own user points at ~/ghost-mail for what it writes
+  if grep -q "^data=$ROOT/data\|^relaykey=$ROOT/etc/relay.key\|^cert=$ROOT/tls" "$ROOT/etc/maild.conf"; then
+    sed -i -e "s|^cert=.*|cert=$STATE/tls/fullchain.pem|" -e "s|^key=.*|key=$STATE/tls/privkey.pem|" \
+        -e "s|^data=.*|data=$STATE/data|" -e "s|^relaykey=.*|relaykey=$STATE/relay.key|" "$ROOT/etc/maild.conf"
+    echo "maild.conf: the queue, the key and the certificate paths now point under $STATE"
+  fi
 fi
-[ -f "$ROOT/etc/boxes.conf" ] || { install -m 0640 "$HERE/../etc/boxes.conf.example" "$ROOT/etc/boxes.conf"; }
+[ -f "$ROOT/etc/boxes.conf" ] || cp "$HERE/../etc/boxes.conf.example" "$ROOT/etc/boxes.conf"
 mv -f "$BIN" "$ROOT/bin/ghost.maild"
+# readable to the daemon's user, writable to nobody else: the directories carry the group
+# (set-group-id, root-once.sh), the modes are set here for files made before that
 chmod 0755 "$ROOT/bin/ghost.maild"
-if [ ! -f "$ROOT/etc/relay.key" ]; then
-  "$ROOT/bin/ghost.maild" -keygen > "$ROOT/etc/relay.key.new"
-  chmod 0600 "$ROOT/etc/relay.key.new"
-  mv "$ROOT/etc/relay.key.new" "$ROOT/etc/relay.key"
-  echo "relay key made at $ROOT/etc/relay.key"
-fi
+chmod 0640 "$ROOT/etc/maild.conf" "$ROOT/etc/boxes.conf"
+chgrp ghost-mail "$ROOT/etc/maild.conf" "$ROOT/etc/boxes.conf" "$ROOT/bin/ghost.maild" 2>/dev/null || true
 # a small wrapper so `ghost-maild -dns …` and friends find the conf
 cat > "$ROOT/bin/ghost-maild" <<WRAP
 #!/bin/sh
 exec "$ROOT/bin/ghost.maild" -conf "$ROOT/etc/maild.conf" "\$@"
 WRAP
 chmod 0755 "$ROOT/bin/ghost-maild"
-# the user unit. A shell that is not a logind session (su, a plain ssh key login on some
-# setups) has no user bus in its environment; the user manager that lingering started is at
-# /run/user/<uid>, so point at it.
-if [ -z "${XDG_RUNTIME_DIR:-}" ]; then export XDG_RUNTIME_DIR="/run/user/$(id -u)"; fi
-if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ]; then export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"; fi
-if [ ! -S "$XDG_RUNTIME_DIR/bus" ]; then
-  echo "no user manager for $(id -un) at $XDG_RUNTIME_DIR: run  sudo ./deploy/mail/scripts/root-once.sh $(id -un)  (it turns lingering on), then this again"
-  exit 1
-fi
-mkdir -p "$HOME/.config/systemd/user"
-sed -e "s|@ROOT@|$ROOT|g" "$HERE/../systemd/ghost.maild.service" > "$HOME/.config/systemd/user/ghost.maild.service"
-systemctl --user daemon-reload
-systemctl --user enable ghost.maild >/dev/null
-systemctl --user restart ghost.maild
+sudo /usr/bin/systemctl restart ghost.maild
 sleep 1
-systemctl --user --no-pager --lines=5 status ghost.maild || true
-if [ ! -f "$ROOT/tls/fullchain.pem" ]; then
+systemctl --no-pager --lines=5 status ghost.maild || true   # no sudo: status is anyone's; the lines need the systemd-journal group (root-once.sh)
+if [ ! -f "$STATE/tls/fullchain.pem" ]; then
   echo
-  echo "no certificate at $ROOT/tls yet: the service restarts until root-once.sh has run and certbot has issued it (README, step 3)"
+  echo "no certificate at $STATE/tls yet: the relay runs and waits for it (certbot issues it, the hook copies it; README, step 3)"
 fi
-echo "relay public key (the boxes fetch it themselves; also at GET /box/<id>/key):"
-"$ROOT/bin/ghost.maild" -pubkey "$ROOT/etc/relay.key"
+echo "the relay's key is ghost-mail's own ($STATE/relay.key, made at the first start); the boxes fetch its public half at GET /box/<id>/key"
