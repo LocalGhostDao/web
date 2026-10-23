@@ -48,8 +48,10 @@ chmod 0755 "$ROOT/bin/ghost-maild"
 sudo /usr/bin/systemctl restart ghost.maild
 sleep 1
 systemctl --no-pager --lines=5 status ghost.maild || true   # no sudo: status is anyone's; the lines need the systemd-journal group (root-once.sh)
-if [ ! -f "$STATE/tls/fullchain.pem" ]; then
+# the state directory is ghost-mail's and not readable to the deploy user; ask the daemon, not the file
+if journalctl -u ghost.maild -n 30 --no-pager -q 2>/dev/null | grep -q "no certificate\|certificate missing\|tls: no"; then
   echo
-  echo "no certificate at $STATE/tls yet: the relay runs and waits for it (certbot issues it, the hook copies it; README, step 3)"
+  echo "the journal says the relay has no certificate yet: certbot issues it, the deploy hook copies it into $STATE/tls (README, step 3);"
+  echo "to copy an existing one by hand, as root: RENEWED_DOMAINS=mx.localghost.ai /etc/letsencrypt/renewal-hooks/deploy/ghost-maild.sh"
 fi
 echo "the relay's key is ghost-mail's own ($STATE/relay.key, made at the first start); the boxes fetch its public half at GET /box/<id>/key"

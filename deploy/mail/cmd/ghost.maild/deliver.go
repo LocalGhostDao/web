@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
+	"net/mail"
 	"net/smtp"
 	"net/textproto"
 	"os"
@@ -70,8 +71,9 @@ func (o *outbound) accept(bx *box, ob wire.Outbound) (string, error) {
 		}
 		o.pub = p
 	}
-	from := strings.ToLower(strings.TrimSpace(ob.From))
-	if !bx.owns(from) {
+	from, _, ok := parsePath("FROM:<"+strings.TrimSpace(ob.From)+">", "FROM:")
+	from = strings.ToLower(from)
+	if !ok || from == "" || !bx.owns(from) {
 		return "", fmt.Errorf("the envelope sender is not an address of this box")
 	}
 	if len(ob.To) == 0 || len(ob.To) > maxOutRcpt {
@@ -121,51 +123,53 @@ func (o *outbound) accept(bx *box, ob wire.Outbound) (string, error) {
 	return name, nil
 }
 
-// structural is the relay's only look at an outbound message: a From header that is the box's
-// (one of its addresses, or on a domain it owns) and a DKIM-Signature with d= that From's
-// domain. Header lines only, no parsing beyond that.
+// structural is the relay's only look at an outbound message: exactly one From header holding
+// exactly one address that is the box's (one of its addresses, or on a domain it owns), and a
+// DKIM-Signature with d= that From's domain. It reads the headers the way every receiver will
+// (net/mail: the first blank line ends the block, a bare LF is a line end), so what it authorises
+// is what a receiver attributes; the audit found the old scan took the LAST From and ended the
+// block at the first CRLFCRLF, which let a box on a shared domain send as its neighbour.
 func structural(raw []byte, bx *box) error {
+	// the header block must be CRLF lines with no bare CR or LF anywhere in it: a bare line
+	// break is where the relay and a receiver would start to disagree
 	end := bytes.Index(raw, []byte("\r\n\r\n"))
+	hdr := raw
+	if end >= 0 {
+		hdr = raw[:end+2]
+	}
+	if bytes.Contains(bytes.ReplaceAll(hdr, []byte("\r\n"), nil), []byte("\r")) || bytes.Contains(bytes.ReplaceAll(hdr, []byte("\r\n"), nil), []byte("\n")) {
+		return fmt.Errorf("a bare CR or LF in the headers")
+	}
 	if end < 0 {
-		end = bytes.Index(raw, []byte("\n\n"))
-		if end < 0 {
-			end = len(raw)
-		}
+		// no blank line at all: net/mail needs one
+		hdr = append(append([]byte{}, hdr...), '\r', '\n')
 	}
-	hdr := strings.ReplaceAll(string(raw[:end]), "\r\n", "\n")
-	hdr = strings.ReplaceAll(hdr, "\n ", " ")
-	hdr = strings.ReplaceAll(hdr, "\n\t", " ")
-	fromAddr := ""
-	var dkimDomains []string
-	for _, ln := range strings.Split(hdr, "\n") {
-		k, v, ok := strings.Cut(ln, ":")
-		if !ok {
-			continue
-		}
-		switch strings.ToLower(strings.TrimSpace(k)) {
-		case "from":
-			v = strings.ToLower(v)
-			if lt := strings.LastIndexByte(v, '<'); lt >= 0 {
-				v = v[lt+1:]
-				v = strings.TrimSuffix(strings.TrimSpace(v), ">")
-			}
-			fromAddr = strings.TrimSpace(v)
-		case "dkim-signature":
-			for _, t := range strings.Split(v, ";") {
-				tk, tv, _ := strings.Cut(strings.TrimSpace(t), "=")
-				if strings.TrimSpace(tk) == "d" {
-					dkimDomains = append(dkimDomains, strings.ToLower(strings.TrimSpace(tv)))
-				}
-			}
-		}
+	msg, err := mail.ReadMessage(bytes.NewReader(hdr))
+	if err != nil {
+		return fmt.Errorf("the headers do not parse")
 	}
+	froms := msg.Header["From"]
+	if len(froms) != 1 {
+		return fmt.Errorf("exactly one From header")
+	}
+	addrs, err := mail.ParseAddressList(froms[0])
+	if err != nil || len(addrs) != 1 {
+		return fmt.Errorf("From must be exactly one address")
+	}
+	if n := len(msg.Header["Sender"]); n > 1 {
+		return fmt.Errorf("more than one Sender header")
+	}
+	fromAddr := strings.ToLower(strings.TrimSpace(addrs[0].Address))
 	if fromAddr == "" || !bx.owns(fromAddr) {
 		return fmt.Errorf("the From header is not an address of this box")
 	}
 	fromDomain := fromAddr[strings.LastIndexByte(fromAddr, '@')+1:]
-	for _, d := range dkimDomains {
-		if d == fromDomain {
-			return nil
+	for _, sig := range msg.Header["Dkim-Signature"] {
+		for _, t := range strings.Split(sig, ";") {
+			tk, tv, _ := strings.Cut(strings.TrimSpace(t), "=")
+			if strings.TrimSpace(tk) == "d" && strings.ToLower(strings.TrimSpace(tv)) == fromDomain {
+				return nil
+			}
 		}
 	}
 	return fmt.Errorf("no DKIM-Signature by the From address's domain; the box signs, the relay does not")

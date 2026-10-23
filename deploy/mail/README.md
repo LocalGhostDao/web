@@ -178,10 +178,13 @@ before `MAIL`); sign anything (the boxes sign, each with its own domain's key; t
 no DKIM key); keep a message in the clear; log an address; send for a box that did not sign
 the message with the key in its domain's DNS; send past a box's allowance. All of these are
 in the code, not in a setting.
-- What stands between the internet and the box, in the daemon itself: 20 connections at once,
-  5 per address, a per-address rate of messages, 25 MB a message, `530` before STARTTLS, `550`
-  for any recipient not in `boxes.conf` (it relays for nobody), `452` when a box's queue is
-  full, a command timeout, and no shell, exec or file name taken from the wire. A kernel-side
+- What stands between the internet and the box, in the daemon itself: 40 connections at once,
+  5 per /24 or /64 (one host does not get a slot per alias), a session of ten minutes and
+  twenty NOOPs at most, a per-prefix rate of messages, 25 MB a message, `530` before STARTTLS,
+  `550` for any recipient not in `boxes.conf` (it relays for nobody), `452` when a box's queue
+  is full, a command timeout, and no shell, exec or file name taken from the wire. An outbound
+  message is read the way receivers read it (net/mail, one From with one address, no bare line
+  break in the headers), so what the relay authorises is what a receiver attributes. A kernel-side
   rate limit on new connections to 25 (nftables, `limit rate over 10/minute burst 20` per
   source) is worth adding on top: it keeps a scanner's flood off the accept loop entirely.
 

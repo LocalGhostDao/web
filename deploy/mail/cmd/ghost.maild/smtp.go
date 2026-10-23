@@ -18,14 +18,18 @@ import (
 )
 
 const (
-	maxConns      = 20
-	maxConnsPerIP = 5
+	maxConns      = 40
+	maxConnsPerIP = 5 // per /24 or /64, not per address: one host does not get a slot per alias
 	maxRcpts      = 10
 	cmdTimeout    = 60 * time.Second
 	dataTimeout   = 10 * time.Minute
 	maxLine       = 2000
 	maxErrors     = 5
 	perMinute     = 4
+	// A session lives at most sessionMax and answers at most maxNoops NOOPs: a slot cannot be held
+	// for ever at one keep-alive a minute (the audit's slot-starvation lead).
+	sessionMax = 10 * time.Minute
+	maxNoops   = 20
 )
 
 // smtpServer is the receiving side: the commands a receiver needs and nothing else. No AUTH, no
@@ -73,6 +77,8 @@ type session struct {
 	mailSet  bool
 	rcpts    []rcpt
 	errors   int
+	noops    int
+	started  time.Time
 	ptr      chan ptrResult
 }
 
@@ -97,7 +103,7 @@ func (s *smtpServer) handle(ctx context.Context, conn net.Conn) {
 		return
 	}
 	defer s.limits.disconnect(ip)
-	ses := &session{s: s, conn: conn, r: bufio.NewReaderSize(conn, 4096), ip: ip, port: p, ptr: make(chan ptrResult, 1)}
+	ses := &session{s: s, conn: conn, r: bufio.NewReaderSize(conn, 4096), ip: ip, port: p, ptr: make(chan ptrResult, 1), started: time.Now()}
 	go ses.lookupPTR()
 	ses.run(ctx)
 }
@@ -108,8 +114,19 @@ func (ses *session) reply(code int, text string) error {
 	return err
 }
 
+// deadline is the next command's: a minute, or what is left of the session's ten.
+func (ses *session) deadline() time.Time {
+	d := time.Now().Add(cmdTimeout)
+	if !ses.started.IsZero() {
+		if end := ses.started.Add(sessionMax); end.Before(d) {
+			return end
+		}
+	}
+	return d
+}
+
 func (ses *session) readLine() (string, error) {
-	ses.conn.SetReadDeadline(time.Now().Add(cmdTimeout))
+	ses.conn.SetReadDeadline(ses.deadline())
 	var line []byte
 	for {
 		part, err := ses.r.ReadSlice('\n')
@@ -142,6 +159,10 @@ func (ses *session) run(ctx context.Context) {
 	for {
 		if ctx.Err() != nil {
 			ses.reply(421, "4.3.0 "+s.cfg.Hostname+" closing")
+			return
+		}
+		if time.Since(ses.started) > sessionMax {
+			ses.reply(421, "4.4.2 "+s.cfg.Hostname+" session too long, reconnect")
 			return
 		}
 		line, err := ses.readLine()
@@ -286,6 +307,10 @@ func (ses *session) run(ctx context.Context) {
 			ses.resetEnvelope()
 			ses.reply(250, "2.0.0 ok")
 		case "NOOP":
+			if ses.noops++; ses.noops > maxNoops {
+				ses.reply(421, "4.7.0 too many idle commands")
+				return
+			}
 			ses.reply(250, "2.0.0 ok")
 		case "QUIT":
 			ses.reply(221, "2.0.0 bye")
@@ -519,7 +544,14 @@ func (ses *session) lookupPTR() {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	res := ptrResult{state: "error"}
-	defer func() { ses.ptr <- res }()
+	defer func() {
+		// data() waits three seconds and then puts its own answer in the channel; a late result
+		// must not block this goroutine for the life of the connection
+		select {
+		case ses.ptr <- res:
+		default:
+		}
+	}()
 	names, err := net.DefaultResolver.LookupAddr(ctx, ses.ip.String())
 	if err != nil {
 		var de *net.DNSError
@@ -557,10 +589,22 @@ type limits struct {
 
 func newLimits() *limits { return &limits{conns: map[string]int{}, msgs: map[string][]time.Time{}} }
 
+// prefixKey is the /24 (IPv4) or /64 (IPv6) an address belongs to: the unit the connection and
+// message limits count by, so one host does not get a fresh quota per alias.
+func prefixKey(ip net.IP) string {
+	if ip == nil {
+		return "?"
+	}
+	if ip4 := ip.To4(); ip4 != nil {
+		return ip4.Mask(net4Mask).String()
+	}
+	return ip.Mask(net6Mask).String()
+}
+
 func (l *limits) connect(ip net.IP) bool {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	k := ip.String()
+	k := prefixKey(ip)
 	if l.conns[k] >= maxConnsPerIP {
 		return false
 	}
@@ -571,7 +615,7 @@ func (l *limits) connect(ip net.IP) bool {
 func (l *limits) disconnect(ip net.IP) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	k := ip.String()
+	k := prefixKey(ip)
 	if l.conns[k] <= 1 {
 		delete(l.conns, k)
 	} else {
@@ -582,7 +626,7 @@ func (l *limits) disconnect(ip net.IP) {
 func (l *limits) message(ip net.IP) bool {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	k := ip.String()
+	k := prefixKey(ip)
 	cut := time.Now().Add(-time.Minute)
 	var kept []time.Time
 	for _, t := range l.msgs[k] {

@@ -12,6 +12,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"math/big"
 	"net"
@@ -283,8 +284,56 @@ func TestBoxesConfAndStructural(t *testing.T) {
 	if err := structural([]byte("DKIM-Signature: d=lgs.example\r\nFrom: vlad@ghost.relay.example\r\n\r\nhi\r\n"), bx); err == nil {
 		t.Fatal("a signature by another of the box's domains accepted")
 	}
+	// the audit's forgeries: a neighbour's address first and the box's own last, with two From
+	// headers or with a bare LF LF after the forged one; receivers read the first From
+	two := []byte("From: b@ghost.relay.example\r\nFrom: vlad@ghost.relay.example\r\nTo: c@x.example\r\nDKIM-Signature: d=ghost.relay.example; b=x\r\n\r\nhi\r\n")
+	if err := structural(two, bx); err == nil || !strings.Contains(err.Error(), "exactly one From") {
+		t.Fatalf("two From headers: %v", err)
+	}
+	bare := []byte("From: b@ghost.relay.example\n\nFrom: vlad@ghost.relay.example\r\nDKIM-Signature: d=ghost.relay.example; b=x\r\n\r\nhi\r\n")
+	if err := structural(bare, bx); err == nil || !strings.Contains(err.Error(), "bare CR or LF") {
+		t.Fatalf("bare LF: %v", err)
+	}
+	if err := structural([]byte("From: a@lgs.example, b@lgs.example\r\nDKIM-Signature: d=lgs.example\r\n\r\nhi\r\n"), bx); err == nil {
+		t.Fatal("two addresses in From accepted")
+	}
+	if err := structural([]byte("From: Agent <AGENT@LGS.example>\r\nDKIM-Signature: v=1; d=LGS.example; s=x; b=y\r\n\r\nhi\r\n"), bx); err != nil {
+		t.Fatalf("case in the domain: %v", err)
+	}
 	a := newAllowance(3, 2)
 	if !a.take("b", 0, 0, 2) || a.take("b", 0, 0, 1) {
 		t.Fatal("hour allowance")
+	}
+}
+
+// The limits count by /24 and /64, and a session has a lifetime and a NOOP budget.
+func TestLimitsByPrefixAndSessionBudget(t *testing.T) {
+	l := newLimits()
+	for i := 0; i < maxConnsPerIP; i++ {
+		if !l.connect(net.ParseIP(fmt.Sprintf("203.0.113.%d", i))) {
+			t.Fatalf("connection %d refused", i)
+		}
+	}
+	if l.connect(net.ParseIP("203.0.113.200")) {
+		t.Fatal("a sixth connection from the same /24 accepted")
+	}
+	if !l.connect(net.ParseIP("198.51.100.1")) {
+		t.Fatal("another /24 refused")
+	}
+	for i := 0; i < maxConnsPerIP; i++ {
+		if !l.connect(net.ParseIP(fmt.Sprintf("2001:db8:1:2::%d", i+1))) {
+			t.Fatalf("v6 connection %d refused", i)
+		}
+	}
+	if l.connect(net.ParseIP("2001:db8:1:2:ffff::9")) {
+		t.Fatal("a sixth connection from the same /64 accepted")
+	}
+	ses := &session{started: time.Now().Add(-sessionMax - time.Second)}
+	if !ses.deadline().Before(time.Now()) {
+		t.Fatal("an expired session still gets a minute")
+	}
+	ses = &session{started: time.Now()}
+	if d := time.Until(ses.deadline()); d < cmdTimeout-time.Second || d > cmdTimeout {
+		t.Fatalf("fresh session deadline %v", d)
 	}
 }
