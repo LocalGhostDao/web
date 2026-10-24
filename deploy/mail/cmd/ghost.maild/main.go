@@ -415,7 +415,7 @@ func main() {
 
 	var out *outbound
 	if relayPriv != nil {
-		out = &outbound{cfg: cfg, boxes: bs, q: q, priv: relayPriv, lg: lg, allow: newAllowance(cfg.SendDay, cfg.SendHour)}
+		out = &outbound{cfg: cfg, boxes: bs, q: q, priv: relayPriv, lg: lg, allow: newAllowance(cfg.SendDay, cfg.SendHour), wake: make(chan struct{}, 1)}
 		go out.run(ctx)
 	}
 	api := &apiServer{cfg: cfg, boxes: bs, q: q, out: out, lg: lg, relayPriv: relayPriv}

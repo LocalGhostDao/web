@@ -55,6 +55,7 @@ type outbound struct {
 	lg    *slog.Logger
 	allow *allowance
 	mu    sync.Mutex
+	wake  chan struct{} // a new job: deliver now, not at the next tick
 }
 
 var errRefused = errors.New("refused")
@@ -115,6 +116,7 @@ func (o *outbound) accept(bx *box, ob wire.Outbound) (string, error) {
 	}
 	now := time.Now().Unix()
 	j := job{Name: name, Box: bx.ID, From: from, To: to, Pending: to, Accepted: now, Updated: now, Next: now, State: "queued"}
+	defer o.kick()
 	if err := o.save(j); err != nil {
 		os.Remove(filepath.Join(d, name))
 		return "", err
@@ -185,8 +187,25 @@ func (o *outbound) save(j job) error {
 	return os.Rename(p+".tmp", p)
 }
 
-// run is the delivery loop: every half minute, every queued job whose time has come.
+// kick asks the delivery loop for a pass now (a box just posted); a pending kick is enough.
+func (o *outbound) kick() {
+	if o.wake == nil {
+		return
+	}
+	select {
+	case o.wake <- struct{}{}:
+	default:
+	}
+}
+
+// run is the delivery loop: every half minute, every queued job whose time has come, and at once
+// when a box posts, so a message leaves within a second of SEND rather than at the next tick.
 func (o *outbound) run(ctx context.Context) {
+	o.mu.Lock()
+	if o.wake == nil {
+		o.wake = make(chan struct{}, 1)
+	}
+	o.mu.Unlock()
 	t := time.NewTicker(outTick)
 	defer t.Stop()
 	for {
@@ -194,6 +213,7 @@ func (o *outbound) run(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-t.C:
+		case <-o.wake:
 		}
 		o.pass(ctx)
 	}

@@ -16,10 +16,12 @@ deploy/mail/
   internal/seal/        the envelope (X25519, HKDF-SHA256, AES-256-GCM, 64 KB chunks)
   internal/wire/        the note, the listing entry, the outbound envelope, the name patterns
   etc/                  maild.conf.example, boxes.conf.example, mta-sts.txt
-  systemd/              ghost.maild.service, the user unit install.sh writes to ~/.config/systemd/user
+  systemd/              ghost.maild.service, the hardened system unit root-once.sh installs (user ghost-mail)
   nginx/mail.conf       the /box/ location for the mx host
-  scripts/root-once.sh  sudo, once: unprivileged ports from 25, the certbot hook, lingering
-  scripts/install.sh    as the deploy user, no sudo: build, ~/ghost-mail, the key, the unit, start; idempotent
+  nft/ghost-mail.nft    the relay's nftables table: port 25 limited per source, nothing on IPv6
+  scripts/root-once.sh  sudo, once: the ghost-mail user, the unit, the certbot hook, the firewall table, the deploy user's leave to restart
+  scripts/install.sh    as the deploy user: build, ~/ghost-mail, maild.conf, restart (the one sudo); idempotent
+  scripts/firewall.sh   sudo, idempotent: installs nft/ghost-mail.nft under /etc/nftables.d and loads it (root-once.sh runs it)
   scripts/certbot-hook.sh  the hook root-once.sh installs: copies the mx certificate into /var/lib/ghost-mail/tls
 ```
 
@@ -30,9 +32,14 @@ mail for the boxes' addresses over TLS, seals every message to the box's own key
 arrive (it holds no key that opens anything in its queue), keeps the sealed files until the
 box fetches them over HTTPS, and delivers what a box signed and sealed to it. It parses
 nothing, logs no addresses, and refuses everything that is not for or from an enrolled box.
-It runs as the deploy user (coder), from `~/ghost-mail`, as a systemd user unit; root is
-needed once (port 25, the certificate files, lingering) and never for an update. Memory and
-disk are small: the queue is capped at 200 MB per box, thirty days.
+It runs as a system user of its own, `ghost-mail` (no shell, no home), under a hardened system
+unit (`systemd/ghost.maild.service`: one capability for port 25, a read-only file system but
+its own state directory, no new privileges, a system-call filter); the binary and the
+configuration are the deploy user's under `~/ghost-mail`, read-only to the daemon. Root runs
+`scripts/root-once.sh` once (the user, the unit, the certificate hook, the firewall table, the
+deploy user's leave to restart it) and never for an update: `scripts/install.sh` as the deploy
+user builds and restarts. Memory and disk are small: the queue is capped at 200 MB per box,
+thirty days.
 
 ## The machine
 

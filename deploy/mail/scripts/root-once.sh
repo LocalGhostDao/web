@@ -90,4 +90,10 @@ if [ -x "$ROOT/bin/ghost.maild" ]; then
 else
   echo "no binary at $ROOT/bin/ghost.maild yet: run  ./deploy/mail/scripts/install.sh  as $U, it builds and starts it"
 fi
+# 6. port 25's limits in the kernel: its own nftables table, loaded now and at boot
+if command -v nft >/dev/null 2>&1; then
+  "$HERE/firewall.sh"
+else
+  echo "6. nftables is not installed: port 25 has no per-source limits (apt install nftables, then scripts/firewall.sh)"
+fi
 echo "done; from here on:  ./deploy/mail/scripts/install.sh  as $U"
