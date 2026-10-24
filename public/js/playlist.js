@@ -180,6 +180,7 @@
 
     playBtn.addEventListener('click', function () {
         if (audio.paused) {
+            if (playWhenReady()) return;
             if (!audio.src || audio.src === window.location.href) {
                 loadTrack(0, true);
             } else {
@@ -354,28 +355,53 @@
        (first visit, or a browser with no service worker) a downloaded
        track is played from a blob so it still works offline. */
     var blobUrl = null;
+    /* Only the newest load may touch the player. Reading a saved track
+       is asynchronous, so a tap on PLAY that lands while the first load
+       of the page is still reading would start a second load of the same
+       track, and whichever finished last won: when that was the first
+       one (which doesn't play), it swapped the source under the one that
+       was playing and the music stopped. That only happens when the
+       service worker isn't in charge, which is what a hard refresh does. */
+    var loadSeq = 0;
+    var pendingLoad = null;   /* { seq, autoplay } while a saved track is being read */
 
     function playSrc(src, autoplay) {
-        if (blobUrl && src !== blobUrl) { URL.revokeObjectURL(blobUrl); blobUrl = null; }
+        var old = blobUrl;
+        blobUrl = src.indexOf('blob:') === 0 ? src : null;
         audio.src = src;
         audio.load();
+        if (old && old !== src) URL.revokeObjectURL(old);
         if (autoplay) audio.play().catch(function () {});
     }
 
     function setCachedSrc(src, autoplay) {
+        var seq = ++loadSeq;
+        pendingLoad = null;
         var controlled = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
         if (controlled || !cacheSupported()) { playSrc(src, autoplay); return; }
+        var job = pendingLoad = { seq: seq, autoplay: autoplay };
+        function finish(url) {
+            if (seq !== loadSeq) {                  /* a newer load took over */
+                if (url !== src) URL.revokeObjectURL(url);
+                return;
+            }
+            pendingLoad = null;
+            playSrc(url, job.autoplay);
+        }
         caches.open(CACHE_NAME).then(function (cache) {
             return cache.match(src);
         }).then(function (hit) {
-            if (!hit) { playSrc(src, autoplay); return; }
+            if (!hit) { finish(src); return; }
             return hit.blob().then(function (blob) {
-                if (tracks[current].src !== src) return;   /* skipped meanwhile */
-                var url = URL.createObjectURL(blob);
-                playSrc(url, autoplay);
-                blobUrl = url;
+                finish(URL.createObjectURL(blob));
             });
-        }).catch(function () { playSrc(src, autoplay); });
+        }).catch(function () { finish(src); });
+    }
+
+    /* a tap while the track is still being read plays it once it's ready */
+    function playWhenReady() {
+        if (pendingLoad) { pendingLoad.autoplay = true; return true; }
+        return false;
     }
 
     /* ---- the page itself, for opening /playlist with no network ---- */
@@ -511,6 +537,7 @@
         if (e.code === 'Space') {
             e.preventDefault();
             if (audio.paused) {
+                if (playWhenReady()) return;
                 if (!audio.src || audio.src === window.location.href) loadTrack(0, true);
                 else audio.play().catch(function () { loadTrack(current, true); });
             } else {
