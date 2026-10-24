@@ -1075,6 +1075,7 @@ EOF
 
 - [GitHub Organisation](https://github.com/LocalGhostDao): Source code, including the main localghost repository with README, SECURITY, and architecture docs.
 - [Brand Guidelines](${SITE_URL}/brand-guidelines): Visual identity, colour palette, typography.
+- [Wallpapers](${SITE_URL}/wallpapers): Twelve 4K desktop backgrounds with the ghost, the daemons and the release lines.
 - [Writing Guidelines](${SITE_URL}/writing-guidelines): Editorial standards for the Hard Truths series.
 - [Giveaway](${SITE_URL}/giveaway): Three hand-built test units for people spreading the word about local AI (June 2026, still open at time of build).
 - [Atom feed](${SITE_URL}/feed.xml): Every Hard Truths essay, full text.
