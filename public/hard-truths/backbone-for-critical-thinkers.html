@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Backbone for the Critical Thinkers | LocalGhost.ai</title>
-    <meta name="description" content="You need more than critical thinking to build a society I'd want to live in. How I want to treat people, where I draw the lines and how to live with it, with Mill, Churchill, Harari and the ruins of Nicopolis.">
+    <meta name="description" content="A good critical thinker without a moral background is just a very good arguer. Notes that started in the ruins of Nicopolis, on what a good dictator would look like and how a society would have to be structured so it didn't need one.">
     <meta name="author" content="Vlad Cealicu">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="keywords" content="critical thinking, ethics, harm principle, democracy, benevolent dictatorship, hubris syndrome, human rights, LocalGhost, Hard Truths">
+    <meta name="keywords" content="critical thinking, ethics, Nicopolis, benevolent dictatorship, hubris syndrome, harm principle, democracy, human rights, five whys, LocalGhost, Hard Truths">
     <meta name="category" content="Society, AI">
     <meta name="language" content="en-GB">
     <link rel="canonical" href="https://www.localghost.ai/hard-truths/backbone-for-critical-thinkers">
@@ -15,7 +15,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.localghost.ai/hard-truths/backbone-for-critical-thinkers">
     <meta property="og:title" content="A Backbone for the Critical Thinkers | LocalGhost Hard Truths">
-    <meta property="og:description" content="You need more than critical thinking to build a society I'd want to live in. A benevolent dictatorship breaks when power accumulates, which it always tends to, and human rights exist because we want them to exist.">
+    <meta property="og:description" content="A good critical thinker without a moral background is just a very good arguer. A benevolent dictatorship breaks when power accumulates, which it always tends to, so how would a society have to be structured so it didn't need one?">
     <meta property="og:image" content="https://www.localghost.ai/images/og-backbone-for-critical-thinkers.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -27,16 +27,16 @@
     <meta property="article:section" content="Hard Truths">
     <meta property="article:tag" content="critical thinking">
     <meta property="article:tag" content="ethics">
+    <meta property="article:tag" content="dictatorship">
     <meta property="article:tag" content="democracy">
-    <meta property="article:tag" content="human rights">
     <meta property="article:tag" content="hubris">
     <meta property="article:tag" content="LocalGhost">
-    <meta property="article:reading_time" content="5">
+    <meta property="article:reading_time" content="9">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@localghostai">
     <meta name="twitter:creator" content="@vladcealicu">
     <meta name="twitter:title" content="A Backbone for the Critical Thinkers">
-    <meta name="twitter:description" content="You need more than critical thinking to build a society I'd want to live in. Asking why five times and spotting the leap in an argument make you a very good arguer, and the rest is closer to ethics.">
+    <meta name="twitter:description" content="A good critical thinker without a moral background is just a very good arguer. Notes that started in the ruins of Nicopolis, thinking about dictators.">
     <meta name="twitter:image" content="https://www.localghost.ai/images/og-backbone-for-critical-thinkers.png">
     <meta name="twitter:image:alt" content="A Backbone for the Critical Thinkers, LocalGhost Hard Truths">
     <meta name="fediverse:creator" content="@vladcealicu">
@@ -50,7 +50,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": "A Backbone for the Critical Thinkers",
-        "description": "You need more than critical thinking to build a society I'd want to live in. A benevolent dictatorship breaks when power accumulates, which it always tends to, and human rights exist because we want them to exist.",
+        "description": "A good critical thinker without a moral background is just a very good arguer. A benevolent dictatorship breaks when power accumulates, which it always tends to, so how would a society have to be structured so it didn't need one?",
         "author": {
             "@type": "Person",
             "@id": "https://www.localghost.ai/about#vlad-cealicu",
@@ -82,9 +82,9 @@
             "width": 1200,
             "height": 630
         },
-        "keywords": "critical thinking, ethics, harm principle, democracy, benevolent dictatorship, hubris syndrome, human rights, LocalGhost, Hard Truths",
+        "keywords": "critical thinking, ethics, Nicopolis, benevolent dictatorship, hubris syndrome, harm principle, democracy, human rights, five whys, LocalGhost, Hard Truths",
         "articleSection": "Hard Truths",
-        "wordCount": 906,
+        "wordCount": 1711,
         "inLanguage": "en-GB",
         "isPartOf": {
             "@id": "https://www.localghost.ai/hard-truths#blog"
@@ -126,6 +126,7 @@
         .backbone { margin: 1.25rem 0 1.75rem; padding-left: 0; list-style: none; counter-reset: bb; }
         .backbone li { counter-increment: bb; margin-bottom: 0.9rem; padding-left: 2.4rem; position: relative; line-height: 1.75; }
         .backbone li::before { content: counter(bb) "."; position: absolute; left: 0; top: 0.15rem; color: var(--terminal); font-family: var(--font-mono); font-size: 0.85rem; }
+        .backbone .why { display: block; margin-top: 0.4rem; color: var(--text-dim); }
     </style>
 </head>
 <body>
@@ -155,7 +156,7 @@
     <div class="manifesto-text">
 
         <div class="statement-box">
-            <p class="statement-main">You need more than critical thinking to build a society I'd want to live in.</p>
+            <p class="statement-main">A good critical thinker without a moral background is just a very good arguer.</p>
         </div>
 
         <div class="podcast-player"
@@ -182,59 +183,110 @@
         </div>
 
         <p>
-            When I wrote down what I mean by critical thinking for <a href="/hard-truths/age-that-needs-critical-thinkers">The Age That Needs Critical Thinkers</a>, I ended up with a long list, and most of it wasn't critical thinking at all. It only made sense to write when I realised that you need more than critical thinking to build a society I'd want to live in. Asking why five times and spotting the leap in an argument are ways to think, and on their own they make you a very good arguer. The rest is closer to ethics, or to a way to live in a world where fewer people go to church, be it lack of time or not believing, and where AI sits next to all of us while we think.
+            In September I was in Preveza, and I went to see the ruins of Nicopolis, the city Octavian founded to celebrate his win at Actium, a few years before he became Augustus, the first Roman emperor <a href="#ref-1" class="cite">[1]</a>. Walking around it I was thinking about dictators, and I started writing notes on what a good dictator would look like, then on how a society would have to be structured so it didn't need one, and on the morals that would hold it together.
         </p>
-        <h2 class="section-header">&gt; 1. How I want to treat people</h2>
-        <ol class="backbone">
-            <li>Kindness and charity.</li>
-            <li>A temporary fix with a long-term plan behind it that deals with the root cause.</li>
-            <li>Understanding that we succeed together, and that leaders wouldn't be leaders without everyone else working hard to make their vision real.</li>
-            <li>Treating other people with respect regardless of who they are, and doing to others as you'd want done to you, without necessarily going to church every week, or ever.</li>
-            <li>Avoiding, as much as possible, doing things that harm or disrupt other people, while giving them the privacy to do whatever they want in their own lives under the same rule. John Stuart Mill wrote it down in 1859, "the only purpose for which power can be rightfully exercised over any member of a civilised community, against his will, is to prevent harm to others" <a href="#ref-1" class="cite">[1]</a>.</li>
-            <li>Leaving room for people who argue for things completely against what you believe, and trusting that a society with a strong critical thinking backbone can choose correctly.</li>
-        </ol>
-        <h2 class="section-header">&gt; 2. Where I draw the lines</h2>
-        <ol class="backbone">
-            <li>Strong moral values, and an open mind that still has lines it won't cross.</li>
-            <li>Accepting that we need regulation to protect us from predatory practices while we build up our critical thinking.</li>
-            <li>On paper the best system of governance is a benevolent dictatorship, because it allows a quick response to a world that changes fast, but that's only because the general population was never expected to develop critical thinking and was expected to follow the rules. In real life it breaks when power accumulates, which it always tends to, sometimes within a few years and sometimes over a generation. A dictator ends up building their own dictator brain out of people who only tell them they're right (the AI version of the same loop is in <a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>). It's funny, because I was writing the notes for this in September in Preveza, which happens to be where Rome's emperors started. I went to see the ruins of Nicopolis, the city Octavian founded to celebrate his win at Actium, a few years before he became Augustus, the first of them <a href="#ref-2" class="cite">[2]</a>. Rome's five good emperors later handed power on by adoption until the fifth, Marcus Aurelius, left it to his son Commodus, whose reign is usually taken as the end of the Pax Romana <a href="#ref-3" class="cite">[3]</a>. It happens to elected leaders too. David Owen and Jonathan Davidson went through a hundred years of US presidents and UK prime ministers and suggested a name for what they found, hubris syndrome, "a disorder of the possession of power", particularly power "held for a period of years and with minimal constraint on the leader" <a href="#ref-4" class="cite">[4]</a>.</li>
-            <li>Choosing democracy anyway because, even with low critical thinking, it's still better in the long term. Churchill made the case for it in the House of Commons in 1947, "democracy is the worst form of Government except for all those other forms that have been tried from time to time", and presented it as something that had been said before <a href="#ref-5" class="cite">[5]</a>.</li>
-            <li>Human rights exist because we want them to exist. We believe in them because we choose to, and the choosing is what makes them real. Yuval Noah Harari puts it as "There are no gods in the universe, no nations, no money, no human rights, no laws, and no justice outside the common imagination of human beings" <a href="#ref-6" class="cite">[6]</a>.</li>
-        </ol>
-        <h2 class="section-header">&gt; 3. How to live with it</h2>
-        <ol class="backbone">
-            <li>Knowing that the world is broken, that it always has been and that your impact will be small, and still doing something.</li>
-            <li>Fighting when you know you're the underdog.</li>
-            <li>Trying, even though "you can be anything you put your mind to" is bullshit.</li>
-            <li>Working hard, knowing it's a big part of success but not the only part.</li>
-            <li>Knowing that sometimes your sacrifice is the best way forward, and knowing when to take a step back.</li>
-            <li>Finding meaning and joy in just existing, journey before destination, as the Knights Radiant swear in Brandon Sanderson's <em>The Way of Kings</em> <a href="#ref-7" class="cite">[7]</a>.</li>
-        </ol>
-        <h2 class="section-header">&gt; 4. Is this still critical thinking?</h2>
         <p>
-            Only some of this is critical thinking, and a lot of it is borrowed, from Mill, Churchill, Harari and the golden rule. I'm putting it together because I think it works better as one thing than as separate pieces.
+            I didn't know it would tie up with critical thinking until after I wrote <a href="/hard-truths/age-that-needs-critical-thinkers">The Age That Needs Critical Thinkers</a>. Reading the notes again, I realised that a good critical thinker without a moral background is just a very good arguer. Asking why five times and spotting the leap in an argument are ways to think, and they don't tell you what's worth arguing for. You need more than critical thinking to build a society I'd want to live in, and the rest of the notes are closer to ethics, or to a way to live in a world where fewer people go to church, be it lack of time or not believing, and where AI sits next to all of us while we think.
         </p>
+        <h2 class="section-header">&gt; What would a good dictator look like?</h2>
+        <p>
+            On paper the best system of governance is a benevolent dictatorship, because it allows a quick response to a world that changes fast, but that's only because the general population was never expected to develop critical thinking and was expected to follow the rules. The good dictator in my notes was kind, had strong moral values, and dealt with the root cause of a problem while a temporary fix held things together.
+        </p>
+        <p>
+            In real life it breaks when power accumulates, which it always tends to, sometimes within a few years and sometimes over a generation. A dictator ends up building their own dictator brain out of people who only tell them they're right (the AI version of the same loop is in <a href="/hard-truths/dictator-brain">How to Prevent Building Your Own Dictator Brain</a>). Rome's five good emperors handed power on by adoption until the fifth, Marcus Aurelius, left it to his son Commodus, whose reign is usually taken as the end of the Pax Romana <a href="#ref-2" class="cite">[2]</a>. It happens to elected leaders too. David Owen and Jonathan Davidson went through a hundred years of US presidents and UK prime ministers and suggested a name for what they found, hubris syndrome, "a disorder of the possession of power", particularly power "held for a period of years and with minimal constraint on the leader" <a href="#ref-3" class="cite">[3]</a>.
+        </p>
+        <p>
+            So the notes turned into how a society would have to be structured so it didn't need a dictator, good or bad, and most of what I'd wanted from the good one became things I'd want from everyone.
+        </p>
+        <h2 class="section-header">&gt; How I want to treat people</h2>
+        <ol class="backbone">
+            <li>Kindness and charity.
+                <span class="why">It costs very little, and most of the time it comes back. Charity is the same thing with time or money, for people you'll probably never meet, and a society where enough people do both needs a lot less from whoever is in charge.</span>
+            </li>
+            <li>A temporary fix with a long-term plan behind it that deals with the root cause.
+                <span class="why">Most problems need something done today, and a fix for today is fine as long as someone is working on why it happened. Without the plan you end up fixing the same thing every year, and the people paying for it stop believing anything will change.</span>
+            </li>
+            <li>Understanding that we succeed together, and that leaders wouldn't be leaders without everyone else working hard to make their vision real.
+                <span class="why">Nothing I planned at CryptoCompare would have shipped without the team that built it with me. A leader who forgets that starts to think the success is theirs alone, and that's where hubris starts.</span>
+            </li>
+            <li>Treating other people with respect regardless of who they are, and doing to others as you'd want done to you, without necessarily going to church every week, or ever.
+                <span class="why">The golden rule shows up in a lot of religions in one form or another, and you don't need to believe in any of them to see why it works. If enough of us treat people the way we'd want to be treated, we don't need someone above us to enforce it.</span>
+            </li>
+            <li>Avoiding, as much as possible, doing things that harm or disrupt other people, while giving them the privacy to do whatever they want in their own lives under the same rule. John Stuart Mill wrote it down in 1859, "the only purpose for which power can be rightfully exercised over any member of a civilised community, against his will, is to prevent harm to others" <a href="#ref-4" class="cite">[4]</a>.
+                <span class="why">The hard part is agreeing on what counts as harm, and I'd rather we argue about that in the open than have one person decide it for everyone.</span>
+            </li>
+            <li>Leaving room for people who argue for things completely against what you believe, and trusting that a society with a strong critical thinking backbone can choose correctly.
+                <span class="why">That also means accepting that sometimes they'll win the vote, and living with it until you can make a better case.</span>
+            </li>
+        </ol>
+        <h2 class="section-header">&gt; Where I draw the lines</h2>
+        <ol class="backbone">
+            <li>Strong moral values, and an open mind that still has lines it won't cross.
+                <span class="why">An open mind with no lines can be argued into anything, and that's what a very good arguer does to people. You decide the lines before the argument starts, so you're not deciding them while someone is pushing.</span>
+            </li>
+            <li>Accepting that we need regulation to protect us from predatory practices while we build up our critical thinking.
+                <span class="why">I don't like asking anyone's permission and I build things so other people don't have to, but some companies make their money from people who can't tell yet that they're being played, and until most of us can, the rules have to do some of that work.</span>
+            </li>
+            <li>Choosing democracy anyway because, even with low critical thinking, it's still better in the long term. Churchill made the case for it in the House of Commons in 1947, "democracy is the worst form of Government except for all those other forms that have been tried from time to time", and presented it as something that had been said before <a href="#ref-5" class="cite">[5]</a>.
+                <span class="why">It's slow and it gets things wrong, but it lets you remove the people who got it wrong without a war, and a benevolent dictatorship has no way to do that.</span>
+            </li>
+            <li>Human rights exist because we want them to exist. We believe in them because we choose to, and the choosing is what makes them real. Yuval Noah Harari puts it as "There are no gods in the universe, no nations, no money, no human rights, no laws, and no justice outside the common imagination of human beings" <a href="#ref-6" class="cite">[6]</a>.
+                <span class="why">That also means they only last while enough of us keep choosing them, which is a good reason to teach in school where they came from.</span>
+            </li>
+        </ol>
+        <h2 class="section-header">&gt; How to live with it</h2>
+        <ol class="backbone">
+            <li>Knowing that the world is broken, that it always has been and that your impact will be small, and still doing something.
+                <span class="why">I know LocalGhost won't be popular and it's mostly for me, but I'm building it anyway. If everyone waited until their part looked big enough, nobody would start.</span>
+            </li>
+            <li>Fighting when you know you're the underdog.
+                <span class="why">The people who have power rarely give it up because someone asked nicely, so someone has to start pushing before it looks like they could win.</span>
+            </li>
+            <li>Trying, even though "you can be anything you put your mind to" is bullshit.
+                <span class="why">Where you're born, your health and your luck all matter, and pretending they don't makes people blame themselves for things they couldn't control. You try anyway, and you're honest with yourself about what was in your hands.</span>
+            </li>
+            <li>Working hard, knowing it's a big part of success but not the only part.
+                <span class="why">I've been lucky and I've worked hard, and I don't know in what percentage each one contributed.</span>
+            </li>
+            <li>Knowing that sometimes your sacrifice is the best way forward, and knowing when to take a step back.
+                <span class="why">Holding on is the default, and hubris syndrome is what it looks like when nobody steps back.</span>
+            </li>
+            <li>Finding meaning and joy in just existing, journey before destination, as the Knights Radiant swear in Brandon Sanderson's <em>The Way of Kings</em> <a href="#ref-7" class="cite">[7]</a>.
+                <span class="why">If the meaning only comes at the end, most of life is spent waiting for it.</span>
+            </li>
+        </ol>
+        <h2 class="section-header">&gt; Asking why five times</h2>
+        <p>
+            Only some of this is critical thinking, and a lot of it is borrowed, from Mill, Churchill, Harari and the golden rule. I'm putting it together because I think it works better as one thing than as separate pieces, and critical thinking is how you test each piece. In <a href="/hard-truths/age-that-needs-critical-thinkers">The Age That Needs Critical Thinkers</a> I said it starts with asking why, five times at least, so here it is on the last item from the first list, leaving room for people who argue for things completely against what you believe.
+        </p>
+        <ol class="backbone">
+            <li>Why leave them room? Because I might be wrong, and they might be the only ones who'd tell me.</li>
+            <li>Why might I be wrong? Because I only see the part of the world I live in, and so does everyone else.</li>
+            <li>Why does it matter who tells me? Because without anyone saying no, I'd slowly start believing I'm right about everything.</li>
+            <li>Why is that a problem? Because it's the same loop as the dictator brain, and it's how hubris starts, in a leader or in anyone with a bit of power.</li>
+            <li>Why does that matter for a society? Because a society that shuts out the people it disagrees with builds a dictator brain for the whole country, and then it's back to hoping for a good dictator.</li>
+        </ol>
         <div class="final-words">
-            I might be wrong about some of it, and part of critical thinking is being open to being persuaded, so if you think I am, reach out at <a href="mailto:me@vladcealicu.com">me@vladcealicu.com</a>. If someone has already written all of this down in one place, I'd like to read it.
+            I'll leave the rest of the list to you. Pick one and ask why five times. I might be wrong about some of it, and part of critical thinking is being open to being persuaded, so if you end up somewhere different, reach out at <a href="mailto:me@vladcealicu.com">me@vladcealicu.com</a>. If someone has already written all of this down in one place, I'd like to read it.
             <span class="small">[ localghost.ai // hard-truths ]</span>
         </div>
 
         <h2 class="section-header">&gt; REFERENCES</h2>
 
         <p class="references" id="ref-1">
-            <strong>[1]</strong> John Stuart Mill, 1859, "On Liberty", chapter I. Source for the harm principle, "the only purpose for which power can be rightfully exercised over any member of a civilised community, against his will, is to prevent harm to others". <a href="https://socialsci.libretexts.org/Courses/Western_Washington_University/Introduction_to_Political_Theory_I/01%3A_Readings/1.11%3A_John_Stuart_Mill__Excerpts_from_On_Liberty_1859" target="_blank" rel="noopener">socialsci.libretexts.org</a>.
+            <strong>[1]</strong> Wikipedia, "Nicopolis" and "Augustus". Source for Octavian founding Nicopolis, "City of Victory", in 29 BC to commemorate his defeat of Mark Antony and Cleopatra at Actium in 31 BC, its ruins about 5 km north of modern Preveza, and Octavian taking the name Augustus as Rome's first emperor in 27 BC. <a href="https://en.wikipedia.org/wiki/Nicopolis" target="_blank" rel="noopener">en.wikipedia.org/wiki/Nicopolis</a> and <a href="https://en.wikipedia.org/wiki/Augustus" target="_blank" rel="noopener">en.wikipedia.org/wiki/Augustus</a>.
         </p>
 
         <p class="references" id="ref-2">
-            <strong>[2]</strong> Wikipedia, "Nicopolis" and "Augustus". Source for Octavian founding Nicopolis, "City of Victory", in 29 BC to commemorate his defeat of Mark Antony and Cleopatra at Actium in 31 BC, its ruins about 5 km north of modern Preveza, and Octavian taking the name Augustus as Rome's first emperor in 27 BC. <a href="https://en.wikipedia.org/wiki/Nicopolis" target="_blank" rel="noopener">en.wikipedia.org/wiki/Nicopolis</a> and <a href="https://en.wikipedia.org/wiki/Augustus" target="_blank" rel="noopener">en.wikipedia.org/wiki/Augustus</a>.
+            <strong>[2]</strong> Wikipedia, "Commodus". Source for Marcus Aurelius as the fifth of the Five Good Emperors, each of whom had adopted his successor, Commodus as the first emperor born in the purple to succeed, his sole reign from 180 to his assassination on 31 December 192, the reign being commonly thought to mark the end of the Pax Romana, and Cassius Dio's "from a kingdom of gold to one of iron and rust". <a href="https://en.wikipedia.org/wiki/Commodus" target="_blank" rel="noopener">en.wikipedia.org/wiki/Commodus</a>.
         </p>
 
         <p class="references" id="ref-3">
-            <strong>[3]</strong> Wikipedia, "Commodus". Source for Marcus Aurelius as the fifth of the Five Good Emperors, each of whom had adopted his successor, Commodus as the first emperor born in the purple to succeed, his sole reign from 180 to his assassination on 31 December 192, the reign being commonly thought to mark the end of the Pax Romana, and Cassius Dio's "from a kingdom of gold to one of iron and rust". <a href="https://en.wikipedia.org/wiki/Commodus" target="_blank" rel="noopener">en.wikipedia.org/wiki/Commodus</a>.
+            <strong>[3]</strong> David Owen and Jonathan Davidson, 2009, "Hubris syndrome: An acquired personality disorder? A study of US Presidents and UK Prime Ministers over the last 100 years", Brain 132(5), 1396 to 1406, doi:10.1093/brain/awp008, as reported by the British Psychological Society's Research Digest. Source for the hundred years of leaders and the definition, "a disorder of the possession of power", particularly power "held for a period of years and with minimal constraint on the leader". <a href="https://doi.org/10.1093/brain/awp008" target="_blank" rel="noopener">doi.org/10.1093/brain/awp008</a> and <a href="https://bps.org.uk/research-digest/are-british-politicians-suffering-hubris-syndrome" target="_blank" rel="noopener">bps.org.uk</a>.
         </p>
 
         <p class="references" id="ref-4">
-            <strong>[4]</strong> David Owen and Jonathan Davidson, 2009, "Hubris syndrome: An acquired personality disorder? A study of US Presidents and UK Prime Ministers over the last 100 years", Brain 132(5), 1396 to 1406, doi:10.1093/brain/awp008, as reported by the British Psychological Society's Research Digest. Source for the hundred years of leaders and the definition, "a disorder of the possession of power", particularly power "held for a period of years and with minimal constraint on the leader". <a href="https://doi.org/10.1093/brain/awp008" target="_blank" rel="noopener">doi.org/10.1093/brain/awp008</a> and <a href="https://bps.org.uk/research-digest/are-british-politicians-suffering-hubris-syndrome" target="_blank" rel="noopener">bps.org.uk</a>.
+            <strong>[4]</strong> John Stuart Mill, 1859, "On Liberty", chapter I. Source for the harm principle, "the only purpose for which power can be rightfully exercised over any member of a civilised community, against his will, is to prevent harm to others". <a href="https://socialsci.libretexts.org/Courses/Western_Washington_University/Introduction_to_Political_Theory_I/01%3A_Readings/1.11%3A_John_Stuart_Mill__Excerpts_from_On_Liberty_1859" target="_blank" rel="noopener">socialsci.libretexts.org</a>.
         </p>
 
         <p class="references" id="ref-5">
