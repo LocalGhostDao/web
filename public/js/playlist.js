@@ -31,7 +31,8 @@
         { num: '20', title: 'The Only Copy',       src: '/assets/playlist/20. The Only Copy.mp3',   post: '/hard-truths/what-the-box-does-now' },
         { num: '21', title: 'But How Are You',     src: '/assets/playlist/21. But How Are You.mp3', post: '/hard-truths/caffeine-and-spite' },
         { num: '22', title: 'Read the File',       src: '/assets/playlist/22. Read the File.mp3',   post: '/hard-truths/breaking-free' },
-        { num: '23', title: 'Between Rooms',       src: '/assets/playlist/23. Between Rooms.mp3',   post: '/hard-truths/age-that-needs-critical-thinkers' }
+        { num: '23', title: 'Between Rooms',       src: '/assets/playlist/23. Between Rooms.mp3',   post: '/hard-truths/age-that-needs-critical-thinkers' },
+        { num: '24', title: 'Nicopolis',           src: '/assets/playlist/24. Nicopolis.mp3',       post: '/hard-truths/backbone-for-critical-thinkers' }
     ];
 
     var audio       = document.getElementById('pl-audio');
