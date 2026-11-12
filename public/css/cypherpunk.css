@@ -4,7 +4,11 @@
    Requires: base.css, pages.css
    =========================================== */
 
-/* Use narrow main: <main class="narrow"> */
+/* The same reading column as the other content pages. The page's markup
+   has a plain <main>, so the width is set here. */
+main {
+    max-width: 750px;
+}
 
 /* ===========================================
    MANIFESTO TEXT
@@ -16,7 +20,6 @@
 
 .manifesto-text p {
     margin-bottom: 1.5rem;
-    text-align: justify;
 }
 
 .manifesto-text .highlight {

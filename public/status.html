@@ -100,7 +100,7 @@
             .plain-list { margin: 1rem 0 1.5rem 1.25rem; }
             .plain-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
             .plain-list li::marker { color: var(--terminal); }
-            .entry { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1rem 1.2rem 0.3rem; margin: 1.5rem 0; }
+            .entry { border: 1px solid var(--line); border-left: 2px solid var(--terminal); background: var(--surface); padding: 1rem 1.2rem 0.3rem; margin: 1.5rem 0; }
             .entry h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); margin: 0 0 0.25rem; letter-spacing: 0.03em; }
             .status-now { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; border: 1px solid var(--terminal); padding: 1rem 1.2rem; margin: 1.5rem 0; font-family: var(--font-mono); }
             .status-dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--terminal); box-shadow: 0 0 10px var(--terminal); flex: none; }
@@ -108,15 +108,15 @@
             .status-when { color: var(--text-dim); font-size: 0.75rem; margin-left: auto; }
             .status-now.degraded { border-color: #ffbd2e; } .status-now.degraded .status-dot { background: #ffbd2e; box-shadow: 0 0 10px #ffbd2e; } .status-now.degraded .status-word { color: #ffbd2e; }
             .status-now.down { border-color: #ff5f56; } .status-now.down .status-dot { background: #ff5f56; box-shadow: 0 0 10px #ff5f56; } .status-now.down .status-word { color: #ff5f56; }
-            .status-table-wrap { border: 1px solid var(--border); margin: 1.5rem 0; }
-            .status-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
-            .status-table th, .status-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .status-table-wrap { border: 1px solid var(--line); margin: 1.5rem 0; }
+            .status-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--surface); }
+            .status-table th, .status-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--line); }
             .status-table tr:last-child th, .status-table tr:last-child td { border-bottom: none; }
             .status-table th { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; }
             .status-table td.ok, .status-table td.degraded, .status-table td.down { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
             .status-table td.ok { color: var(--terminal); } .status-table td.degraded { color: #ffbd2e; } .status-table td.down { color: #ff5f56; }
             .status-table code { border: none; background: none; padding: 0; font-size: 0.82rem; }
-            @media (max-width: 640px) { .status-table, .status-table tbody, .status-table tr, .status-table th, .status-table td { display: block; width: 100%; } .status-table th, .status-table td { border-bottom: none; padding: 0.3rem 0.85rem; } .status-table tr { border-bottom: 1px solid var(--border); padding: 0.5rem 0; } .status-when { margin-left: 0; } }
+            @media (max-width: 640px) { .status-table, .status-table tbody, .status-table tr, .status-table th, .status-table td { display: block; width: 100%; } .status-table th, .status-table td { border-bottom: none; padding: 0.3rem 0.85rem; } .status-table tr { border-bottom: 1px solid var(--line); padding: 0.5rem 0; } .status-when { margin-left: 0; } }
             .entry .when { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-dim); display: block; margin-bottom: 0.75rem; }
         </style>
     </head>

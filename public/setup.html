@@ -158,9 +158,9 @@
         <link rel="stylesheet" href="/css/manifesto.css">
         <style>
             .setup-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
-            .need-table-wrap { margin: 1.5rem 0; border: 1px solid var(--border); }
-            .need-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--void-lighter); }
-            .need-table th, .need-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--border); }
+            .need-table-wrap { margin: 1.5rem 0; border: 1px solid var(--line); }
+            .need-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; line-height: 1.6; background: var(--surface); }
+            .need-table th, .need-table td { text-align: left; vertical-align: top; padding: 0.75rem 0.85rem; border-bottom: 1px solid var(--line); }
             .need-table tr:last-child th, .need-table tr:last-child td { border-bottom: none; }
             .need-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; white-space: nowrap; width: 8.5rem; }
             .need-table code { border: none; background: none; padding: 0; font-size: 0.82rem; overflow-wrap: anywhere; }
@@ -169,14 +169,14 @@
                 .need-table th { border-bottom: none; padding-bottom: 0.15rem; }
                 .need-table td { padding-top: 0; }
             }
-            .step { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1.1rem 1.2rem 0.4rem; margin: 1.75rem 0; }
+            .step { border: 1px solid var(--line); border-left: 2px solid var(--terminal); background: var(--surface); padding: 1.1rem 1.2rem 0.4rem; margin: 1.75rem 0; }
             .step h3 { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--terminal); letter-spacing: 0.04em; margin: 0 0 0.75rem; }
             .step h3 .who { color: var(--text-dim); font-size: 0.72rem; letter-spacing: 0.1em; margin-left: 0.5rem; white-space: nowrap; }
             .step pre.cmd { background: var(--void); }
             .stage-list { margin: 1rem 0 1.25rem 1.25rem; }
             .stage-list li { margin-bottom: 0.8rem; line-height: 1.7; padding-left: 0.25rem; }
             .stage-list li::marker { color: var(--terminal); font-family: var(--font-mono); font-size: 0.85em; }
-            pre.cmd { background: var(--void-lighter); border: 1px solid var(--border); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.1rem 0 1.4rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); font-variant-ligatures: none; }
+            pre.cmd { background: var(--void-lighter); border: 1px solid var(--line); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.1rem 0 1.4rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); font-variant-ligatures: none; }
             pre.cmd .c { color: var(--text-dim); }
             pre.flow { border-left-color: var(--terminal-dim); line-height: 1.55; }
             .manifesto-text code { font-variant-ligatures: none; overflow-wrap: anywhere; }
@@ -189,7 +189,7 @@
             sup.fn { line-height: 0; }
             sup.fn a { color: var(--terminal); text-decoration: none; font-size: 0.85em; }
             sup.fn a:hover { text-decoration: underline; }
-            .quick { border: 1px solid var(--border); border-left: 2px solid var(--terminal); background: var(--void-lighter); padding: 1.1rem 1.2rem 0.3rem; margin: 1.75rem 0 2rem; }
+            .quick { border: 1px solid var(--line); border-left: 2px solid var(--terminal); background: var(--surface); padding: 1.1rem 1.2rem 0.3rem; margin: 1.75rem 0 2rem; }
             .quick > strong { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--terminal); font-weight: 500; display: block; margin-bottom: 0.6rem; }
             .quick pre.cmd { background: var(--void); margin-top: 0.4rem; }
             details.more { margin: 0.1rem 0 1.1rem; }
@@ -198,7 +198,7 @@
             details.more > summary::before { content: "[+] "; }
             details.more[open] > summary::before { content: "[-] "; }
             details.more > summary:hover { text-decoration: underline; }
-            details.more[open] { border-top: 1px dashed var(--border); padding-top: 0.2rem; }
+            details.more[open] { border-top: 1px dashed var(--line); padding-top: 0.2rem; }
         </style>
     </head>
     <body>

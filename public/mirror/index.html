@@ -127,24 +127,25 @@
         <link rel="stylesheet" href="/css/manifesto.css">
         <style>
             .mirror-lede { font-size: 1.1rem; line-height: 1.75; border-left: 2px solid var(--terminal); padding-left: 1.25rem; }
-            .mirror-table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); }
-            .mirror-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; line-height: 1.55; background: var(--void-lighter); }
-            .mirror-table th, .mirror-table td { text-align: left; vertical-align: top; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border); }
+            .mirror-table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--line); }
+            .mirror-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; line-height: 1.55; background: var(--surface); }
+            .mirror-table th, .mirror-table td { text-align: left; vertical-align: top; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--line); }
             .mirror-table tr:last-child td { border-bottom: none; }
             .mirror-table th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terminal); font-weight: 500; }
             .mirror-table td:first-child { font-family: var(--font-mono); color: var(--terminal); white-space: nowrap; }
             .mirror-table code { border: none; background: none; padding: 0; font-size: 0.8rem; overflow-wrap: anywhere; }
+            .mirror-table td[data-label="Files"] { min-width: 11.5rem; }
             .mirror-table td[data-label="Files"] code { display: block; margin: 0 0 0.2rem; }
             .mirror-table code, pre.cmd, .manifesto-text code { font-variant-ligatures: none; }
             .mirror-table .set-meta { display: block; margin-top: 0.3rem; font-size: 0.68rem; line-height: 1.4; color: var(--text-dim); white-space: normal; letter-spacing: 0.02em; }
-            .mirror-table tr.group th { background: var(--void); color: var(--text-dim); font-size: 0.66rem; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); }
+            .mirror-table tr.group th { background: var(--void); color: var(--text-dim); font-size: 0.66rem; padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--line); }
             @media (max-width: 640px) {
                 .mirror-table-wrap { border: none; }
                 .mirror-table, .mirror-table tbody, .mirror-table tr, .mirror-table td { display: block; width: 100%; }
                 .mirror-table thead { display: none; }
                 .mirror-table tr.group { border: none; margin: 1.25rem 0 0.5rem; }
                 .mirror-table tr.group th { display: block; background: none; padding: 0; border: none; }
-                .mirror-table tr { border: 1px solid var(--border); margin-bottom: 0.75rem; }
+                .mirror-table tr { border: 1px solid var(--line); margin-bottom: 0.75rem; }
                 .mirror-table td { border-bottom: none; padding: 0.35rem 0.8rem; }
                 .mirror-table td:first-child { padding-top: 0.7rem; }
                 .mirror-table td:last-child { padding-bottom: 0.7rem; }
@@ -153,7 +154,7 @@
             .mirror-steps { margin: 1.25rem 0 1.5rem 1.25rem; }
             .mirror-steps li { margin-bottom: 0.9rem; line-height: 1.75; padding-left: 0.25rem; }
             .mirror-steps li::marker { color: var(--terminal); font-family: var(--font-mono); }
-            pre.cmd { background: var(--void-lighter); border: 1px solid var(--border); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.25rem 0 1.5rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); }
+            pre.cmd { background: var(--void-lighter); border: 1px solid var(--line); border-left: 2px solid var(--terminal); padding: 1rem 1.1rem; margin: 1.25rem 0 1.5rem; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.7; color: var(--text); }
             pre.cmd .c { color: var(--text-dim); }
             .credits { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); border: 1px dashed var(--terminal-dim); padding: 0.9rem 1rem; margin: 1.5rem 0; }
             .post-refs { margin-top: 1.5rem; }

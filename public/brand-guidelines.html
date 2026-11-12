@@ -318,27 +318,27 @@
                     </div>
                 </div>
                 <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #161616; color: #E0E0E0;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Surface</div>
+                        <div class="swatch-hex" onclick="copyColor('#161616')">#161616</div>
+                        <div class="swatch-use">One step above the void. Panels and cards.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
                     <div class="swatch-preview" style="background: #1a1a1a; color: #E0E0E0;">Aa</div>
                     <div class="swatch-info">
                         <div class="swatch-name">Void Lighter</div>
                         <div class="swatch-hex" onclick="copyColor('#1a1a1a')">#1a1a1a</div>
-                        <div class="swatch-use">Secondary backgrounds, cards, code blocks.</div>
+                        <div class="swatch-use">Two steps above the void. Code blocks, table heads and hover states.</div>
                     </div>
                 </div>
                 <div class="color-swatch">
-                    <div class="swatch-preview" style="background: #33FF00; color: #111111;">Aa</div>
+                    <div class="swatch-preview" style="background: #303030; color: #E0E0E0;">Aa</div>
                     <div class="swatch-info">
-                        <div class="swatch-name">Terminal Green</div>
-                        <div class="swatch-hex" onclick="copyColor('#33FF00')">#33FF00</div>
-                        <div class="swatch-use">Primary accent. Links, emphasis, success states, "our" values.</div>
-                    </div>
-                </div>
-                <div class="color-swatch">
-                    <div class="swatch-preview" style="background: #1a8000; color: #FFFFFF;">Aa</div>
-                    <div class="swatch-info">
-                        <div class="swatch-name">Terminal Dim</div>
-                        <div class="swatch-hex" onclick="copyColor('#1a8000')">#1a8000</div>
-                        <div class="swatch-use">Muted green for borders, shadows, glow effects.</div>
+                        <div class="swatch-name">Line</div>
+                        <div class="swatch-hex" onclick="copyColor('#303030')">#303030</div>
+                        <div class="swatch-use">Hairlines. Panel edges, table rules and the dividers between sections.</div>
                     </div>
                 </div>
                 <div class="color-swatch">
@@ -362,7 +362,7 @@
                     <div class="swatch-info">
                         <div class="swatch-name">Border</div>
                         <div class="swatch-hex" onclick="copyColor('#444444')">#444444</div>
-                        <div class="swatch-use">Dividers, borders, structural lines.</div>
+                        <div class="swatch-use">Key caps, tags, inputs and other small controls, dashed rules and the lines in diagrams.</div>
                     </div>
                 </div>
                 <div class="color-swatch">
@@ -374,11 +374,35 @@
                     </div>
                 </div>
                 <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #33FF00; color: #111111;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Terminal Green</div>
+                        <div class="swatch-hex" onclick="copyColor('#33FF00')">#33FF00</div>
+                        <div class="swatch-use">Primary accent. Links, emphasis, success states, "our" values.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #1a8000; color: #FFFFFF;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Terminal Dim</div>
+                        <div class="swatch-hex" onclick="copyColor('#1a8000')">#1a8000</div>
+                        <div class="swatch-use">Muted green for borders, shadows, glow effects.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
                     <div class="swatch-preview" style="background: #FFB000; color: #111111;">Aa</div>
                     <div class="swatch-info">
                         <div class="swatch-name">Amber</div>
                         <div class="swatch-hex" onclick="copyColor('#FFB000')">#FFB000</div>
                         <div class="swatch-use">The second phosphor. Planned, not built, and the notice placards. Never for decoration.</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch-preview" style="background: #7a5500; color: #FFFFFF;">Aa</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Amber Dim</div>
+                        <div class="swatch-hex" onclick="copyColor('#7a5500')">#7a5500</div>
+                        <div class="swatch-use">Muted amber for the notice placard's border and for planned parts in diagrams.</div>
                     </div>
                 </div>
             </div>
@@ -433,7 +457,10 @@
                 <strong>No serif fonts. Ever.</strong> Serifs are for institutions that want to look trustworthy. We prove trust through architecture.
             </p>
             <p>
-                Section headers use the format <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); color: var(--terminal);">&gt; SECTION_XX</code> in terminal green with 0.2em letter-spacing.
+                <strong>Sizes.</strong> Interface text is 16px with a 1.7 line height, and the reading column on content pages and posts is 17px. A page title scales with the window, from 25px on a phone to 36px on a desk. Running text is held to about 44rem, so a line stays short enough to find the start of the next one.
+            </p>
+            <p>
+                <strong>Headings.</strong> The small label over a section is <code>&gt; SECTION_XX</code> in terminal green with 0.2em letter-spacing. A numbered heading inside a page, like <code>&gt; 1. WHAT IT CARRIES</code>, is 19px mono in green with a hairline under it.
             </p>
         </section>
 
@@ -482,10 +509,13 @@
                 <strong>Easter eggs.</strong> <code style="background: var(--void-lighter); padding: 0.2rem 0.5rem; border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.8rem;">/js/phosphor.js</code> lets the tube misbehave now and then, an interference band rolling down, a flash, the vertical hold slipping, or a line burning in faintly. The first comes 30 to 90 seconds after the page opens, then one every one to three minutes, never while the tab is hidden. Typing <em>ghost</em> outside a text field puts up PLEASE STAND BY.
             </p>
             <p>
+                <strong>Motion.</strong> Going from one page to another cross-fades in under a fifth of a second while the nav holds still, a post draws a 2px green line along the top of the window as you read down it, and an answer in the FAQ slides open. All three are off for anyone whose system asks for reduced motion, and a browser that can't do one of them skips it.
+            </p>
+            <p>
                 <strong>Decoration stays out of the text.</strong> Flavour lines like the footer's END OF TRANSMISSION live in CSS, so screen readers, crawlers and the markdown twins of each page get the content and none of the set dressing.
             </p>
             <p>
-                <strong>Borders.</strong> Always 1px. Sharp corners (0 or 4px max border-radius for code blocks). No drop shadows. No blur effects on cards.
+                <strong>Borders.</strong> 1px. Line is for panels, tables and dividers, Border is for small controls (key caps, tags, inputs), dashed rules and the lines in diagrams, and a button is outlined in Text, or in Terminal Green for the ghost variant. The two exceptions to 1px are a 2px rule down the left edge of a panel, green for what runs and red for what we reject, and the 2px green frame around a promise or a download. Sharp corners (0 or 4px max border-radius for code blocks). No drop shadows. No blur effects on cards.
             </p>
         </section>
 
@@ -508,6 +538,20 @@
                 </div>
 
                 <div class="component-demo">
+                    <div class="component-label">PANELS</div>
+                    <div class="demo-panels">
+                        <div class="demo-panel">A panel. Surface fill, a hairline in Line, square corners.</div>
+                        <div class="demo-panel demo-panel-yes">A green rule down the left for what runs, or what you can do.</div>
+                        <div class="demo-panel demo-panel-no">A red rule for what we reject, or what we can't do.</div>
+                    </div>
+                </div>
+
+                <div class="component-demo">
+                    <div class="component-label">LINKS</div>
+                    <p class="demo-link">A link in running text <a href="#components">looks like this</a>. The underline is at half strength until you point at it.</p>
+                </div>
+
+                <div class="component-demo">
                     <div class="component-label">TERMINAL PROMPT</div>
                     <div class="demo-prompt">
                         <span class="prompt">&gt;</span> ghost@localghost: ~<span class="cursor"></span>
@@ -526,7 +570,13 @@
                 <strong>Buttons.</strong> Square brackets in label text. 1px border. No background until hover. Ghost variant uses terminal green.
             </p>
             <p>
-                <strong>Cards.</strong> 1px border, no border-radius. Cards are cells, they feel like terminal panes, not material design cards.
+                <strong>Panels and cards.</strong> A Surface fill, a 1px border in Line, no border-radius. They're cells, they feel like terminal panes, not material design cards.
+            </p>
+            <p>
+                <strong>Links.</strong> Terminal green, with the underline at half strength so a paragraph with four links in it still reads as a paragraph. It comes up to full strength on hover.
+            </p>
+            <p>
+                <strong>Focus.</strong> A 2px terminal green outline around whatever the keyboard is on. It doesn't show for a mouse or a finger.
             </p>
             <p>
                 <strong>Terminal chrome.</strong> The dot-buttons (red/yellow/green) are interactive easter eggs, not decoration. Close triggers Matrix rain. Maximise expands the terminal.
@@ -575,7 +625,7 @@
                     <div class="motif-symbol">👻</div>
                     <div class="motif-content">
                         <div class="motif-name">Daemons</div>
-                        <div class="motif-desc">Daemons, not "agents" or "assistants". Background processes that serve without surveillance. ghost.noted, ghost.framed, ghost.voiced, ghost.tallyd, ghost.synthd, ghost.cued, ghost.mistd, ghost.shadowd, ghost.secd, ghost.watchd.</div>
+                        <div class="motif-desc">Daemons, not "agents" or "assistants". Background processes that serve without surveillance. ghost.secd, ghost.watchd, ghost.framed, ghost.searchd, ghost.oracled, ghost.synthd, ghost.cued, ghost.noted, ghost.voiced, ghost.tallyd, ghost.shadowd, ghost.mistd.</div>
                     </div>
                 </div>
             </div>
@@ -730,10 +780,10 @@
             </div>
 
             <p>
-                <strong>Grid.</strong> Components align to an implicit grid. Dense but not cluttered. Max content width is 900px for text and 1200px for full layouts.
+                <strong>Grid.</strong> Components align to an implicit grid. Dense but not cluttered. The reading column is 750px, and the home page and these guideline pages are 900px.
             </p>
             <p>
-                <strong>Line height.</strong> 1.7-1.8 for body text. Generous but not loose.
+                <strong>Line height.</strong> 1.7-1.8 for body text. Generous but not loose. Headings sit at 1.2 to 1.35, so a title that wraps still reads as one thing.
             </p>
         </section>
 
@@ -749,7 +799,7 @@
             <div class="logo-download-box">
                 <div class="logo-download-info">
                     <h3 class="box-title">&gt; LOCALGHOST-UTILITIES.CSS</h3>
-                    <p>Design tokens, utility classes, and component styles. 8KB minified.</p>
+                    <p>Design tokens, utility classes, and component styles. 15KB minified.</p>
                 </div>
                 <a href="/assets/localghost-utilities.css" class="logo-download-btn" download>[ DOWNLOAD .CSS ]</a>
             </div>
@@ -766,10 +816,12 @@
             <div class="component-box" style="font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8;">
                 <div style="color: var(--text-dim);">/* Colors */</div>
                 <div><span style="color: var(--terminal);">--lg-void:</span> #111111;</div>
+                <div><span style="color: var(--terminal);">--lg-surface:</span> #161616;</div>
                 <div><span style="color: var(--terminal);">--lg-terminal:</span> #33FF00;</div>
                 <div><span style="color: var(--terminal);">--lg-text:</span> #E0E0E0;</div>
                 <div><span style="color: var(--terminal);">--lg-text-dim:</span> #a0a0a0;</div>
                 <div><span style="color: var(--terminal);">--lg-border:</span> #444444;</div>
+                <div><span style="color: var(--terminal);">--lg-line:</span> #303030;</div>
                 <div><span style="color: var(--terminal);">--lg-warning:</span> #FF8A8A;</div>
                 <div style="margin-top: 1rem; color: var(--text-dim);">/* Typography */</div>
                 <div><span style="color: var(--terminal);">--lg-font-mono:</span> 'JetBrains Mono', monospace;</div>
@@ -799,6 +851,7 @@
                     <code class="lg-code">.lg-color-dim</code>
                     <code class="lg-code">.lg-color-amber</code>
                     <code class="lg-code">.lg-bg-void</code>
+                    <code class="lg-code">.lg-bg-surface</code>
                     <code class="lg-code">.lg-bg-void-lighter</code>
                 </div>
                 <div class="component-demo">
@@ -896,6 +949,7 @@
             });
         }
     </script>
+    <script src="/js/toc.js" defer></script>
     <script src="/js/phosphor.js" defer></script>
 </body>
 </html>

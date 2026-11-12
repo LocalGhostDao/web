@@ -16,7 +16,6 @@
 
 .manifesto-text p {
     margin-bottom: 1.5rem;
-    text-align: justify;
 }
 
 .manifesto-text .highlight {
@@ -108,21 +107,6 @@
 }
 
 /* ===========================================
-   SECTION HEADERS
-   =========================================== */
-
-.section-header {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--terminal);
-    margin: 3rem 0 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 0.05em;
-}
-
-/* ===========================================
    WARNING BOX
    =========================================== */
 
@@ -157,13 +141,13 @@
 
 .extraction-stages {
     margin: 2.5rem 0;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     background: var(--void-lighter);
 }
 
 .stage {
     display: flex;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line);
     transition: background 0.2s;
 }
 
@@ -181,7 +165,7 @@
     font-weight: 300;
     color: var(--text-dim);
     padding: 1.5rem;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -370,7 +354,7 @@
     text-align: center;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px dashed var(--border);
+    border: 1px dashed var(--line);
     background: rgba(51, 255, 0, 0.02);
 }
 
@@ -400,7 +384,7 @@
 
 .action-item {
     padding: 1.5rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     background: var(--void-lighter);
     transition: border-color 0.2s, background 0.2s;
 }
@@ -521,7 +505,7 @@
 
     .stage-number {
         border-right: none;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--line);
         padding: 1rem;
         min-width: auto;
     }

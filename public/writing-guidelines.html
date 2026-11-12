@@ -63,8 +63,8 @@
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
                 gap: 1px;
-                background: var(--border);
-                border: 1px solid var(--border);
+                background: var(--line);
+                border: 1px solid var(--line);
                 margin: 1.5rem 0;
             }
 
@@ -88,7 +88,7 @@
 
             .checklist {
                 margin: 1.5rem 0;
-                border: 1px solid var(--border);
+                border: 1px solid var(--line);
             }
 
             .checklist-item {
@@ -96,7 +96,7 @@
                 align-items: flex-start;
                 gap: 1rem;
                 padding: 1rem 1.25rem;
-                border-bottom: 1px solid var(--border);
+                border-bottom: 1px solid var(--line);
                 font-size: 0.9rem;
                 color: var(--text-dim);
                 line-height: 1.5;
@@ -114,8 +114,8 @@
             }
 
             .kill-item {
-                background: var(--void-lighter);
-                border: 1px solid var(--border);
+                background: var(--surface);
+                border: 1px solid var(--line);
                 border-left: 3px solid var(--warning);
                 padding: 1.5rem;
                 margin: 1.5rem 0;
@@ -136,8 +136,8 @@
             .kill-item p:last-child { margin-bottom: 0; }
 
             .nuance-item {
-                background: var(--void-lighter);
-                border: 1px solid var(--border);
+                background: var(--surface);
+                border: 1px solid var(--line);
                 border-left: 3px solid var(--terminal);
                 padding: 1.5rem;
                 margin: 1.5rem 0;
@@ -161,8 +161,8 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 1px;
-                background: var(--border);
-                border: 1px solid var(--border);
+                background: var(--line);
+                border: 1px solid var(--line);
                 margin: 1rem 0 1.5rem;
             }
 
@@ -235,7 +235,7 @@
             }
 
             .ref-subrules {
-                border: 1px solid var(--border);
+                border: 1px solid var(--line);
                 margin: 1.5rem 0;
             }
 
@@ -244,7 +244,7 @@
                 align-items: flex-start;
                 gap: 1rem;
                 padding: 1rem 1.25rem;
-                border-bottom: 1px solid var(--border);
+                border-bottom: 1px solid var(--line);
                 font-size: 0.9rem;
                 color: var(--text-dim);
                 line-height: 1.5;
@@ -259,14 +259,6 @@
                 flex-shrink: 0;
                 margin-top: 0.1rem;
             }
-
-            .writing-section {
-                margin-bottom: 4rem;
-                padding-bottom: 3rem;
-                border-bottom: 1px solid var(--border);
-            }
-
-            .writing-section:last-of-type { border-bottom: none; }
         </style>
     </head>
     <body>
@@ -1306,6 +1298,7 @@
         }
         </script>
 
+        <script src="/js/toc.js" defer></script>
         <script src="/js/phosphor.js" defer></script>
     </body>
 </html>

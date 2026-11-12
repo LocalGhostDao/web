@@ -367,9 +367,12 @@
         border-right: none;
     }
     
+    /* The boot lines are up to 39 characters, so the type follows the width
+       of the phone and they stay on one line each */
     .terminal-body {
         padding: 1rem;
         min-height: 280px;
+        font-size: clamp(0.78rem, 3.55vw, 1rem);
     }
     
     .terminal-output {

@@ -100,8 +100,9 @@
             items[i].classList.toggle('is-active', i === index);
         }
 
-        /* scroll active row into view if needed */
-        if (items[index]) {
+        /* scroll active row into view if needed, but not for the first load,
+           which used to pull the page down past its own title */
+        if (autoplay && items[index]) {
             items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 

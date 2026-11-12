@@ -33,9 +33,9 @@ main.flex-center {
    =========================================== */
 
 .page-header {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.75rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--line);
 }
 
 .page-header .section-label {
@@ -43,19 +43,28 @@ main.flex-center {
     font-size: 0.75rem;
     color: var(--terminal);
     letter-spacing: 0.2em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
-h1 {
+/* Scales with the window between a phone and a desk, and keeps a wrapped title
+   tight enough to read as one thing. The selector is main h1 because base.css
+   pins every nested h1 to 2rem, and a bare h1 here lost to it (the old 1.8rem
+   and the phone's 1.4rem never applied either). */
+main h1 {
     font-family: var(--font-mono);
-    font-size: 1.8rem;
+    font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.25rem);
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
 }
 
 .subtitle {
     color: var(--text-dim);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 62ch;
+    text-wrap: pretty;
 }
 
 /* Additional metadata (author, date) */
@@ -108,27 +117,63 @@ h1 {
 
 code {
     background: var(--void-lighter);
-    padding: 0.2rem 0.5rem;
-    border: 1px solid var(--border);
+    padding: 0.1em 0.4em;
+    border: 1px solid var(--line);
     font-family: var(--font-mono);
     font-size: 0.85em;
     color: var(--terminal);
 }
 
 /* ===========================================
+   SECTION HEADINGS
+   The numbered h2 on content pages and posts, defined once here (and
+   anything with the class directly inside the reading column, so a heading
+   marked up as a div still looks like one). The small > SECTION_01 label on
+   the home and guideline pages keeps the base style.
+   =========================================== */
+
+h2.section-header,
+.manifesto-text > .section-header {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--terminal);
+    margin: 3.5rem 0 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+    letter-spacing: 0.03em;
+}
+
+/* ===========================================
+   LONG-FORM TEXT
+   The reading column on every content page and every post. A size up from the
+   interface text, ragged right, and no lone word on a paragraph's last line.
+   =========================================== */
+
+.manifesto-text {
+    font-size: 1.0625rem;
+}
+
+.manifesto-text p {
+    text-wrap: pretty;
+}
+
+/* ===========================================
    RESPONSIVE
    =========================================== */
 
+/* The last paragraph on a page doesn't add its own gap above the footer */
+main > p:last-child {
+    margin-bottom: 0;
+}
+
 @media (max-width: 768px) {
     main {
-        padding: 8rem 1.5rem 3rem;
+        padding: 7.5rem 1.25rem 3rem;
     }
 
     main.narrow {
-        padding: 8rem 1.5rem 3rem;
-    }
-
-    h1 {
-        font-size: 1.4rem;
+        padding: 7.5rem 1.25rem 3rem;
     }
 }

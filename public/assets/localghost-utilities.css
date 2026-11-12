@@ -20,6 +20,7 @@
 :root {
     /* Colors - Core Palette */
     --lg-void: #111111;
+    --lg-surface: #161616;
     --lg-void-lighter: #1a1a1a;
     --lg-void-rgb: 17, 17, 17;
     
@@ -32,6 +33,7 @@
     --lg-text-rgb: 224, 224, 224;
     
     --lg-border: #444444;
+    --lg-line: #303030;
     --lg-warning: #FF8A8A;
     --lg-warning-alt: #FF6B6B;
 
@@ -184,12 +186,14 @@
 
 /* Background colors */
 .lg-bg-void { background-color: var(--lg-void); }
+.lg-bg-surface { background-color: var(--lg-surface); }
 .lg-bg-void-lighter { background-color: var(--lg-void-lighter); }
 .lg-bg-terminal { background-color: var(--lg-terminal); }
 .lg-bg-warning { background-color: var(--lg-warning); }
 
 /* Border colors */
 .lg-border-default { border-color: var(--lg-border); }
+.lg-border-line { border-color: var(--lg-line); }
 .lg-border-terminal { border-color: var(--lg-terminal); }
 .lg-border-terminal-dim { border-color: var(--lg-terminal-dim); }
 .lg-border-warning { border-color: var(--lg-warning); }
@@ -374,8 +378,8 @@
    ========================================================================== */
 
 .lg-card {
-    background: var(--lg-void);
-    border: var(--lg-border-width) solid var(--lg-border);
+    background: var(--lg-surface);
+    border: var(--lg-border-width) solid var(--lg-line);
     padding: var(--lg-space-lg);
 }
 
@@ -491,7 +495,7 @@
 
 .lg-divider {
     border: none;
-    border-top: var(--lg-border-width) solid var(--lg-border);
+    border-top: var(--lg-border-width) solid var(--lg-line);
     margin: var(--lg-space-3xl) 0;
 }
 

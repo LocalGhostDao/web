@@ -9,51 +9,56 @@
    INDEX — POST LIST
    =========================================== */
 
+/* A ledger. The number, the date and the label sit in a gutter on the left,
+   the title and the summary in the column beside it, and a whole row is one link. */
+/* Pulled up under the page header's rule, because each row brings its own
+   padding and the two together left a hole above the first title */
 .post-list {
     display: flex;
     flex-direction: column;
-    margin-bottom: 3rem;
+    margin: -1.25rem 0 3rem;
 }
 
 .post-item {
-    display: block;
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    grid-template-areas:
+        "meta title"
+        "meta excerpt";
+    column-gap: 2rem;
+    row-gap: 0.6rem;
+    align-items: start;
     text-decoration: none;
-    border: 1px solid var(--border);
-    border-bottom: none;
-    padding: 1.8rem 7rem 1.8rem 2rem;
-    background: var(--void);
+    border-bottom: 1px solid var(--line);
+    border-left: 2px solid transparent;
+    padding: 1.9rem 1.25rem 2rem 1.25rem;
     transition: background 0.15s, border-color 0.15s;
-    position: relative;
-}
-
-.post-item:last-child {
-    border-bottom: 1px solid var(--border);
 }
 
 .post-item:hover {
-    background: var(--void-lighter);
-    border-color: var(--terminal);
-    z-index: 1;
+    background: var(--surface);
+    border-left-color: var(--terminal);
 }
 
-.post-item:hover .post-arrow { color: var(--terminal); }
 .post-item:hover .post-num { color: var(--terminal); text-shadow: 0 0 6px var(--terminal-dim); }
+.post-item:hover .post-title { color: #fff; }
+.post-item:hover .post-title::after { opacity: 1; }
 
 .post-meta {
+    grid-area: meta;
     display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-top: 0.35rem;
 }
 
 .post-num {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     color: var(--text-dim);
     letter-spacing: 0.2em;
     transition: color 0.15s;
-    min-width: 60px;
 }
 
 .post-date {
@@ -90,32 +95,38 @@
 }
 
 .post-title {
+    grid-area: title;
     font-family: var(--font-mono);
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
+    line-height: 1.35;
+    margin: 0;
+    transition: color 0.15s;
+}
+
+/* The arrow that says the row is a link. It rides on the title's last word
+   and only lights on hover, so the titles have the whole column to themselves. */
+.post-title::after {
+    content: '\00A0\2192';
+    color: var(--terminal);
+    opacity: 0;
+    transition: opacity 0.15s;
 }
 
 .post-excerpt {
-    font-size: 0.88rem;
+    grid-area: excerpt;
+    font-size: 0.95rem;
     color: var(--text-dim);
-    line-height: 1.7;
-    max-width: 560px;
+    line-height: 1.65;
+    max-width: 62ch;
     margin: 0;
 }
 
+/* The [ READ ] label stays in the markup for the markdown twins and for
+   anything reading the page without styles */
 .post-arrow {
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-mono);
-    color: var(--border);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    transition: color 0.15s;
+    display: none;
 }
 
 /* ===========================================
@@ -127,8 +138,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    border: 1px solid var(--border);
-    background: var(--void-lighter);
+    border: 1px solid var(--line);
+    background: var(--surface);
     text-decoration: none;
     transition: border-color 0.15s;
     margin-top: 3rem;
@@ -233,6 +244,7 @@
     color: var(--warning);
     line-height: 1.4;
     letter-spacing: 0.02em;
+    text-wrap: balance;
     text-shadow: 0 0 20px rgba(255, 138, 138, 0.3);
     animation: statement-flicker 4s infinite;
 }
@@ -378,15 +390,18 @@ div.alarm p {
    Terminal green border, centred, prominent.
    =========================================== */
 
+/* Held to a narrower measure than the column and balanced, so a long
+   closing paragraph sets as an even block and not a ragged pyramid */
 .final-words {
     font-family: var(--font-mono);
     font-size: 1rem;
     color: var(--text-dim);
     text-align: center;
+    text-wrap: balance;
     margin-top: 3rem;
-    padding: 2rem 0;
-    border-top: 1px solid var(--border);
-    line-height: 2.2;
+    padding: 2.5rem clamp(0rem, 6%, 3rem) 2rem;
+    border-top: 1px solid var(--line);
+    line-height: 1.95;
 }
 
 .final-words .highlight {
@@ -430,6 +445,39 @@ div.alarm p {
 }
 
 /* ===========================================
+   POST — READING PROGRESS
+   A 2px line along the top edge of the window that fills as you read. Posts
+   only (the pages that end in a post nav), drawn by the scroll position
+   itself, so there's no script. Browsers without scroll timelines don't
+   get the line at all.
+   =========================================== */
+
+@supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+        main:has(.post-nav)::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            z-index: 1001;
+            background: var(--terminal);
+            box-shadow: 0 0 6px rgba(51, 255, 0, 0.5);
+            transform-origin: 0 50%;
+            transform: scaleX(0);
+            animation: lg-read linear both;
+            animation-timeline: scroll(root);
+            pointer-events: none;
+        }
+    }
+}
+
+@keyframes lg-read {
+    to { transform: scaleX(1); }
+}
+
+/* ===========================================
    POST — BOTTOM NAVIGATION
    Always two links: ← index | next post →
    =========================================== */
@@ -440,15 +488,15 @@ div.alarm p {
     gap: 1px;
     margin-top: 4rem;
     padding-top: 2rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--line);
 }
 
 .post-nav a {
     display: block;
     text-decoration: none;
     padding: 1.2rem 1.4rem;
-    border: 1px solid var(--border);
-    background: var(--void);
+    border: 1px solid var(--line);
+    background: var(--surface);
     transition: border-color 0.15s, background 0.15s;
     flex: 1;
 }
@@ -484,8 +532,22 @@ div.alarm p {
    =========================================== */
 
 @media (max-width: 600px) {
-    .post-item { padding: 1.4rem 1.2rem; }
-    .post-arrow { display: none; }
+    .post-item {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "meta"
+            "title"
+            "excerpt";
+        padding: 1.5rem 0 1.6rem;
+        border-left: none;
+    }
+    .post-meta {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding-top: 0;
+    }
 
     .manifesto-ref {
         flex-direction: column;
@@ -494,8 +556,9 @@ div.alarm p {
     }
     .mr-arrow { margin-left: 0; }
 
-    .alarm, .signal { padding: 1rem 1.2rem; }
-    .alarm p, .signal p { font-size: 0.9rem; }
+    div.alarm, .signal { padding: 1rem 1.2rem; }
+    div.alarm p, .signal p { font-size: 0.9rem; }
+    .final-words { padding-left: 0; padding-right: 0; }
 
     .post-nav { flex-direction: column; }
     .post-nav .next { text-align: left; }
@@ -510,8 +573,8 @@ div.alarm p {
    =========================================== */
 
 .podcast-player {
-    border: 1px solid var(--border);
-    background: rgba(10, 14, 20, 0.4);
+    border: 1px solid var(--line);
+    background: var(--surface);
     padding: 0.9rem 1.15rem;
     margin: 1.5rem 0 2rem 0;
     font-family: var(--font-mono);
@@ -636,6 +699,18 @@ div.alarm p {
     .podcast-player {
         padding: 0.8rem 0.9rem;
     }
+
+    /* The two labels wrap as whole labels, never in the middle of one */
+    .podcast-player .pp-meta {
+        flex-wrap: wrap;
+        gap: 0.2rem 0.75rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.1em;
+    }
+
+    .podcast-player .pp-meta > span {
+        white-space: nowrap;
+    }
     .podcast-player .pp-controls {
         flex-wrap: wrap;
         gap: 0.65rem;
@@ -662,12 +737,13 @@ div.alarm p {
 
 .cite {
     font-family: var(--font-mono);
-    font-size: 0.72em;
+    font-size: 0.68em;
     color: var(--terminal);
     text-decoration: none;
-    vertical-align: super;
+    position: relative;
+    top: -0.55em;
     line-height: 0;
-    padding: 0 0.08em 0 0.12em;
+    padding: 0 0.08em 0 0.05em;
     letter-spacing: 0;
     text-shadow: 0 0 4px var(--terminal-dim);
     transition: color 0.15s, text-shadow 0.15s;
@@ -720,6 +796,7 @@ div.alarm p {
     letter-spacing: 0.02em;
     display: inline-block;
     min-width: 2.4rem;
+    text-indent: 0;  /* It inherited the hanging indent and sat outside the column */
 }
 
 .references em {
@@ -766,7 +843,7 @@ div.alarm p {
     }
 
     .cite {
-        font-size: 0.76em;
+        font-size: 0.72em;
     }
 }
 /* ===========================================
@@ -790,7 +867,7 @@ div.alarm p {
     max-width: 360px;
     height: auto;
     margin: 0 auto;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 }
 
 .post-figure figcaption {
@@ -808,7 +885,7 @@ div.alarm p {
 }
 
 .post-figure.flow {
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     background: rgba(51, 255, 0, 0.015);
     padding: 1.25rem 1rem 1rem;
 }

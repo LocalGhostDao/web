@@ -10,7 +10,7 @@
 
 .status-callout {
     border: 2px solid var(--terminal);
-    padding: 2rem 2.5rem;
+    padding: 2rem 2rem;
     margin: 2.5rem 0;
     text-align: center;
     position: relative;
@@ -75,10 +75,13 @@
 .status-callout .status-cta {
     display: inline-block;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: var(--terminal);
     border: 1px solid var(--terminal);
-    padding: 0.75rem 1.5rem;
+    padding: 0.7rem 0.9rem;
+    margin: 0.35rem 0.2rem 0;  /* Three of them fit on one row, and they wrap with a gap */
+    letter-spacing: 0.02em;
+    white-space: nowrap;
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
@@ -91,21 +94,6 @@
 }
 
 /* ===========================================
-   SECTION HEADERS
-   =========================================== */
-
-.section-header {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--terminal);
-    margin: 3.5rem 0 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    letter-spacing: 0.05em;
-}
-
-/* ===========================================
    ROADMAP ITEMS - Ecosystem gaps
    =========================================== */
 
@@ -113,43 +101,54 @@
     margin: 2rem 0;
 }
 
+/* A panel with a rule down the left in the colour of how badly it's needed,
+   and the same word as a small label over the title. Red for a critical gap,
+   amber for needed, green for helpful, all three from the palette (needed
+   was an off-palette khaki). */
 .roadmap-item {
-    border: 1px solid var(--border);
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-    overflow: hidden;
+    --status: var(--text-dim);
+    --status-rule: var(--border);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--status-rule);
+    margin-bottom: 0.75rem;
+    transition: background 0.2s;
+}
+
+/* The rules are the same strength as the ones on the home page's panels */
+.roadmap-item.critical {
+    --status: var(--warning);
+    --status-rule: rgba(255, 138, 138, 0.55);
+}
+
+.roadmap-item.needed {
+    --status: var(--amber);
+    --status-rule: var(--amber-dim);
+}
+
+.roadmap-item.helpful {
+    --status: var(--terminal);
+    --status-rule: var(--terminal-dim);
 }
 
 .roadmap-item:hover {
-    border-color: var(--terminal-dim);
+    background: var(--void-lighter);
 }
 
 .roadmap-status-bar {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    padding: 0.5rem 1rem;
-    background: var(--border);
-    color: var(--void);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    padding: 1.1rem 1.4rem 0;
+    color: var(--status);
 }
 
-.roadmap-item.critical .roadmap-status-bar {
-    background: var(--warning);
-    color: var(--void);
-}
-
-.roadmap-item.needed .roadmap-status-bar {
-    background: #e5c07b;
-    color: var(--void);
-}
-
-.roadmap-item.helpful .roadmap-status-bar {
-    background: var(--terminal-dim);
-    color: var(--void);
+.roadmap-status-bar::before {
+    content: '\25CF\00A0\00A0';
 }
 
 .roadmap-content {
-    padding: 1.25rem;
+    padding: 0.5rem 1.4rem 1.25rem;
 }
 
 .roadmap-content h3,
@@ -171,13 +170,13 @@
 .roadmap-meta {
     margin-top: 1rem;
     padding-top: 0.75rem;
-    border-top: 1px dashed var(--border);
+    border-top: 1px dashed var(--line);
 }
 
 .roadmap-meta .existing {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--terminal-dim);
+    color: var(--text-dim);
 }
 
 /* ===========================================
@@ -219,10 +218,10 @@
     align-items: flex-start;
     gap: 1rem;
     padding: 1.25rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     text-decoration: none;
     transition: all 0.3s ease;
-    background: var(--void-lighter);
+    background: var(--surface);
 }
 
 .repo-link:hover {
@@ -284,8 +283,8 @@
 }
 
 .help-card {
-    background: var(--void-lighter);
-    border: 1px solid var(--border);
+    background: var(--surface);
+    border: 1px solid var(--line);
     padding: 1.5rem;
     transition: all 0.3s ease;
     position: relative;
@@ -337,7 +336,7 @@
     margin-top: 0.5rem;
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
 }
 
 /* ===========================================
