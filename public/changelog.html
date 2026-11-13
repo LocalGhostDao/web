@@ -6,7 +6,7 @@
 
         <title>Changelog, Releases and Mirror Sets | LocalGhost.ai</title>
         <meta name="title" content="Changelog, Releases and Mirror Sets | LocalGhost.ai">
-        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.7, and the sets on the setup mirror.">
+        <meta name="description" content="Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.8, and the sets on the setup mirror.">
         <meta name="author" content="Vlad Cealicu">
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
         <link rel="canonical" href="https://www.localghost.ai/changelog">
@@ -15,20 +15,20 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="https://www.localghost.ai/changelog">
         <meta property="og:title" content="Changelog, LocalGhost">
-        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.7 in October 2026, and the sets on the setup mirror.">
+        <meta property="og:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.8 since October 2026, and the sets on the setup mirror.">
         <meta property="og:image" content="https://www.localghost.ai/images/og-localghost.png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
         <meta property="og:site_name" content="LocalGhost.ai">
         <meta property="og:locale" content="en_GB">
-        <meta property="article:modified_time" content="2026-10-10T00:00:00Z">
+        <meta property="article:modified_time" content="2026-11-13T00:00:00Z">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:site" content="@localghostai">
         <meta name="twitter:creator" content="@vladcealicu">
         <meta name="twitter:url" content="https://www.localghost.ai/changelog">
         <meta name="twitter:title" content="Changelog, LocalGhost">
-        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.7 in October 2026, and the sets on the setup mirror.">
+        <meta name="twitter:description" content="Dated releases of the LocalGhost box and app, wisp 0.0.1 to 0.0.8 since October 2026, and the sets on the setup mirror.">
         <meta name="twitter:image" content="https://www.localghost.ai/images/og-localghost.png">
 
         <link rel="icon" href="/favicon.ico" sizes="48x48 32x32 16x16">
@@ -47,11 +47,11 @@
             "@type": "WebPage",
             "name": "Changelog",
             "headline": "Changelog",
-            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.7, and the sets on the setup mirror.",
+            "description": "Dated changes to what LocalGhost ships, newest first: releases of the box and the Android app, now at wisp 0.0.8, and the sets on the setup mirror.",
             "url": "https://www.localghost.ai/changelog",
             "inLanguage": "en-GB",
             "datePublished": "2026-10-02",
-            "dateModified": "2026-10-23",
+            "dateModified": "2026-11-13",
             "isPartOf": {
                 "@id": "https://www.localghost.ai/#website"
             },
@@ -139,7 +139,7 @@
             <div class="page-header">
                 <div class="section-label">&gt; CHANGELOG</div>
                 <h1>Changelog</h1>
-                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-10-23">23 October 2026</time></div>
+                <div class="date"><a href="/about#vlad-cealicu" rel="author">Vlad Cealicu</a> // updated <time datetime="2026-11-13">13 November 2026</time></div>
             </div>
 
             <div class="manifesto-text">
@@ -147,6 +147,28 @@
                 <p class="page-lede">
                     Dated changes to what LocalGhost ships, newest first. Releases of the box and the app, and the sets on the setup mirror. Each release's full notes are in the repository under <code>server/releases/</code>, and the <a href="/hard-truths">Hard Truths</a> dev updates tell the story around them.
                 </p>
+
+                <div class="entry" id="wisp-0.0.8">
+                    <h3>wisp 0.0.8, memories the box reads again, a second audit, and Go 1.27.4</h3>
+                    <span class="when">13 NOVEMBER 2026 // TAG v0.0.8 // COMMIT 9583d9a</span>
+                    <p>
+                        The eighth cut of wisp, on the <a href="https://github.com/LocalGhostDao/localghost/releases/tag/v0.0.8">GitHub release</a> with the same assets as before and on the setup mirror as the <code>server</code> and <code>app</code> sets. It's built with Go 1.27.4, where 0.0.4 to 0.0.7 were built with 1.27.1, because the three Go releases in between carry security fixes to <code>crypto/tls</code>, <code>crypto/x509</code>, <code>net/http</code>, <code>net/textproto</code> and <code>os</code>, which are what the box's door and its mail are made of. The mirror's <code>go</code> set carries 1.27.4 beside 1.27.1.
+                    </p>
+                    <ul class="plain-list">
+                        <li>The box reads its memories again. A memory distilled from a chat or a note used to be written once and then believed, so a misreading lived on in every later answer. Now, once a day, ghost.synthd fetches the record a memory was made from and asks the model whether the record says this. A memory it can't find there stays, marked with a ? in MEMORIES with the record's own words beside it, and is left out of what the chat is grounded on until you edit it, delete it or leave it. Your own edits are never read again, and nothing is deleted.</li>
+                        <li>Memories are kept four steps closer to the way <a href="/hard-truths/how-memory-gets-made">How Memory Gets Made</a> says they should be. You can mark a memory as an anchor, one of the few your life hangs on, and no pass sets, lifts, deletes or folds one away. A memory's page lists what the box keeps with it and why, the people it names, the place, the day, the trip or the month it's part of. A month that ended six weeks ago becomes one memory with its days one tap down. And every chat starts from a front page chosen once a day, the opening of the note about you, your anchors and the few memories that weigh the most, where it used to start from the first 1,200 characters of that note.</li>
+                        <li>A second security audit on 10 November went through what had been built since the first, and a pass on 12 November covered what it hadn't reached, the mail relay, the local boundaries on the box, the media parsers and the app end to end. A second phone arriving during an unlock waits for its own turn, a wrong PIN counts against the phone that typed it, and behind nginx the certificate in the header is checked against the box's device CA, where any header that wasn't empty used to pass. Root's writes onto the vault no longer follow a link, the box's own fetches go over https to public addresses only, and both model servers ask for a key, where before any account on the machine could ask the model and watch what it was working on. The release's notes list every fix and what's still open.</li>
+                        <li>The nightly backup holds the photo and video originals. It had been sealing the wrong folder, so no original was ever in a backup, and every backup now ends with a manifest of what the box held.</li>
+                        <li>The box's firewall table is part of the tree, where until now it was commands typed on one box. It keeps secd's plain loopback port to root and nginx, and <code>redeploy.sh</code> and <code>server_setup_root.sh</code> install it on a box built from a checkout. The 0.0.8 bundle doesn't carry the script, so a box set up from the release alone doesn't have the table yet. <code>ghost-ctl doctor</code> is the box's own check-up, one screen of PASS, WARN and FAIL with the fix on the next line, covering every port open to the network, the firewall tables, certificate expiry, ssh, security updates and the mail's DNS records, and it changes nothing.</li>
+                        <li>Mail reads as paragraphs. Gmail breaks plain text at 76 columns and doesn't say so, so the first message through the relay reached the phone as three-word tails, and the box now joins the lines a wrapper broke and leaves lists, quotes and signatures alone. Mail reaches the phone seconds after it's delivered where it took minutes, and the relay sends over IPv4 first, because its first message to Gmail went out over IPv6, which the SPF record doesn't name.</li>
+                        <li>GALLERY tells a video from a photo at a glance, with a green frame, ▶ and the running time, and a switch shows the clips alone. A frame's card shows the picture at its own shape, when and where it was taken, what the box saw in it, and its tags as chips you can remove or add to.</li>
+                        <li>The chat looks things up more readily. The box's model is asked about every question that isn't small talk and isn't plainly about your own life, and it gives three searches. Each search is shown in the answer's trail before it leaves, and none goes out in the first person or with an address, a long number or the name of one of your people unless you typed that name yourself.</li>
+                        <li>"Feels like" counts the sun, so noon at 3° under a clear sky reads about 5° where it read -2. The box also has an OpenPGP implementation of its own for end-to-end encrypted mail, 1,900 lines on the standard library and tested against GnuPG 2.4 both ways, which the next cut wires into MAIL.</li>
+                    </ul>
+                    <p>
+                        A box on 0.0.7 takes it from the phone with DEPLOY, and its phone keeps its pairing. The schema updates by itself at the first unlock, and ten minutes later the first pass folds every month that ended six weeks ago or more and draws the links between memories. A box with backups switched on should run <code>ghost-cli ghost.framed backup full=true</code> once, since no photo original was in a backup before this cut. <code>server_setup_root.sh</code>, run once more with sudo, narrows the sudo rule and turns security updates on, and <code>privacy_check.sh</code> should then show both model servers refusing a request that comes without their key.
+                    </p>
+                </div>
 
                 <div class="entry" id="wisp-0.0.7">
                     <h3>wisp 0.0.7, the box's own forecast, mail, and an audit</h3>

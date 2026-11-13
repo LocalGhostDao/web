@@ -261,7 +261,7 @@ unpacks into one directory named after the commit (`tar xzf ... --strip-componen
 
 ## Releases (`server` and `app`)
 
-`server` is LocalGhost's own release, the set the phone offers as an update ("wisp 0.0.7 is out",
+`server` is LocalGhost's own release, the set the phone offers as an update ("wisp 0.0.8 is out",
 DEPLOY under SETTINGS › SERVER). Its three files are the GitHub release's, unmodified, each pinned by
 the SHA-256 GitHub shows beside the asset: the bundle (`localghost-server-<version>-linux-amd64.tar.gz`,
 the daemons, and from 0.0.5 on `ghost-setup`, `ghost-qr` and the operator scripts with
@@ -276,14 +276,19 @@ The box verifies the set with the release's own `mirror_fetch.sh` over a `file:/
 it, against the key it already holds, then unpacks the bundle and keeps the previous build for a
 rollback. Tested on 5 October 2026: a scratch publish of wisp 0.0.5 (commit b5ef714) signed with a throwaway
 key, then the bundled `mirror_fetch.sh` for `server` and for `app` against it, every file matched.
-The 0.0.7 pins of 23 October 2026 (commit 261a0f0) were taken from the release's own files: each
-was downloaded, matched the release's `SHA256SUMS`, and that file's signature (`SHA256SUMS.asc`)
-checked good against the site key, as did the APK's `.asc`. They were not run through a scratch publish here.
+The 0.0.8 pins of 13 November 2026 (commit 9583d9a) were taken from the release's own files, as
+the 0.0.7 pins were on 23 October: each was downloaded, matched the release's `SHA256SUMS`, and that
+file's signature (`SHA256SUMS.asc`) checked good against the site key, as did the APK's `.asc`.
+Tested the same day: a scratch publish of `server` and `app` signed with a throwaway key
+(`GHOST_MIRROR_GPG_USER`, `GHOST_MIRROR_PUBKEY`), where each of the six files matched its pin, then
+the 0.0.8 bundle's own `mirror_fetch.sh` for both sets against it over `file://`
+(`GHOST_MIRROR_KEY`, `GHOST_MIRROR_FPR`), and the tarball and the APK it fetched were the release's
+bytes.
 
-`app` is the Android app from the same release: `localghost-app-0.0.7.apk`, signed with the app's
+`app` is the Android app from the same release: `localghost-app-0.0.8.apk`, signed with the app's
 keystore (signing certificate SHA-256
 `3dcc5e35718036a26cf36373ee53e79f512bf02d97f7017052996d55ddf0cdf4`, checked here by verifying the
-APK's v2 and v3 signing blocks), `localghost-app-0.0.7.apk.asc`, the site key's detached
+APK's v2 and v3 signing blocks), `localghost-app-0.0.8.apk.asc`, the site key's detached
 signature over it, and `APP.txt` (the APK's hash, commit, version and certificate). The APK is not
 byte-reproducible yet, so its pin is the release's. The `.idsig` (APK signature scheme v4, for incremental adb installs) stays on
 GitHub. A phone installs the app once by hand; on the mirror it means a USB copy sets up the phone as
