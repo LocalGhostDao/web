@@ -293,8 +293,9 @@ well as the box. Its terms are `localghost-app` (what is inside under which lice
 A new release is six lines replaced in `mirror.conf`: the new file names, the tag in the URLs, and
 the pins from the release page (or `sha256sum` of a copy you cut yourself with
 `tools/cut_release.sh <version>`, which gives the same server bytes with the Go that `RELEASE.txt`
-names, `go=1.27.1` from 0.0.4 on). When a release moves `go.mod` to a new Go, the `go` set gains that
-version's line in the same deploy. A plain deploy publishes it,
+names, `go=1.27.1` from 0.0.4 to 0.0.7, `go=1.27.4` from 0.0.8). When a release moves `go.mod` to a
+new Go, the `go` set gains that version's line in the same deploy, and it has to be published
+before the release is cut: the box that cuts takes its Go from here. A plain deploy publishes it,
 since a changed line is fetched even in a month whose upstream check has already run. If a release
 is cut again under the same tag, the pins change and the publish stops on the old ones until they
 are replaced, which is what happened with wisp 0.0.1 (commit 5354b9b, then 86ee41c with the app). From 0.0.2 on,
