@@ -33,7 +33,8 @@
         { num: '22', title: 'Read the File',       src: '/assets/playlist/22. Read the File.mp3',   post: '/hard-truths/breaking-free' },
         { num: '23', title: 'Between Rooms',       src: '/assets/playlist/23. Between Rooms.mp3',   post: '/hard-truths/age-that-needs-critical-thinkers' },
         { num: '24', title: 'Nicopolis',           src: '/assets/playlist/24. Nicopolis.mp3',       post: '/hard-truths/backbone-for-critical-thinkers' },
-        { num: '25', title: 'Work Songs',          src: '/assets/playlist/25. Work Songs.mp3',      post: '/hard-truths/office-used-to-hire-everyone' }
+        { num: '25', title: 'Work Songs',          src: '/assets/playlist/25. Work Songs.mp3',      post: '/hard-truths/office-used-to-hire-everyone' },
+        { num: '26', title: 'Class of 2026',       src: '/assets/playlist/26. Class of 2026.mp3',   post: '/hard-truths/class-of-2026' }
     ];
 
     var audio       = document.getElementById('pl-audio');
